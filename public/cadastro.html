@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamline | Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- <div class="header">
+        <div class="container">
+          <h1><img class="imagem2" src="./assets/imgs/logo.png" alt=""></h1>
+          <ul class="navbar">
+            <li>
+              <a href="../Página Inicial/juntos.html">Inicial</a>
+            </li>
+            <li>
+              <button class="laranja" onclick=""><a href="../Login/login2.html">Login</a></button>
+            </li>
+          </ul>
+        </div>
+      </div> -->
+    <div class="principal">
+            <div class="cadastro">
+            <h1>Cadastro</h1>
+            <p class="texto_forte">Digite o usuário: </p>
+            <input type="text" oninput="analisar()" id="ipt_usuario" class="inputCadastro">
+            <div id="div_mensagemLogin" class="MsgErro"></div>
+            <div id="div_tlogin" class="MsgErro"></div>
+
+            <p class="texto_forte">CPF: </p>
+            <input type="text" oninput="analisar()" id="ipt_usuario" class="inputCadastro">
+            <div id="div_mensagemLogin" class="MsgErro"></div>
+            <div id="div_tlogin" class="MsgErro"></div>
+
+            <p class="texto_forte">Informe seu email: </p>
+            <input type="text" oninput="analisar()" id="ipt_email" class="inputCadastro">
+            <div id="div_mensagemEmail" class="MsgErro"></div>
+
+            <p class="texto_forte">Informe sua senha: </p>
+            <input type="password" oninput="analisar()" id="ipt_senha" class="inputCadastro">
+            <div id="div_senha" class="MsgErro"></div>
+            <div id="div_tsenha" class="MsgErro"></div>
+
+            <p class="texto_forte">Confirme sua senha: </p>
+            <input type="password" oninput="analisar()" id="ipt_senhaconfirmada" class="inputCadastro">
+            <div id="div_senhaConfirmada" class="MsgErro"></div> <br>
+
+            <button disabled onclick="cadastro()" id="button_cadastro" class="button">Cadastrar</button>
+            <div id="div_msgFinal" class="MsgErro"></div>
+
+            <!-- <div>
+                <p>Já possui um cadastro?</p>
+                <a href="../Login/login2.html" style="color: #F66B0E;"><p style="color:#F66B0E;">Clique aqui para fazer o login</p></a>
+            </div> -->
+            </div>
+            <div>
+                <img class="imagemCadastro" src="../public/assets/cadastroimagem.png" alt="imagem ilustrativa da inserção do login">
+            </div> <!-- A TAG ESTÁ FORA DA DIV CADASTRO MAS DENTRO DA PRINCIPAL-->
+    </div>
+</body>
+</html>
+
