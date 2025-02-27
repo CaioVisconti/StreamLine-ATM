@@ -11,19 +11,23 @@ body{
     width: 100%;
 }
 
+/* Titulos */
 .principal{
     display: flex;
     flex-direction: row; /*ISSO QUE DEIXOU A IMAGEM AO LADO*/
     justify-content: space-evenly;
     margin-top: 15px;
+    color: #5296CD;
 }
 
+/* Titulos */
 .principal2{
     display: flex;
     flex-direction: row-reverse; /*ISSO QUE DEIXOU A IMAGEM AO LADO*/
     align-items: center;
     justify-content: space-evenly;
     margin-top: 80px;
+    color: #5296CD;
 }
 
 
@@ -83,7 +87,6 @@ body{
     padding: 3px;
 }
 
-/* Deixa com forma as inputs */
 .inputLogin{
     width: 80%;
     height: 26px;
