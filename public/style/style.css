@@ -7,9 +7,25 @@ html, body {
 }
 
 body{
-    background-color: #252525;
+    background-color: white;
     width: 100%;
 }
+
+.teste{
+    display: flex;
+    flex-direction: row; /*ISSO QUE DEIXOU A IMAGEM AO LADO*/
+    justify-content: space-evenly;
+    margin-top: 15px;
+    color: #0062d1;
+    /* height: 50%; */
+    /* width: 50%; */
+    /* border: solid blue; */
+    background-color: #252525;
+    justify-self: center;
+    padding: 1rem;
+    width: 95%;
+}
+
 
 /* Titulos */
 .principal{
