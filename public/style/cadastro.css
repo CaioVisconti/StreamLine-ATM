@@ -26,7 +26,7 @@ body{
     flex-direction: row-reverse; /*ISSO QUE DEIXOU A IMAGEM AO LADO*/
     align-items: center;
     justify-content: space-evenly;
-    margin-top: 80px;
+    margin-top: 40px;
     color: #5296CD;
 }
 
