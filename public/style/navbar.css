@@ -43,7 +43,7 @@ a {
 
 .links-menu ul {
     display: flex;
-    justify-content: space-evenly; 
+    justify-content: space-between; 
     align-items: center;
     width: 100%;
     padding: 0;
@@ -51,24 +51,24 @@ a {
 
 .links-menu li {
     padding: 0 10px; 
-    margin-top: 1.5%;
+    margin-top: 1.75%;
 }
 
 ul a:hover {
-    color: rgb(99, 99, 99);
-    font-size: 20px;
+    color: rgb(197, 197, 197);
+    font-size: 17px;
 }
 
 ul a {
     color: white;
-    padding: 5px 10px;
+    padding: 5px 20px;
 }
 
 .botao-login-cadastro {
     display: flex;
     flex-direction: row;
     margin-right: 1%;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     width: 250px; 
 }
@@ -79,6 +79,7 @@ ul a {
     border-radius: 10px;
     padding: 5px 10px; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    font-weight: 1000;
 }
 
 .botao-login-cadastro button:hover {
