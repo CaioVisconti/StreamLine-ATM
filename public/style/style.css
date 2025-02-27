@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+body{
+    background-color: white;
+    width: 100%;
+}
+
+.teste{
+    display: flex;
+    flex-direction: row; /*ISSO QUE DEIXOU A IMAGEM AO LADO*/
+    justify-content: space-evenly;
+    margin-top: 15px;
+    color: #0062d1;
+    /* height: 50%; */
+    /* width: 50%; */
+    /* border: solid blue; */
+    background-color: #252525;
+    justify-self: center;
+    padding: 1rem;
+    width: 95%;
+}
+
+
+/* Titulos */
+.principal{
+    display: flex;
+    flex-direction: row; /*ISSO QUE DEIXOU A IMAGEM AO LADO*/
+    justify-content: space-evenly;
+    margin-top: 15px;
+    color: #5296CD;
+}
+
+/* Titulos */
+.principal2{
+    display: flex;
+    flex-direction: row-reverse; /*ISSO QUE DEIXOU A IMAGEM AO LADO*/
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 40px;
+    color: #5296CD;
+}
+
+
+/* PÁGINA DE login */
+
+
+.Login{
+    border-radius:50px ;
+    padding: 30px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Karla', sans-serif;
+    border-color: #0062d1;
+    border-style: solid;
+    border-width: 1px;
+    height: 450px;
+}
+
+.cadastro{
+    border-radius:50px ;
+    width: 450px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Karla', sans-serif;
+    border-color: #0062d1;
+    border-style: solid;     
+    border-width: 1px;
+    height: 600px;
+
+}
+
+/* Inpusts de cadastro */
+.cadastro p{
+    font-weight: 700;
+    text-align: center;
+    color: #fff;
+}
+
+
+/* Inputs de login */
+.Login p{
+    font-weight: 700;
+    text-align: center;
+    color: #fff;    
+}
+
+/* Deixa com forma as inputs */
+.inputCadastro{
+    width: 80%;
+    height: 26px;
+    border-radius: 8px;
+    border-width: 1px;
+    padding: 3px;
+}
+
+.inputLogin{
+    width: 80%;
+    height: 26px;
+    border-radius: 8px;
+    border-width: 1px;
+    padding: 3px;
+}
+
+/* Botoes de cadastro e login */
+button{
+    width: 80%;
+    height: 30px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    background-color: #5296CD;
+    font-size: 17px;
+}
+
+.imagem {
+    display: flex;
+    height: 500px;
+    width: 450px;
+    justify-content: space-evenly;
+    flex-direction: row;
+
+    
+}
+
+.imagemCadastro{
+    height: 520px;
+    width: 550px;
+    margin-left: 100px;
+    margin-top: 50px;
+}
+
+
+
