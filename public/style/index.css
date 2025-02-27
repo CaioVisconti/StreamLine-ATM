@@ -32,6 +32,7 @@
 .texto-banner{
     width: 45%;
     margin-left: 5%;
+    margin-top: 10%;
 }
 
 .texto-banner span{
@@ -56,4 +57,73 @@
 
 .texto-banner button:hover {
     background-color: #254964;
+}
+
+.divisoria {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #171D20;
+    color: white;
+    padding: 1%;
+}
+
+.divisoria span{
+    margin-left: 2%;
+    font-size: 180%;
+}
+
+.divisoria h1{
+    margin-left: 2%;
+    font-weight: 1000;
+}
+
+.streamline-p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2%;
+    margin-top: 2%;
+    font-size: 200%;
+}
+
+.imagens-streamline {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 2%;
+}
+
+.imagens-streamline img{
+    width: 25%;
+    box-shadow: 0 2px 5px rgba(1, 0, 0, 3);
+
+}
+
+.conheca-equipe {
+    background-color: #406B8D;
+    color: white;
+    border-radius: 10px;
+    padding: 5px 10px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    margin-left: 19.3%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    font-size: 200%;
+}
+
+.conheca-equipe:hover {
+    background-color: #254964;
+}
+
+.servicos-p {
+    justify-content: center;
+    align-items: center;
+    margin-left: 2%;
+    margin-top: 2%;
+    font-size: 200%;
+}
+
+.servicos-p span{
+    font-weight: 1000;
 }
