@@ -201,7 +201,7 @@
     color: white;
     width: 25%;
     height: 60vh;
-    font-size: 25px;
+    font-size: 1.1vw;
     padding-bottom: 2%;
     border: 2px solid black;
     padding-left: 0.5%;
@@ -211,7 +211,6 @@
 }
 
 .card-texto2 span{
-    font-size: 30px;
     font-weight: 800;
 }
 
@@ -237,7 +236,8 @@
     justify-content: space-around;
     background-color: #171D20;
     color: white;
-    height: 45vh;
+    height: 60vh;
+    
 }
 
 .redes-sociais {
@@ -248,11 +248,11 @@
 }
 
 .redes-sociais span {
-    font-size: 40px;
+    font-size: 2vw;
 }
 
 .redes-sociais img {
-    width: 250px;
+    width: 17vw;
 }
 
 .form-contato {
@@ -261,12 +261,7 @@
     align-items: center;
     justify-content: space-around;
     width: 180%;
-}
-
-form {
-    padding: 20px;
-    border-radius: 20px;
-    text-align: center;
+    margin-top: 4vh;
 }
 
 input, textarea {
@@ -294,5 +289,5 @@ input, textarea {
 }
 
 .footer-contato span {
-    font-size: 40px;
+    font-size: 2vw;
 }
