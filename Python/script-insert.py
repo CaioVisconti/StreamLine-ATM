@@ -11,22 +11,6 @@ def conectar():
         database="streamline"
     )
 
-print(f"{'\nNúmero do ATM':<20} {'Nome do ATM'}")
-print('-' * 40)
-
-conn = conectar()
-cursor = conn.cursor()
-cursor.execute("SELECT idAtm, modelo FROM atm")
-myresult = cursor.fetchall()
-
-for x in myresult:
-    print(f"{x[0]:<20} {x[1]}")
-
-print("\n")
-
-
-maquina = int(input("Digite o número do ATM que deseja monitorar: "))
-
 while True:
         try:
             tempo = int(input("🧑‍🔧 De quanto em quanto tempo deseja realizar o monitoramento (em segundos)? \nDigite: "));
@@ -52,7 +36,7 @@ def registrar_dados():
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO captura (fkAtm, discoUso, discoPorcent, cpuUso, ramDisp, ramPorcent, dtCaptura) VALUES (%s, %s, %s, %s,%s, %s,""now()"")", (maquina, discoUso,porcentagemDisco, porcentagemCpu, ramDisponivel, porcentagemRam))
+    cursor.execute("INSERT INTO captura (fkAtm, discoUso, discoPorcent, cpuUso, ramDisp, ramPorcent, dtCaptura) VALUES (1001, %s, %s, %s,%s, %s,""now()"")", (discoUso,porcentagemDisco, porcentagemCpu, ramDisponivel, porcentagemRam))
 
     conn.commit()
     conn.close()
