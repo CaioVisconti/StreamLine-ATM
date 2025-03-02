@@ -13,10 +13,10 @@ a {
 
 .nome-empresa {
     font-size: 200%;
-    margin-left: 1%;
     display: flex;
     align-items: center;
     color: white;
+    padding-left: 20px;
 }
 
 .navbar {
@@ -25,7 +25,7 @@ a {
     align-items: center; 
     justify-content: space-between; 
     padding: 0 20px;
-    height: 60px;
+    height: 8%;
 }
 
 .links-menu {
@@ -36,12 +36,13 @@ a {
     align-items: center;
     width: 45%; 
     border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 6px 8px 5px rgb(0, 0, 0);
     padding: 5px 20px;
     height: 100%;
 }
 
 .links-menu ul {
+    font-size: 20px;
     display: flex;
     justify-content: space-between; 
     align-items: center;
@@ -66,22 +67,165 @@ ul a {
 
 .botao-login-cadastro {
     display: flex;
+    margin-top: 0.3%;
     flex-direction: row;
     margin-right: 1%;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    width: 250px; 
+    width: 13%;
+    height: 100%;
+    gap: 5%;
 }
 
+
+.tamanho-botao-login{
+    width: 40%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    && a {
+        width: 100%;
+        height: 100%;
+    }
+}
+.tamanho-botao-cadastro {
+    width: 60%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    && a {
+        width: 100%;
+        height: 100%;
+    }
+}
+/* .botao-login-cadastro a {
+    width: 80%;
+    height: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+} */
 .botao-login-cadastro button {
+    font-size: 19px;
     background-color: #406B8D;
     color: white;
+    width: 100%;
+    height: 80%;
     border-radius: 10px;
-    padding: 5px 10px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    /* padding: 5px 10px;  */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
     font-weight: 1000;
 }
 
 .botao-login-cadastro button:hover {
     background-color: #254964;
 }
+.menu-mobile{
+    display: none;
+}
+.btn-abrir-menu{
+    display: none;
+}
+.overlay-menu {
+    display: none;
+}
+
+@media  screen and (max-width: 1000px) {
+    .navbar {
+        display: none;
+    }
+    .links-menu{
+        display: none;
+    }
+
+    .botao-login-cadastro{
+        display: none;
+    }
+
+    .btn-abrir-menu i {
+        color: #fff;
+        font-size: 45px;
+        cursor: pointer;
+    }
+    .btn-abrir-menu {
+        display: block;
+    }
+
+    .overlay-menu{
+        background-color: #000000b9;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        display: none;
+    }
+
+    .menu-mobile.abrir-menu ~ .overlay-menu{
+        display: block;
+    }
+    .menu-mobile.abrir-menu{
+        width: 50%;
+    }
+
+    .menu-mobile {
+        background-color: #2e2c2c;
+        display: block;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 999;
+        width: 0%;
+        overflow: hidden;
+        transition: .2s;
+    }
+
+    .menu-mobile nav ul {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        gap: 15px;
+    }
+
+    .menu-mobile nav ul li a {
+        color: #fff;
+        font-size: 20px;
+        font-weight: 300;
+        padding: 20px 8%;
+        display: block;
+        z-index: 9;
+        cursor: pointer;
+    }
+    .menu-mobile nav ul li a:hover {
+        background-color: #ffffff;
+        color: #000;
+        font-size: 18px;
+    }
+
+    .menu-mobile .btn-fechar i {
+        color: #fff;
+        font-size: 30px;
+        cursor: pointer;
+    }    
+    .menu-mobile .btn-fechar {
+        padding: 25px 5%;
+    }
+}
+
+
+@media  screen and (max-width: 600px) {
+    span {
+        font-size: 20px !important;
+    }
+    p {
+        font-size: 15px !important;
+    }
+}
+
+
