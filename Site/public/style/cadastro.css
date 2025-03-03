@@ -34,13 +34,14 @@ body{
 
 .cadastro{
     border-radius:50px ;
-    width: 500px;
+   
+    width: 50%;
     display: flex;
-    justify-content:space-around;
     flex-direction: column;
     align-items: center;  
     border-width: 1px;
-    height: 550px;
+    height: 97%;
+    
 
 }
 

@@ -35,12 +35,13 @@ body{
 
 .Login{
     border-radius:50px ;
-    padding: 10;
     width: 50%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    height: 90%;
+    align-items: center;  
+    border-width: 1px;
+    height: 97%;
+    
 }
 
 .imagem{
