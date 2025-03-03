@@ -38,18 +38,13 @@ body{
     border-radius:50px ;
     width: 500px;
     display: flex;
-    justify-content: space-around;
+    justify-content:space-around;
     flex-direction: column;
     align-items: center;  
     border-width: 1px;
-    height: 560px;
+    height: 550px;
 
 }
-
-/* .texto_forte {
-    width: 500px;
-    height: 560px;
-} */
 
 .imagem {
     width: 70%;
