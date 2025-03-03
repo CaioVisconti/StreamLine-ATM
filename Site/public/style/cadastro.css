@@ -44,13 +44,12 @@ body{
 
 }
 
-.imagem {
+.imagem{
     width: 70%;
     height: 90%;
     border-radius: 20px;
-    background-image: url("../assets/cadastroimagem.png");
+    background-image: url("../assets/fundo-cadastro.png");
 }
-
 
 /* Inpusts de cadastro */
 .cadastro p{

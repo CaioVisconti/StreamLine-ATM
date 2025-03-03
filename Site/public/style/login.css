@@ -86,12 +86,11 @@ button{
 }
 
 .home {
-    display: flex; /* Usando flexbox para alinhar os itens */
-    align-items: center; /* Alinha verticalmente o texto e a imagem */
-    background-image: url("../assets/imgLogout.png");
-    width: 10%; /* Ajuste o tamanho da imagem */
-    height: 10%; /* Ajuste a altura conforme necessário */
-   
+    background-image: url('../assets/imghome.png');
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    
 }
 
 
