@@ -33,16 +33,13 @@ body{
 }
 
 .cadastro{
-    border-radius:50px ;
-   
+    border-radius:50px;
     width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;  
     border-width: 1px;
     height: 97%;
-    
-
 }
 
 .imagem{
@@ -53,7 +50,7 @@ body{
 }
 
 /* Inpusts de cadastro */
-.cadastro p{
+.cadastro span{
     font-weight: 700;
     color: #fff;
 }
@@ -87,3 +84,15 @@ button{
 
 }
 
+.texto_forte{
+    display: flex;
+    align-items: flex-start;
+    width: 80%;
+    margin-top: 1.5%;
+}
+
+.cadastro_span {
+    font-size: 6ch;
+    color: #5296CD !important;
+    margin-bottom: 5%;
+}
