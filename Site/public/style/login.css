@@ -54,7 +54,7 @@ body{
 /* Inputs de login */
 .Login p{
     font-weight: 700;
-    text-align: center;
+    text-align: left;
     color: #fff;    
 }
 
@@ -87,12 +87,23 @@ button{
 }
 
 .home {
-    background-image: url('../assets/imghome.png');
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
+    width: 100%;
+    height: 10%;
+    /* border: solid white 1px; */
+    display: flex;
+
+    && i{
+        color: #fff;
+    }
+    
+    && a{
+        text-decoration: none;
+        color: #fff;
+    }
     
 }
+
+
 
 
 
