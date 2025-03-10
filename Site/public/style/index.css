@@ -48,15 +48,18 @@
 
 .texto-banner button {
     font-size: 150%;
-    background-color: #406B8D;
-    color: white;
-    border-radius: 10px;
+    font-size: 19px;
+    font-weight: 900;
+    background-color: #ffffff;
+    color: #254964;
+    border-radius: 7px;
     padding: 5px 10px; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .texto-banner button:hover {
     background-color: #254964;
+    color: #fff;
 }
 
 .divisoria {
