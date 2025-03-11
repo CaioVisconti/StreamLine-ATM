@@ -5,15 +5,15 @@ import mysql.connector
 
 def conectar():
     return mysql.connector.connect(
-        host="10.18.32.7",
-        user="inseridor",
+        host="localhost",
+        user="root",
         password="urubu100",
         database="streamline"
     )
 
 while True:
         try:
-            tempo = int(input("🧑‍🔧 De quanto em quanto tempo deseja realizar o monitoramento (em segundos)? \nDigite: "));
+            tempo = int(input("🧑‍🔧 De quanto em quanto tempo deseja realizar o monitoramento (em segundos)? \nDigite: "))
             quantidade = int(input("\n📖 Quantas inserções deseja fazer? \nDigite: "))
 
             if tempo > 0 and quantidade > 0:
@@ -59,28 +59,11 @@ while True:
     print("-" * 50)
     print(f"💻 Uso da CPU: {porcentagemCpu}%")
     # print(f"💾 Disco disponível: {discoDisponivel}")
-    print(f"💾 Disco em uso: {discoUso}")
-    print(f"🎟  Memória RAM disponível: {ramDisponivel}")
+    print(f"💾 Disco em uso: {discoUso} bytes")
+    print(f"🎟  Memória RAM disponível: {ramDisponivel} bytes")
 
     time.sleep(tempo)
 
     if(i == quantidade):
         print("\nObrigado por utilizar a nossa solução, até a próxima! ✅\n")
         break
-
-# CREATE DATABASE dadosPc;
-# USE dadosPc;
-
-# CREATE TABLE dadosCpuMemoryDisk (
-# id INT PRIMARY KEY AUTO_INCREMENT,
-# discoDisponivel FLOAT,
-# discoTotal FLOAT,
-# porcentagemDisco FLOAT,
-# porcentagemCpu FLOAT,
-# ramDisponivel FLOAT,
-# porcentagemRam FLOAT,
-# ramTotal FLOAT,
-# dataRegistro DATETIME
-# );
-
-# SELECT * FROM dadosCpuMemoryDisk;
