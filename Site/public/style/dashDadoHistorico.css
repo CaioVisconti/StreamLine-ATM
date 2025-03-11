@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Montserrat';
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #171D20;
+}
+
+main {
+    width: 97%;
+    height: 97%;
+
+    header {
+        width: 100%;
+        height: 15%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+
+        #user {
+
+            div {
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                #imgUser {
+                    height: 100px;
+                    width: 100px;
+                    background-color: white;
+                    border-radius: 50px;
+                    margin-right: 10px;
+                }
+
+                font-size: 30px;
+            }
+        }
+
+        #navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            list-style: none;
+            width: 68%;
+            font-weight: bold;
+            font-size: 20px;
+            background-color: #53535339;
+            box-shadow: 1px 5px black;
+            border-radius: 43px;
+            height: 50px;
+            color: white;
+        }
+
+        #logout {
+
+            button {
+                width: 50px;
+                height: 50px;
+                border-radius: 10px;
+                background-color: transparent;
+                background-color: #2A5277;
+                border: none;
+                color: white;
+                font-weight: bold;
+            }
+        }
+
+        
+    }
+
+    #dashboard {
+
+        width: 100%;
+        height: 85%;
+        display: flex;
+        justify-content: space-between;
+        margin: 0px 10px;
+
+        #filtros {
+            color: white;
+            background-color: #53535339;
+            border-radius: 10px;
+            width: 18%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+
+            #menuFiltros {
+                list-style: none;
+                height: 90%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+                width: 100%;
+
+
+                li {
+                    
+                    width: 90%;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    margin: 10px;
+
+                    .status {
+                        width: 50px;
+                        height: 50px;
+                        background-color: green;
+                        border-radius: 10px;
+                        border: none;
+                    }
+                }
+            }
+        }
+        
+        #quadros {
+
+            width: 80%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            #kpis {
+
+                display: flex;
+                width: 100%;
+                height: 10%;
+                justify-content: space-between;
+                color: white;
+
+                div {
+                    width: 32%;
+                    background-color: #53535339;
+                    border-radius: 10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+            }
+
+            #visualizacao {
+
+                width: 100%;
+                height: 88%;
+                background-color: #53535339;
+                border-radius: 10px;
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+
+                #graficos {
+                    width: 70%;
+                    height: 95%;
+                    background-color: white;
+                    border-radius: 10px;
+
+                    h3 {
+                        margin: 10px;
+                    }
+                }
+
+                #interacao {
+
+                    width: 25%;
+                    height: 95%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    #alertas {
+                    
+                        background-color: white;
+                        width: 100%;
+                        height: 100%;
+                        overflow: auto;
+                        border-radius: 10px;
+
+                        h3 {
+                            margin: 10px;
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+    }
+}
