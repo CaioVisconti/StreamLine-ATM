@@ -95,36 +95,74 @@ main {
             width: 18%;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: space-evenly;
+            align-items: start;
+            justify-content: start;
 
-            #menuFiltros {
-                list-style: none;
-                height: 90%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-evenly;
-                width: 100%;
+            h3 {
+                margin: 15px;
+            }
 
 
-                li {
-                    
-                    width: 90%;
+            .campo {
+
+                margin-left: 20px;
+                margin-top: 50px;
+
+                #slcMetrica {
                     display: flex;
-                    justify-content: space-evenly;
-                    align-items: center;
-                    margin: 10px;
+                    flex-direction: column;
+                    margin-top: 10px;
 
-                    .status {
-                        width: 50px;
-                        height: 50px;
-                        background-color: green;
-                        border-radius: 10px;
-                        border: none;
+                    .boxes {
+                        margin: 10px;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+
+
+                        input {
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 10px;
+                            margin-right: 8px;
+                        }
                     }
                 }
+
+                #slcData {
+                    margin-top: 10px;
+                    margin-left: 10px;
+
+                    input {
+                        width: 100px;
+                        text-align: center;
+                        border-radius: 10px;
+                        height: 30px;
+                    }
+                }
+
+                #slcATM {
+                    margin-top: 10px;
+                    margin-left: 10px;
+                    width: 280px;
+                    text-align: center;
+                    height: 30px;
+                    border-radius: 10px;
+                }
             }
+
+            button {
+                margin-left: 70px;
+                color: white;
+                background-color: #2A5277;
+                border: none;
+                font-weight: bold;
+                border-radius: 10px;
+                width: 200px;
+                height: 50px;
+                margin-top: 120px;
+            }
+
         }
         
         #quadros {
