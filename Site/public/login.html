@@ -17,27 +17,45 @@
 
 <body>
     <div class="principal2">
+
+        <div class="camposLogin">
+
+            <div class="headerLogin">
+
+                <img src="./assets/streamlineAzul.png" alt="">
+
+                <div class="home">
+                    <a href="../public/index.html"><img src="./assets/iconevoltar.png" alt="">Voltar para Home</a>
+                </div>
+
+            </div>
+
+            <div class="Login tamanho-login">
+                <h1>Efetue o login</h1>
+                <span>Caso possua um cadastro, insira seus dados abaixo:</span>
+                <br>
+                <input type="text" id="ipt_usuario" class="inputLogin" placeholder="Email"><br>
+                <input type="password" id="ipt_senha" class="inputLogin" placeholder="Senha"><br>
+                <button onclick="login()" id="button_login" class="button">Entrar</button>
+
+            </div>
+
+            <div class="footerLogin">
+
+                <div class="sem_cadastro">
+                    <p>Não possui cadastro?<a href="../public/cadastro.html" style="color: #fff;">
+                            <span style="color:#fff; text-decoration: underline;"> Clique aqui</span></a></p>
+                </div>
+
+            </div>
+
+        </div>
+
         <div class="imagem">
 
         </div>
-            <div class="Login tamanho-login">
-                <h1>Login</h1>
-                <span class="texto_forte labels">Email: </span>
-            <input type="text" id="ipt_usuario" class="inputLogin"><br>
-            <span class="texto_forte labels">Senha: </span>
-            <input type="password" id="ipt_senha" class="inputLogin"><br>
-            <button onclick="login()" id="button_login" class="button">Entrar</button>
-
-            <div class="sem_cadastro">
-                <p>Não possui cadastro?<a href="../public/cadastro.html" style="color: #fff;"><span style="color:#fff;"> Clique aqui para se cadastrar</span></a></p>
-
-            </div>
-            <div class="home">
-              <a href="../public/index.html">Voltar para Home</a>
-            </div>
-
-    </div>
     </div>
 </body>
+
 </html>
 <script src="./login.js"></script>
