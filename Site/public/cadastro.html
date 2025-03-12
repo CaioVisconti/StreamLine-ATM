@@ -1,66 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Streamline | Cadastro</title>
+
     <link rel="stylesheet" href="./style/cadastro.css">
     <link rel="icon" href="./assets/logo_fundo_branco.png">
-    
-
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
-<script src="./cadastro.js" defer></script>
-<body>    
-    <div class="principal">
-      <div class="imagem">
-      </div>
 
-            <div class="cadastro">
-            <span class="cadastro_span">Cadastro</span>
-            <span class="texto_forte">Insira o código da empresa: </span>
-            <input type="text"  id="ipt_codigo" class="inputCadastro">
-            <div id="div_mensagemLogin" class="MsgErro"></div>
-            <div id="div_tCod" class="MsgErro"></div>
+<body>
+    <div class="principal2">
 
-            <span class="texto_forte">Digite o usuário: </span>
-            <input type="text"  id="ipt_usuario" class="inputCadastro">
-            <div id="div_mensagemLogin" class="MsgErro"></div>
-            <div id="div_tlogin" class="MsgErro"></div>
+        <div class="imagem"></div>
 
-            <span class="texto_forte">CPF: </span>
-            <input type="text"  id="ipt_cpf" class="inputCadastro">
-            <div id="div_mensagemLogin" class="MsgErro"></div>
-            <div id="div_tcpf" class="MsgErro"></div>
+        <div class="camposCadastro">
+            <div class="headerCadastro">
+                <div class="home">
+                    <a href="../public/index.html"><img src="./assets/iconevoltar.png" alt="">Voltar para Home</a>
+                </div>
 
-            <span class="texto_forte">Informe seu email: </span>
-            <input type="text"  id="ipt_email" class="inputCadastro">
-            <div id="div_mensagemEmail" class="MsgErro"></div>
-
-            <span class="texto_forte">Informe seu telefone: </span>
-            <input type="text"  id="ipt_telefone" class="inputCadastro">
-            <div id="div_telefone" class="MsgErro"></div>
-
-            <span class="texto_forte">Informe seu cargo: </span>
-            <input type="text"  id="ipt_cargo" class="inputCadastro">
-            <div id="div_cargo" class="MsgErro"></div>
-
-            <span class="texto_forte">Informe sua senha: </span>
-            <input type="password"  id="ipt_senha" class="inputCadastro">
-            <div id="div_senha" class="MsgErro"></div>
-            <div id="div_tsenha" class="MsgErro"></div>
-
-            <span class="texto_forte">Confirme sua senha: </span>
-            <input type="password"  id="ipt_senhaconfirmada" class="inputCadastro">
-            <div id="div_senhaConfirmada" class="MsgErro"></div> <br>
-
-            <button onclick="cadastro()" id="button_cadastro" class="button">Cadastrar</button>
+                <img src="./assets/streamlineAzul.png" alt="">
             </div>
+
+            <div class="Cadastro">
+                <h1>Cadastre-se</h1>
+                <span>Crie sua conta inserindo os dados abaixo:</span>
+                <input type="text" id="ipt_codigo" class="inputCadastro" placeholder="Código da empresa">
+                <div id="div_mensagemLogin" class="MsgErro"></div>
+                <div id="div_tCod" class="MsgErro"></div>
+
+                <input type="text" id="ipt_usuario" class="inputCadastro" placeholder="Usuário">
+                <div id="div_mensagemLogin" class="MsgErro"></div>
+                <div id="div_tlogin" class="MsgErro"></div>
+
+                <div class="inputJunta">
+                    <input type="text" id="ipt_cpf" class="inputCadastro" placeholder="CPF">
+                    <div id="div_mensagemLogin" class="MsgErro"></div>
+                    <div id="div_tcpf" class="MsgErro"></div>
+
+                    <input type="text" id="ipt_telefone" class="inputCadastro" placeholder="Telefone">
+                    <div id="div_telefone" class="MsgErro"></div>
+                </div>
+
+                <input type="text" id="ipt_cargo" class="inputCadastro" placeholder="Cargo">
+                <div id="div_cargo" class="MsgErro"></div>
+
+                <input type="text" id="ipt_email" class="inputCadastro" placeholder="Email">
+                <div id="div_mensagemEmail" class="MsgErro"></div>
+
+                <div class="inputJunta">
+                    <input type="password" id="ipt_senha" class="inputCadastro" placeholder="Senha">
+                    <div id="div_senha" class="MsgErro"></div>
+                    <div id="div_tsenha" class="MsgErro"></div>
+
+                    <input type="password" id="ipt_senhaconfirmada" class="inputCadastro"
+                        placeholder="Confirme sua senha">
+                    <div id="div_senhaConfirmada" class="MsgErro"></div> <br>
+                </div>
+                <br>
+
+                <button onclick="cadastro()" id="button_cadastro" class="button">Cadastrar</button>
+
+            </div>
+
+            <div class="footerCadastro">
+                <div class="sem_cadastro">
+                    <p>Já possui uma conta?<a href="../public/login.html" style="color: #fff;">
+                            <span style="color:#fff; text-decoration: underline;"> Clique aqui</span></a></p>
+                </div>
+            </div>
+        </div>
+
     </div>
-
 </body>
+
 </html>
-
-
-
-
+<script src="./cadastro.js"></script>

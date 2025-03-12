@@ -87,9 +87,10 @@ body{
     padding-left: 10px;
 }
 
-.Login::placeholder {
+.Login input::placeholder {
     font-weight: bold;
-
+    color: #fff;
+    opacity: 1;
 }
 
 .Login h1 {
@@ -143,6 +144,7 @@ button{
     color: white;
     background-color: #5296CD;
     font-size: 17px;
+    cursor: pointer;
 }
 
 
