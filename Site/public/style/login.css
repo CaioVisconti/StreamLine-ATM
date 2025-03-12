@@ -85,12 +85,20 @@ body{
     border: none;
     font-weight: 600;
     padding-left: 10px;
+    border: solid 2px rgb(34, 34, 34);
+    color: #fff;
+    transition: border-color 0.3s ease;
 }
 
 .Login input::placeholder {
     font-weight: bold;
     color: #fff;
     opacity: 1;
+}
+
+input:focus {
+    border-color: #5296CD;
+    outline: none;
 }
 
 .Login h1 {
