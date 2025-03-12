@@ -7,15 +7,6 @@ CREATE TABLE empresa (
     cnpj char(14)
 );
 
-CREATE TABLE metrica(
-	idMetrica int primary key auto_increment,
-    tipoMetrica varchar(45) not null,
-    limiteMin double not null,
-    limiteMax double not null,
-    fkLimiteAtm int not null,
-    constraint fkLimiteAtm foreign key (fkLimiteAtm) references atm(idAtm)
-);
-
 CREATE TABLE usuario (
 	idUsuario int primary key auto_increment,
     nome varchar(45) not null,
@@ -50,6 +41,15 @@ CREATE TABLE atm (
     constraint chkStatus check(status in("ativo","inativo")),
     fkAgencia int not null,
     constraint fkAgencia foreign key (fkAgencia) references agencia(idAgencia)
+);
+
+CREATE TABLE metrica(
+	idMetrica int primary key auto_increment,
+    tipoMetrica varchar(45) not null,
+    limiteMin double not null,
+    limiteMax double not null,
+    fkLimiteAtm int not null,
+    constraint fkLimiteAtm foreign key (fkLimiteAtm) references atm(idAtm)
 );
 
 CREATE TABLE captura (
