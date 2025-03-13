@@ -36,7 +36,15 @@ def registrar_dados():
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO captura (fkAtm, discoUso, discoPorcent, cpuUso, ramDisp, ramPorcent, dtCaptura) VALUES (1001, %s, %s, %s,%s, %s,""now()"")", (discoUso,porcentagemDisco, porcentagemCpu, ramDisponivel, porcentagemRam))
+def registrar_dados():
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'Uso do disco', %s, now())", (discoUso,))
+    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'Percentual de uso do disco', %s, now())", (porcentagemDisco,))
+    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'Percentual de uso da CPU', %s, now())", (porcentagemCpu,))
+    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'RAM disponível', %s, now())", (ramDisponivel,))
+    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'Percentual de uso da RAM', %s, now())", (porcentagemRam,))
 
     conn.commit()
     conn.close()
