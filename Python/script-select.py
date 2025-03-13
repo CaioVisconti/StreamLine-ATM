@@ -38,7 +38,7 @@ while continuar:
     "Digite o número da opção desejada: ")
     match opcao:
         case '1':           
-            mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cpuUso as CPU , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina}")
+            mycursor.execute(f"SELECT fkAtm as atm, idCaptura, valorCaptura as CPU , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina} AND captura.tipoCaptura = 'Percentual de uso da CPU';")
             myresult = mycursor.fetchall()
 
             for x in myresult:
@@ -61,7 +61,7 @@ while continuar:
     )
 
             if metrica == '1':
-                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, ramDisp as RAM , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina}")
+                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, valorCaptura as CPU , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina} AND captura.tipoCaptura = 'RAM disponível';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
@@ -73,7 +73,7 @@ while continuar:
 """)
 
             elif metrica == '2':
-                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cast(ramDisp / 1048576 as float) as RAM , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina}")
+                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cast(valorCaptura / 1048576 as float) as RAM, DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina} AND captura.tipoCaptura = 'RAM disponível';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
@@ -85,7 +85,7 @@ while continuar:
 """)
                     
             elif metrica == '3':
-                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cast(ramDisp / 1073741824 as float) as RAM , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina}")
+                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cast(valorCaptura / 1073741824 as float) as RAM, DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina} AND captura.tipoCaptura = 'RAM disponível';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
@@ -108,7 +108,7 @@ while continuar:
     )
 
             if metrica == '1':
-                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, discoUso as DISCO , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina}")
+                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, valorCaptura as DISCO , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina} AND captura.tipoCaptura = 'Uso do disco';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
@@ -120,7 +120,7 @@ while continuar:
 """)
 
             elif metrica == '2':
-                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cast(discoUso / 1048576 as float) as DISCO , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina}")
+                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cast(valorCaptura / 1048576 as float) as DISCO , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina} AND captura.tipoCaptura = 'Uso do disco';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
@@ -132,7 +132,7 @@ while continuar:
 """)
                     
             elif metrica == '3':
-                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cast(discoUso / 1073741824 as float) as DISCO , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina}")
+                mycursor.execute(f"SELECT fkAtm as atm, idCaptura, cast(valorCaptura / 1073741824 as float) as DISCO , DATE_FORMAT(dtCaptura, '%H:%i:%s %d/%m/%y') FROM captura JOIN atm on fkAtm = atm.idAtm WHERE captura.fkAtm = {maquina} AND captura.tipoCaptura = 'Uso do disco';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
@@ -154,21 +154,21 @@ while continuar:
     "Digite o número da opção desejada: ")
 
             if metrica == '1':
-                mycursor.execute(f"SELECT a.modelo AS nomeAtm, round(avg(ramPorcent),2) as Cpu FROM captura AS c JOIN atm AS a ON c.fkAtm = a.idAtm WHERE fkAtm = {maquina};")
+                mycursor.execute(f"SELECT a.modelo AS nomeAtm, round(avg(valorCaptura),2) as Cpu FROM captura AS c JOIN atm AS a ON c.fkAtm = a.idAtm WHERE fkAtm = {maquina} AND c.tipoCaptura = 'Percentual de uso da RAM';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
                     print(f"🏧 ATM Monitorado: {x[0]} | 📊 Percentual da média de uso: {x[1]}% 🔥")
 
             elif metrica == '2':
-                mycursor.execute(f"SELECT a.modelo AS nomeAtm, round(avg(discoPorcent),2) as Cpu FROM captura AS c JOIN atm AS a ON c.fkAtm = a.idAtm WHERE fkAtm = {maquina};")
+                mycursor.execute(f"SELECT a.modelo AS nomeAtm, round(avg(valorCaptura),2) as Cpu FROM captura AS c JOIN atm AS a ON c.fkAtm = a.idAtm WHERE fkAtm = {maquina} AND c.tipoCaptura = 'Percentual de uso do disco';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
                     print(f"🏧 ATM Monitorado: {x[0]} | 📊 Percentual da média de uso: {x[1]}% 🔥")
             
             elif metrica == '3':
-                mycursor.execute(f"SELECT a.modelo AS nomeAtm, round(avg(cpuUso),2) as Cpu FROM captura AS c JOIN atm AS a ON c.fkAtm = a.idAtm WHERE fkAtm = {maquina};")
+                mycursor.execute(f"SELECT a.modelo AS nomeAtm, round(avg(valorCaptura),2) as Cpu FROM captura AS c JOIN atm AS a ON c.fkAtm = a.idAtm WHERE fkAtm = {maquina} AND c.tipoCaptura = 'Percentual de uso da CPU';")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
@@ -185,21 +185,21 @@ while continuar:
     "Digite o número da opção desejada: ")
 
             if metrica == '1':
-                mycursor.execute(f"SELECT round(avg(ramPorcent),2) as Ram FROM captura")
+                mycursor.execute(f"SELECT round(avg(valorCaptura),2) as Ram FROM captura WHERE tipoCaptura = 'Percentual de uso da RAM'")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
                     print(f"\nPercentual da média geral da memória RAM {x[0]}%")
 
             elif metrica == '2':
-                mycursor.execute(f"SELECT round(avg(discoPorcent),2) as Disco FROM captura")
+                mycursor.execute(f"SELECT round(avg(valorCaptura),2) as Disco FROM captura WHERE tipoCaptura = 'Percentual de uso do disco'")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
                     print(f"\nPercentual da média geral do disco: {x[0]}%")
             
             elif metrica == '3':
-                mycursor.execute(f"SELECT round(avg(cpuUso),2) as Cpu FROM captura")
+                mycursor.execute(f"SELECT round(avg(valorCaptura),2) as Cpu FROM captura WHERE tipoCaptura = 'Percentual de uso da CPU'")
                 myresult = mycursor.fetchall()
 
                 for x in myresult:
