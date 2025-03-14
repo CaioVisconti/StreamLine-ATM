@@ -13,7 +13,7 @@ body {
     justify-content: center;
     width: 100%;
     height: 100vh;
-    background-color: #171D20;
+    background-color: rgb(52, 52, 52);
 }
 
 main {
@@ -56,7 +56,7 @@ main {
             width: 68%;
             font-weight: bold;
             font-size: 20px;
-            background-color: #53535339;
+            background-color: rgb(34, 34, 34);
             box-shadow: 1px 5px black;
             border-radius: 43px;
             height: 50px;
@@ -70,7 +70,7 @@ main {
                 height: 50px;
                 border-radius: 10px;
                 background-color: transparent;
-                background-color: #2A5277;
+                background-color: #5296CD;
                 border: none;
                 color: white;
                 font-weight: bold;
@@ -90,7 +90,7 @@ main {
 
         #listaATM {
             color: white;
-            background-color: #53535339;
+            background-color: rgb(34, 34, 34);
             border-radius: 10px;
             width: 18%;
             display: flex;
@@ -139,7 +139,7 @@ main {
 
                 width: 100%;
                 height: 100%;
-                background-color: #53535339;
+                background-color: rgb(34, 34, 34);
                 border-radius: 10px;
                 display: flex;
                 justify-content: space-evenly;
