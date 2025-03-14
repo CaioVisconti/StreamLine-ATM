@@ -15,7 +15,19 @@ echo "Executando SQL no MySQL..."
 sudo mysql <<EOF
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'urubu100';
 
+CREATE USER 'gerente'@'%' IDENTIFIED BY 'urubu100';
+CREATE USER 'analista'@'%' IDENTIFIED BY 'urubu100';
+CREATE USER 'técnico'@'%' IDENTIFIED BY 'urubu100';
+CREATE USER 'maquina'@'%' IDENTIFIED BY 'urubu100';
+
+GRANT SELECT ON *.* TO 'gerente'@'%';
+GRANT SELECT ON *.* TO 'analista'@'%';
+GRANT SELECT ON *.* TO 'técnico'@'%';
+GRANT INSERT ON *.* TO 'maquina'@'%';
+
+
 FLUSH PRIVILEGES;
+
 CREATE DATABASE IF NOT EXISTS streamline;
 USE streamline;
 
