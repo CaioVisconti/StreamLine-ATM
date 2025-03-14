@@ -4,7 +4,9 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     password="urubu100",
-    database="streamline"
+    database="streamline",
+    ssl_disabled=True
+
 )
 
 mycursor = mydb.cursor()
