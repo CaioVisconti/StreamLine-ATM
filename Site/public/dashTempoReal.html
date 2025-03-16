@@ -44,22 +44,22 @@
                 <h3>Máquinas e Status:</h3>
 
                 <menu id="menuATM">    
-                    <li>ATM 1 <div class="status"></div></li>
-                    <li>ATM 2 <div class="status"></div></li>
-                    <li>ATM 3 <div class="status" style="background-color: red;"></div></li>
-                    <li>ATM 4 <div class="status" style="background-color: red;"></div></li>
-                    <li>ATM 5 <div class="status"></div></li>
-                    <li>ATM 6 <div class="status"  style="background-color: yellow;"></div></li>
-                    <li>ATM 7 <div class="status"></div></li>
-                    <li>ATM 8 <div class="status"></div></li>
-                    <li>ATM 9 <div class="status"></div></li>
-                    <li>ATM 10 <div class="status"  style="background-color: red;"></div></li>
-                    <li>ATM 11 <div class="status"></div></li>
-                    <li>ATM 12 <div class="status"  style="background-color: yellow;"></div></li>
-                    <li>ATM 13 <div class="status"></div></li>
-                    <li>ATM 14 <div class="status"></div></li>
-                    <li>ATM 15 <div class="status"></div></li>
-                    <li>ATM 16 <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 1</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 2</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 3</button> <div class="status" style="background-color: red;"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 4</button> <div class="status" style="background-color: red;"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 5</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 6</button> <div class="status"  style="background-color: yellow;"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 7</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 8</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 9</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 10</button> <div class="status"  style="background-color: red;"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 11</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 12</button> <div class="status"  style="background-color: yellow;"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 13</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 14</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 15</button> <div class="status"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 16</button> <div class="status"></div></li>
                 </menu>
             </div>
             
@@ -70,10 +70,15 @@
                 <div id="visualizacao">
 
                     <div id="graficos">
-                        <h3>Gráficos</h3>
-                        <div>
-                            <canvas id="myChart" style= "position: relative; height:40vh; width:40vw"></canvas>
-                          </div>
+                        <div id="chartGeral">
+                            <h3>Gráfico Geral</h3>
+                            <canvas id="myChart"></canvas>
+                        </div>
+
+                        <div id="chartEspecifico" style="display: none;">
+                            <h3>Gráfico Específico</h3>
+                            <canvas id="myChart2"></canvas>
+                        </div>
                     </div>
 
                     <div id="interacao">
@@ -81,35 +86,67 @@
                         <div id="alertas">
                             <h3>Quadro de Alertas:</h3>
 
-                            <p style="margin-left: 13px;">  ATM: 3 <br>
-                                Fora do limite CPU: 85%
-  
-                              </p>
-                              <br>
+                            <div class="cardAlerta">
+                                <div>
+                                    ATM: 4 <br>
+                                    Memória: 80% <br>
+                                </div>
 
-                              <p style="margin-left: 13px;">  ATM: 4 <br>
-                                Fora do limite Memória: 80%
-  
-                              </p>
-                              <br>
-                              <p style="margin-left: 13px;">  ATM: 10 <br>
-                                Fora do limite Disco: 10%
-  
-                              </p>
+                                <div>
+                                    <div class="alertStatus" style="background-color:  red;"></div>
+                                </div>
+                            </div>
 
-                              <br>
-                              <p style="margin-left: 13px;">  ATM: 6 <br>
-                                próximo do limite Disco: 68%
-  
-                              </p>
+                            <div class="cardAlerta">
+                                <div>
+                                    ATM: 10 <br>
+                                    Disco: 10% <br>
+                                </div>
+                                
 
-                              <br>
-                              <p style="margin-left: 13px;">  ATM: 12 <br>
-                                próximo do limite CPU: 78%
-  
-                              </p>
+                                <div>
+                                    <div class="alertStatus" style="background-color:  red;"></div>
+                                </div>
+                            </div>
+
+                            <div class="cardAlerta">
+                                <div>
+                                    ATM: 6 <br>
+                                    Disco: 80% <br>
+                                </div>
+                                
+
+                                <div>
+                                    <div class="alertStatus" style="background-color:  yellow;"></div>
+                                </div>
+                            </div>
+
+                            <div class="cardAlerta">
+                                <div>
+                                    ATM: 12 <br>
+                                    CPU: 78% <br>
+                                </div>
+                                
+
+                                <div>
+                                    <div class="alertStatus" style="background-color:  yellow;"></div>
+                                </div>
+                            </div>
+
+                            <div class="cardAlerta">
+                                <div>
+                                    ATM: 3 <br>
+                                    CPU: 85% <br>
+                                </div>
+                                
+
+                                <div>
+                                    <div class="alertStatus" style="background-color:  red;"></div>
+                                </div>
+                            </div>
                         </div>
 
+                        <button onclick="graficoGeral()">Gráfico Geral</button>
                     </div>
                 </div>
 

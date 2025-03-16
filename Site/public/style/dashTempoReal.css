@@ -75,6 +75,10 @@ main {
                 color: white;
                 font-weight: bold;
             }
+
+            button:hover {
+                cursor: pointer;
+            }
         }
 
         
@@ -123,6 +127,22 @@ main {
                         border-radius: 10px;
                         border: none;
                     }
+
+                    button {
+                        width: auto;
+                        height: auto;
+                        border-radius: 10px;
+                        background-color: transparent;
+                        background-color: #5296CD;
+                        border: none;
+                        color: white;
+                        font-weight: bold;
+                        padding: 5%;
+                    }
+
+                    button:hover {
+                        cursor: pointer;
+                    }
                 }
             }
         }
@@ -150,9 +170,39 @@ main {
                     height: 95%;
                     background-color: white;
                     border-radius: 10px;
+                    display: flex;
+
 
                     h3 {
                         margin: 10px;
+                    }
+
+                    #chartGeral {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-evenly;
+
+                        #myChart {
+                            width: 95% !important;
+                            height: 90%;
+                        }
+                    }
+
+                    #chartEspecifico {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-evenly;
+
+                        #myChart2 {
+                            width: 95% !important;
+                            height: 90%;
+                        }
                     }
                 }
 
@@ -169,15 +219,51 @@ main {
                     
                         background-color: white;
                         width: 100%;
-                        height: 100%;
+                        height: 90%;
                         overflow: auto;
                         border-radius: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-evenly;
 
                         h3 {
                             margin: 10px;
                         }
+
+                        .cardAlerta {
+                            background-color: #5296CD;
+                            border-radius: 10px;
+                            display: flex;
+                            width: 60%;
+                            height: 10%;
+                            align-items: center;
+                            justify-content: space-evenly;
+                            color: white;
+
+                            .alertStatus {
+                                width: 20px;
+                                height: 20px;
+                                background-color: green;
+                                border-radius: 5px;
+                            }
+                        }
                     }
 
+                    button {
+                        width: 100%;
+                        height: 8%;
+                        border-radius: 10px;
+                        background-color: transparent;
+                        background-color: #5296CD;
+                        border: none;
+                        color: white;
+                        font-weight: bold;
+                    }
+
+                    button:hover {
+                        cursor: pointer;
+                    }
                 }
 
             }
