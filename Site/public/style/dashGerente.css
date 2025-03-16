@@ -158,8 +158,80 @@ main {
                     background-color: white;
                     border-radius: 10px;
 
-                    h3 {
-                        margin: 10px;
+                    #chartDesempenho {
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+                        height: 100%;
+                        align-items: center;
+                        justify-content: space-evenly;
+                    }
+
+                    #gerenciaFunc {
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+                        height: 100%;
+                        align-items: center;
+                        justify-content: space-evenly;
+
+                        #funcionarios {
+                            width: 100%;
+                            height: 95%;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            overflow: auto;
+
+                            .containerFunc {
+                                width: 100%;
+                                height: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-evenly;
+
+                                .cardFunc {
+                                    width: 25%;
+                                    height: 50%;
+                                    border: black 3px solid;
+                                    border-radius: 10px;
+                                    margin: 20px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-evenly;
+
+                                    .dadosFunc {
+                                        width: 50%;
+                                        height: 100%;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                    }
+
+                                    .btGerencia {
+                                        width: 50%;
+                                        height: 100%;
+                                        display: flex;
+                                        align-items: flex-end;
+                                        justify-content: center;
+                                        
+                                        button {
+                                            margin-bottom: 25px;
+                                            width: 50%;
+                                            height: 30%;
+                                            border-radius: 10px;
+                                            background-color: transparent;
+                                            background-color: #5296CD;
+                                            border: none;
+                                            color: white;
+                                            font-weight: bold;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
                     }
                 }
 

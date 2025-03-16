@@ -1,31 +1,56 @@
-const data = {
-    labels: [
-      'Funcinando',
-      'Não funcionado'
-    
-    ],
-    datasets: [{
-      label: 'Porcentagem de funcionamento',
-      data: [85, 15],
-      backgroundColor: [
-        'rgb(2, 124, 51)', 
-        'rgb(254, 0, 0)',
-      ],
-      hoverOffset: 4
-    }]
-  };
-   
-  const config = {
-    type: 'pie',
-    data: data,
-  };
+const labels = [
+  'JAN',
+  'FEV',
+  'MAR',
+  'ABR',
+  'MAI',
+  'JUN',
+  'JUL',
+  'AGO',
+  'SET',
+  'OUT',
+  'NOV',
+  'DEZ',
+];
 
-     const myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-      );
+const dataline = {
+     labels: labels,
+     datasets: [{
+       label: 'Desempenho Mensal',
+       backgroundColor: '#5296CD',
+       borderColor: '#5296CD',
+       data: [65, 100, 85, 72, 75, 66, 60, 70,54, 43, 75, 78],
+        }
+    ]
+};
+ 
+ 
+const configline = {
+    type: 'bar',
+    data: dataline,
+};
 
-      function sair(){
-        window.location  = "./login.html"
-       
-      }
+const myChart = new Chart(
+      document.getElementById('myChart'),
+      configline
+);
+
+function sair(){
+  window.location  = "./index.html"
+}
+
+function telaFuncionarios() {
+  let func = document.getElementById('gerenciaFunc');
+  let desempenho = document.getElementById('chartDesempenho');
+
+  func.style.display = 'flex';
+  desempenho.style.display = 'none';
+}
+
+function telaDesempenho() {
+  let func = document.getElementById('gerenciaFunc');
+  let desempenho = document.getElementById('chartDesempenho');
+
+  func.style.display = 'none';
+  desempenho.style.display = 'flex';
+}
