@@ -30,7 +30,7 @@ const dataline = {
        ,
        {
      
-         label: 'Memória',
+         label: 'RAM',
          backgroundColor: 'rgb(0, 123, 255)',
             borderColor: 'rgb(0, 123, 255)',
             data: [60, 65, 70, 80, 66, 63, 59, 73, 65, 50, 72, 64, 65, 68, 70, 66],
@@ -163,7 +163,7 @@ const dataline2 = {
        ,
        {
      
-         label: 'Memória',
+         label: 'RAM',
          backgroundColor: 'rgb(0, 123, 255)',
             borderColor: 'rgb(0, 123, 255)',
             data: [

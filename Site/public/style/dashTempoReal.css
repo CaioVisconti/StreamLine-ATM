@@ -232,14 +232,13 @@ main {
                         }
 
                         .cardAlerta {
-                            background-color: #5296CD;
                             border-radius: 10px;
                             display: flex;
                             width: 60%;
                             height: 10%;
                             align-items: center;
                             justify-content: space-evenly;
-                            color: white;
+                            border: 3px solid;
 
                             .alertStatus {
                                 width: 20px;
