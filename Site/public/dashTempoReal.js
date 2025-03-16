@@ -23,12 +23,12 @@ const labels = [
          label: 'CPU',
          backgroundColor: 'rgb(255, 165, 0)',
          borderColor: 'rgb(255, 165, 0)',
-         data: [65, 70, 85, 78, 75, 66, 60, 70,54, 43, 75, 78, 63, 70, 72, 68],
+         data: [65, 70, 85, 72, 75, 66, 60, 70,54, 43, 75, 78, 63, 70, 72, 68],
           }
        ,
        {
      
-         label: 'Mémoria',
+         label: 'Memória',
          backgroundColor: 'rgb(0, 123, 255)',
             borderColor: 'rgb(0, 123, 255)',
             data: [60, 65, 70, 80, 66, 63, 59, 73, 65, 50, 72, 64, 65, 68, 70, 66],
