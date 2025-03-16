@@ -12,6 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <link rel="icon" href="../public/assets/logo_fundo_branco.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
 
 </head>
 <body>
@@ -44,16 +46,16 @@
                 <menu id="menuATM">    
                     <li>ATM 1 <div class="status"></div></li>
                     <li>ATM 2 <div class="status"></div></li>
-                    <li>ATM 3 <div class="status"></div></li>
-                    <li>ATM 4 <div class="status"></div></li>
+                    <li>ATM 3 <div class="status" style="background-color: red;"></div></li>
+                    <li>ATM 4 <div class="status" style="background-color: red;"></div></li>
                     <li>ATM 5 <div class="status"></div></li>
-                    <li>ATM 6 <div class="status"></div></li>
+                    <li>ATM 6 <div class="status"  style="background-color: yellow;"></div></li>
                     <li>ATM 7 <div class="status"></div></li>
-                    <li>ATM 8 <div class="status"></div></li>
+                    <li>ATM 8 <div class="status"  style="background-color: red;"></div></li>
                     <li>ATM 9 <div class="status"></div></li>
-                    <li>ATM 10 <div class="status"></div></li>
+                    <li>ATM 10 <div class="status"  style="background-color: red;"></div></li>
                     <li>ATM 11 <div class="status"></div></li>
-                    <li>ATM 12 <div class="status"></div></li>
+                    <li>ATM 12 <div class="status"  style="background-color: yellow;"></div></li>
                     <li>ATM 13 <div class="status"></div></li>
                     <li>ATM 14 <div class="status"></div></li>
                     <li>ATM 15 <div class="status"></div></li>
@@ -69,6 +71,9 @@
 
                     <div id="graficos">
                         <h3>Gráficos</h3>
+                        <div>
+                            <canvas id="myChart" style= "position: relative; height:40vh; width:40vw"></canvas>
+                          </div>
                     </div>
 
                     <div id="interacao">
@@ -87,3 +92,4 @@
     </main>
 </body>
 </html>
+<script src="./dashTempoReal.js"></script>

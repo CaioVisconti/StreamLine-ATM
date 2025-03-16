@@ -12,6 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <link rel="icon" href="../public/assets/logo_fundo_branco.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
 
 </head>
 <body>
@@ -140,6 +142,9 @@
 
                     <div id="graficos">
                         <h3>Gráficos</h3>
+                        <div>
+                        <canvas id="myChart" style= "position: relative; height:50vh; width:100%"></canvas>
+                          </div>
                     </div>
 
                     <div id="interacao">
@@ -158,3 +163,5 @@
     </main>
 </body>
 </html>
+
+<script src="./dashDadoHistorico.js"></script>

@@ -14,7 +14,7 @@ public class Main {
         List<Usuario> usuario = new ArrayList<Usuario>();
         Faker faker = new Faker();
         Scanner scanner = new Scanner(System.in);
-        long start = System.currentTimeMillis();
+        // long start = System.currentTimeMillis();
         Integer escolha;
         Integer escolha2;
 

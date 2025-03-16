@@ -47,11 +47,14 @@ function login() {
         setTimeout(() => {
             var cargoUsuario = sessionStorage.CARGO_USUARIO;
     
-            if (cargoUsuario === "Técnico") {
+            if (cargoUsuario === "Técnico" || cargoUsuario === "técnico")  {
                 window.location = "./dashTempoReal.html"; 
-            } else if (cargoUsuario === "Gerente") {
+            } else if (cargoUsuario === "Gerente" || cargoUsuario === "gerente") {
+                window.location = "./dashGerente.html"; 
+            } else if (cargoUsuario === "Analista" || cargoUsuario === "analista") {
                 window.location = "./dashDadoHistorico.html"; 
-            } else {
+            }  
+            else {
                 console.log("Erro: Cargo inválido!");
             }
         }, 1000);
