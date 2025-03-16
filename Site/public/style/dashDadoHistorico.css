@@ -191,8 +191,12 @@ main {
                     p {
                         text-align: center;
 
-                        .atm {
-                            margin: 0px 20px;
+                        .kpi {
+                            margin: 0px 10px;
+                        }
+
+                        .kpi2 {
+                            margin: 0px 10px;
                         }
                     }
                 }
@@ -214,9 +218,22 @@ main {
                     height: 95%;
                     background-color: white;
                     border-radius: 10px;
+                    display: flex;
+                    flex-direction: column;
 
-                    h3 {
-                        margin: 10px;
+                    #chartMetricas {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-evenly;
+
+                        #myChart2 {
+                            width: 95% !important;
+                            height: 90%;
+                        }
+                        
                     }
                 }
 
@@ -236,10 +253,37 @@ main {
                         height: 100%;
                         overflow: auto;
                         border-radius: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-evenly;
 
                         h3 {
                             margin: 10px;
                         }
+
+                        #cards {
+                            display: flex;
+                            flex-direction: column;
+                            width: 100%;
+                            height: 90%;
+                            align-items: center;
+                            justify-content: space-evenly;
+                            overflow: auto;
+
+                            .cardAlerta {
+                                border-radius: 10px;
+                                display: flex;
+                                width: 60%;
+                                height: 15%;
+                                align-items: center;
+                                justify-content: space-evenly;
+                                border: 3px solid;
+                                margin: 10px;
+                            }
+                        }
+
+                        
                     }
 
                 }

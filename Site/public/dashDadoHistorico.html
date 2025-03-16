@@ -122,7 +122,7 @@
                     </select>
                 </div>
                 
-                <button>Gráfico Métricas</button>
+                <button onclick="graficoMetricas()">Gráfico Métricas</button>
 
             </div>
             
@@ -130,37 +130,86 @@
             <div id="quadros">
 
                 <div id="kpis">
-                    <div><p>KPI CPU PICO <br> <b class="atm">1</b>|<b class="atm">2</b></p></div>
-                    <div><p>KPI CPU MÉDIA <br> <b class="atm">1</b>|<b class="atm">2</b></p></div>
-                    <div><p>KPI DISCO PICO <br> <b class="atm">1</b>|<b class="atm">2</b></p></div>
-                    <div><p>KPI DISCO MÉDIA <br> <b class="atm">1</b>|<b class="atm">2</b></p></div>
-                    <div><p>KPI RAM PICO <br> <b class="atm">1</b>|<b class="atm">2</b></p></div>
-                    <div><p>KPI RAM MÉDIA <br> <b class="atm">1</b>|<b class="atm">2</b></p></div>
+                    <div><p>KPI CPU PICO <br> <b class="kpi">1</b> <b class="kpi">2</b> <b class="kpi2" style="display: none;">68,25</b> <b class="kpi2" style="display: none;">85</b></p></div>
+                    <div><p>KPI CPU MÉDIA <br> <b class="kpi">1</b> <b class="kpi">2</b> <b class="kpi2" style="display: none;">65,69</b> <b class="kpi2" style="display: none;">80</b></p></div>
+                    <div><p>KPI DISCO PICO <br> <b class="kpi">1</b> <b class="kpi">2</b> <b class="kpi2" style="display: none;">57,06</b> <b class="kpi2" style="display: none;">68</b></p></div>
+                    <div><p>KPI DISCO MÉDIA <br> <b class="kpi">1</b> <b class="kpi">2</b> <b class="kpi2" style="display: none;">68,31</b> <b class="kpi2" style="display: none;">88</b></p></div>
+                    <div><p>KPI RAM PICO <br> <b class="kpi">1</b> <b class="kpi">2</b> <b class="kpi2" style="display: none;">68,19</b> <b class="kpi2" style="display: none;">78</b></p></div>
+                    <div><p>KPI RAM MÉDIA <br> <b class="kpi">1</b> <b class="kpi">2</b> <b class="kpi2" style="display: none;">61,06</b> <b class="kpi2" style="display: none;">72</b></p></div>
                 </div>
 
                 <div id="visualizacao">
 
                     <div id="graficos">
-                        <h3>Gráficos</h3>
-                        <div>
-                        <canvas id="myChart" style= "position: relative; height:50vh; width:100%"></canvas>
-                          </div>
+                        <div id="chartMetricas" style="display: none;">
+                            <h3>Gráfico Métricas</h3>
+                            
+                            <canvas id="myChart"></canvas>
+                            
+                        </div>
                     </div>
 
                     <div id="interacao">
 
                         <div id="alertas">
                             <h3>Histórico de Alertas:</h3>
-                            <p style="margin-left: 15px;">  03/03/2025 <br>
-                              Fora do limite: 85%
-
-                            </p>
-                            <br>
-
-                            <p style="margin-left: 15px;">  12/03/2025 <br>
-                                Próximo do limite: 78%
-  
-                              </p>
+                            <div id="cards" style="display: none;">
+                                <div class="cardAlerta">  
+                                    03/03/2025 <br>
+                                    Máquina: X <br>
+                                    Fora do limite: 88% <br>
+                                    Métrica: CPU
+                                </div>
+                                <div class="cardAlerta">  
+                                    03/03/2025 <br>
+                                    Máquina: X <br>
+                                    Fora do limite: 85% <br>
+                                    Métrica: CPU
+                                </div>
+                                <div class="cardAlerta">  
+                                    04/03/2025 <br>
+                                    Máquina: X <br>
+                                    Próximo do limite: 80% <br>
+                                    Métrica: RAM
+                                </div>
+                                <div class="cardAlerta">  
+                                    04/03/2025 <br>
+                                    Máquina: X <br>
+                                    Próximo do limite: 78% <br>
+                                    Métrica: RAM
+                                </div>
+                                <div class="cardAlerta">  
+                                    05/03/2025 <br>
+                                    Máquina: X <br>
+                                    Próximo do limite: 80% <br>
+                                    Métrica: CPU
+                                </div>
+                                <div class="cardAlerta">  
+                                    10/03/2025 <br>
+                                    Máquina: X <br>
+                                    Fora do limite: 15% <br>
+                                    Métrica: DISCO
+                                </div>
+                                <div class="cardAlerta">  
+                                    10/03/2025 <br>
+                                    Máquina: X <br>
+                                    Fora do limite: 10% <br>
+                                    Métrica: DISCO
+                                </div>
+                                <div class="cardAlerta">  
+                                    12/03/2025 <br>
+                                    Máquina: X <br>
+                                    Próximo do limite: 82% <br>
+                                    Métrica: CPU
+                                </div>
+                                <div class="cardAlerta">  
+                                    12/03/2025 <br>
+                                    Máquina: X <br>
+                                    Próximo do limite: 78% <br>
+                                    Métrica: CPU
+                                </div>
+                            </div>
+                            
                         </div>
 
                     </div>
