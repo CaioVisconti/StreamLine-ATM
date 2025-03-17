@@ -52,7 +52,7 @@ function login() {
             } else if (cargoUsuario === "Gerente" || cargoUsuario === "gerente") {
                 window.location = "./dashGerente.html"; 
             } else if (cargoUsuario === "Analista" || cargoUsuario === "analista") {
-                window.location = "./dashDadoHistorico.html"; 
+                window.location = "./dashDadoHistorico.html";    
             }  
             else {
                 console.log("Erro: Cargo inválido!");
