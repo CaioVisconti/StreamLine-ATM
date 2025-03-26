@@ -1,6 +1,8 @@
 function login() {
     // aguardar();
 
+    window.location = "./app/dashTempoReal.html"
+
     var emailVar = ipt_usuario.value;
     var senhaVar = ipt_senha.value;
     
@@ -48,11 +50,11 @@ function login() {
             var cargoUsuario = sessionStorage.CARGO_USUARIO;
     
             if (cargoUsuario === "Técnico" || cargoUsuario === "técnico")  {
-                window.location = "./dashTempoReal.html"; 
+                window.location = "./app/dashTempoReal.html"; 
             } else if (cargoUsuario === "Gerente" || cargoUsuario === "gerente") {
-                window.location = "./dashGerente.html"; 
+                window.location = "./app/dashGerente.html"; 
             } else if (cargoUsuario === "Analista" || cargoUsuario === "analista") {
-                window.location = "./dashDadoHistorico.html";    
+                window.location = "./app/dashDadoHistorico.html";    
             }  
             else {
                 console.log("Erro: Cargo inválido!");
