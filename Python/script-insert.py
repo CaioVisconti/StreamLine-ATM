@@ -7,8 +7,8 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="urubu100",
-        database="streamlineatm"
+        password="",
+        database="streamlineatm",
     )
 
 while True:
@@ -54,9 +54,9 @@ while True:
     ramDisponivel = psutil.virtual_memory().free
     porcentagemRam = psutil.virtual_memory().percent
     horaLeitura = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
-    frequenciaCPU = 0
-    totalram = 0
-    discototal = 0
+    frequenciaCPU = psutil.cpu_freq().current
+    totalram = psutil.virtual_memory().total
+    discototal = psutil.disk_usage('C:\\').percent
 
     registrar_dados()
 
