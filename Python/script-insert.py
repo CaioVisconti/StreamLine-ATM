@@ -8,7 +8,7 @@ def conectar():
         host="localhost",
         user="root",
         password="urubu100",
-        database="streamline"
+        database="streamlineatm"
     )
 
 while True:
@@ -40,15 +40,11 @@ def registrar_dados():
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'Uso do disco', %s, now())", (discoUso,))
-    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'Percentual de uso do disco', %s, now())", (porcentagemDisco,))
-    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'Percentual de uso da CPU', %s, now())", (porcentagemCpu,))
-    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'RAM disponível', %s, now())", (ramDisponivel,))
-    cursor.execute("INSERT INTO captura (fkAtm, tipoCaptura, valorCaptura, dtCaptura) VALUES (1000, 'Percentual de uso da RAM', %s, now())", (porcentagemRam,))
+    cursor.execute("INSERT INTO captura1_1 (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco))
 
     conn.commit()
     conn.close()
-    
+
 i = 0
 while True: 
     discoDisponivel = round(psutil.disk_usage("/").free)
@@ -58,6 +54,9 @@ while True:
     ramDisponivel = psutil.virtual_memory().free
     porcentagemRam = psutil.virtual_memory().percent
     horaLeitura = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
+    frequenciaCPU = 0
+    totalram = 0
+    discototal = 0
 
     registrar_dados()
 
