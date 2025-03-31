@@ -7,8 +7,8 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",
-        database="streamlineatm",
+        password="oi",
+        database="streamline",
     )
 
 while True:
@@ -36,11 +36,7 @@ def registrar_dados():
     conn = conectar()
     cursor = conn.cursor()
 
-def registrar_dados():
-    conn = conectar()
-    cursor = conn.cursor()
-
-    cursor.execute("INSERT INTO captura1_1 (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco))
+    cursor.execute("INSERT INTO captura1_1 (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco, redeRecebido, redeEnviado, desativados, ativos, total))
 
     conn.commit()
     conn.close()
@@ -50,13 +46,32 @@ while True:
     discoDisponivel = round(psutil.disk_usage("/").free)
     discoUso = psutil.disk_usage("/").used
     porcentagemDisco = psutil.disk_usage("/").percent
-    porcentagemCpu = psutil.cpu_percent(interval=1, percpu=False)
+    porcentagemCpu = psutil.cpu_percent(percpu=False)
     ramDisponivel = psutil.virtual_memory().free
     porcentagemRam = psutil.virtual_memory().percent
     horaLeitura = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
     frequenciaCPU = psutil.cpu_freq().current
     totalram = psutil.virtual_memory().total
     discototal = psutil.disk_usage('C:\\').percent
+    redeRecebido = psutil.net_io_counters().packets_recv
+    redeEnviado = psutil.net_io_counters().packets_sent
+    total = 0
+    ativos = 0
+    desativados = 0
+    
+    
+    # Só mostra o pid e o status do processo
+    for processo in psutil.process_iter(attrs=['pid', 'status']):
+        try:
+            status = processo.info['status']
+            if status == "stopped":
+                desativados += 1
+            elif status == "running":
+                ativos += 1
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass  
+    
+    total = len(list(psutil.process_iter()))
 
     registrar_dados()
 
@@ -68,6 +83,9 @@ while True:
     # print(f"💾 Disco disponível: {discoDisponivel}")
     print(f"💾 Disco em uso: {discoUso} bytes")
     print(f"🎟  Memória RAM disponível: {ramDisponivel} bytes")
+    print(f"🎟  Processos Total: {total} ")
+    print(f"🎟  Processos Ativos: {ativos} ")
+    print(f"🎟  Processos Desativados: {desativados} ")
 
     time.sleep(tempo)
 

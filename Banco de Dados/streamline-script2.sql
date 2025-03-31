@@ -1,71 +1,69 @@
-USE steamlineatm ;
+CREATE DATABASE streamline;
+USE streamline;
 
 CREATE TABLE IF NOT EXISTS empresa (
-  idEmpresa INT NOT NULL,
+  idEmpresa PRIMARY KEY INT AUTO_INCREMENT NOT NULL,
   nome VARCHAR(45) NOT NULL,
   cnpj VARCHAR(45) NOT NULL,
+  email VARCHAR(45) NOT NULL,
   codigo CHAR(8) NOT NULL,
-  PRIMARY KEY (idEmpresa)
+  senha VARCHAR(45)
 );
 
 CREATE TABLE IF NOT EXISTS logradouro (
-  idLogradouro INT NOT NULL,
+  idLogradouro PRIMARY KEY INT AUTO_INCREMENT NOT NULL,
   cep CHAR(8) NOT NULL,
   logradouro VARCHAR(100) NOT NULL,
   bairro VARCHAR(45) NOT NULL,
   cidade VARCHAR(45) NOT NULL,
-  uf CHAR(2) NOT NULL,
-  PRIMARY KEY (idLogradouro)
+  numero CHAR(8) NOT NULL,
+  uf CHAR(2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS agencia (
-  idAgencia INT NOT NULL,
-  unidade VARCHAR(45) NOT NULL,
+  idAgencia PRIMARY KEY INT AUTO_INCREMENT NOT NULL,
+  codigoAgencia VARCHAR(45) NOT NULL,
   email VARCHAR(45) NOT NULL,
   telefone VARCHAR(45) NOT NULL,
   fkEmpresa INT NOT NULL,
   fkLogradouro INT NOT NULL,
-  PRIMARY KEY (idAgencia),
   FOREIGN KEY (fkEmpresa) REFERENCES empresa (idEmpresa),
   FOREIGN KEY (fkLogradouro) REFERENCES logradouro (idLogradouro)
 );
 
 CREATE TABLE IF NOT EXISTS usuario (
-  idUsuario INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  idUsuario PRIMARY KEY INT AUTO_INCREMENT NOT NULL,
   nome VARCHAR(45) NOT NULL,
   telefone CHAR(11) NOT NULL,
   cargo VARCHAR(45) NOT NULL,
   email VARCHAR(45) UNIQUE NOT NULL,
   senha VARCHAR(45) NOT NULL,
   fkAgencia INT NOT NULL,
-  PRIMARY KEY (idUsuario),
   FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
 );
 
 CREATE TABLE IF NOT EXISTS atm (
-  idAtm INT NOT NULL,
+  idAtm PRIMARY KEY INT AUTO_INCREMENT NOT NULL,
   nome VARCHAR(45) NOT NULL,
   modelo VARCHAR(45) NOT NULL,
   ip VARCHAR(45) NOT NULL,
   sistemaOperacional VARCHAR(45) NOT NULL,
-  status TINYINT NOT NULL,
+  statusATM TINYINT NOT NULL,
   fkAgencia INT NOT NULL,
-  PRIMARY KEY (idAtm),
   FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
 );
 
 CREATE TABLE IF NOT EXISTS componentes (
-  idComponentes INT NOT NULL,
+  idComponentes PRIMARY KEY INT AUTO_INCREMENT NOT NULL,
   componente VARCHAR(45) NULL,
   tipo VARCHAR(45) NOT NULL,
   limite DOUBLE NOT NULL,
   fkAtm INT NOT NULL,
-  PRIMARY KEY (idComponentes),
   FOREIGN KEY (fkAtm) REFERENCES atm (idAtm)
 );
 
-CREATE TABLE IF NOT EXISTS capturaM_N (
-  idCaptura INT NOT NULL,
+CREATE TABLE IF NOT EXISTS captura1_1 (
+  idCaptura INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   CPUPercent DOUBLE NOT NULL,
   CPUFreq DOUBLE NOT NULL,
   RAMTotal DOUBLE NOT NULL,
@@ -74,8 +72,12 @@ CREATE TABLE IF NOT EXISTS capturaM_N (
   DISKTotal DOUBLE NULL,
   DISKDisponivel DOUBLE NULL,
   DISKPercentual DOUBLE NULL,
-  dtHora DATETIME NULL,
-  PRIMARY KEY (idCaptura)
+  REDERecebida INT NULL, 
+  REDEEnviada INT NULL, 
+  PROCESSODesativado INT NULL, 
+  PROCESSOAtivos INT NULL, 
+  PROCESSOTotal INT NULL,
+  dtHora DATETIME NULL
 );
 
 CREATE TABLE IF NOT EXISTS alertaM_N (
