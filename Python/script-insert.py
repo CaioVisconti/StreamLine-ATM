@@ -7,7 +7,7 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Agjxsne/2013",
+        password="27019511-16102004Ja@",
         database="streamline",
     )
 
@@ -36,7 +36,7 @@ def registrar_dados():
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO captura1_1 (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco, redeRecebido, redeEnviado, desativados, ativos, total))
+    cursor.execute("INSERT INTO capturaA_M (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco, redeRecebido, redeEnviado, desativados, ativos, total))
 
     conn.commit()
     conn.close()
@@ -80,7 +80,6 @@ while True:
     print(f"\n{i}° Leitura - {horaLeitura}")
     print("-" * 50)
     print(f"💻 Uso da CPU: {porcentagemCpu}%")
-    # print(f"💾 Disco disponível: {discoDisponivel}")
     print(f"💾 Disco em uso: {discoUso} bytes")
     print(f"🎟  Memória RAM disponível: {ramDisponivel} bytes")
     print(f"🎟  Processos Total: {total} ")
