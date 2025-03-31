@@ -34,6 +34,8 @@ while continuar:
     "[3]  - 💾 DISCO\n"
     "[4]  - 🏧 MÉDIA POR ATM\n"
     "[5]  - 📊 MÉDIA GERAL\n\n"
+    "[6]  - 🔍 IDENTIFICADOR DA MÁQUINA\n\n"
+
 
     "Digite o número da opção desejada: ")
     match opcao:
