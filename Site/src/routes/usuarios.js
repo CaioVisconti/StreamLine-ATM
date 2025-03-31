@@ -17,6 +17,4 @@ router.get("/listar", function (req, res) {
     usuarioControllerController.listar(req, res);
   });
 
-
-
 module.exports = router;
