@@ -7,8 +7,13 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="root",
+<<<<<<< Updated upstream
         password="oi",
         database="streamline",
+=======
+        password="Agjxsne/2013",
+        database="steamlineatm"
+>>>>>>> Stashed changes
     )
 
 while True:
