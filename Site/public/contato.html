@@ -34,7 +34,7 @@
                     <input class="campo_pequeno" type="text" placeholder="Nome">
                     <input class="campo_pequeno" type="text" placeholder="Email">
                     <textarea class="campo_grande" type="text" placeholder="Duvidas"></textarea>
-                    <button class="botao_contato">Enviar</button>
+                    <button class="botao_contato" onclick="enviar()">Enviar</button>
                 </div>
                 <div class="imagem">
                     <img src="./assets/imagem-contate-nos.jpg" alt="">
@@ -45,3 +45,6 @@
 </body>
 
 </html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="./js/contato.js"></script>

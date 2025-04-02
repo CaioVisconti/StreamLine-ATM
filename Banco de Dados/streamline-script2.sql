@@ -1,92 +1,71 @@
-CREATE DATABASE streamline;
-USE streamline;
+USE steamlineatm ;
 
 CREATE TABLE IF NOT EXISTS empresa (
-  idEmpresa INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  idEmpresa INT NOT NULL,
   nome VARCHAR(45) NOT NULL,
   cnpj VARCHAR(45) NOT NULL,
-  codigo CHAR(8) NOT NULL
+  codigo CHAR(8) NOT NULL,
+  PRIMARY KEY (idEmpresa)
 );
 
-CREATE TABLE IF NOT EXISTS endereco (
-  idEndereco INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+CREATE TABLE IF NOT EXISTS logradouro (
+  idLogradouro INT NOT NULL,
   cep CHAR(8) NOT NULL,
   logradouro VARCHAR(100) NOT NULL,
   bairro VARCHAR(45) NOT NULL,
   cidade VARCHAR(45) NOT NULL,
-  uf CHAR(2) NOT NULL
+  uf CHAR(2) NOT NULL,
+  PRIMARY KEY (idLogradouro)
 );
 
 CREATE TABLE IF NOT EXISTS agencia (
-  idAgencia INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  codigoAgencia VARCHAR(45) NOT NULL,
+  idAgencia INT NOT NULL,
+  unidade VARCHAR(45) NOT NULL,
   email VARCHAR(45) NOT NULL,
   telefone VARCHAR(45) NOT NULL,
   fkEmpresa INT NOT NULL,
-  fkEndereco INT NOT NULL,
+  fkLogradouro INT NOT NULL,
+  PRIMARY KEY (idAgencia),
   FOREIGN KEY (fkEmpresa) REFERENCES empresa (idEmpresa),
-  FOREIGN KEY (fkEndereco) REFERENCES endereco (idEndereco)
+  FOREIGN KEY (fkLogradouro) REFERENCES logradouro (idLogradouro)
 );
 
 CREATE TABLE IF NOT EXISTS usuario (
-  idUsuario INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  idUsuario INT UNSIGNED NOT NULL AUTO_INCREMENT,
   nome VARCHAR(45) NOT NULL,
   telefone CHAR(11) NOT NULL,
   cargo VARCHAR(45) NOT NULL,
   email VARCHAR(45) UNIQUE NOT NULL,
   senha VARCHAR(45) NOT NULL,
   fkAgencia INT NOT NULL,
+  PRIMARY KEY (idUsuario),
   FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
 );
 
 CREATE TABLE IF NOT EXISTS atm (
-  idAtm INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  hostname VARCHAR(45) NOT NULL,
+  idAtm INT NOT NULL,
+  nome VARCHAR(45) NOT NULL,
   modelo VARCHAR(45) NOT NULL,
   ip VARCHAR(45) NOT NULL,
-  macAdress VARCHAR(45) NOT NULL,
   sistemaOperacional VARCHAR(45) NOT NULL,
-  statusATM TINYINT NOT NULL,
+  status TINYINT NOT NULL,
   fkAgencia INT NOT NULL,
+  PRIMARY KEY (idAtm),
   FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
 );
 
 CREATE TABLE IF NOT EXISTS componentes (
-  idComponentes INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  idComponentes INT NOT NULL,
   componente VARCHAR(45) NULL,
-  descricao VARCHAR(45) NULL,
+  tipo VARCHAR(45) NOT NULL,
+  limite DOUBLE NOT NULL,
   fkAtm INT NOT NULL,
+  PRIMARY KEY (idComponentes),
   FOREIGN KEY (fkAtm) REFERENCES atm (idAtm)
 );
 
-CREATE TABLE IF NOT EXISTS medida (
-  idMedida INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  tipo VARCHAR(45) NOT NULL,
-  formato VARCHAR(45) NOT NULL,
-  funcaoPsutil VARCHAR(45) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS configuracao (
-  idConfiguracao INT AUTO_INCREMENT NOT NULL,
-  limite DOUBLE NOT NULL,
-  dtAlteracao DATE NOT NULL,
-  fkMedida INT, 
-  fkComponente INT,
-	CONSTRAINT pkComposta PRIMARY KEY (idConfiguracao, fkMedida, fkComponente),
-  CONSTRAINT chkMedida FOREIGN KEY (fkMedida)REFERENCES medida(idMedida),
-	CONSTRAINT chkComponente FOREIGN KEY (fkComponente)REFERENCES componentes(idComponentes)
-);
-
-CREATE TABLE IF NOT EXISTS alerta (
-  idAlerta INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  gravidade VARCHAR(45) NOT NULL,
-  medida DOUBLE NOT NULL,
-  fkConfiguracao INT,
-	CONSTRAINT chkConfiguracao FOREIGN KEY (fkConfiguracao)REFERENCES configuracao(idConfiguracao)
-);
-
-CREATE TABLE IF NOT EXISTS capturaA_M (
-  idCaptura INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+CREATE TABLE IF NOT EXISTS captura1_1 (
+  idCaptura INT NOT NULL,
   CPUPercent DOUBLE NOT NULL,
   CPUFreq DOUBLE NOT NULL,
   RAMTotal DOUBLE NOT NULL,
@@ -95,123 +74,55 @@ CREATE TABLE IF NOT EXISTS capturaA_M (
   DISKTotal DOUBLE NULL,
   DISKDisponivel DOUBLE NULL,
   DISKPercentual DOUBLE NULL,
-  REDERecebida INT NULL, 
-  REDEEnviada INT NULL, 
-  PROCESSODesativado INT NULL, 
-  PROCESSOAtivos INT NULL, 
-  PROCESSOTotal INT NULL,
-  dtHora DATETIME NULL
+  dtHora DATETIME NULL,
+  PRIMARY KEY (idCaptura)
 );
 
+CREATE TABLE IF NOT EXISTS captura1_2 (
+  idCaptura INT NOT NULL,
+  CPUPercent DOUBLE NOT NULL,
+  CPUFreq DOUBLE NOT NULL,
+  RAMTotal DOUBLE NOT NULL,
+  RAMDisponivel DOUBLE NULL,
+  RAMPercentual DOUBLE NULL,
+  DISKTotal DOUBLE NULL,
+  DISKDisponivel DOUBLE NULL,
+  DISKPercentual DOUBLE NULL,
+  dtHora DATETIME NULL,
+  PRIMARY KEY (idCaptura)
+);
 
--- Inserindo empresas manualmente
-INSERT INTO empresa (nome, cnpj, codigo) VALUES
-('Banco do Brasil', '00000000000191', 'BB123456'),
-('Caixa Econômica Federal', '00000000000272', 'CEF12345'),
-('Bradesco', '00000000000353', 'BRA12345');
+INSERT INTO captura1_2 VALUES
+(3, 1.1, 1.0, 1.1, 1.0, 1.1, 1.0, 1.1, 1.0, "2025-03-01 08:09:11");
+SELECT * FROM captura1_2;
 
--- Inserindo endereços para as agências
-INSERT INTO endereco (cep, logradouro, bairro, cidade, uf) VALUES
-('01001000', 'Av. Paulista, 1000', 'Bela Vista', 'São Paulo', 'SP'),
-('20040002', 'Rua da Assembleia, 50', 'Centro', 'Rio de Janeiro', 'RJ'),
-('30120040', 'Av. Afonso Pena, 2000', 'Centro', 'Belo Horizonte', 'MG');
+CREATE TABLE IF NOT EXISTS alerta1_1 (
+  idAlerta INT NOT NULL AUTO_INCREMENT,
+  tipo VARCHAR(45) NULL,
+  gravidade VARCHAR(45) NOT NULL,
+  medida DOUBLE NULL,
+  dtHora DATETIME NULL,
+  fkCaptura INT NOT NULL,
+  PRIMARY KEY (idAlerta),FOREIGN KEY (fkCaptura) REFERENCES captura1_1 (idCaptura)
+);
 
--- Inserindo 3 agências para cada banco
-INSERT INTO agencia (codigoAgencia, email, telefone, fkEmpresa, fkEndereco) VALUES
-('BB001', 'agencia1@bb.com.br', '(11) 4002-8922', 1, 1),
-('BB002', 'agencia2@bb.com.br', '(11) 4002-8923', 1, 2),
-('BB003', 'agencia3@bb.com.br', '(11) 4002-8924', 1, 3),
-('CEF001', 'agencia1@cef.com.br', '(21) 4003-8922', 2, 1),
-('CEF002', 'agencia2@cef.com.br', '(21) 4003-8923', 2, 2),
-('CEF003', 'agencia3@cef.com.br', '(21) 4003-8924', 2, 3),
-('BRA001', 'agencia1@bradesco.com.br', '(31) 4004-8922', 3, 1),
-('BRA002', 'agencia2@bradesco.com.br', '(31) 4004-8923', 3, 2),
-('BRA003', 'agencia3@bradesco.com.br', '(31) 4004-8924', 3, 3);
+USE streamline;
 
--- Inserindo funcionários só para a primeira agência do Banco do Brasil
-INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES
-('Geraldo', '11987654321', 'Gerente', 'geraldo@bb.com.br', 'senha123', 1),
-('Lucas', '11987654322', 'Técnico de Operação', 'lucas@bb.com.br', 'senha123', 1),
-('Thiago', '11987654323', 'Analista de Dados', 'thiago@bb.com.br', 'senha123', 1);
+CREATE VIEW teste AS SELECT captura1_1.CPUPercent AS CPUPercent1, captura1_2.CPUPercent AS CPUPercent2 FROM captura1_1, captura1_2;
+SELECT * FROM teste;
 
--- Inserindo 15 ATMs para a primeira agência do Banco do Brasil
-INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM, fkAgencia) VALUES
-('Jade', 'Gabriel Teste', '192.168.1.1', '20:c1:9b:5e:4e:d0', 'Windows 11', 1, 1), -- Esse é o meu pessoal, testem com o de vocês
-('ATM002', 'NCR', '192.168.1.2', '00:1A:2B:3C:4D:5F', 'Windows 10', 1, 1),
-('ATM003', 'Diebold', '192.168.1.3', '00:1A:2B:3C:4D:60', 'Windows 10', 1, 1),
-('ATM004', 'NCR', '192.168.1.4', '00:1A:2B:3C:4D:61', 'Windows 10', 1, 1),
-('ATM005', 'Diebold', '192.168.1.5', '00:1A:2B:3C:4D:62', 'Windows 10', 1, 1),
-('ATM006', 'NCR', '192.168.1.6', '00:1A:2B:3C:4D:63', 'Windows 10', 1, 1),
-('ATM007', 'Diebold', '192.168.1.7', '00:1A:2B:3C:4D:64', 'Windows 10', 1, 1),
-('ATM008', 'NCR', '192.168.1.8', '00:1A:2B:3C:4D:65', 'Windows 10', 1, 1),
-('ATM009', 'Diebold', '192.168.1.9', '00:1A:2B:3C:4D:66', 'Windows 10', 1, 1),
-('ATM010', 'NCR', '192.168.1.10', '00:1A:2B:3C:4D:67', 'Windows 10', 1, 1),
-('ATM011', 'Diebold', '192.168.1.11', '00:1A:2B:3C:4D:68', 'Windows 10', 1, 1),
-('ATM012', 'NCR', '192.168.1.12', '00:1A:2B:3C:4D:69', 'Windows 10', 1, 1),
-('ATM013', 'Diebold', '192.168.1.13', '00:1A:2B:3C:4D:70', 'Windows 10', 1, 1),
-('ATM014', 'NCR', '192.168.1.14', '00:1A:2B:3C:4D:71', 'Windows 10', 1, 1),
-('ATM015', 'Diebold', '192.168.1.15', '00:1A:2B:3C:4D:72', 'Windows 10', 1, 1);
+SELECT dtHora FROM captura1_1;
 
+SELECT * FROM captura1_1 WHERE dtHora > "2025-03-31 11:41:30";
 
--- MÉTRICAS E CONFIGURAÇÕES
+SELECT
+	CASE 
+		WHEN dtHora >= "2025-03-31 11:41:19" AND dtHora <= "2025-03-31 11:41:32" THEN "teste"
+		WHEN dtHora >= "2025-03-31 11:41:33" AND dtHora <= "2025-03-31 11:41:39" THEN "teste1"
+	END AS datas
+FROM captura1_1;
 
--- Inserindo Componentes para o ATM 1
-INSERT INTO componentes (componente, descricao, fkAtm) VALUES
-('CPU', 'Intel Core i5', 1),
-('Memória RAM', '8GB', 1),
-('Disco Rígido', '500GB', 1);
+SELECT dtHora FROM captura1_1;
 
--- Inserindo Medidas para os componentes do ATM 1 (Cardápio)
-INSERT INTO medida (tipo, formato, funcaoPsutil) VALUES
-('CPUPercent', 'Porcentagem', 'cpu_percent'),
-('CPUFreq', 'GHz', 'cpu_freq'),
-('RAMPercentual', 'Porcentagem', 'virtual_memory'),
-('DISKPercentual', 'Porcentagem', 'disk_usage');
-
--- Inserindo Configurações para os componentes do ATM 1
-INSERT INTO configuracao (fkMedida, fkComponente, limite, dtAlteracao) VALUES
-(1, 1, 80.0, '2025-03-31'), -- CPUPercent (Intel Core i5)
-(2, 1, 3.5, '2025-03-31'), -- CPUFreq (Intel Core i5)
-(3, 2, 90.0, '2025-03-31'), -- RAMPercentual (8GB RAM)
-(4, 3, 85.0, '2025-03-31'); -- DISKPercentual (500GB Disco)
-
--- Inserindo Componentes para o ATM 2 (Com duas CPUs)
-INSERT INTO componentes (componente, descricao, fkAtm) VALUES
-('CPU', 'Intel Core i7', 2),
-('CPU', 'AMD Ryzen 5', 2),
-('Memória RAM', '16GB', 2);
-
--- Inserindo Medidas para os componentes do ATM 2
-INSERT INTO medida (tipo, formato, funcaoPsutil) VALUES
-('CPUPercent', 'Porcentagem', 'cpu_percent'),
-('CPUFreq', 'GHz', 'cpu_freq'),
-('RAMPercentual', 'Porcentagem', 'virtual_memory');
-
--- Inserindo Configurações para os componentes do ATM 2
-INSERT INTO configuracao (fkMedida, fkComponente, limite, dtAlteracao) VALUES
-(1, 4, 85.0, '2025-03-31'), -- CPUPercent (Intel Core i7)
-(2, 4, 4.0, '2025-03-31'), -- CPUFreq (Intel Core i7)
-(1, 5, 80.0, '2025-03-31'), -- CPUPercent (AMD Ryzen 5)
-(2, 5, 3.6, '2025-03-31'), -- CPUFreq (AMD Ryzen 5)
-(3, 6, 88.0, '2025-03-31'); -- RAMPercentual (16GB RAM)
-
--- Selecionar componentes e configurações de tal atm
-
-SELECT 
-    atm.idAtm,
-    atm.hostname,
-    componentes.idComponentes,
-    componentes.componente,
-    componentes.descricao,
-    medida.idMedida,
-    medida.tipo,
-    medida.formato,
-    medida.funcaoPsutil,
-    configuracao.idConfiguracao,
-    configuracao.limite,
-    configuracao.dtAlteracao
-FROM componentes
-JOIN atm ON componentes.fkAtm = atm.idAtm
-LEFT JOIN configuracao ON configuracao.fkComponente = componentes.idComponentes
-LEFT JOIN medida ON configuracao.fkMedida = medida.idMedida
-WHERE atm.idAtm = 1;
+-- comparacao em diferentes periodos
+CREATE VIEW teste2 AS SELECT captura1_1.CPUPercent AS CPUPercent1, captura1_2.CPUPercent AS CPUPercent2 FROM captura1_1, captura1_2;
