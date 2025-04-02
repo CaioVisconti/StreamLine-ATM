@@ -1,4 +1,4 @@
-USE steamlineatm ;
+USE streamline;
 
 CREATE TABLE IF NOT EXISTS empresa (
   idEmpresa INT NOT NULL,
