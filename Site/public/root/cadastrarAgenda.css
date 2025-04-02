@@ -134,12 +134,6 @@ a{
     width: 70%;
 }
 
-.agencias input{
-    height: 50px;
-    width: 24%;
-    border-radius: 10px;
-}
-
 .pesquisar{
     display: flex;
     align-items: center;
@@ -149,11 +143,29 @@ a{
     filter: contrast(1.9);
 }
 
+.input-pesquisar{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #ffffff;
+    width: 24%;
+    border-radius: 10px;
+}
+
+.input-pesquisar input{
+    height: 50px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    font-size: 24px;    
+}
+
+.input-pesquisar input:focus-visible{
+    outline: none;
+}
+
 .input-icon {
-    position: absolute;
-    top: 21.2%;
-    margin-left: 14%;
-    transform: translateY(-50%);
+   cursor: pointer;
 }
 
 .cards{
