@@ -50,13 +50,19 @@ legend("topright", legend = c("RAM", "CPU"),
        border = "black")
 
 
-graficoDensidadeCpu <- plot(density(df$CPUPercent), main = "Densidade de CPU", xlab = "Percentual de CPU", ylab = "Densidade", col = "blue")
-graficoDensidadeRAM <- plot(density(df$RAMPercentual), main = "Densidade de RAM", xlab = "Percentual de RAM", ylab = "Densidade", col = "red")
-graficoDensidadeDisco <- plot(density(df$DISKPercentual), main = "Densidade de Disco", xlab = "Percentual de Disco", ylab = "Densidade", col = "black")
+plot(df, density(df$CPUPercent), main = "Densidade de CPU", xlab = "Percentual", ylab = "Densidade", col = "blue")
+lines(df, density(df$RAMPercentual), col = "red")
+lines(density(df$DISKPercentual), col = "black")
+
+density(df$CPUPercent)
+density(df$RAMPercent)
+density(df$DISKPercent)
 
 mediaCpu <- mean(df$CPUPercent)
 mediaRam <- mean(df$RAMPercentual)
 mediaDisco <- mean(df$DISKPercentual)
+
+summary(df$CPUPercent)
 
 pie(c(mediaRam, mediaCpu, mediaDisco),
     main = "Comparação entre o percentual de uso dos componentes",

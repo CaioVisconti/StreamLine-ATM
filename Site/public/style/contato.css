@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    list-style: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.nome-empresa {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    height: 100%;
+    width: 200px;
+    background-image: url(../assets/logo_fundo_branco_2.png);
+    background-size: cover;
+}
+
+.navbar {
+    margin: 0;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    background-color: #FFF;
+    /* padding: 0 20px; */
+    height: 10%;
+    width: 100%;
+    position: fixed !important;
+}
+
+.links-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly; 
+    align-items: center;
+    width: 45%; 
+    /* border-radius: 20px; */
+    /* box-shadow: 6px 8px 5px rgb(0, 0, 0); */
+    /* padding: 5px 20px; */
+    height: 100%;
+    margin-right: 5%;
+}
+
+.links-menu ul {
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.links-menu li {
+    padding: 0 10px; 
+    margin-top: 1.75%;
+}
+
+ul a {
+    color: black;
+    padding: 5px 20px;
+}
+
+.selecionado {
+    color: grey;
+}
+
+.espaco{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.teste {
+    width: 70%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3F3F3F;
+    border-radius: 30px;
+}
+
+.cards {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.formulario {
+    bottom: 0;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #7A7A7A;
+    padding: 3%;
+    gap: 9%;
+}
+
+.titulo {
+    color: #FFFFFF;
+    font-weight: 600;
+    text-align: center;
+    font-size: 40px;
+}
+
+.campo_pequeno {
+    width: 60%;
+    height: 20%;
+    border-radius: 10px;
+    color: #c8c8c8;
+    border: none;
+    padding: 2%;
+}
+
+.campo_grande {
+    width: 60%;
+    height: 40%;
+    border-radius: 10px;
+    color: #c8c8c8;
+    border: none;
+    padding: 2%;
+}
+
+.botao_contato {
+    width: 30%;
+    height: 20%;
+    border: none;
+    border-radius: 10px;
+}
+
+.botao_contato:hover {
+    background-color: blue;
+    color: white;
+}
+
+@media  screen and (max-width: 1000px) {
+    .navbar {
+        display: none;
+    }
+    .links-menu{
+        display: none;
+    }
+
+    .botao-login-cadastro{
+        display: none;
+    }
+
+    .btn-abrir-menu i {
+        color: #fff;
+        font-size: 45px;
+        cursor: pointer;
+    }
+    .btn-abrir-menu {
+        display: block;
+    }
+
+    .overlay-menu{
+        background-color: #000000b9;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        display: none;
+    }
+
+    .menu-mobile.abrir-menu ~ .overlay-menu{
+        display: block;
+    }
+    .menu-mobile.abrir-menu{
+        width: 50%;
+    }
+
+    .menu-mobile {
+        background-color: #2e2c2c;
+        display: block;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 999;
+        width: 0%;
+        overflow: hidden;
+        transition: .2s;
+    }
+
+    .menu-mobile nav ul {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        gap: 15px;
+    }
+
+    .menu-mobile nav ul li a {
+        color: #fff;
+        font-size: 20px;
+        font-weight: 300;
+        padding: 20px 8%;
+        display: block;
+        z-index: 9;
+        cursor: pointer;
+    }
+    .menu-mobile nav ul li a:hover {
+        background-color: #ffffff;
+        color: #000;
+        font-size: 18px;
+    }
+
+    .menu-mobile .btn-fechar i {
+        color: #fff;
+        font-size: 30px;
+        cursor: pointer;
+    }    
+    .menu-mobile .btn-fechar {
+        padding: 25px 5%;
+    }
+}
+
+
+@media  screen and (max-width: 600px) {
+    span {
+        font-size: 20px !important;
+    }
+    p {
+        font-size: 15px !important;
+    }
+}
+
+
