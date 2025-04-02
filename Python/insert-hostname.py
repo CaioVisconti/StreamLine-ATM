@@ -52,7 +52,7 @@ if validar_atm():
         conn = conectar()
         cursor = conn.cursor()
 
-        create_table_molde = f"""CREATE TABLE IF NOT EXISTS captura{hostname} (
+        create_table_molde = f"""CREATE TABLE IF NOT EXISTS `captura{mac}` (
         idCaptura INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
         CPUPercent DOUBLE NOT NULL, 
         CPUFreq DOUBLE NOT NULL, 
@@ -73,7 +73,7 @@ if validar_atm():
         cursor.execute(create_table_molde)
 
 
-        insert_into_molde = f"""INSERT INTO captura{hostname} (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) """
+        insert_into_molde = f"""INSERT INTO `captura{mac}` (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) """
         insert_into_molde += "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now());"
         valores = (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco, redeRecebido, redeEnviado, desativados, ativos, total)
         
