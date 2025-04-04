@@ -137,14 +137,14 @@ ul a {
     padding: 2%;
 }
 
-.botao_contato {
+.botaoEnviar {
     width: 30%;
     height: 20%;
     border: none;
     border-radius: 10px;
 }
 
-.botao_contato:hover {
+.botaoEnviar:hover {
     background-color: blue;
     color: white;
 }
