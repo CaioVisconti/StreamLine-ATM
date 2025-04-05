@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="../style/cadastrarAgenda.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <script src="../js/cadastroAgencia.js"></script>
 </head>
 
 <body>
@@ -115,20 +115,3 @@
 </body>
 
 </html>
-<script>
-    const modal = document.querySelector(".modal");
-    const fade = document.querySelector(".fade");
-    function mostrarModal() {
-        if (modal.style.display == "none") {
-            modal.style.display = "flex";
-            fade.style.display = "block";
-        } else {
-            const alert = confirm("Gostaria de fechar o modal?");
-            if(alert){
-                modal.style.display = "none"
-                fade.style.display = "none";
-                
-            }
-        }
-    }
-</script>
