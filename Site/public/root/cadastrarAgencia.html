@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Agência | StreamLine</title>
-    <link rel="stylesheet" href="cadastrarAgenda.css">
+    <link rel="stylesheet" href="../style/cadastrarAgenda.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet"
@@ -44,7 +44,7 @@
                     <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
                 </div>
                 <img src="../assets/icon-filtrar.png" alt="ícone de filtrar">
-                <img src="../assets/icon-cadastrar.png" alt="ícone de cadastro">
+                <img src="../assets/icon-cadastrar.png" onclick="mostrarModal()" alt="ícone de cadastro">
             </div>
             <div class="cards">
                 <div class="perfil-agencia">
@@ -59,6 +59,76 @@
                 </div>
             </div>
         </div>
+        <div class="fade"></div>
+        <div class="modal" style="display: none;">
+            <div class="modal-fechar">
+                <span onclick="mostrarModal()">&#x2715;</span>
+            </div>
+            <div class="modal-container">
+                <div class="modal-infos">
+                    <span>Código Empresa:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>UF:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Código Agência:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Cidade:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Email:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Senha:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Logradouro:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Bairro:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>CEP:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Número:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-botao">
+                    <button>Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </body>
+
 </html>
+<script>
+    const modal = document.querySelector(".modal");
+    const fade = document.querySelector(".fade");
+    function mostrarModal() {
+        if (modal.style.display == "none") {
+            modal.style.display = "flex";
+            fade.style.display = "block";
+        } else {
+            const alert = confirm("Gostaria de fechar o modal?");
+            if(alert){
+                modal.style.display = "none"
+                fade.style.display = "none";
+                
+            }
+        }
+    }
+</script>
