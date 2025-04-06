@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS atm (
   nome VARCHAR(45) NOT NULL,
   modelo VARCHAR(45) NOT NULL,
   ip VARCHAR(45) NOT NULL,
+  macAdress VARCHAR(45) NOT NULL,
   sistemaOperacional VARCHAR(45) NOT NULL,
   status TINYINT NOT NULL,
   fkAgencia INT NOT NULL,
@@ -57,8 +58,7 @@ CREATE TABLE IF NOT EXISTS atm (
 CREATE TABLE IF NOT EXISTS componentes (
   idComponentes INT NOT NULL,
   componente VARCHAR(45) NULL,
-  tipo VARCHAR(45) NOT NULL,
-  limite DOUBLE NOT NULL,
+  descricao VARCHAR(45) NULL,
   fkAtm INT NOT NULL,
   PRIMARY KEY (idComponentes),
   FOREIGN KEY (fkAtm) REFERENCES atm (idAtm)

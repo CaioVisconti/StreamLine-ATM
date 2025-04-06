@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+* {
+    font-family: "Inter", sans-serif;
+}
+
+body{
+    background-color: #171D20;
+}
+
+.nav-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100vw;
+    height: 15vh;
+}
+
+.info-user{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 15vw;
+    height: 15vh;
+    /* border: 1px solid red; */
+}
+
+.foto-user{
+    background-color: #2A5277;
+    height: 120px;
+    width: 120px;
+    border-radius: 70px;
+}
+
+.msg-user{
+    display: flex;
+    font-family: "Inter", sans-serif;
+    height: 100px;
+    width: 100px;
+    font-size: 35px;
+    color: #FFFFFF;
+}
+
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 70vw;
+    height: 7vh;
+    background-color: rgba(83, 83, 83, 0.39);
+    border-radius: 50px;
+    align-items: center;
+}
+
+.nav-bar span{
+    color: #FFFFFF;
+    font-size: 20px;
+}
+
+.btn-nav{
+    border: none;
+    width: 5vw;
+    height: 6vh;
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-size: 20px;
+    background-color: #2A5277;
+}
