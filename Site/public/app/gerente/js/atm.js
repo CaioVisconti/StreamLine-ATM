@@ -1,5 +1,8 @@
 function mostrarDados() {
-    abrirFiltros(1);
+    // abrirFiltros(1);
+    let nome = document.getElementById("nomeUsuario");
+
+    nome.innerHTML = sessionStorage.NOME_USUARIO;
 }
 
 function abrirFiltros(formato) {
