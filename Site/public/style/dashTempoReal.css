@@ -28,6 +28,7 @@ main {
         align-items: center;
         color: white;
 
+
         #user {
 
             div {
@@ -70,10 +71,12 @@ main {
                 height: 50px;
                 border-radius: 10px;
                 background-color: transparent;
-                background-color: #5296CD;
+                font-size: 20px;
                 border: none;
                 color: white;
                 font-weight: bold;
+                margin-right: 20px;
+
             }
 
             button:hover {
@@ -81,7 +84,7 @@ main {
             }
         }
 
-        
+
     }
 
     #dashboard {
@@ -91,6 +94,7 @@ main {
         display: flex;
         justify-content: space-between;
         margin: 0px 10px;
+        border: 2px solid red;
 
         #listaATM {
             color: white;
@@ -113,7 +117,7 @@ main {
                 overflow: auto;
 
                 li {
-                    
+
                     width: 90%;
                     display: flex;
                     justify-content: space-evenly;
@@ -133,7 +137,6 @@ main {
                         height: auto;
                         border-radius: 10px;
                         background-color: transparent;
-                        background-color: #5296CD;
                         border: none;
                         color: white;
                         font-weight: bold;
@@ -145,8 +148,19 @@ main {
                     }
                 }
             }
+
+            h3 {
+                margin-top: 10px;
+            }
         }
-        
+
+        .kpi {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: #5296CD;
+        }
+
         #quadros {
 
             width: 80%;
@@ -154,6 +168,7 @@ main {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            border: 2px solid red;
 
             #visualizacao {
 
@@ -216,7 +231,7 @@ main {
                     align-items: center;
 
                     #alertas {
-                    
+
                         background-color: white;
                         width: 100%;
                         height: 90%;
