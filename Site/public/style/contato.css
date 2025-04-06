@@ -20,8 +20,8 @@ a {
     display: flex;
     align-items: center;
     padding-left: 20px;
-    height: 100%;
-    width: 200px;
+    height: 10vh;
+    width: 15vw;
     background-image: url(../assets/logo_fundo_branco_2.png);
     background-size: cover;
 }
@@ -32,7 +32,6 @@ a {
     align-items: center; 
     justify-content: space-between;
     background-color: #FFF;
-    /* padding: 0 20px; */
     height: 10%;
     width: 100%;
     position: fixed !important;
@@ -43,16 +42,12 @@ a {
     flex-direction: row;
     justify-content: space-evenly; 
     align-items: center;
-    width: 30%; 
-    /* border-radius: 20px; */
-    /* box-shadow: 6px 8px 5px rgb(0, 0, 0); */
-    /* padding: 5px 20px; */
-    height: 100%;
+    width: 30%;
     margin-right: 5%;
 }
 
 .links-menu ul {
-    font-size: 20px;
+    font-size: 2vh;
     display: flex;
     justify-content: space-between; 
     align-items: center;
@@ -118,7 +113,7 @@ ul a {
     color: #FFFFFF;
     font-weight: 600;
     text-align: center;
-    font-size: 36px;
+    font-size: 4vh;
 }
 
 .campo_pequeno {
@@ -128,6 +123,7 @@ ul a {
     color: #000000;
     border: none;
     padding: 2%;
+    font-size: 2vh;
 }
 
 .campo_grande {
@@ -137,18 +133,25 @@ ul a {
     color: #000000;
     border: none;
     padding: 2%;
+    font-size: 2vh;
 }
 
 .botaoEnviar {
-    width: 9vw;
-    height: 20vh;
+    width: 30%;
+    height: 30%;
     border: none;
     border-radius: 10px;
+    font-size: 2vh;
 }
 
 .botaoEnviar:hover {
     background-color: blue;
     color: white;
+}
+
+.imagem-usuario {
+    width: 100%;
+    height: 100%;
 }
 
 .imagem {
@@ -161,98 +164,179 @@ ul a {
     background-image: url("../assets/happy-entrepreneur-communicating-mobile-phone-while-working-touchpad-office.jpg");
 }
 
-@media  screen and (max-width: 1000px) {
-    .navbar {
-        display: none;
+@media screen and (max-width: 1900px) {
+    .nome-empresa {
+        width: 12%;
     }
-    .links-menu{
-        display: none;
+}
+
+@media screen and (max-width: 1800px) {
+    .nome-empresa {
+        width: 13%;
+    }
+}
+
+@media screen and (max-width: 1600px) {
+    .nome-empresa {
+        width: 14%;
+    }
+}
+
+@media screen and (max-width: 1500px) {
+    .nome-empresa {
+        width: 15%;
+    }
+}
+
+@media screen and (max-width: 1350px) {
+    .nome-empresa {
+        width: 17%;
     }
 
-    .botao-login-cadastro{
-        display: none;
+    .links-menu {
+        width: 40%;
     }
 
-    .btn-abrir-menu i {
-        color: #fff;
-        font-size: 45px;
-        cursor: pointer;
-    }
-    .btn-abrir-menu {
-        display: block;
+    .teste {
+        background-color: #FFFFFF;
     }
 
-    .overlay-menu{
-        background-color: #000000b9;
+    .cards {
+        width: 100%;
+    }
+    
+    .formulario {
         width: 100%;
         height: 100%;
-        position: fixed;
-        top: 0;
-        right: 0;
+        position: relative;
+    }
+
+    .imagem-usuario {
         display: none;
     }
 
-    .menu-mobile.abrir-menu ~ .overlay-menu{
-        display: block;
+    .imagem {
+        display: none;
     }
-    .menu-mobile.abrir-menu{
+}
+
+@media screen and (max-width: 1350px) {
+    .nome-empresa {
+        width: 18%;
+    }
+
+    .links-menu {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .nome-empresa {
+        width: 19%;
+    }
+
+    .links-menu {
+        width: 40%;
+    }
+
+    .botaoEnviar {
+        height: 20%;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .nome-empresa {
+        width: 22%;
+    }
+
+    .links-menu {
         width: 50%;
     }
+}
 
-    .menu-mobile {
-        background-color: #2e2c2c;
-        display: block;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        right: 0;
-        z-index: 999;
-        width: 0%;
-        overflow: hidden;
-        transition: .2s;
-    }
-
-    .menu-mobile nav ul {
-        text-align: right;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        gap: 15px;
-    }
-
-    .menu-mobile nav ul li a {
-        color: #fff;
-        font-size: 20px;
-        font-weight: 300;
-        padding: 20px 8%;
-        display: block;
-        z-index: 9;
-        cursor: pointer;
-    }
-    .menu-mobile nav ul li a:hover {
-        background-color: #ffffff;
-        color: #000;
-        font-size: 18px;
-    }
-
-    .menu-mobile .btn-fechar i {
-        color: #fff;
-        font-size: 30px;
-        cursor: pointer;
-    }    
-    .menu-mobile .btn-fechar {
-        padding: 25px 5%;
+@media screen and (max-width: 950px) {
+    .nome-empresa {
+        width: 24%;
     }
 }
 
-
-@media  screen and (max-width: 600px) {
-    span {
-        font-size: 20px !important;
+@media screen and (max-width: 900px) {
+    .nome-empresa {
+        width: 26%;
     }
-    p {
-        font-size: 15px !important;
+
+    .links-menu {
+        width: 60%;
     }
 }
 
+@media screen and (max-width: 850px) {
+    .nome-empresa {
+        width: 25%;
+    }
 
+    .links-menu {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .nome-empresa {
+        width: 30%;
+    }
+
+    .links-menu {
+        width: 60%;
+    }
+}
+@media screen and (max-width: 530px) {
+    .nome-empresa {
+        width: 25%;
+        height: 60%;
+    }
+    
+    .navbar {
+        justify-content: none;
+    }
+
+    .links-menu {
+        width: 60%;
+        justify-self: flex-start;
+    }
+
+    .links-menu ul {
+        padding-top: 5%;
+        font-size: 1.5vh;
+        width: fit-content;
+    }
+
+    ul li {
+        width: 33%;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .nome-empresa {
+        width: 25%;
+        height: 60%;
+    }
+    
+    .navbar {
+        justify-content: none;
+    }
+
+    .links-menu {
+        width: 60%;
+        justify-self: flex-start;
+    }
+
+    .links-menu ul {
+        padding-top: 5%;
+        font-size: 1.5vh;
+        width: fit-content;
+    }
+
+    ul li {
+        width: 33%;
+    }
+}

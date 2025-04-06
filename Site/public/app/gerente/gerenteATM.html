@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conta - Funcionários</title>
+    <link rel="stylesheet" href="./css/dashCientista.css">
+    <link rel="stylesheet" href="./css/atm.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap" rel="stylesheet">
+</head>
+
+<body onload="mostrarCards()">
+    <header>
+        <nav class="navbar">
+            <div class="user">
+                <div class="foto-user"></div>
+                <span class="texto-user">Olá, <br> <span class="texto-user" id="nomeUsuario">User</span>.</span>
+            </div>
+            <div class="links">
+                <div class="barra-superior">
+                    <div class="barra-links">
+                        <a href="">Abrir chamado</a>
+                        <a href="">Gerar Manual</a>
+                    </div>
+                </div>
+                <ul class="botoes_nav">
+                  <li><a href="../index.html" class="btn_log">Sair</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <nav class="nav-lateral">
+            <div class="lateral-paginacao">
+                <a class="selecionado" href="./gerenteATM.html">ATM's</a>
+                <div class="linha-paginacao"></div>    
+                <a class="opcao" href="./gerenteFuncionarios.html">Funcionários</a>
+                <div class="linha-paginacao"></div>    
+                <a class="opcao" href="./gerenteDashboard.html">Dashboard</a>
+            </div>
+            <div class="kpi">
+                <span class="titulo-kpi">Quantidade de ATM’s cadastrados</span>
+                <span class="resultado-kpi" id="kpi_total">50</span>
+            </div>
+            <div class="kpi">
+                <span class="titulo-kpi">Quantidade de ATM’s em alerta</span>
+                <span class="resultado-kpi" id="kpi_total">50</span>
+            </div>
+        </nav>
+        <main class="main-content-user">
+            <div class="conteudo-main">
+                <dialog id="modal" style="display: none; border: none"></dialog>
+                <div class="cabecalho">
+                    <input class="search" type="text" placeholder="Pesquisar">
+                    <div class="icon filtro" onclick="abrirFiltros()"></div>
+                    <div class="icon cadastrar" onclick="abrirCadastro()"></div>
+                </div>
+                <div id="div_inferior"></div>
+                <dialog id="modal" style="display: none; border: none; width: 50%; height: 60%;"></dialog>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+
+<script src="./js/atm.js"></script>
