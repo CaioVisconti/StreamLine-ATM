@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="../style/cadastrarAgenda.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
     <script src="../js/cadastroAgencia.js"></script>
 </head>
 
@@ -22,7 +23,7 @@
             <span class="problema">Relatar Problema</span>
         </div>
         <div class="sair">
-            <button>Sair</button>
+            <a href="../index.html"><button>Sair</button></a>
         </div>
     </nav>
     <div class="container">
@@ -43,26 +44,41 @@
                     <input type="text" oninput="">
                     <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
                 </div>
-                <img src="../assets/icon-filtrar.png" alt="ícone de filtrar">
-                <img src="../assets/icon-cadastrar.png" onclick="mostrarModal()" alt="ícone de cadastro">
-            </div>
-            <div class="cards">
-                <div class="perfil-agencia">
-                    <div class="img-agencia"></div>
-                    <span>Agência - <span id="empresa">Banco Safra</span></span>
-                    <img class="img-edit" src="../assets/icone-editar.png">
+                <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
+                <div class="filtros" style="display: none;">
+                    <select id="filtro-categoria" class="filtro">
+                        <option value="" selected disabled>Categoria</option>
+                        <option value="filtro-codigo">Código</option>
+                        <option value="filtro-nome">Nome</option>
+                        <option value="filtro-email">Email</option>
+                    </select>
+                    <select id="filtro-tipo" class="filtro">
+                        <option value="" selected disabled>Tipo</option>
+                        <option value="filtro-AZ">A-Z</option>
+                        <option value="filtro-ZA">Z-A</option>
+                    </select>
                 </div>
-                <div class="info-agencia">
-                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
-                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
-                    <span class="info">Email: <span id="email">email@email.email</span></span>
+                <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
+            </div>
+            <div class="cards-container">
+                <div class="cards">
+                    <div class="perfil-agencia">
+                        <div class="img-agencia"></div>
+                        <span>Agência - <span id="empresa">Banco Safra</span></span>
+                        <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                    </div>
+                    <div class="info-agencia">
+                        <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
+                        <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
+                        <span class="info">Email: <span id="email">email@email.email</span></span>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="fade"></div>
         <div class="modal" style="display: none;">
             <div class="modal-fechar">
-                <span onclick="mostrarModal()">&#x2715;</span>
+                <span onclick="mostrarModalCad()">&#x2715;</span>
             </div>
             <div class="modal-container">
                 <div class="modal-infos">
@@ -70,15 +86,7 @@
                     <input type="text">
                 </div>
                 <div class="modal-infos">
-                    <span>UF:</span>
-                    <input type="text">
-                </div>
-                <div class="modal-infos">
                     <span>Código Agência:</span>
-                    <input type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Cidade:</span>
                     <input type="text">
                 </div>
                 <div class="modal-infos">
@@ -90,7 +98,15 @@
                     <input type="text">
                 </div>
                 <div class="modal-infos">
-                    <span>Logradouro:</span>
+                    <span>CEP:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>UF:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Cidade:</span>
                     <input type="text">
                 </div>
                 <div class="modal-infos">
@@ -98,7 +114,7 @@
                     <input type="text">
                 </div>
                 <div class="modal-infos">
-                    <span>CEP:</span>
+                    <span>Logradouro:</span>
                     <input type="text">
                 </div>
                 <div class="modal-infos">
@@ -107,6 +123,48 @@
                 </div>
                 <div class="modal-botao">
                     <button>Cadastrar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-edit" style="display: none;">
+            <div class="modal-fechar">
+                <span onclick="mostrarModalEdit()">&#x2715;</span>
+            </div>
+            <div class="modal-container">
+                <div class="modal-infos">
+                    <span>Email:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Senha:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>CEP:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>UF:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Cidade:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Bairro:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Logradouro:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Número:</span>
+                    <input type="text">
+                </div>
+                <div class="modal-botao">
+                    <button>Salvar Mudanças</button>
                 </div>
             </div>
         </div>

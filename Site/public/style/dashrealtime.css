@@ -68,20 +68,18 @@ header {
     cursor: pointer;
 }
 
-
 .container{
     height: 87vh;
     display: flex;
     justify-content: space-between;
     margin: 10px;
-    border: 2px solid red;
 }
 
 #listaATM {
     color: white;
     background-color: rgb(34, 34, 34);
     border-radius: 10px;
-    width: 18%;
+    width: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -134,27 +132,35 @@ header {
     margin-top: 10px;
 }
 
+.kpi-wrappers{
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+}
+
 .kpis{
-    height: 10vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-self: center;
+    margin-bottom: 10px;
 }
 
 .kpi{
     background-color: aliceblue;
-    height: 10vh;
+    height: 100px;
     width: 30%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     margin: 10px;
     border-radius: 10px;
 }
 
 .kpi p{
-    font-size: 15px;
+    font-size: 20px;
     font-weight: bold;
     color: white;
 }
@@ -169,4 +175,73 @@ header {
 
 #bom{
     background: rgba(120, 221, 92, 0.39);
+}
+
+.grafico-wrapper{
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: rgb(34, 34, 34);
+    border-radius: 10px;
+    margin: 15px;
+    height: 100%;
+}
+
+.containergrafico{
+    height: 100%;
+    width: 100%;
+}
+
+.grafico{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.grafico h2{
+    font-size: 30px;
+    text-align: center;
+    color: aliceblue;
+    margin: 10px;
+    padding: 5px;
+}
+
+.grafico .graf{
+    background-color: aliceblue;
+    width: 95%;
+    height: 80%;
+    border-radius: 10px;
+    background: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kpilat{
+    background-color: aliceblue;
+    height: 150px;
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+.kpilat p{
+    font-size: 20px;
+    text-align: center;
+    color: black;
+    margin: 10px;
+    padding: 5px;
+}
+
+.kpilat #dados{
+    font-weight: bold;
+    font-size: 40px;
+    color: rgba(226, 76, 76, 0.39);
+
 }
