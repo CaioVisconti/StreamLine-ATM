@@ -43,6 +43,7 @@ function login() {
         sessionStorage.NOME_USUARIO = json.nome;
         sessionStorage.ID_USUARIO = json.idUsuario;
         sessionStorage.CARGO_USUARIO = json.cargo;
+        sessionStorage.ID_AGENCIA = json.fkAgencia;
     
         setTimeout(() => {
             var cargoUsuario = sessionStorage.CARGO_USUARIO;
