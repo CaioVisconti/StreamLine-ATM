@@ -1,3 +1,7 @@
+function carregarCards(){
+    // fetch("/agencias/mostrarAgencias")
+}
+
 function mostrarModalCad() {
     const modal = document.querySelector(".modal");
     const fade = document.querySelector(".fade");
@@ -38,3 +42,5 @@ function mostrarFiltros(){
         filtro.style.display = "none";  
     }
 }
+
+

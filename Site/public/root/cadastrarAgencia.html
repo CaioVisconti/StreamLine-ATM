@@ -13,7 +13,7 @@
     <script src="../js/cadastroAgencia.js"></script>
 </head>
 
-<body>
+<body onload="carregarCards()">
     <nav>
         <div class="usuario">
             <div class="img-perfil"></div>
@@ -41,7 +41,7 @@
         <div class="agencias">
             <div class="pesquisar">
                 <div class="input-pesquisar">
-                    <input type="text" oninput="">
+                    <input type="text" oninput="pesquisarAgencias()">
                     <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
                 </div>
                 <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
@@ -61,7 +61,7 @@
                 <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
             </div>
             <div class="cards-container">
-                <div class="cards">
+                <!-- <div class="cards">
                     <div class="perfil-agencia">
                         <div class="img-agencia"></div>
                         <span>Agência - <span id="empresa">Banco Safra</span></span>
@@ -72,7 +72,7 @@
                         <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
                         <span class="info">Email: <span id="email">email@email.email</span></span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="fade"></div>
