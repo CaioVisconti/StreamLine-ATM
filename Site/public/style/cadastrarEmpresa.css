@@ -66,3 +66,75 @@ body{
     font-size: 20px;
     background-color: #2A5277;
 }
+
+.kpis{
+    display: flex;
+    height: 80vh;
+    width: 20vw;
+    /* border: 1px solid red; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+.escolha-opcoes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 18vw;
+    height: 30vh;
+    /* border: 1px solid red; */
+    background-color: rgba(83, 83, 83, 0.39);
+    border-radius: 10px;
+}
+
+.espacamento{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 17vw;
+    height: 20vh;
+    /* border: 1px solid red; */
+}
+
+.espacamento span {
+    color: #FFFFFF;
+    font-size: 33px;
+    font-weight: 500;
+    letter-spacing: 2px
+}
+
+.linha {
+    width: 15vw;
+    height: 0.5px; /* menor que 1px */
+    background-color: white;
+}
+
+.escolha-kpi{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 18vw;
+    height: 22vh;
+    /* border: 1px solid red; */
+    background-color: rgba(83, 83, 83, 0.39);
+    border-radius: 10px;
+}
+
+.info-kpi {
+    color: #FFFFFF;
+    font-size: 25px;
+    letter-spacing: 2px;
+
+}
+
+.numeros-kpi{
+    color: #FFFFFF;
+    font-size: 80px;
+}
+
+
