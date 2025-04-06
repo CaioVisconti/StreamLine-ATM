@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cadastro de Empresas | StreamLine</title>
     <link rel="stylesheet" href="../style/cadastrarEmpresa.css">
 </head>
 <body>
@@ -23,7 +23,9 @@
         <button class="btn-nav">Sair</button>
     </div>
 
-    <div class="kpis">
+    <div class="painel">
+
+        <div class="kpis">
             <div class="escolha-opcoes">
                 <div class="espacamento">
                     <span>Cadastrar Empresas</span>
@@ -42,6 +44,113 @@
                 <span class="info-kpi">Empresas Parceiras</span>
                 <span class="numeros-kpi">10</span>
             </div>
+    </div>
+
+    <div class="agencias">
+        <div class="pesquisar">
+            <div class="ajuste-pesquisa">
+
+                <div class="input-pesquisar">
+                    <input type="text" oninput="">
+                    <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
+                </div>
+                <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
+                <div class="filtros" style="display: none;">
+                    <select id="filtro-categoria" class="filtro">
+                        <option value="" selected disabled>Categoria</option>
+                        <option value="filtro-codigo">Código</option>
+                        <option value="filtro-nome">Nome</option>
+                        <option value="filtro-email">Email</option>
+                    </select>
+                    <select id="filtro-tipo" class="filtro">
+                        <option value="" selected disabled>Tipo</option>
+                        <option value="filtro-AZ">A-Z</option>
+                        <option value="filtro-ZA">Z-A</option>
+                    </select>
+                </div>
+                <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
+
+            </div>
+            <div style="width: 30vw;"></div>
+
+        </div>
+        <div class="cards-container">
+            <div class="cards">
+                <div class="perfil-agencia">
+                    <div class="img-agencia"></div>
+                    <span>Agência - <span id="empresa">Banco Safra</span></span>
+                    <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                </div>
+                <div class="info-agencia">
+                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
+                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
+                    <span class="info">Email: <span id="email">email@email.email</span></span>
+                </div>
+            </div>
+            <div class="cards">
+                <div class="perfil-agencia">
+                    <div class="img-agencia"></div>
+                    <span>Agência - <span id="empresa">Banco Safra</span></span>
+                    <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                </div>
+                <div class="info-agencia">
+                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
+                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
+                    <span class="info">Email: <span id="email">email@email.email</span></span>
+                </div>
+            </div>
+            <div class="cards">
+                <div class="perfil-agencia">
+                    <div class="img-agencia"></div>
+                    <span>Agência - <span id="empresa">Banco Safra</span></span>
+                    <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                </div>
+                <div class="info-agencia">
+                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
+                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
+                    <span class="info">Email: <span id="email">email@email.email</span></span>
+                </div>
+            </div>
+            <div class="cards">
+                <div class="perfil-agencia">
+                    <div class="img-agencia"></div>
+                    <span>Agência - <span id="empresa">Banco Safra</span></span>
+                    <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                </div>
+                <div class="info-agencia">
+                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
+                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
+                    <span class="info">Email: <span id="email">email@email.email</span></span>
+                </div>
+            </div>
+            <div class="cards">
+                <div class="perfil-agencia">
+                    <div class="img-agencia"></div>
+                    <span>Agência - <span id="empresa">Banco Safra</span></span>
+                    <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                </div>
+                <div class="info-agencia">
+                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
+                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
+                    <span class="info">Email: <span id="email">email@email.email</span></span>
+                </div>
+            </div>
+                        <div class="cards">
+                <div class="perfil-agencia">
+                    <div class="img-agencia"></div>
+                    <span>Agência - <span id="empresa">Banco Safra</span></span>
+                    <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                </div>
+                <div class="info-agencia">
+                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
+                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
+                    <span class="info">Email: <span id="email">email@email.email</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     </div>
 
 </body>
