@@ -86,23 +86,12 @@ CREATE TABLE IF NOT EXISTS alerta (
 );
 
 CREATE TABLE IF NOT EXISTS captura (
-  idCaptura INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  CPUPercent DOUBLE NOT NULL,
-  CPUFreq DOUBLE NOT NULL,
-  RAMTotal DOUBLE NOT NULL,
-  RAMDisponivel DOUBLE NULL,
-  RAMPercentual DOUBLE NULL,
-  DISKTotal DOUBLE NULL,
-  DISKDisponivel DOUBLE NULL,
-  DISKPercentual DOUBLE NULL,
-  REDERecebida INT NULL, 
-  REDEEnviada INT NULL, 
-  PROCESSODesativado INT NULL, 
-  PROCESSOAtivos INT NULL, 
-  PROCESSOTotal INT NULL,
-  dtHora DATETIME NULL
+  idCaptura INT PRIMARY KEY AUTO_INCREMENT,
+  valor DOUBLE,
+  dtHora DATETIME,
+  fkConfiguracao INT,
+  FOREIGN KEY (fkConfiguracao) REFERENCES configuracao(idConfiguracao)
 );
-
 
 -- Inserindo empresas manualmente
 INSERT INTO empresa (nome, cnpj, codigo) VALUES
@@ -164,25 +153,16 @@ INSERT INTO componentes (tipo, descricao, fkAtm) VALUES
 
 -- Inserindo Medidas para os componentes do ATM 1 (Cardápio)
 INSERT INTO medida (tipo, formato, funcaoPsutil) VALUES
--- CPU
 ('CPUPercent', 'Porcentagem', 'cpu_percent'),
 ('CPUFreq', 'GHz', 'cpu_freq'),
-
--- RAM
 ('RAMTotal', 'GB', 'virtual_memory.total'),
 ('RAMDisponivel', 'GB', 'virtual_memory.available'),
 ('RAMPercentual', 'Porcentagem', 'virtual_memory.percent'),
-
--- DISCO
 ('DISKTotal', 'GB', 'disk_usage.total'),
 ('DISKDisponivel', 'GB', 'disk_usage.free'),
 ('DISKPercentual', 'Porcentagem', 'disk_usage.percent'),
-
--- REDE
 ('REDERecebida', 'Bytes', 'net_io_counters.bytes_recv'),
 ('REDEEnviada', 'Bytes', 'net_io_counters.bytes_sent'),
-
--- PROCESSOS
 ('PROCESSODesativado', 'Unidades', 'process_iter.desativados'),
 ('PROCESSOAtivos', 'Unidades', 'process_iter.ativos'),
 ('PROCESSOTotal', 'Unidades', 'process_iter.total');
@@ -201,7 +181,7 @@ SELECT
     atm.idAtm,
     atm.hostname,
     componentes.idComponentes,
-    componentes.componente,
+    componentes.tipo,
     componentes.descricao,
     medida.idMedida,
     medida.tipo,

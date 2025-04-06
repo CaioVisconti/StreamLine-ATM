@@ -57,6 +57,9 @@ body{
 }
 
 .btn-nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     width: 6vw;
     height: 6vh;
