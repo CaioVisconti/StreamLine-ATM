@@ -29,3 +29,12 @@ function mostrarModalEdit() {
         }
     }
 }
+
+function mostrarFiltros(){
+    const filtro = document.querySelector(".filtros");
+    if (filtro.style.display == "none") {
+        filtro.style.display = "block";
+    } else {
+        filtro.style.display = "none";  
+    }
+}

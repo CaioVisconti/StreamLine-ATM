@@ -23,7 +23,7 @@
             <span class="problema">Relatar Problema</span>
         </div>
         <div class="sair">
-            <button>Sair</button>
+            <a href="../index.html"><button>Sair</button></a>
         </div>
     </nav>
     <div class="container">
@@ -44,7 +44,20 @@
                     <input type="text" oninput="">
                     <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
                 </div>
-                <img src="../assets/icon-filtrar.png" alt="ícone de filtrar">
+                <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
+                <div class="filtros" style="display: none;">
+                    <select id="filtro-categoria" class="filtro">
+                        <option value="" selected disabled>Categoria</option>
+                        <option value="filtro-codigo">Código</option>
+                        <option value="filtro-nome">Nome</option>
+                        <option value="filtro-email">Email</option>
+                    </select>
+                    <select id="filtro-tipo" class="filtro">
+                        <option value="" selected disabled>Tipo</option>
+                        <option value="filtro-AZ">A-Z</option>
+                        <option value="filtro-ZA">Z-A</option>
+                    </select>
+                </div>
                 <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
             </div>
             <div class="cards-container">
