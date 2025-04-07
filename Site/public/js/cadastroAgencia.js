@@ -1,15 +1,17 @@
 function carregarCards() {
+    const pesquisa = ipt_pesquisa.value;
     cardsContainer.innerHTML = "";
-    fetch("/agencias/mostrarAgencias", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then((res) => {
-        res.json()
-            .then(json => {
-                for (let i = 0; i < json.length; i++) {
-                    cardsContainer.innerHTML += `
+    if (pesquisa == "") {    
+        fetch("/agencias/mostrarAgencias", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((res) => {
+            res.json()
+                .then(json => {
+                    for (let i = 0; i < json.length; i++) {
+                        cardsContainer.innerHTML += `
                     <div class="cards">
                     <div class="perfil-agencia">
                     <div class="img-agencia"></div>
@@ -23,10 +25,38 @@ function carregarCards() {
                     </div>
                     </div>
                     `
-                }
-            })
-    })
-    
+                    }
+                })
+        })
+    } else {
+        fetch(`/agencias/pesquisarAgencias/${pesquisa}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((res) => {
+            res.json()
+                .then(json => {
+                    console.log(json)
+                    for (let i = 0; i < json.length; i++) {
+                        cardsContainer.innerHTML += `
+                            <div class="cards">
+                            <div class="perfil-agencia">
+                            <div class="img-agencia"></div>
+                            <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
+                            <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                            </div>
+                            <div class="info-agencia">
+                            <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
+                            <span class="info">Telefone: <span id="telefone">${json[i].telefone}</span></span>
+                            <span class="info">Email: <span id="email">${json[i].email}</span></span>
+                            </div>
+                            </div>
+                            `
+                    }
+                })
+        })
+    }
 }
 
 function mostrarModalCad() {

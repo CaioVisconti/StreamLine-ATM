@@ -195,3 +195,4 @@ JOIN atm ON componentes.fkAtm = atm.idAtm
 LEFT JOIN configuracao ON configuracao.fkComponente = componentes.idComponentes
 LEFT JOIN medida ON configuracao.fkMedida = medida.idMedida
 WHERE atm.idAtm = 1;
+
