@@ -182,8 +182,10 @@ button{
 }
 
 
-
-
-
+@media (max-width: 768px) {
+    .imagem {
+      display: none;
+    }
+  }
 
 
