@@ -1,7 +1,7 @@
 function carregarCards() {
     const pesquisa = ipt_pesquisa.value;
     cardsContainer.innerHTML = "";
-    if (pesquisa == "") {    
+    if (pesquisa == "") {
         fetch("/agencias/mostrarAgencias", {
             method: "GET",
             headers: {
@@ -98,6 +98,71 @@ function mostrarFiltros() {
     } else {
         filtro.style.display = "none";
     }
+}
+
+function carregarEmpresas(){
+    const select = document.querySelector(".select-empresa");
+    
+}
+
+function cadastrarAgencia() {
+    var codigoEmpresaVar = document.getElementById("iptCodigoEmpresa").value;
+    var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
+    var emailVar = document.getElementById("iptEmail").value;
+    var senhaVar = document.getElementById("iptSenha").value;
+    var cepVar = document.getElementById("iptCEP").value;
+    var ufVar = document.getElementById("iptUF").value;
+    var cidadeVar = document.getElementById("iptCidade").value;
+    var bairroVar = document.getElementById("iptBairro").value;
+    var logradouroVar = document.getElementById("iptLogradouro").value;
+    var numeroVar = document.getElementById("iptNumero").value;
+
+    console.log({
+        codigoEmpresaVar,
+        codigoAgenciaVar,
+        emailVar,
+        senhaVar,
+        cepVar,
+        ufVar,
+        cidadeVar,
+        bairroVar,
+        logradouroVar,
+        numeroVar
+    });
+    
+
+    fetch("/agencias/cadastrarAgencia", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            codigoEmpresaServer: codigoEmpresaVar,
+            codigoAgenciaServer: codigoAgenciaVar,
+            emailServer: emailVar,
+            senhaServer: senhaVar,
+            cepServer: cepVar,
+            ufServer: ufVar,
+            cidadeServer: cidadeVar,
+            bairroServer: bairroVar,
+            logradouroServer: logradouroVar,
+            numeroServer: numeroVar
+        }),
+    }).then(function (res) {
+        console.log(res);
+        if (res.ok) {
+            alert("Agência cadastrada no sistema!")
+        } else {
+            alert("Algum erro ocorreu no cadastro")
+        }
+    })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+
+        });
+
+    return false;
+
 }
 
 

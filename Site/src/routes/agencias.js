@@ -9,6 +9,9 @@ router.get('/mostrarAgencias', (req, res) => {
 router.get('/pesquisarAgencias/:nome', (req, res) => {
     agenciaController.pesquisarAgencias(req, res);
 })
+router.post('/cadastrarAgencia', (req, res) => {
+    agenciaController.cadastrarAgencia(req, res);
+})
 
 
 module.exports = router;

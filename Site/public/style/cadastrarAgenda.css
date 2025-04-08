@@ -296,7 +296,7 @@ a {
     flex-direction: column;
 }
 
-.modal-infos input {
+.modal-infos input, .select-empresa{
     width: 322px;
     height: 56px;
     font-size: 24px;
