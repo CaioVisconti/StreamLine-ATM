@@ -20,7 +20,7 @@
         <div id="user">
             <div>
                 <img src="" alt="" id="imgUser">
-                <p> Olá, Nome! <br> CARGO</p>
+                <p> Olá, Nome! <br> CARGO </p>
             </div>
         </div>
         
@@ -63,15 +63,15 @@
             <div class="kpis">
 
                 <div class="kpi" id="bom">
-                    <p> 10 ATMs em bom estado </p>
+                    <p id="kpi1"></p> <p>ATMs em bom estado </p>
                 </div>
     
                 <div class="kpi" id="medio">
-                    <p> 4 ATMs em Alertas Médio </p>
+                    <p id="kpi2"></p> <p>ATMs com alertas médios </p>
                 </div>
     
                 <div class="kpi" id="critico">
-                    <p> 2 ATMs em Alertas Crítico </p>
+                    <p id="kpi3"></p> <p>ATMs com alertas críticos </p>
                 </div>
     
             </div>
@@ -113,4 +113,38 @@
     </div>
     
 </body>
+
+<script>
+
+window.onload = function () {
+        exibirKPIs();
+        exibirGrafico();
+    };
+
+    function exibirKPIs() {
+        fetch('/medidas/kpis')
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.error('Erro ao obter KPIs');
+                }
+            })
+            .then(data => {
+                if (data && data.length > 0) {
+                    const kpiData = data[0];
+                    document.getElementById('kpi1').innerText = kpiData.atmsOk; 
+                    document.getElementById('kpi2').innerText = kpiData.atmsMedios;
+                    document.getElementById('kpi3').innerText = kpiData.atmsCritico;
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao obter KPIs:', error);
+            });
+    }
+
+        
+
+</script>
+
 </html>

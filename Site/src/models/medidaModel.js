@@ -1,0 +1,26 @@
+var database = require("../database/config");
+
+function buscarKPIs() {
+    var instrucaoSql = `
+    SELECT 
+        viewCritico.atmsCritico,
+        viewMedio.atmsMedios,
+        viewBom.atmsOk
+        FROM viewCritico, viewMedio, viewBom;
+    `;
+    
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarPacotes() {
+    var instrucaoSql = `
+    SELECT`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+module.exports = {
+    buscarKPIs,
+    buscarPacotes,
+};
