@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Empresas | StreamLine</title>
     <link rel="stylesheet" href="../style/cadastrarEmpresa.css">
+    <script src="../js/cadastroAgencia.js"></script>
+
 </head>
 <body>
     <div class="nav-total">
@@ -24,7 +26,6 @@
     </div>
 
     <div class="painel">
-
         <div class="kpis">
             <div class="escolha-opcoes">
                 <div class="espacamento">
@@ -44,59 +45,129 @@
                 <span class="info-kpi">Empresas Parceiras</span>
                 <span class="numeros-kpi">10</span>
             </div>
-    </div>
+        </div>
 
-    <div class="agencias">
-        <div class="pesquisar">
-            <div class="ajuste-pesquisa">
-
-                <div class="input-pesquisar">
-                    <input type="text" oninput="">
-                    <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
+        <div class="agencias">
+            <div class="pesquisar">
+                <div class="ajuste-pesquisa">
+                    <div class="input-pesquisar">
+                        <input type="text" oninput="">
+                        <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
+                    </div>
+                    <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
+                    <div class="filtros" style="display: none;">
+                        <select id="filtro-categoria" class="filtro">
+                            <option value="" selected disabled>Categoria</option>
+                            <option value="filtro-codigo">Código</option>
+                            <option value="filtro-nome">Nome</option>
+                            <option value="filtro-email">Email</option>
+                        </select>
+                        <select id="filtro-tipo" class="filtro">
+                            <option value="" selected disabled>Tipo</option>
+                            <option value="filtro-AZ">A-Z</option>
+                            <option value="filtro-ZA">Z-A</option>
+                        </select>
+                    </div>
+                    <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
                 </div>
-                <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
-                <div class="filtros" style="display: none;">
-                    <select id="filtro-categoria" class="filtro">
-                        <option value="" selected disabled>Categoria</option>
-                        <option value="filtro-codigo">Código</option>
-                        <option value="filtro-nome">Nome</option>
-                        <option value="filtro-email">Email</option>
-                    </select>
-                    <select id="filtro-tipo" class="filtro">
-                        <option value="" selected disabled>Tipo</option>
-                        <option value="filtro-AZ">A-Z</option>
-                        <option value="filtro-ZA">Z-A</option>
-                    </select>
+            </div>
+            <div class="delimitar">
+                <div class="cards-container">
+                    <div class="cards">
+                        <div class="perfil-agencia">
+                            <div class="img-agencia"></div>
+                            <span id="empresa">Banco Safra</span>
+                            <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                        </div>
+                        <div class="info-agencia">
+                            <span class="info">Código da Empresa: <span style="font-weight: normal;" id="codigo">ABCD1234</span></span>
+                            <span class="info">CNPJ: <span style="font-weight: normal;" id="cnpj">4002-8922</span></span>
+                        </div>
+                    </div> 
                 </div>
-                <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
+            </div>
+        </div>
+    
 
+        <div class="fade"></div>
+        <div class="modal" style="display: none;">
+
+            <div class="modal-row">
+
+                <div class="modal-fechar">
+                    <span onclick="mostrarModalCad()">&#x2715;</span>
+                </div>
+                <div class="modal-container">
+                    <div class="modal-infos">
+                        <span>Nome:</span>
+                        <input type="text">
+                    </div>
+                    <div class="modal-infos">
+                        <span>CNPJ:</span>
+                        <input type="text">
+                    </div>
+                    <div class="modal-infos">
+                        <span>Código Empresa:</span>
+                        <input type="text">
+                    </div>
+                </div>
+    
+                <div class="modal-container-imagem">
+                    <div class="modal-foto">
+                        <span>Foto de Perfil:</span>
+                        <div class="foto-modal"></div>
+                    </div>
+                    <div class="foto-botao">
+                        <button>Fazer Upload</button>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="modal-botao">
+                <button>Cadastrar</button>
             </div>
 
         </div>
 
-        <div class="delimitar">
-
-            <div class="cards-container">
-                <div class="cards">
-                    <div class="perfil-agencia">
-                        <div class="img-agencia"></div>
-                        <span id="empresa">Banco Safra</span>
-                        <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+        <div class="modal-edit" style="display: none;">
+            <div class="modal-row">
+        
+                <div class="modal-fechar">
+                    <span onclick="mostrarModalEdit()">&#x2715;</span>
+                </div>
+                <div class="modal-container">
+                    <div class="modal-infos">
+                        <span>Nome:</span>
+                        <input type="text">
                     </div>
-                    <div class="info-agencia">
-                        <span class="info">Código da Empresa: <span style="font-weight: normal;" id="codigo">ABCD1234</span></span>
-                        <span class="info">CNPJ: <span style="font-weight: normal;" id="cnpj">4002-8922</span></span>
+                    <div class="modal-infos">
+                        <span>CNPJ:</span>
+                        <input type="text">
                     </div>
-                </div> 
-
+                    <div class="modal-infos">
+                        <span>Código Empresa:</span>
+                        <input type="text">
+                    </div>
+                </div>
+        
+                <div class="modal-container-imagem">
+                    <div class="modal-foto">
+                        <span>Foto de Perfil:</span>
+                        <div class="foto-modal"></div>
+                    </div>
+                    <div class="foto-botao">
+                        <button>Fazer Upload</button>
+                    </div>
+                </div>
+                
             </div>
-
+            
+            <div class="modal-botao">
+                <button>Salvar Mudanças</button>
+            </div>
         </div>
 
     </div>
-
-
-    </div>
-
 </body>
 </html>
