@@ -13,7 +13,7 @@
     <script src="../js/cadastroAgencia.js"></script>
 </head>
 
-<body onload="carregarCards()">
+<body onload="carregarCards(), carregarEmpresas()">
     <nav>
         <div class="usuario">
             <div class="img-perfil"></div>
@@ -72,6 +72,8 @@
                 <div class="modal-infos">
                     <span>Código Empresa:</span>
                     <select id="codigo-empresa" class="select-empresa">
+                        <option selected disabled>Selecione a Empresa</option>
+                        <div id="valoresSelect"></div>
                     </select>
                 </div>
                 <div class="modal-infos">

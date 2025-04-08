@@ -102,7 +102,23 @@ function mostrarFiltros() {
 
 function carregarEmpresas(){
     const select = document.querySelector(".select-empresa");
-    
+
+    fetch("/empresas/mostrarEmpresas", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        res.json()
+            .then(json => {
+                for (let i = 0; i < json.length; i++) {
+                    valoresSelect.innerHTML += `
+                    <option value="${json[i].codigo}">${json[i].nome}</option>
+                `
+                }
+            })
+    })
+
 }
 
 function cadastrarAgencia() {
