@@ -133,7 +133,7 @@ window.onload = function () {
             .then(data => {
                 if (data && data.length > 0) {
                     const kpiData = data[0];
-                    document.getElementById('kpi1').innerText = kpiData.atmsOk; 
+                    document.getElementById('kpi1').innerText = kpiData.atmsSemAlerta; 
                     document.getElementById('kpi2').innerText = kpiData.atmsMedios;
                     document.getElementById('kpi3').innerText = kpiData.atmsCritico;
                 }

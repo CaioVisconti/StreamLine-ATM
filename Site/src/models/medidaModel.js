@@ -5,8 +5,8 @@ function buscarKPIs() {
     SELECT 
         viewCritico.atmsCritico,
         viewMedio.atmsMedios,
-        viewBom.atmsOk
-        FROM viewCritico, viewMedio, viewBom;
+        viewBom.atmsSemAlerta
+    FROM viewCritico, viewMedio, viewBom;
     `;
     
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
