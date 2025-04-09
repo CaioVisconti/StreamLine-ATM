@@ -27,13 +27,15 @@ const pesquisarAgencias = async (req, res) =>{
 
 const cadastrarAgencia = async (req, res) => {
     try{
-        console.log(req.body)
+        var fkEmpresa = req.body.codigoEmpresaServer;
+        var fkEndereco = req.body.fkEnderecoServer;
         var codigoAgencia = req.body.codigoAgenciaServer;
         var email = req.body.emailServer;
         var numero = req.body.numeroServer;
+
+        console.log("dados recebidos", [fkEmpresa, fkEndereco, codigoAgencia, email, numero])
         
-        console.log("chegou no controller", [codigoAgencia, email, numero])
-        await database.cadastrarAgencia(codigoAgencia, email, numero);
+        await database.cadastrarAgencia(fkEmpresa, fkEndereco, codigoAgencia, email, numero);
         return res.status(201).send("Agência cadastrada com sucesso!");
     } catch (error) {
         return res.status(400).json(error.message);

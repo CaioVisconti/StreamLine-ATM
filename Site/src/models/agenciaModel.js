@@ -12,8 +12,8 @@ function pesquisarAgencias(nome) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarAgencia(codigoAgencia, email, numero) {
-    const instrucaoSql = `INSERT INTO agencia (codigoAgencia, email, telefone) VALUES ('${codigoAgencia}', '${email}, '${numero}');`;
+function cadastrarAgencia(fkEmpresa, fkEndereco, codigoAgencia, email, numero) {
+    const instrucaoSql = `INSERT INTO agencia (fkEmpresa, fkEndereco, codigoAgencia, email, telefone) VALUES ('${fkEmpresa}', '${fkEndereco}', '${codigoAgencia}', '${email}', '${numero}');`;
 
     return database.executar(instrucaoSql);
 }

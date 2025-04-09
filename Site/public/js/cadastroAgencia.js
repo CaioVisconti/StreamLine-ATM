@@ -1,3 +1,4 @@
+
 function carregarCards() {
     const pesquisa = ipt_pesquisa.value;
     cardsContainer.innerHTML = "";
@@ -100,8 +101,7 @@ function mostrarFiltros() {
     }
 }
 
-function carregarEmpresas(){
-    const select = document.querySelector(".select-empresa");
+function carregarEmpresas() {
 
     fetch("/empresas/mostrarEmpresas", {
         method: "GET",
@@ -121,48 +121,76 @@ function carregarEmpresas(){
 
 }
 
-function cadastrarAgencia() {
-    var codigoEmpresaVar = document.getElementById("iptCodigoEmpresa").value;
-    var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
-    var emailVar = document.getElementById("iptEmail").value;
-    var senhaVar = document.getElementById("iptSenha").value;
+let idEndereco = null;
+function cadastrarEndereco() {
     var cepVar = document.getElementById("iptCEP").value;
     var ufVar = document.getElementById("iptUF").value;
     var cidadeVar = document.getElementById("iptCidade").value;
     var bairroVar = document.getElementById("iptBairro").value;
     var logradouroVar = document.getElementById("iptLogradouro").value;
-    var numeroVar = document.getElementById("iptNumero").value;
 
-    console.log({
-        codigoEmpresaVar,
-        codigoAgenciaVar,
-        emailVar,
-        senhaVar,
-        cepVar,
-        ufVar,
-        cidadeVar,
-        bairroVar,
-        logradouroVar,
-        numeroVar
-    });
-    
-
-    fetch("/agencias/cadastrarAgencia", {
+    fetch("/endereco/cadastrarEndereco", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            codigoEmpresaServer: codigoEmpresaVar,
-            codigoAgenciaServer: codigoAgenciaVar,
-            emailServer: emailVar,
-            senhaServer: senhaVar,
             cepServer: cepVar,
             ufServer: ufVar,
             cidadeServer: cidadeVar,
             bairroServer: bairroVar,
             logradouroServer: logradouroVar,
-            numeroServer: numeroVar
+        }),
+    }).then(function (res) {
+        if (res.ok) {
+            alert("Endereço cadastrada no sistema!")
+            return res.json()
+        } else {
+            alert("Algum erro ocorreu no cadastro")
+        }
+    }).then(function(resposta){
+        console.log("ID do endereço", resposta.insertId)
+        idEndereco = resposta.insertId
+        
+        cadastrarAgencia();
+    }).catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+
+    });
+
+    return false;
+
+}
+
+function cadastrarAgencia() {
+    var codigoEmpresaVar = document.getElementById("codigo-empresa").value;
+    var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
+    var emailVar = document.getElementById("iptEmail").value;
+    var senhaVar = document.getElementById("iptSenha").value;
+    var numeroVar = document.getElementById("iptNumero").value;
+
+    console.log("Dados a serem enviados:", {
+        codigoEmpresaServer: codigoEmpresaVar,
+        codigoAgenciaServer: codigoAgenciaVar,
+        emailServer: emailVar,
+        senhaServer: senhaVar,
+        numeroServer: numeroVar,
+        fkEnderecoServer: idEndereco
+    });
+    
+    if(idEndereco != null){
+        fetch("/agencias/cadastrarAgencia", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+            codigoEmpresaServer: codigoEmpresaVar,
+            codigoAgenciaServer: codigoAgenciaVar,
+            emailServer: emailVar,
+            senhaServer: senhaVar,
+            numeroServer: numeroVar,
+            fkEnderecoServer: idEndereco
         }),
     }).then(function (res) {
         console.log(res);
@@ -172,13 +200,13 @@ function cadastrarAgencia() {
             alert("Algum erro ocorreu no cadastro")
         }
     })
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-
-        });
-
+    .catch(function (resposta) {
+        console.log(`ERRO: ${resposta}`);
+        
+    });
+    
     return false;
-
+} else {
+    console.log("erro!", idEndereco)
 }
-
-
+}
