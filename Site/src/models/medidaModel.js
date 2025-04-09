@@ -15,7 +15,7 @@ function buscarKPIs() {
 
 function buscarPacotes() {
     var instrucaoSql = `
-    SELECT`;
+    select * from viewRedesBytes;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
