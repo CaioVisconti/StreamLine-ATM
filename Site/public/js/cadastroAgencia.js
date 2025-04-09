@@ -113,7 +113,7 @@ function carregarEmpresas() {
             .then(json => {
                 for (let i = 0; i < json.length; i++) {
                     valoresSelect.innerHTML += `
-                    <option value="${json[i].codigo}">${json[i].nome}</option>
+                    <option value="${json[i].idEmpresa}">${json[i].nome}</option>
                 `
                 }
             })
@@ -121,7 +121,7 @@ function carregarEmpresas() {
 
 }
 
-let idEndereco = null;
+let idEndereco = 0;
 function cadastrarEndereco() {
     var cepVar = document.getElementById("iptCEP").value;
     var ufVar = document.getElementById("iptUF").value;
@@ -178,7 +178,7 @@ function cadastrarAgencia() {
         fkEnderecoServer: idEndereco
     });
     
-    if(idEndereco != null){
+    if(idEndereco != 0){
         fetch("/agencias/cadastrarAgencia", {
             method: "POST",
             headers: {
@@ -206,7 +206,7 @@ function cadastrarAgencia() {
     });
     
     return false;
-} else {
-    console.log("erro!", idEndereco)
-}
+    } else {
+        console.log("erro!", idEndereco)
+    }   
 }
