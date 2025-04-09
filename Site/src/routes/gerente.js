@@ -4,6 +4,10 @@ var router = express.Router();
 var gerenteController = require("../controllers/gerenteController");
 
 //Recebendo os dados do html e direcionando para a função cadastrar de gerenteController.js
+router.get("/:idAgencia/buscarKpis", function (req, res) {
+    gerenteController.buscarKpis(req, res);
+})
+
 router.get("/:idAgencia/carregarCards", function (req, res) {
     gerenteController.carregarCards(req, res);
 })

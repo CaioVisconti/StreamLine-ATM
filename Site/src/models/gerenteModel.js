@@ -9,7 +9,7 @@ function carregarCards(idAgencia) {
 
 function search(escrito, idAgencia) {
 
-    let instrucaoSql = `SELECT atm.* FROM agencia AS ag JOIN atm ON ag.idAgencia = atm.fkAgencia WHERE fkAgencia = ${idAgencia} AND hostname = "%${escrito}%" ORDER BY hostname ASC";`;
+    let instrucaoSql = `SELECT atm.* FROM agencia AS ag JOIN atm ON ag.idAgencia = atm.fkAgencia WHERE fkAgencia = ${idAgencia} AND hostname LIKE "%${escrito}%" ORDER BY hostname ASC;`;
   
     return database.executar(instrucaoSql);
 }

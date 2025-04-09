@@ -1,5 +1,20 @@
 const gerenteModel = require("../models/gerenteModel");
 
+function buscarKpis(req, res) {
+    let idAgencia = req.params.idAgencia;
+    
+    gerenteModel.buscarKpis(idAgencia)
+        .then((resultado) => {
+            res.json({
+                lista: resultado
+            })
+        })
+        .catch(erro => {
+            console.error("Erro na captura das kpis:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 function carregarCards(req, res) {
     
     let idAgencia = req.params.idAgencia;
@@ -95,6 +110,7 @@ function cadastrarATM(req, res) {
 }
 
 module.exports = {
+    buscarKpis,
     carregarCards,
     search,
     filtrar,

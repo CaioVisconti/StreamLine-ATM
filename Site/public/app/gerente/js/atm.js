@@ -4,6 +4,150 @@ const idAgencia = sessionStorage.ID_AGENCIA;
 const idUsuario = sessionStorage.ID_USUARIO;
 const nomeUsuario = sessionStorage.NOME_USUARIO;
 
+function carregarDados() {
+    nomeUser.innerHTML = nomeUsuario;
+    let lista = buscarKpis();
+    carregarCards();
+    kpi_total.innerHTML = lista
+}
+
+function buscarKpis() {
+    let total = "";
+    fetch(`/gerente/${idAgencia}/buscarKpiTotal`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then((resposta) => {
+        resposta.json()
+        .then(json => {
+            total = json.lista;
+        })
+    })
+}
+
+function carregarCards() {
+    const pesquisa = ipt_pesquisa.value;
+    cardsContainer.innerHTML = "";
+    
+    if (pesquisa == "") {
+        fetch(`/gerente/${idAgencia}/carregarCards`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((res) => {
+            res.json()
+                .then(json => {
+                    for (let i = 0; i < json.length; i++) {
+                        console.log(json);
+                        cardsContainer.innerHTML += `
+                    <div class="cards">
+                    <div class="perfil-agencia">
+                    <div class="img-agencia"></div>
+                    <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
+                    <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                    </div>
+                    <div class="info-agencia">
+                    <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
+                    <span class="info">Telefone: <span id="telefone">${json[i].telefone}</span></span>
+                    <span class="info">Email: <span id="email">${json[i].email}</span></span>
+                    </div>
+                    </div>
+                    `
+                    }
+                })
+        })
+    } else {
+        fetch(`/gerente/${pesquisa}/${idAgencia}/search`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((res) => {
+            res.json()
+                .then(json => {
+                    console.log(json)
+                    for (let i = 0; i < json.length; i++) {
+                        console.log(json);
+                        cardsContainer.innerHTML += `
+                            <div class="cards">
+                            <div class="perfil-agencia">
+                            <div class="img-agencia"></div>
+                            <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
+                            <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                            </div>
+                            <div class="info-agencia">
+                            <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
+                            <span class="info">Telefone: <span id="telefone">${json[i].telefone}</span></span>
+                            <span class="info">Email: <span id="email">${json[i].email}</span></span>
+                            </div>
+                            </div>
+                            `
+                    }
+                })
+        })
+    }
+}
+
+function mostrarModalCad() {
+    const modal = document.querySelector(".modal");
+    const fade = document.querySelector(".fade");
+    if (modal.style.display == "none") {
+        modal.style.display = "flex";
+        fade.style.display = "block";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modal.style.display = "none"
+            fade.style.display = "none";
+
+        }
+    }
+}
+
+function mostrarModalEdit() {
+    const modal = document.querySelector(".modal-edit");
+    const fade = document.querySelector(".fade");
+    if (modal.style.display == "none") {
+        modal.style.display = "flex";
+        fade.style.display = "block";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modal.style.display = "none"
+            fade.style.display = "none";
+
+        }
+    }
+}
+
+function mostrarFiltros() {
+    const filtro = document.querySelector(".filtros");
+    if (filtro.style.display == "none") {
+        filtro.style.display = "block";
+    } else {
+        filtro.style.display = "none";
+    }
+}
+
+function mostrarModalCad() {
+    const modal = document.querySelector(".modal");
+    const fade = document.querySelector(".fade");
+    if (modal.style.display == "none") {
+        modal.style.display = "flex";
+        fade.style.display = "block";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modal.style.display = "none"
+            fade.style.display = "none";
+
+        }
+    }
+}
+
+
 function mostrarDados() {
     // abrirFiltros(1);
     let nome = document.getElementById("nomeUsuario");
@@ -54,40 +198,6 @@ function abrirSegundaFiltragem() {
             <option value="desativado">Desativado</option>
         `;
     }
-}
-
-function search() {
-    let escrito = document.getElementById("search").value;
-
-    if(escrito == "" || escrito == " ") {
-        carregarCards();
-    } else {
-        fetch(`/gerente/${escrito}/${idAgencia}/search`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        }).then(function (resposta) {
-            resposta.json()
-                .then(json => {
-                    console.log(json.lista);
-                })
-        })
-    }
-}
-
-function carregarCards() {
-    fetch(`/gerente/${idAgencia}/carregarCards`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    }).then(function (resposta) {
-        resposta.json()
-            .then(json => {
-                console.log(json.lista);
-            })
-    })
 }
 
 function filtrar() {
