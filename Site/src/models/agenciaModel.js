@@ -18,8 +18,15 @@ function cadastrarAgencia(codigoAgencia, email, numero, fkEndereco, fkEmpresa) {
     return database.executar(instrucaoSql);
 }
 
+function deletarAgencia(idAgencia){
+    const instrucaoSql = `DELETE agencia FROM agencia WHERE idAgencia = ${idAgencia};`
+
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
     mostrarCards,
     pesquisarAgencias,
-    cadastrarAgencia
+    cadastrarAgencia,
+    deletarAgencia
 };

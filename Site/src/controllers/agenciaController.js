@@ -38,13 +38,29 @@ const cadastrarAgencia = async (req, res) => {
         await database.cadastrarAgencia(codigoAgencia, email, numero, fkEndereco, fkEmpresa);
         return res.status(201).send("Agência cadastrada com sucesso!");
     } catch (error) {
-        console.error("Erro completo:", error);
+        console.log("Erro completo:", error);
         return res.status(400).json(error.message);
+    }
+}
+
+const deletarAgencia = async (req, res) => {
+    try{
+        const idAgencia = req.params.idAgencia;
+        console.log(req.params)
+
+        console.log(idAgencia)
+
+        await database.deletarAgencia(idAgencia);
+        return res.status(200).send("Agência deletada com sucesso!");
+    } catch (error) {
+        console.log("Erro", error)
+        return res.status(400).json(error.message)
     }
 }
 
 module.exports = {
     mostrarCards,
     pesquisarAgencias,
-    cadastrarAgencia
+    cadastrarAgencia,
+    deletarAgencia
 }

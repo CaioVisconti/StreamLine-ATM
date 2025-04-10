@@ -275,11 +275,16 @@ a {
 .modal-fechar {
     display: flex;
     flex-direction: row-reverse;
+    justify-content: space-between;
 }
 
-.modal-fechar span {
+.modal-fechar span, img{
     cursor: pointer;
     font-weight: bolder;
+}
+
+.modal-fechar img{
+    height: 32px;
 }
 
 .modal-container {
@@ -304,6 +309,17 @@ a {
     border: none;
     background-color: rgba(0, 0, 0, 0.25);
 }
+
+.select-empresa{
+    cursor: pointer;
+}
+
+.modal-botao {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 
 .modal-botao button {
     width: 216px;

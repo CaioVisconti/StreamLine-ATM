@@ -45,7 +45,7 @@ function carregarCards() {
                             <div class="perfil-agencia">
                             <div class="img-agencia"></div>
                             <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
-                            <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                            <img class="img-edit" value="${json[i].idAgencia}" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
                             </div>
                             <div class="info-agencia">
                             <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
@@ -153,6 +153,7 @@ function cadastrarEndereco() {
         idEndereco = resposta.insertId
         
         cadastrarAgencia();
+        carregarCards();
     }).catch(function (resposta) {
         console.log(`#ERRO: ${resposta}`);
 
@@ -209,4 +210,22 @@ function cadastrarAgencia() {
     } else {
         console.log("erro!", idEndereco)
     }   
+}
+
+function deletarAgencia(){
+    const idAgencia = document.getElementById("empresa").textContent;
+
+    console.log("IdAgencia:", idAgencia);
+
+    fetch(`/agencias/deletarAgencia/${idAgencia}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }).then(function (resultado){
+        console.log(resultado);
+        carregarCards()
+    })
+
+
 }
