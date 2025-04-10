@@ -7,7 +7,7 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="27019511-16102004Ja@",
+        password="Agjxsne/2013",
         database="streamline",
     )
 
@@ -36,7 +36,7 @@ def registrar_dados():
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO capturaA_M (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco, redeRecebido, redeEnviado, desativados, ativos, total))
+    cursor.execute("INSERT INTO captura1_1 (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco, redeRecebido, redeEnviado, desativados, ativos, total))
     conn.commit()
     conn.close()
 

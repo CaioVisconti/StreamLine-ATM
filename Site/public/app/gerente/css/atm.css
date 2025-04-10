@@ -285,16 +285,19 @@ a {
 
 .modal-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
     align-items: center;
     gap: 38px;
     height: 100%;
 }
 
 .modal-infos {
+    width: 80%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .modal-infos input, .select-empresa{

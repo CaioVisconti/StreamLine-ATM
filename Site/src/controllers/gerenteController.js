@@ -1,9 +1,24 @@
 const gerenteModel = require("../models/gerenteModel");
 
-function buscarKpis(req, res) {
+function buscarKpiTotal(req, res) {
     let idAgencia = req.params.idAgencia;
     
-    gerenteModel.buscarKpis(idAgencia)
+    gerenteModel.buscarKpiTotal(idAgencia)
+        .then((resultado) => {
+            res.json({
+                lista: resultado
+            })
+        })
+        .catch(erro => {
+            console.error("Erro na captura das kpis:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function buscarKpiAlerta(req, res) {
+    let idAgencia = req.params.idAgencia;
+    
+    gerenteModel.buscarKpiAlerta(idAgencia)
         .then((resultado) => {
             res.json({
                 lista: resultado
@@ -48,20 +63,25 @@ function search(req, res) {
         });
 }
 
-function filtrar(req, res) {
-    
-    let formato = req.params.formato;
-    let opcao = req.params.opcao;
-    let idAgencia = req.params.idAgencia;
-    let ordenacao = "";
+function buscarModelos(req, res) {
+    const id = req.params.idAgencia;
 
-    if((formato == "hostname" || formato == "ip" || formato == "macdress" || formato == "sistemaOperacional") && opcao == "norm") {
-        ordenacao = "ASC"
-    } else if((formato == "hostname" || formato == "ip" || formato == "macdress" || formato == "sistemaOperacional") && opcao == "inv") {
-        ordenacao = "DESC"
-    }
+    gerenteModel.buscarModelos(id)
+        .then((resultado) => {
+            res.json({
+                lista: resultado
+            })
+        })
+        .catch(erro => {
+            console.error("Erro na captura de atms:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
 
-    gerenteModel.search(formato, idAgencia, ordenacao)
+function buscarSO(req, res) {
+    const id = req.params.idAgencia;
+
+    gerenteModel.buscarSO(id)
         .then((resultado) => {
             res.json({
                 lista: resultado
@@ -97,7 +117,7 @@ function cadastrarATM(req, res) {
     const status = req.body.statusServer;
     const fkAgencia = req.body.fkAgenciaServer;
 
-    gerenteModel.cadastrar(modelo, hostname, ip, macdress, so, status, fkAgencia)
+    gerenteModel.cadastrarATM(modelo, hostname, ip, macdress, so, status, fkAgencia)
         .then((resultado) => {
             res.json({
                 lista: resultado
@@ -110,10 +130,12 @@ function cadastrarATM(req, res) {
 }
 
 module.exports = {
-    buscarKpis,
+    buscarKpiTotal,
+    buscarKpiAlerta,
     carregarCards,
     search,
-    filtrar,
+    buscarModelos,
+    buscarSO,
     atualizar,
     cadastrarATM
 }

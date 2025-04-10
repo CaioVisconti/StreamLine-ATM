@@ -35,11 +35,11 @@
             </div>
             <div class="kpi">
                 <span class="titulo">Quantidade de ATM's <br>registrados</span>
-                <span class="valor" id="kpi_total">50</span>
+                <span class="valor" id="kpi_total"></span>
             </div>
             <div class="kpi">
-                <span class="titulo">Quantiade de ATM's <br>em alerta</span>
-                <span class="valor" id="kpi_alertas">50</span>
+                <span class="titulo">Quantidade de ATM's <br>em alerta</span>
+                <span class="valor" id="kpi_alertas"></span>
             </div>
         </div>
         <div class="agencias">
@@ -50,16 +50,17 @@
                 </div>
                 <img src="../../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
                 <div class="filtros" style="display: none;">
-                    <select id="filtro-categoria" class="filtro">
-                        <option value="" selected disabled>Categoria</option>
-                        <option value="filtro-codigo">Código</option>
-                        <option value="filtro-nome">Nome</option>
-                        <option value="filtro-email">Email</option>
+                    <select id="filtro_categoria" class="filtro" onchange="abrirSegundaFiltragem()">
+                        <option selected disabled>Categoria</option>
+                        <option value="filtro_hostname">Hostname</option>
+                        <option value="filtro_modelo">Modelo</option>
+                        <option value="filtro_sistemaOperacional">Sistema Operacional</option>
+                        <option value="filtro_status">Status</option>
                     </select>
-                    <select id="filtro-tipo" class="filtro">
-                        <option value="" selected disabled>Tipo</option>
-                        <option value="filtro-AZ">A-Z</option>
-                        <option value="filtro-ZA">Z-A</option>
+                    <select id="filtro_tipo" class="filtro" onchange="filtrar()">
+                        <option selected disabled>Tipo</option>
+                        <option value="filtro_AZ">A-Z</option>
+                        <option value="filtro_ZA">Z-A</option>
                     </select>
                 </div>
                 <img src="../../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
@@ -74,50 +75,35 @@
             </div>
             <div class="modal-container">
                 <div class="modal-infos">
-                    <span>Código Empresa:</span>
-                    <select id="codigo-empresa" class="select-empresa">
-                        <option selected disabled>Selecione a Empresa</option>
-                        <div id="valoresSelect"></div>
+                    <span>Modelo:</span>
+                    <input id="iptModeloCad" type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>IP:</span>
+                    <input id="iptIPCad" type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Hostname:</span>
+                    <input id="iptHostnameCad" type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>MacAdress:</span>
+                    <input id="iptMacAdressCad" type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Sistema Operacional:</span>
+                    <input id="iptSOCad" type="text">
+                </div>
+                <div class="modal-infos">
+                    <span>Status:</span>
+                    <select id="slt_status" class="select-empresa">
+                        <option selected disabled>Selecione o Status</option>
+                        <option value="1">Ativo</option>
+                        <option value="0">Desativado</option>
                     </select>
                 </div>
-                <div class="modal-infos">
-                    <span>Código Agência:</span>
-                    <input id="iptCodigoAgenciaCad" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Email:</span>
-                    <input id="iptEmailCad" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Senha:</span>
-                    <input id="iptSenhaCad" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>CEP:</span>
-                    <input id="iptCEPCad" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>UF:</span>
-                    <input id="iptUFCad" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Cidade:</span>
-                    <input id="iptCidadeCad" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Bairro:</span>
-                    <input id="iptBairroCad" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Logradouro:</span>
-                    <input id="iptLogradouroCad" type="text">
-                </div>
-                <div class="modal-infosCad">
-                    <span>Número:</span>
-                    <input id="iptNumeroCad" type="text">
-                </div>
                 <div class="modal-botaoCad">
-                    <button onclick="cadastrarAgencia()">Cadastrar</button>
+                    <button onclick="registrarATM()">Cadastrar</button>
                 </div>
             </div>
         </div>
