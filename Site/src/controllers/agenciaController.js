@@ -25,6 +25,15 @@ const pesquisarAgencias = async (req, res) =>{
     }
 }
 
+const contarAgencias = async (req, res) => {
+    try{
+        const select = await database.contarAgencias();
+        return res.status(200).json(select);
+    } catch (error){
+        console.log("Ocorreu um erro no controller!", error)
+    }
+}
+
 const cadastrarAgencia = async (req, res, fkEndereco) => {
     try{
         var codigoAgencia = req.body.codigoAgenciaServer;
@@ -60,6 +69,7 @@ const deletarAgencia = async (req, res) => {
 module.exports = {
     mostrarCards,
     pesquisarAgencias,
+    contarAgencias,
     cadastrarAgencia,
     deletarAgencia
 }

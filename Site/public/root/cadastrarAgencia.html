@@ -13,7 +13,7 @@
     <script src="../js/cadastroAgencia.js"></script>
 </head>
 
-<body onload="carregarCards(), carregarEmpresas()">
+<body onload="carregarCards(), carregarEmpresas(), carregarKpi()">
     <nav>
         <div class="usuario">
             <div class="img-perfil"></div>
@@ -35,7 +35,7 @@
             </div>
             <div class="kpi">
                 <span class="titulo">Agências Cadastradas</span>
-                <span class="valor">50</span>
+                <span class="valor" id="kpi"></span>
             </div>
         </div>
         <div class="agencias">

@@ -59,6 +59,21 @@ function carregarCards() {
     }
 }
 
+function carregarKpi(){
+    fetch("/agencias/contarAgencias", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        res.json()
+            .then(json => {
+                console.log(json[0].agencias)
+                kpi.innerHTML = json[0].agencias;
+            })
+    })
+}
+
 function mostrarModalCad() {
     const modal = document.querySelector(".modal");
     const fade = document.querySelector(".fade");
@@ -149,6 +164,7 @@ function cadastrarAgencia() {
             alert("Agência cadastrada no sistema!")
             carregarCards();
             mostrarModalCad();
+            carregarKpi();
             if (!res.ok) {
                 alert("Algum erro ocorreu no cadastro")
 
@@ -179,6 +195,7 @@ function deletarAgencia() {
             if (resultado.ok) {
                 carregarCards();
                 mostrarModalEdit();
+                carregarKpi();
             } else {
                 alert("Erro ao apagar agência")
             }
