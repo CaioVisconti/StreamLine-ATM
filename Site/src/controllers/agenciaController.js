@@ -25,12 +25,20 @@ const pesquisarAgencias = async (req, res) =>{
     }
 }
 
-const cadastrarAgencia = async (req, res) => {
+const contarAgencias = async (req, res) => {
+    try{
+        const select = await database.contarAgencias();
+        return res.status(200).json(select);
+    } catch (error){
+        console.log("Ocorreu um erro no controller!", error)
+    }
+}
+
+const cadastrarAgencia = async (req, res, fkEndereco) => {
     try{
         var codigoAgencia = req.body.codigoAgenciaServer;
         var email = req.body.emailServer;
         var numero = req.body.numeroServer;
-        var fkEndereco = req.body.fkEnderecoServer;
         var fkEmpresa = req.body.codigoEmpresaServer;
 
         console.log("dados recebidos", [fkEmpresa, fkEndereco, codigoAgencia, email, numero])
@@ -61,6 +69,7 @@ const deletarAgencia = async (req, res) => {
 module.exports = {
     mostrarCards,
     pesquisarAgencias,
+    contarAgencias,
     cadastrarAgencia,
     deletarAgencia
 }

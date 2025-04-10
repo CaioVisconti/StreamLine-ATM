@@ -13,7 +13,7 @@
     <script src="../js/cadastroAgencia.js"></script>
 </head>
 
-<body onload="carregarCards(), carregarEmpresas()">
+<body onload="carregarCards(), carregarEmpresas(), carregarKpi()">
     <nav>
         <div class="usuario">
             <div class="img-perfil"></div>
@@ -35,7 +35,7 @@
             </div>
             <div class="kpi">
                 <span class="titulo">Agências Cadastradas</span>
-                <span class="valor">50</span>
+                <span class="valor" id="kpi"></span>
             </div>
         </div>
         <div class="agencias">
@@ -109,7 +109,7 @@
                     <input id="iptLogradouro" type="text">
                 </div>
                 <div class="modal-botao">
-                    <button onclick="cadastrarEndereco()">Cadastrar</button>
+                    <button onclick="cadastrarAgencia()">Cadastrar</button>
                 </div>
             </div>
         </div>
@@ -124,8 +124,8 @@
                     <input id="iptEmail" type="text">
                 </div>
                 <div class="modal-infos">
-                    <span>Senha:</span>
-                    <input id="iptSenha" type="text">
+                    <span>Telefone:</span>
+                    <input id="iptNúmero" type="text">
                 </div>
                 <div class="modal-infos">
                     <span>CEP:</span>
@@ -146,10 +146,6 @@
                 <div class="modal-infos">
                     <span>Logradouro:</span>
                     <input id="iptLogradouro" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Número:</span>
-                    <input id="iptNúmero" type="text">
                 </div>
                 <div class="modal-botao">
                     <button>Salvar Mudanças</button>

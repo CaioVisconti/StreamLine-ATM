@@ -1,4 +1,3 @@
-
 function carregarCards() {
     const pesquisa = ipt_pesquisa.value;
     cardsContainer.innerHTML = "";
@@ -60,6 +59,21 @@ function carregarCards() {
     }
 }
 
+function carregarKpi(){
+    fetch("/agencias/contarAgencias", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        res.json()
+            .then(json => {
+                console.log(json[0].agencias)
+                kpi.innerHTML = json[0].agencias;
+            })
+    })
+}
+
 function mostrarModalCad() {
     const modal = document.querySelector(".modal");
     const fade = document.querySelector(".fade");
@@ -67,12 +81,8 @@ function mostrarModalCad() {
         modal.style.display = "flex";
         fade.style.display = "block";
     } else {
-        const alert = confirm("Gostaria de fechar o modal?");
-        if (alert) {
-            modal.style.display = "none"
-            fade.style.display = "none";
-
-        }
+        modal.style.display = "none"
+        fade.style.display = "none";
     }
 }
 
@@ -83,12 +93,8 @@ function mostrarModalEdit() {
         modal.style.display = "flex";
         fade.style.display = "block";
     } else {
-        const alert = confirm("Gostaria de fechar o modal?");
-        if (alert) {
-            modal.style.display = "none"
-            fade.style.display = "none";
-
-        }
+        modal.style.display = "none"
+        fade.style.display = "none";
     }
 }
 
@@ -121,111 +127,80 @@ function carregarEmpresas() {
 
 }
 
-let idEndereco = 0;
-function cadastrarEndereco() {
+function cadastrarAgencia() {
+    var codigoEmpresaVar = document.getElementById("codigo-empresa").value;
+    var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
+    var emailVar = document.getElementById("iptEmail").value;
+    var numeroVar = document.getElementById("iptNumero").value;
     var cepVar = document.getElementById("iptCEP").value;
     var ufVar = document.getElementById("iptUF").value;
     var cidadeVar = document.getElementById("iptCidade").value;
     var bairroVar = document.getElementById("iptBairro").value;
     var logradouroVar = document.getElementById("iptLogradouro").value;
 
-    fetch("/endereco/cadastrarEndereco", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            cepServer: cepVar,
-            ufServer: ufVar,
-            cidadeServer: cidadeVar,
-            bairroServer: bairroVar,
-            logradouroServer: logradouroVar,
-        }),
-    }).then(function (res) {
-        if (res.ok) {
-            alert("Endereço cadastrada no sistema!")
-            return res.json()
-        } else {
-            alert("Algum erro ocorreu no cadastro")
-        }
-    }).then(function(resposta){
-        console.log("ID do endereço", resposta.insertId)
-        idEndereco = resposta.insertId
-        
-        cadastrarAgencia();
-        carregarCards();
-    }).catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-
-    });
-
-    return false;
-
-}
-
-function cadastrarAgencia() {
-    var codigoEmpresaVar = document.getElementById("codigo-empresa").value;
-    var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
-    var emailVar = document.getElementById("iptEmail").value;
-    var senhaVar = document.getElementById("iptSenha").value;
-    var numeroVar = document.getElementById("iptNumero").value;
-
     console.log("Dados a serem enviados:", {
         codigoEmpresaServer: codigoEmpresaVar,
         codigoAgenciaServer: codigoAgenciaVar,
         emailServer: emailVar,
-        senhaServer: senhaVar,
         numeroServer: numeroVar,
-        fkEnderecoServer: idEndereco
     });
-    
-    if(idEndereco != 0){
         fetch("/agencias/cadastrarAgencia", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-            codigoEmpresaServer: codigoEmpresaVar,
-            codigoAgenciaServer: codigoAgenciaVar,
-            emailServer: emailVar,
-            senhaServer: senhaVar,
-            numeroServer: numeroVar,
-            fkEnderecoServer: idEndereco
-        }),
-    }).then(function (res) {
-        console.log(res);
-        if (res.ok) {
+                codigoEmpresaServer: codigoEmpresaVar,
+                codigoAgenciaServer: codigoAgenciaVar,
+                emailServer: emailVar,
+                numeroServer: numeroVar,
+                cepServer: cepVar,
+                ufServer: ufVar,
+                cidadeServer: cidadeVar,
+                bairroServer: bairroVar,
+                logradouroServer: logradouroVar
+            }),
+        }).then(function (res) {
             alert("Agência cadastrada no sistema!")
-        } else {
-            alert("Algum erro ocorreu no cadastro")
-        }
-    })
-    .catch(function (resposta) {
-        console.log(`ERRO: ${resposta}`);
-        
-    });
-    
-    return false;
-    } else {
-        console.log("erro!", idEndereco)
-    }   
+            carregarCards();
+            mostrarModalCad();
+            carregarKpi();
+            if (!res.ok) {
+                alert("Algum erro ocorreu no cadastro")
+
+            }
+        })
+            .catch(function (resposta) {
+                console.log(`ERRO: ${resposta}`);
+            });
+
+        return false;
 }
 
-function deletarAgencia(){
+function deletarAgencia() {
     const idAgencia = document.getElementById("empresa").textContent;
 
     console.log("IdAgencia:", idAgencia);
 
-    fetch(`/agencias/deletarAgencia/${idAgencia}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-    }).then(function (resultado){
-        console.log(resultado);
-        carregarCards()
-    })
+
+    if (confirm("Quer apagar a agência mesmo?")) {
+
+        fetch(`/agencias/deletarAgencia/${idAgencia}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resultado) {
+            console.log(resultado);
+            if (resultado.ok) {
+                carregarCards();
+                mostrarModalEdit();
+                carregarKpi();
+            } else {
+                alert("Erro ao apagar agência")
+            }
+        })
+    }
 
 
 }
