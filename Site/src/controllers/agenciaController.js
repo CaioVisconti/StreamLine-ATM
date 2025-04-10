@@ -25,12 +25,11 @@ const pesquisarAgencias = async (req, res) =>{
     }
 }
 
-const cadastrarAgencia = async (req, res) => {
+const cadastrarAgencia = async (req, res, fkEndereco) => {
     try{
         var codigoAgencia = req.body.codigoAgenciaServer;
         var email = req.body.emailServer;
         var numero = req.body.numeroServer;
-        var fkEndereco = req.body.fkEnderecoServer;
         var fkEmpresa = req.body.codigoEmpresaServer;
 
         console.log("dados recebidos", [fkEmpresa, fkEndereco, codigoAgencia, email, numero])

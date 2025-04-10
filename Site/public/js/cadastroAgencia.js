@@ -112,64 +112,23 @@ function carregarEmpresas() {
 
 }
 
-let idEndereco = 0;
-function cadastrarEndereco() {
+function cadastrarAgencia() {
+    var codigoEmpresaVar = document.getElementById("codigo-empresa").value;
+    var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
+    var emailVar = document.getElementById("iptEmail").value;
+    var numeroVar = document.getElementById("iptNumero").value;
     var cepVar = document.getElementById("iptCEP").value;
     var ufVar = document.getElementById("iptUF").value;
     var cidadeVar = document.getElementById("iptCidade").value;
     var bairroVar = document.getElementById("iptBairro").value;
     var logradouroVar = document.getElementById("iptLogradouro").value;
 
-    fetch("/endereco/cadastrarEndereco", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            cepServer: cepVar,
-            ufServer: ufVar,
-            cidadeServer: cidadeVar,
-            bairroServer: bairroVar,
-            logradouroServer: logradouroVar,
-        }),
-    }).then(function (res) {
-        if (res.ok) {
-            alert("Endereço cadastrada no sistema!")
-            return res.json()
-        } else {
-            alert("Algum erro ocorreu no cadastro")
-        }
-    }).then(function (resposta) {
-        console.log("ID do endereço", resposta.insertId)
-        idEndereco = resposta.insertId
-
-        cadastrarAgencia();
-    }).catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-
-    });
-
-    return false;
-
-}
-
-function cadastrarAgencia() {
-    var codigoEmpresaVar = document.getElementById("codigo-empresa").value;
-    var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
-    var emailVar = document.getElementById("iptEmail").value;
-    var senhaVar = document.getElementById("iptSenha").value;
-    var numeroVar = document.getElementById("iptNumero").value;
-
     console.log("Dados a serem enviados:", {
         codigoEmpresaServer: codigoEmpresaVar,
         codigoAgenciaServer: codigoAgenciaVar,
         emailServer: emailVar,
-        senhaServer: senhaVar,
         numeroServer: numeroVar,
-        fkEnderecoServer: idEndereco
     });
-
-    if (idEndereco != 0) {
         fetch("/agencias/cadastrarAgencia", {
             method: "POST",
             headers: {
@@ -179,18 +138,20 @@ function cadastrarAgencia() {
                 codigoEmpresaServer: codigoEmpresaVar,
                 codigoAgenciaServer: codigoAgenciaVar,
                 emailServer: emailVar,
-                senhaServer: senhaVar,
                 numeroServer: numeroVar,
-                fkEnderecoServer: idEndereco
+                cepServer: cepVar,
+                ufServer: ufVar,
+                cidadeServer: cidadeVar,
+                bairroServer: bairroVar,
+                logradouroServer: logradouroVar
             }),
         }).then(function (res) {
-            console.log(res);
-            if (res.ok) {
-                alert("Agência cadastrada no sistema!")
-                carregarCards();
-                mostrarModalCad();
-            } else {
+            alert("Agência cadastrada no sistema!")
+            carregarCards();
+            mostrarModalCad();
+            if (!res.ok) {
                 alert("Algum erro ocorreu no cadastro")
+
             }
         })
             .catch(function (resposta) {
@@ -198,9 +159,6 @@ function cadastrarAgencia() {
             });
 
         return false;
-    } else {
-        console.log("erro!", idEndereco)
-    }
 }
 
 function deletarAgencia() {

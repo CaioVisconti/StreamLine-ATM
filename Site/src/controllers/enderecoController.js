@@ -9,8 +9,7 @@ const cadastrarEndereco = async (req, res) => {
         var logradouro = req.body.logradouroServer;
 
         const insert = await database.cadastrarEndereco(cep, uf, cidade, bairro, logradouro);
-
-        return res.status(201).json(insert);
+        return {insertId: insert.insertId}
     } catch (error){
         return res.status(500).json(error.message);
     }
