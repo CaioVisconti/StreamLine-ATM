@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Empresas | StreamLine</title>
     <link rel="stylesheet" href="../style/cadastrarEmpresa.css">
-    <script src="../js/cadastroAgencia.js"></script>
+    <script src="../js/cadastroEmpresa.js"></script>
 
 </head>
-<body>
+<body onload="carregarCards(), empresasParceiras()">
     <div class="nav-total">
         <div class="info-user">
             <div class="foto-user"></div>
             <div class="msg-user">
-                <span>
-                    Olá, Nicoly.
+                <span id="nomeFunc">
+                    
                 </span>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 <div class="espacamento">
                     <span>Cadastrar Empresas</span>
                     <div class="linha"></div>
-                    <span>Cadastrar Agências</span>
+                    <a href="cadastrarAgencia.html"><span>Cadastrar Agências</span></a>
                     <div class="linha"></div>
                     <span>Cadastrar Gerentes</span>
                     <div class="linha"></div>
@@ -39,11 +39,11 @@
             </div>
             <div class="escolha-kpi">
                 <span class="info-kpi">Empresas Parceiras</span>
-                <span class="numeros-kpi">10</span>
+                <span class="numeros-kpi" id="kpiParceiras"></span>
             </div>
             <div class="escolha-kpi">
-                <span class="info-kpi">Empresas Parceiras</span>
-                <span class="numeros-kpi">10</span>
+                <span class="info-kpi">Visualizar Contate-nos</span>
+                <button class="btn-nav">Visualizar</button>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
             <div class="pesquisar">
                 <div class="ajuste-pesquisa">
                     <div class="input-pesquisar">
-                        <input type="text" oninput="">
+                        <input type="text" id="ipt_pesquisa" oninput="carregarCards()">
                         <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
                     </div>
                     <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
@@ -72,8 +72,8 @@
                 </div>
             </div>
             <div class="delimitar">
-                <div class="cards-container">
-                    <div class="cards">
+                <div class="cards-container" id="cardsContainer">
+                    <!-- <div class="cards">
                         <div class="perfil-agencia">
                             <div class="img-agencia"></div>
                             <span id="empresa">Banco Safra</span>
@@ -83,7 +83,7 @@
                             <span class="info">Código da Empresa: <span style="font-weight: normal;" id="codigo">ABCD1234</span></span>
                             <span class="info">CNPJ: <span style="font-weight: normal;" id="cnpj">4002-8922</span></span>
                         </div>
-                    </div> 
+                    </div>  -->
                 </div>
             </div>
         </div>
@@ -100,15 +100,15 @@
                 <div class="modal-container">
                     <div class="modal-infos">
                         <span>Nome:</span>
-                        <input type="text">
+                        <input type="text" id="ipt_nome">
                     </div>
                     <div class="modal-infos">
                         <span>CNPJ:</span>
-                        <input type="text">
+                        <input type="text" id="ipt_cnpj">
                     </div>
                     <div class="modal-infos">
                         <span>Código Empresa:</span>
-                        <input type="text">
+                        <input type="text" id="ipt_codigo">
                     </div>
                 </div>
     
@@ -125,7 +125,7 @@
             </div>
             
             <div class="modal-botao">
-                <button>Cadastrar</button>
+                <button onclick="cadastrarEmpresa()">Cadastrar</button>
             </div>
 
         </div>

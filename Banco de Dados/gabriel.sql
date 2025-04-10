@@ -1,8 +1,5 @@
-CREATE DATABASE podpah;
-USE podpah;
-
-
-SELECT * FROM `captura20:c1:9b:5e:4e:d0`;
+CREATE DATABASE streamline;
+USE streamline;
 
 CREATE TABLE IF NOT EXISTS empresa (
   idEmpresa INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -38,7 +35,7 @@ CREATE TABLE IF NOT EXISTS usuario (
   cargo VARCHAR(45) NOT NULL,
   email VARCHAR(45) UNIQUE NOT NULL,
   senha VARCHAR(45) NOT NULL,
-  fkAgencia INT NOT NULL,
+  fkAgencia INT,
   FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
 );
 
@@ -54,29 +51,46 @@ CREATE TABLE IF NOT EXISTS atm (
   FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
 );
 
-CREATE TABLE configuracao_monitoramento (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    componente VARCHAR(20),       -- Ex: 'CPU', 'RAM', 'DISCO'
-    atributo VARCHAR(50),         -- Ex: 'percentual', 'frequencia', 'total', 'disponivel'
-    limite FLOAT,
-    fkAtm INT,
-    FOREIGN KEY (idAtm) REFERENCES atm(idAtm)
+CREATE TABLE IF NOT EXISTS componentes (
+  idComponentes INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  tipo VARCHAR(45) NOT NULL,
+  unidadeMedida VARCHAR(45) NOT NULL,
+  funcao VARCHAR(45) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS parametro (
+	idParametro INT AUTO_INCREMENT NOT NULL,
+	limite DOUBLE NOT NULL,
+	dtAlteracao DATE NOT NULL,
+	identificador VARCHAR(45),
+    fkComponente INT NOT NULL,
+    fkAtm INT NOT NULL,
+	PRIMARY KEY (idParametro, fkAtm, fkComponente),
+	FOREIGN KEY (fkAtm) REFERENCES atm(idAtm),
+	FOREIGN KEY (fkComponente) REFERENCES componentes(idComponentes)
 );
 
 CREATE TABLE IF NOT EXISTS alerta (
   idAlerta INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  gravidade VARCHAR(45) NOT NULL,
-  medida DOUBLE NOT NULL,
-  fkConfiguracao INT,
-	CONSTRAINT chkConfiguracao FOREIGN KEY (fkConfiguracao)REFERENCES configuracao(idConfiguracao)
+  valor DOUBLE NOT NULL,
+  dtHora DATETIME,
+  fkParametro INT,
+  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro)
 );
 
+CREATE TABLE IF NOT EXISTS captura (
+  idCaptura INT PRIMARY KEY AUTO_INCREMENT,
+  valor DOUBLE,
+  dtHora DATETIME,
+  fkParametro INT,
+  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro)
+);
 
 -- Inserindo empresas manualmente
 INSERT INTO empresa (nome, cnpj, codigo) VALUES
-('Banco do Brasil', '00000000000191', 'BB123456'),
-('Caixa Econômica Federal', '00000000000272', 'CEF12345'),
-('Bradesco', '00000000000353', 'BRA12345');
+('Banco do Brasil', '123456789', 'BB123456'),
+('Caixa Federal', '987654321', 'CEF12345'),
+('Bradesco', '12435687', 'BRA12345');
 
 -- Inserindo endereços para as agências
 INSERT INTO endereco (cep, logradouro, bairro, cidade, uf) VALUES
@@ -100,11 +114,17 @@ INSERT INTO agencia (codigoAgencia, email, telefone, fkEmpresa, fkEndereco) VALU
 INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES
 ('Geraldo', '11987654321', 'Gerente', 'geraldo@bb.com.br', 'senha123', 1),
 ('Lucas', '11987654322', 'Técnico de Operação', 'lucas@bb.com.br', 'senha123', 1),
-('Thiago', '11987654323', 'Analista de Dados', 'thiago@bb.com.br', 'senha123', 1);
+('Thiago', '11987654323', 'Analista de Dados', 'thiago@bb.com.br', 'senha123', 1),
+('Ariel', '11987736423', 'CEO', 'ariel@streamline.com.br', 'Urubu#123', NULL),
+('Caio', '11984364323', 'CEO', 'caio@streamline.com.br', 'Urubu#123', NULL),
+('Gabriel', '11987652353', 'CEO', 'gabriel@streamline.com.br', 'Urubu#123', NULL),
+('Guilherme', '11986543323', 'CEO', 'guilherme@streamline.com.br', 'Urubu#123', NULL),
+('Nicoly', '11987975823', 'CEO', 'nicoly@streamline.com.br', 'Urubu#123', NULL);
+
 
 -- Inserindo 15 ATMs para a primeira agência do Banco do Brasil
 INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM, fkAgencia) VALUES
-('Jade', 'Gabriel Teste', '192.168.1.1', '20:c1:9b:5e:4e:d0', 'Windows 11', 1, 1), -- Esse é o meu pessoal, testem com o de vocês
+('Jade', 'Gabriel Teste', '192.168.1.1', '20:c1:9b:5e:4e:d0', 'Windows 11', 1, 1),
 ('ATM002', 'NCR', '192.168.1.2', '00:1A:2B:3C:4D:5F', 'Windows 10', 1, 1),
 ('ATM003', 'Diebold', '192.168.1.3', '00:1A:2B:3C:4D:60', 'Windows 10', 1, 1),
 ('ATM004', 'NCR', '192.168.1.4', '00:1A:2B:3C:4D:61', 'Windows 10', 1, 1),
@@ -123,47 +143,39 @@ INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM,
 
 -- MÉTRICAS E CONFIGURAÇÕES
 
-INSERT INTO configuracao_monitoramento (idAtm, componente, atributo) VALUES
-(1, 'CPU', 'percentual'),
-(1, 'RAM', 'total'),
-(1, 'RAM', 'percentual'),
-(1, 'DISCO', 'percentual');
-
-
-
--- Inserindo Componentes para o ATM 1
-INSERT INTO componentes (tipo, descricao, fkAtm) VALUES
-('CPU', 'Intel Core i5', 1),
-('Memória RAM', '8GB', 1),
-('Disco Rígido', '500GB', 1);
-
 -- Inserindo Medidas para os componentes do ATM 1 (Cardápio)
-INSERT INTO medida (tipo, formato, funcaoPsutil) VALUES
+INSERT INTO componentes (tipo, unidadeMedida, funcao) VALUES
 ('CPUPercent', 'Porcentagem', 'cpu_percent'),
 ('CPUFreq', 'GHz', 'cpu_freq'),
-('RAMPercentual', 'Porcentagem', 'virtual_memory'),
-('DISKPercentual', 'Porcentagem', 'disk_usage');
+('RAMTotal', 'GB', 'virtual_memory.total'),
+('RAMDisponivel', 'GB', 'virtual_memory.available'),
+('RAMPercentual', 'Porcentagem', 'virtual_memory.percent'),
+('DISKTotal', 'GB', 'disk_usage.total'),
+('DISKDisponivel', 'GB', 'disk_usage.free'),
+('DISKPercentual', 'Porcentagem', 'disk_usage.percent'),
+('REDERecebida', 'Bytes', 'net_io_counters.bytes_recv'),
+('REDEEnviada', 'Bytes', 'net_io_counters.bytes_sent'),
+('PROCESSODesativado', 'Unidades', 'process_iter.desativados'),
+('PROCESSOAtivos', 'Unidades', 'process_iter.ativos'),
+('PROCESSOTotal', 'Unidades', 'process_iter.total');
 
 -- Inserindo Configurações para os componentes do ATM 1
-INSERT INTO configuracao (fkMedida, fkComponente, limite, dtAlteracao) VALUES
-(1, 1, 80.0, '2025-03-31'), -- CPUPercent (Intel Core i5)
-(2, 1, 3.5, '2025-03-31'), -- CPUFreq (Intel Core i5)
-(3, 2, 90.0, '2025-03-31'), -- RAMPercentual (8GB RAM)
-(4, 3, 85.0, '2025-03-31'); -- DISKPercentual (500GB Disco)
+INSERT INTO parametro (fkAtm, fkComponente, limite, dtAlteracao) VALUES
+(1, 1, 80.0, '2025-03-31'),
+(2, 1, 3.5, '2025-03-31'),
+(3, 2, 90.0, '2025-03-31'),
+(8, 3, 85.0, '2025-03-31'),
+(9, 4, 85.0, '2025-04-06');
 
--- Inserindo Componentes para o ATM 2 (Com duas CPUs)
-INSERT INTO componentes (componente, descricao, fkAtm) VALUES
-('CPU', 'Intel Core i7', 2),
-('CPU', 'AMD Ryzen 5', 2),
-('Memória RAM', '16GB', 2);
+SELECT * FROM empresa;
 
 -- Selecionar componentes e configurações de tal atm
-
+/*
 SELECT 
     atm.idAtm,
     atm.hostname,
     componentes.idComponentes,
-    componentes.componente,
+    componentes.tipo,
     componentes.descricao,
     medida.idMedida,
     medida.tipo,
@@ -177,3 +189,12 @@ JOIN atm ON componentes.fkAtm = atm.idAtm
 LEFT JOIN configuracao ON configuracao.fkComponente = componentes.idComponentes
 LEFT JOIN medida ON configuracao.fkMedida = medida.idMedida
 WHERE atm.idAtm = 1;
+*/
+
+CREATE USER "userPython"@"%" IDENTIFIED BY "Urubu100";
+GRANT SELECT ON streamline.teste TO "userPython"@"%";
+FLUSH PRIVILEGES;
+
+SELECT * FROM parametro AS p JOIN atm ON p.fkAtm = atm.idAtm;
+
+CREATE VIEW teste AS SELECT p.*, atm.hostname, atm.macAdress, componentes.* FROM parametro AS p JOIN atm ON p.fkAtm = atm.idAtm JOIN componentes ON componentes.idComponentes = p.fkComponente;

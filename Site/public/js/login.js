@@ -54,7 +54,9 @@ function login() {
                 window.location = "./app/gerente/gerenteATM.html"; 
             } else if (cargoUsuario === "Analista de Dados" || cargoUsuario === "analista de dados") {
                 window.location = "./app/dashDadoHistorico.html";    
-            }  
+            } else if (cargoUsuario === "CEO") {
+                window.location = "./root/cadastrarEmpresa.html";    
+            } 
             else {
                 console.log("Erro: Cargo inválido!");
             }
