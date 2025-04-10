@@ -1,4 +1,3 @@
-
 function carregarCards() {
     const pesquisa = ipt_pesquisa.value;
     cardsContainer.innerHTML = "";
@@ -67,12 +66,8 @@ function mostrarModalCad() {
         modal.style.display = "flex";
         fade.style.display = "block";
     } else {
-        const alert = confirm("Gostaria de fechar o modal?");
-        if (alert) {
-            modal.style.display = "none"
-            fade.style.display = "none";
-
-        }
+        modal.style.display = "none"
+        fade.style.display = "none";
     }
 }
 
@@ -83,12 +78,8 @@ function mostrarModalEdit() {
         modal.style.display = "flex";
         fade.style.display = "block";
     } else {
-        const alert = confirm("Gostaria de fechar o modal?");
-        if (alert) {
-            modal.style.display = "none"
-            fade.style.display = "none";
-
-        }
+        modal.style.display = "none"
+        fade.style.display = "none";
     }
 }
 
@@ -148,12 +139,11 @@ function cadastrarEndereco() {
         } else {
             alert("Algum erro ocorreu no cadastro")
         }
-    }).then(function(resposta){
+    }).then(function (resposta) {
         console.log("ID do endereço", resposta.insertId)
         idEndereco = resposta.insertId
-        
+
         cadastrarAgencia();
-        carregarCards();
     }).catch(function (resposta) {
         console.log(`#ERRO: ${resposta}`);
 
@@ -178,54 +168,64 @@ function cadastrarAgencia() {
         numeroServer: numeroVar,
         fkEnderecoServer: idEndereco
     });
-    
-    if(idEndereco != 0){
+
+    if (idEndereco != 0) {
         fetch("/agencias/cadastrarAgencia", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-            codigoEmpresaServer: codigoEmpresaVar,
-            codigoAgenciaServer: codigoAgenciaVar,
-            emailServer: emailVar,
-            senhaServer: senhaVar,
-            numeroServer: numeroVar,
-            fkEnderecoServer: idEndereco
-        }),
-    }).then(function (res) {
-        console.log(res);
-        if (res.ok) {
-            alert("Agência cadastrada no sistema!")
-        } else {
-            alert("Algum erro ocorreu no cadastro")
-        }
-    })
-    .catch(function (resposta) {
-        console.log(`ERRO: ${resposta}`);
-        
-    });
-    
-    return false;
+                codigoEmpresaServer: codigoEmpresaVar,
+                codigoAgenciaServer: codigoAgenciaVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                numeroServer: numeroVar,
+                fkEnderecoServer: idEndereco
+            }),
+        }).then(function (res) {
+            console.log(res);
+            if (res.ok) {
+                alert("Agência cadastrada no sistema!")
+                carregarCards();
+                mostrarModalCad();
+            } else {
+                alert("Algum erro ocorreu no cadastro")
+            }
+        })
+            .catch(function (resposta) {
+                console.log(`ERRO: ${resposta}`);
+            });
+
+        return false;
     } else {
         console.log("erro!", idEndereco)
-    }   
+    }
 }
 
-function deletarAgencia(){
+function deletarAgencia() {
     const idAgencia = document.getElementById("empresa").textContent;
 
     console.log("IdAgencia:", idAgencia);
 
-    fetch(`/agencias/deletarAgencia/${idAgencia}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-    }).then(function (resultado){
-        console.log(resultado);
-        carregarCards()
-    })
+
+    if (confirm("Quer apagar a agência mesmo?")) {
+
+        fetch(`/agencias/deletarAgencia/${idAgencia}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resultado) {
+            console.log(resultado);
+            if (resultado.ok) {
+                carregarCards();
+                mostrarModalEdit();
+            } else {
+                alert("Erro ao apagar agência")
+            }
+        })
+    }
 
 
 }
