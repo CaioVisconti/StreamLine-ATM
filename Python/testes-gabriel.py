@@ -44,14 +44,9 @@ def buscar_configuracoes(fkAtm):
     cursor = conn.cursor()
 
     query = """
-    SELECT 
-        c.tipo AS tipo_componente,
-        m.tipo AS tipo_medida
-    FROM configuracao conf
-    JOIN componentes c ON conf.fkComponente = c.idComponentes
-    JOIN medida m ON conf.fkMedida = m.idMedida
-    JOIN atm ON c.fkAtm = atm.idAtm
-    WHERE atm.idAtm = %s;
+    SELECT p.*, atm.hostname, atm.macAdress, componentes.* FROM parametro AS p 
+    JOIN atm ON p.fkAtm = atm.idAtm 
+    JOIN componentes ON componentes.idComponentes = p.fkComponente WHERE idAtm = %s;
     """
 
     cursor.execute(query, (fkAtm,))
