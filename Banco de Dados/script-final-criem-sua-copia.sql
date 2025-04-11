@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS agencia (
   fkEmpresa INT NOT NULL,
   fkEndereco INT NOT NULL,
   FOREIGN KEY (fkEmpresa) REFERENCES empresa (idEmpresa),
-  FOREIGN KEY (fkEndereco) REFERENCES endereco (idEndereco)
+  FOREIGN KEY (fkEndereco) REFERENCES endereco (idEndereco) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS usuario (
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS usuario (
   email VARCHAR(45) UNIQUE NOT NULL,
   senha VARCHAR(45) NOT NULL,
   fkAgencia INT NOT NULL,
-  FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
+  FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS atm (
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS atm (
   sistemaOperacional VARCHAR(45) NOT NULL,
   statusATM TINYINT NOT NULL,
   fkAgencia INT NOT NULL,
-  FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
+  FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS componentes (
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS parametro (
     fkComponente INT NOT NULL,
     fkAtm INT NOT NULL,
 	PRIMARY KEY (idParametro, fkAtm, fkComponente),
-	FOREIGN KEY (fkAtm) REFERENCES atm(idAtm),
+	FOREIGN KEY (fkAtm) REFERENCES atm(idAtm) ON DELETE CASCADE,
 	FOREIGN KEY (fkComponente) REFERENCES componentes(idComponentes)
 );
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS alerta (
   valor DOUBLE NOT NULL,
   dtHora DATETIME,
   fkParametro INT,
-  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro)
+  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS captura (
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS captura (
   valor DOUBLE,
   dtHora DATETIME,
   fkParametro INT,
-  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro)
+  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro) ON DELETE CASCADE
 );
 
 -- Inserindo empresas manualmente

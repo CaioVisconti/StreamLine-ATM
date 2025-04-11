@@ -59,7 +59,7 @@ function carregarCards() {
     }
 }
 
-function carregarKpi(){
+function carregarKpi() {
     fetch("/agencias/contarAgencias", {
         method: "GET",
         headers: {
@@ -127,6 +127,23 @@ function carregarEmpresas() {
 
 }
 
+function puxarCep() {
+    const cep = document.getElementById("iptCEP").value;
+    if(cep.length == 8){
+        fetch(`https://viacep.com.br/ws/${cep}/json/`, {
+    }).then((res) => {
+        res.json()
+        .then(json => {
+            console.log(json)
+            document.getElementById("iptUF").value = json.uf;
+            document.getElementById("iptCidade").value = json.localidade; 
+            document.getElementById("iptBairro").value = json.bairro; 
+            document.getElementById("iptLogradouro").value = json.logradouro; 
+        })
+    })
+}
+}
+
 function cadastrarAgencia() {
     var codigoEmpresaVar = document.getElementById("codigo-empresa").value;
     var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
@@ -144,37 +161,37 @@ function cadastrarAgencia() {
         emailServer: emailVar,
         numeroServer: numeroVar,
     });
-        fetch("/agencias/cadastrarAgencia", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                codigoEmpresaServer: codigoEmpresaVar,
-                codigoAgenciaServer: codigoAgenciaVar,
-                emailServer: emailVar,
-                numeroServer: numeroVar,
-                cepServer: cepVar,
-                ufServer: ufVar,
-                cidadeServer: cidadeVar,
-                bairroServer: bairroVar,
-                logradouroServer: logradouroVar
-            }),
-        }).then(function (res) {
-            alert("Agência cadastrada no sistema!")
-            carregarCards();
-            mostrarModalCad();
-            carregarKpi();
-            if (!res.ok) {
-                alert("Algum erro ocorreu no cadastro")
+    fetch("/agencias/cadastrarAgencia", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            codigoEmpresaServer: codigoEmpresaVar,
+            codigoAgenciaServer: codigoAgenciaVar,
+            emailServer: emailVar,
+            numeroServer: numeroVar,
+            cepServer: cepVar,
+            ufServer: ufVar,
+            cidadeServer: cidadeVar,
+            bairroServer: bairroVar,
+            logradouroServer: logradouroVar
+        }),
+    }).then(function (res) {
+        alert("Agência cadastrada no sistema!")
+        carregarCards();
+        mostrarModalCad();
+        carregarKpi();
+        if (!res.ok) {
+            alert("Algum erro ocorreu no cadastro")
 
-            }
-        })
-            .catch(function (resposta) {
-                console.log(`ERRO: ${resposta}`);
-            });
+        }
+    })
+        .catch(function (resposta) {
+            console.log(`ERRO: ${resposta}`);
+        });
 
-        return false;
+    return false;
 }
 
 function deletarAgencia() {
