@@ -63,8 +63,8 @@ CREATE TABLE IF NOT EXISTS parametro (
 	limite DOUBLE NOT NULL,
 	dtAlteracao DATE NOT NULL,
 	identificador VARCHAR(45),
-    fkComponente INT NOT NULL,
-    fkAtm INT NOT NULL,
+  fkComponente INT NOT NULL,
+  fkAtm INT NOT NULL,
 	PRIMARY KEY (idParametro, fkAtm, fkComponente),
 	FOREIGN KEY (fkAtm) REFERENCES atm(idAtm) ON DELETE CASCADE,
 	FOREIGN KEY (fkComponente) REFERENCES componentes(idComponentes)
@@ -200,3 +200,9 @@ USE streamline;
 CREATE USER "rootPI"@"%" IDENTIFIED BY "Urubu#100";
 GRANT ALL ON streamline.* TO "rootPI"@"%";
 FLUSH PRIVILEGES;
+
+USE streamline;
+DESC componentes;
+SELECT COUNT(al.fkParametro) AS alertas FROM atm JOIN agencia AS a ON atm.fkAgencia = a.idAgencia JOIN parametro AS p ON atm.idAtm = p.fkAtm JOIN alerta AS al ON al.fkParametro = p.idParametro WHERE idAgencia = 1 GROUP BY a.idAgencia;
+
+SELECT tipo FROM 

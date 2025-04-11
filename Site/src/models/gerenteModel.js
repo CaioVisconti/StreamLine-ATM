@@ -34,8 +34,46 @@ function buscarModelos(id) {
 
 function buscarSO(id) {
 
-    let instrucaoSql = `SELECT DISTINCT sistemaOperacional AS SO FROM atm WHERE fkAgencia = ${id};`;
+    let instrucaoSql = `SELECT DISTINCT sistemaOperacional AS so FROM atm WHERE fkAgencia = ${id};`;
   
+    return database.executar(instrucaoSql);
+}
+
+function filtrar(primeiro, segundo, id) {
+    let formato = "ASC"
+    let instrucaoSql = ""
+
+    if(!segundo.includes("%")) {
+        if(segundo == "ativo") {
+            segundo = 1;
+        } else if(segundo == "desativo") {
+            segundo = 0;
+        }
+    
+        if(segundo == "filtro_ZA") {
+            formato = "DESC"
+        }
+    } else {  
+        segundo.replace("%", " ")
+    }
+    
+
+
+    if(primeiro == "statusATM") {
+        instrucaoSql = `SELECT * FROM atm WHERE fkAgencia = ${id} AND ${primeiro} = ${segundo}`;
+    } else if(primeiro == "hostname") {
+        instrucaoSql = `SELECT * FROM atm WHERE fkAgencia = ${id} ORDER BY ${primeiro} ${formato}`;
+    } else {
+        instrucaoSql = `SELECT * FROM atm WHERE fkAgencia = ${id} AND ${primeiro} = "${segundo}" ORDER BY ${primeiro} ${formato};`;
+    }
+
+    
+    return database.executar(instrucaoSql);
+}
+
+function procurarComponentes(idAtm) {
+    let instrucaoSql = `SELECT tipo AS metrica FROM componentes AS c JOIN parametro AS p ON p.fkComponente = c.idComponentes WHERE p.fkAtm = ${idAtm};`;
+    
     return database.executar(instrucaoSql);
 }
 
@@ -66,6 +104,8 @@ module.exports = {
     search,
     buscarModelos,
     buscarSO,
+    filtrar,
+    procurarComponentes,
     atualizar,
     cadastrarATM
 };

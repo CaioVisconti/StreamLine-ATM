@@ -4,10 +4,10 @@ const idAgencia = sessionStorage.ID_AGENCIA;
 const idUsuario = sessionStorage.ID_USUARIO;
 const nomeUsuario = sessionStorage.NOME_USUARIO;
 
-function carregarDados() {
+function carregarDados(lista) {
     nomeUser.innerHTML = nomeUsuario;
     buscarKpis();
-    carregarCards();
+    carregarCards(lista);
 }
 
 function buscarKpis() {
@@ -31,88 +31,130 @@ function buscarKpis() {
     }).then((resposta) => {
         resposta.json()
         .then(json => {
-            kpi_alertas.innerHTML = json.lista[0].alertas;
+            let valor = json.lista[0].alertas;
+            if(json.lista.length == 0) {
+                kpi_alertas.innerHTML = 0;
+            } else {
+                kpi_alertas.innerHTML = valor;
+            }
         })
     })
 }
 
-function carregarCards() {
+var vetor = "";
+
+function carregarCards(lista) {
     const pesquisa = ipt_pesquisa.value;
     cardsContainer.innerHTML = "";
-    
-    if (pesquisa == "") {
-        fetch(`/gerente/${idAgencia}/carregarCards`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then((res) => {
-            res.json()
-                .then(json => {
-                    for (let i = 0; i < (json.lista).length; i++) {
-                        let status = "";
 
-                        if(json.lista[i].statusATM == 1) {
-                            status = "Ativo";
-                        } else {
-                            status = "Desativado";
+    if(lista == undefined) {
+        if (pesquisa == "") {
+            fetch(`/gerente/${idAgencia}/carregarCards`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then((res) => {
+                res.json()
+                    .then(json => {
+                        vetor = json;
+                        for (let i = 0; i < (json.lista).length; i++) {
+                            let status = "";
+
+                            if(json.lista[i].statusATM == 1) {
+                                status = "Ativo";
+                            } else {
+                                status = "Desativado";
+                            }
+
+                            cardsContainer.innerHTML += `
+                                <div class="cards">
+                                <div class="perfil-agencia">
+                                <span>Atm - <span id="hostname">${json.lista[i].hostname}</span></span>
+                                <img class="img-edit" onclick="mostrarModalEdit(${i})" src="../../assets/icone-editar.png">
+                                </div>
+                                <div class="info-agencia">
+                                <span class="info">Modelo: <span id="modelo">${json.lista[i].modelo}</span></span>
+                                <span class="info">IP: <span id="ip">${json.lista[i].ip}</span></span>
+                                <span class="info">MacAdress: <span id="macAdress">${json.lista[i].macAdress}</span></span>
+                                <span class="info">Sistema Operacional: <span id="so">${json.lista[i].sistemaOperacional}</span></span>
+                                <span class="info">Status: <span id="status">${status}</span></span>
+                                </div>
+                                </div>
+                            `
                         }
-                        
-                        cardsContainer.innerHTML += `
-                            <div class="cards">
-                            <div class="perfil-agencia">
-                            <span>Atm - <span id="hostname">${json.lista[i].hostname}</span></span>
-                            <img class="img-edit" onclick="mostrarModalEdit()" src="../../assets/icone-editar.png">
-                            </div>
-                            <div class="info-agencia">
-                            <span class="info">Modelo: <span id="modelo">${json.lista[i].modelo}</span></span>
-                            <span class="info">IP: <span id="ip">${json.lista[i].ip}</span></span>
-                            <span class="info">MacAdress: <span id="macAdress">${json.lista[i].macAdress}</span></span>
-                            <span class="info">Sistema Operacional: <span id="so">${json.lista[i].sistemaOperacional}</span></span>
-                            <span class="info">Status: <span id="status">${status}</span></span>
-                            </div>
-                            </div>
-                        `
-                    }
-                })
-        })
+                    })
+            })
+        } else {
+            const filtro = document.querySelector(".filtros");
+            filtro.style.display = "none";
+            fetch(`/gerente/${pesquisa}/${idAgencia}/search`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then((res) => {
+                res.json()
+                    .then(json => {
+                        vetor = json;
+                        for (let i = 0; i < (json.lista).length; i++) {
+                            let status = "";
+                            let indiceAtual = i;
+
+                            if(json.lista[i].statusATM == 1) {
+                                status = "Ativo";
+                            } else {
+                                status = "Desativado";
+                            }
+
+                            cardsContainer.innerHTML += `
+                                <div class="cards">
+                                <div class="perfil-agencia">
+                                <span>Atm - <span id="hostname">${json.lista[i].hostname}</span></span>
+                                <img class="img-edit" onclick="mostrarModalEdit(${indiceAtual})" src="../../assets/icone-editar.png">
+                                </div>
+                                <div class="info-agencia">
+                                <span class="info">Modelo: <span id="modelo">${json.lista[i].modelo}</span></span>
+                                <span class="info">IP: <span id="ip">${json.lista[i].ip}</span></span>
+                                <span class="info">MacAdress: <span id="macAdress">${json.lista[i].macAdress}</span></span>
+                                <span class="info">Sistema Operacional: <span id="so">${json.lista[i].sistemaOperacional}</span></span>
+                                <span class="info">Status: <span id="status">${status}</span></span>
+                                </div>
+                                </div>
+                            `
+                        }
+                    })
+            })
+        }
     } else {
-        fetch(`/gerente/${pesquisa}/${idAgencia}/search`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
+        let listaV = [lista];
+        vetor = listaV;
+        for(let i = 0; i < lista.length; i++) {
+            let status = "";
+            let indiceAtual = i;
+
+            if(lista[i].statusATM == 1) {
+                status = "Ativo";
+            } else {
+                status = "Desativado";
             }
-        }).then((res) => {
-            res.json()
-                .then(json => {
-                    console.log(json)
-                    for (let i = 0; i < (json.lista).length; i++) {
-                        let status = "";
 
-                        if(json.lista[i].statusATM == 1) {
-                            status = "Ativo";
-                        } else {
-                            status = "Desativado";
-                        }
-
-                        cardsContainer.innerHTML += `
-                            <div class="cards">
-                            <div class="perfil-agencia">
-                            <span>Atm - <span id="hostname">${json.lista[i].hostname}</span></span>
-                            <img class="img-edit" onclick="mostrarModalEdit()" src="../../assets/icone-editar.png">
-                            </div>
-                            <div class="info-agencia">
-                            <span class="info">Modelo: <span id="modelo">${json.lista[i].modelo}</span></span>
-                            <span class="info">IP: <span id="ip">${json.lista[i].ip}</span></span>
-                            <span class="info">MacAdress: <span id="macAdress">${json.lista[i].macAdress}</span></span>
-                            <span class="info">Sistema Operacional: <span id="so">${json.lista[i].sistemaOperacional}</span></span>
-                            <span class="info">Status: <span id="status">${status}</span></span>
-                            </div>
-                            </div>
-                        `
-                    }
-                })
-        })
+            cardsContainer.innerHTML += `
+                <div class="cards">
+                <div class="perfil-agencia">
+                <span>Atm - <span id="hostname">${lista[i].hostname}</span></span>
+                <img class="img-edit" onclick="mostrarModalEdit(${indiceAtual})" src="../../assets/icone-editar.png">
+                </div>
+                <div class="info-agencia">
+                <span class="info">Modelo: <span id="modelo">${lista[i].modelo}</span></span>
+                <span class="info">IP: <span id="ip">${lista[i].ip}</span></span>
+                <span class="info">MacAdress: <span id="macAdress">${lista[i].macAdress}</span></span>
+                <span class="info">Sistema Operacional: <span id="so">${lista[i].sistemaOperacional}</span></span>
+                <span class="info">Status: <span id="status">${status}</span></span>
+                </div>
+                </div>
+            `
+        }
     }
 }
 
@@ -132,7 +174,7 @@ function mostrarModalCad() {
     }
 }
 
-function mostrarModalEdit() {
+function mostrarModalEdit(indice) {
     const modal = document.querySelector(".modal-edit");
     const fade = document.querySelector(".fade");
     if (modal.style.display == "none") {
@@ -146,6 +188,38 @@ function mostrarModalEdit() {
 
         }
     }
+    pesquisarEdit(indice);
+}
+
+function pesquisarEdit(indice) {
+    iptModeloEdit.value = vetor.lista[indice].modelo;
+    iptIPEdit.value = vetor.lista[indice].ip;
+    iptHostnameEdit.value = vetor.lista[indice].hostname;
+    iptMacAdressEdit.value = vetor.lista[indice].macAdress;
+    iptSOEdit.value = vetor.lista[indice].sistemaOperacional;
+    sltStatusEdit.value = vetor.lista[indice].statusATM;
+    let idAtm = vetor.lista[indice].idAtm;
+    
+    fetch(`/gerente/${idAtm}/procurarComponentes`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then((resultado) => {
+        resultado.json()
+        .then(json => {
+            let listagem = document.getElementById("listagem");
+            listagem.innerHTML = "";
+            for(let i = 0; i < json.lista.length; i++) {
+                listagem.innerHTML += `
+                    <div class="campo-modal-componentes">
+                        <span>${json.lista[i].metrica}</span>
+                        <img class="img-edit" onclick="atualizar(${i}, ${idAtm})" src="../../assets/icone-editar.png">
+                    </div>
+                `;
+            }
+        })
+    })
 }
 
 function mostrarFiltros() {
@@ -168,7 +242,6 @@ function mostrarModalCad() {
         if (alert) {
             modal.style.display = "none"
             fade.style.display = "none";
-
         }
     }
 }
@@ -177,7 +250,7 @@ function abrirSegundaFiltragem() {
     const selecionado = filtro_categoria.value;
     const segundoFiltro = document.getElementById("filtro_tipo");
 
-    if(selecionado == "filtro_modelo") {
+    if(selecionado == "modelo") {
         fetch(`/gerente/${idAgencia}/buscarModelos`, {
             method: "GET",
             headers: {
@@ -191,13 +264,12 @@ function abrirSegundaFiltragem() {
                 `;
                 for(let i = 0; i < json.lista.length; i++) {
                     segundoFiltro.innerHTML += `
-                        <option value="${json.lista[i].Modelo}">${json.lista[i].modelo}</option>
+                        <option value="${json.lista[i].modelo}">${json.lista[i].modelo}</option>
                     `;
                 }
-
             })
         })
-    } else if(selecionado == "filtro_sistemaOperacional") {
+    } else if(selecionado == "sistemaOperacional") {
         fetch(`/gerente/${idAgencia}/buscarSO`, {
             method: "GET",
             headers: {
@@ -211,13 +283,13 @@ function abrirSegundaFiltragem() {
                 `;
                 for(let i = 0; i < json.lista.length; i++) {
                     segundoFiltro.innerHTML += `
-                        <option value="${json.lista[i].SO}">${json.lista[i].SO}</option>
+                        <option value="${json.lista[i].so}">${json.lista[i].so}</option>
                     `;
                 }
 
             })
         })
-    } else if(selecionado == "filtro_hostname") {
+    } else if(selecionado == "hostname") {
         segundoFiltro.innerHTML = `
             <option selected disabled>Selecionar</option>
             <option value="filtro_AZ">A-Z</option>
@@ -227,14 +299,14 @@ function abrirSegundaFiltragem() {
         segundoFiltro.innerHTML = `
             <option selected disabled>Selecionar</option>
             <option value="ativo">Ativo</option>
-            <option value="desativado">Desativado</option>
+            <option value="desativo">Desativado</option>
         `;
     }
 }
 
 function filtrar() {
-    const selecionado = slt_filtro_principal.value;
-    const opcao = slt_filtro_secundario.value;
+    const selecionado = filtro_categoria.value;
+    const opcao = filtro_tipo.value;
 
     fetch(`/gerente/${selecionado}/${opcao}/${idAgencia}/filtrar`, {
         method: "GET",
@@ -245,42 +317,47 @@ function filtrar() {
         resposta.json()
             .then(json => {
                 console.log(json.lista);
+                carregarDados(json.lista);
             })
     })
 }
 
 function atualizar(posicaoVetor, idAtm) {
-    let idATM = idAtm;
-    let modelo = ipt_modelo.value;
-    let ip = ipt_ip.value;
-    let hostname = ipt_hostname.value;
-    let macadress = ipt_macadress.value;
-    let sistemaOperacional = ipt_sistemaOperacional.value;
-    let status = slt_status.value;
+    let idATM = Number(idAtm);
+    let modelo = iptModeloEdit.value;
+    let ip = iptIPEdit.value;
+    let hostname = iptHostnameEdit.value;
+    let macadress = iptMacAdressEdit.value;
+    let sistemaOperacional = iptSOEdit.value;
+    let status = Number(sltStatusEdit.value);
 
     let listaAtm = {
-        fkAgencia: idAgencia,
-        hostname: hostname,
         idAtm: idATM,
+        hostname: hostname,
+        modelo: modelo,
         ip: ip,
         macAdress: macadress,
-        modelo: modelo,
         sistemaOperacional: sistemaOperacional,
-        status: status
+        statusATM: status,
+        fkAgencia: Number(idAgencia)
     }
 
-    if(listaAtm != listaPrincipal[posicaoVetor]) {
-        fetch(`/gerente/${listaAtm}/atualizar`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then((resultado) => {
-            resultado.json()
-            .then(json => {
-                console.log(json.lista);
-            })
-        })
+    console.log(listaAtm);
+    console.log(vetor.lista[posicaoVetor]);
+
+    if(listaAtm != vetor.lista[posicaoVetor]) {
+        console.log("passou aqui no atualizar ");
+        // fetch(`/gerente/${listaAtm}/atualizar`, {
+        //     method: "PUT",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     }
+        // }).then((resultado) => {
+        //     resultado.json()
+        //     .then(json => {
+        //         console.log(json.lista);
+        //     })
+        // })
     }
 }
 
@@ -307,6 +384,6 @@ function registrarATM() {
             fkAgenciaServer: idAgencia
         })
     }).then((resultado) => {
-        // carregarCards();
+        carregarCards();
     })
 }

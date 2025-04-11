@@ -52,10 +52,10 @@
                 <div class="filtros" style="display: none;">
                     <select id="filtro_categoria" class="filtro" onchange="abrirSegundaFiltragem()">
                         <option selected disabled>Categoria</option>
-                        <option value="filtro_hostname">Hostname</option>
-                        <option value="filtro_modelo">Modelo</option>
-                        <option value="filtro_sistemaOperacional">Sistema Operacional</option>
-                        <option value="filtro_status">Status</option>
+                        <option value="hostname">Hostname</option>
+                        <option value="modelo">Modelo</option>
+                        <option value="sistemaOperacional">Sistema Operacional</option>
+                        <option value="statusATM">Status</option>
                     </select>
                     <select id="filtro_tipo" class="filtro" onchange="filtrar()">
                         <option selected disabled>Tipo</option>
@@ -112,38 +112,43 @@
                 <span onclick="mostrarModalEdit()">&#x2715;</span>
             </div>
             <div class="modal-container">
-                <div class="modal-infos">
-                    <span>Email:</span>
-                    <input id="iptEmail" type="text">
+                <div style="display: flex;flex-direction: row; height: 100%;">
+                    <div class="listagem_cadastro">
+                        <div class="modal-infos">
+                            <span>Modelo:</span>
+                            <input id="iptModeloEdit" type="text">
+                        </div>
+                        <div class="modal-infos">
+                            <span>IP:</span>
+                            <input id="iptIPEdit" type="text">
+                        </div>
+                        <div class="modal-infos">
+                            <span>Hostname:</span>
+                            <input id="iptHostnameEdit" type="text">
+                        </div>
+                        <div class="modal-infos">
+                            <span>MacAdress:</span>
+                            <input id="iptMacAdressEdit" type="text">
+                        </div>
+                        <div class="modal-infos">
+                            <span>Sistema Operacional:</span>
+                            <input id="iptSOEdit" type="text">
+                        </div>
+                        <div class="modal-infos">
+                            <select id="sltStatusEdit" class="select-empresa">
+                                <option selected disabled>Selecione o Status</option>
+                                <option value="1">Ativo</option>
+                                <option value="0">Desativado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="lista_componentes">
+                        <span><b>Componentes:</b></span>
+                        <div id="listagem"></div>
+                    </div>
                 </div>
-                <div class="modal-infos">
-                    <span>Senha:</span>
-                    <input id="iptSenha" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>CEP:</span>
-                    <input id="iptCEP" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>UF:</span>
-                    <input id="iptUF" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Cidade:</span>
-                    <input id="iptCidade" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Bairro:</span>
-                    <input id="iptBairro" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Logradouro:</span>
-                    <input id="iptLogradouro" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Número:</span>
-                    <input id="iptNúmero" type="text">
-                </div>
+                  
                 <div class="modal-botao">
                     <button>Salvar Mudanças</button>
                 </div>

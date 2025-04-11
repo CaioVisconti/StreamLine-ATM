@@ -10,7 +10,7 @@ function buscarKpiTotal(req, res) {
             })
         })
         .catch(erro => {
-            console.error("Erro na captura das kpis:", erro);
+            console.error("Erro na captura da kpi total:", erro);
             res.status(500).json(erro.sqlMessage);
         });
 }
@@ -25,7 +25,7 @@ function buscarKpiAlerta(req, res) {
             })
         })
         .catch(erro => {
-            console.error("Erro na captura das kpis:", erro);
+            console.error("Erro na captura da kpi de alerta:", erro);
             res.status(500).json(erro.sqlMessage);
         });
 }
@@ -73,7 +73,7 @@ function buscarModelos(req, res) {
             })
         })
         .catch(erro => {
-            console.error("Erro na captura de atms:", erro);
+            console.error("Erro na captura de modelos:", erro);
             res.status(500).json(erro.sqlMessage);
         });
 }
@@ -88,9 +88,41 @@ function buscarSO(req, res) {
             })
         })
         .catch(erro => {
-            console.error("Erro na captura de atms:", erro);
+            console.error("Erro na captura de sistemas operacionais:", erro);
             res.status(500).json(erro.sqlMessage);
         });
+}
+
+function filtrar(req, res) {
+    const primeiro = req.params.selecionado;
+    const segundo = req.params.opcao;
+    const id = req.params.idAgencia;
+
+    gerenteModel.filtrar(primeiro, segundo, id)
+        .then((resultado) => {
+            res.json({
+                lista: resultado
+            })
+        })
+        .catch(erro => {
+            console.error("Erro na captura de sistemas operacionais:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function procurarComponentes(req, res) {
+    let idAtm = req.params.idAtm;
+
+    gerenteModel.procurarComponentes(idAtm)
+    .then((resultado) => {
+        res.json({
+            lista:resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de sistemas operacionais:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
 }
 
 function atualizar(req, res) {
@@ -136,6 +168,8 @@ module.exports = {
     search,
     buscarModelos,
     buscarSO,
+    filtrar,
+    procurarComponentes,
     atualizar,
     cadastrarATM
 }

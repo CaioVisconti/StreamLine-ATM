@@ -24,6 +24,18 @@ router.get("/:idAgencia/buscarModelos", function (req, res) {
     gerenteController.buscarModelos(req, res);
 })
 
+router.get("/:idAgencia/buscarSO", function (req, res) {
+    gerenteController.buscarSO(req, res);
+})
+
+router.get("/:selecionado/:opcao/:idAgencia/filtrar", function (req, res) {
+    gerenteController.filtrar(req, res);
+})
+
+router.get("/:idAtm/procurarComponentes", function (req, res) {
+    gerenteController.procurarComponentes(req, res);
+})
+
 router.put("/:listaAtm/atualizar", function (req, res) {
     gerenteController.atualizar(req, res);
 })
