@@ -1,191 +1,77 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
-}
 
 * {
     box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
     text-decoration: none;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     list-style: none;
 }
 
-body{
+body {
     background-color: rgb(52, 52, 52);
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    display: flex;
+    margin: 0;
+    padding: 0;
 }
 
-/* Titulos */
-.principal2{
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    /* margin-top: 40px; */     
-    color: #5296CD;
-    height: 95%;
-    width: 80%;
-    background-color: rgb(34, 34, 34);
-    overflow: hidden;
-    border-radius: 17px;
-    box-shadow: #000000 6px, 5px, 5px, 9px;
-}
-
-.camposLogin {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.headerLogin {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 20%;
-}
-
-.headerLogin img {
-    width: 20%;
-}
-
-.headerLogin span {
-    text-decoration: none;
-}
-
-.footerLogin {
-    width: 100%;
-    height: 25%;
-    display: flex;
-    justify-content: center;
-}
-
-.Login{
-    border-radius:50px ;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    
-}
-
-.Login input {
+.inputLogin, 
+.form-control {
     background-color: rgb(86, 86, 86);
-    border: none;
-    font-weight: 600;
+    color: white;
+    border: 2px solid rgb(34, 34, 34);
     padding-left: 10px;
-    border: solid 2px rgb(34, 34, 34);
-    color: #fff;
-    transition: border-color 0.3s ease;
+    border-radius: 8px;
+    font-weight: 600;
 }
 
-.Login input::placeholder {
-    font-weight: bold;
-    color: #fff;
+.inputLogin::placeholder,
+.form-control::placeholder {
+    color: white;
     opacity: 1;
+    font-weight: bold;
 }
 
-input:focus {
+.inputLogin:focus,
+.form-control:focus {
     border-color: #5296CD;
     outline: none;
+    box-shadow: none;
 }
 
-.Login h1 {
-    font-size: 6ch;
-    display: flex;
-    justify-self: flex-start;
-    margin: 0;
-}
-
-.labels {
-    display: flex;
-    align-items:flex-start;
-    width: 70%;
-}
-
-.imagem{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 45%;
-    height: 95%;
-    background-image: url("../assets/cadastroimagem.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    border-radius: 20px;
-}
-
-/* Inputs de login */
-.Login span{
-    font-weight: 700;
-    text-align: left;
-    color: #fff;
-    margin-top: 10px;
-    font-size: 90%;
-}
-
-.inputLogin{
-    width: 70%;
-    height: 6vh;
-    border-radius: 8px;
-    border-width: 1px;
-    padding: 3px;
-}
-
-/* Botoes de cadastro e login */
-button{
-    width: 70%;
-    height: 10%;
-    border-radius: 8px;
-    border: none;
-    color: white;
+.btn-primary {
     background-color: #5296CD;
-    font-size: 17px;
-    cursor: pointer;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #407bb2;
 }
 
 
-.sem_cadastro{
-    margin-top: 5%;
-    color: white;
-}
-
-.home {
+.home a {
+    color: #5296CD;
+    background-color: rgb(86, 86, 86);
+    padding: 10px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    && a{
-        color: #5296CD;
-        font-weight: 500;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 20px;
-        text-decoration: none;
-        background-color: rgb(86, 86, 86);
-        padding: 10px;
-    } && a img{
-        width: 20px;
-        margin-right: 7px;
-    }
+}
+
+.home a img {
+    width: 20px;
+    margin-right: 7px;
 }
 
 
 @media (max-width: 768px) {
     .imagem {
-      display: none;
+        display: none;
     }
-  }
 
+    h1 {
+        font-size: 24px;
+    }
 
+    span, p {
+        font-size: 14px;
+    }
+}
