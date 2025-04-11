@@ -51,6 +51,21 @@ const cadastrarAgencia = async (req, res, fkEndereco) => {
     }
 }
 
+const atualizarAgencia = async (req, res) => {
+    console.log(req.params)
+    try{
+        const idAgencia = req.params.idAgencia;
+        const email = req.body.emailServer;
+        const numero = req.body.numeroServer;
+
+        await database.atualizarAgencia(idAgencia, email, numero);
+        return res.status(200).send("Agência atualizada com sucesso!");
+    } catch (error) {
+        console.log("Erro!", error)
+        return res.status(400).json(error);
+    }
+}
+
 const deletarAgencia = async (req, res) => {
     try{
         const idAgencia = req.params.idAgencia;
@@ -71,5 +86,6 @@ module.exports = {
     pesquisarAgencias,
     contarAgencias,
     cadastrarAgencia,
+    atualizarAgencia,
     deletarAgencia
 }

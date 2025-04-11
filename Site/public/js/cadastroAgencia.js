@@ -129,19 +129,19 @@ function carregarEmpresas() {
 
 function puxarCep() {
     const cep = document.getElementById("iptCEP").value;
-    if(cep.length == 8){
+    if (cep.length == 8) {
         fetch(`https://viacep.com.br/ws/${cep}/json/`, {
-    }).then((res) => {
-        res.json()
-        .then(json => {
-            console.log(json)
-            document.getElementById("iptUF").value = json.uf;
-            document.getElementById("iptCidade").value = json.localidade; 
-            document.getElementById("iptBairro").value = json.bairro; 
-            document.getElementById("iptLogradouro").value = json.logradouro; 
+        }).then((res) => {
+            res.json()
+                .then(json => {
+                    console.log(json)
+                    document.getElementById("iptUF").value = json.uf;
+                    document.getElementById("iptCidade").value = json.localidade;
+                    document.getElementById("iptBairro").value = json.bairro;
+                    document.getElementById("iptLogradouro").value = json.logradouro;
+                })
         })
-    })
-}
+    }
 }
 
 function cadastrarAgencia() {
@@ -192,6 +192,32 @@ function cadastrarAgencia() {
         });
 
     return false;
+}
+
+function atualizarAgencia() {
+    const idAgencia = document.getElementById("empresa").textContent;
+    const email = document.getElementById("iptEmailEdit").value;
+    const telefone = document.getElementById("iptNumeroEdit").value;
+
+    console.log("Id agencia", idAgencia)
+
+    if (confirm("Gostaria de atualizar a agência?")) {
+        fetch(`/agencias/atualizarAgencia/${idAgencia}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: email,
+                numeroServer: telefone
+            }),
+        }).then(function (res) {
+            console.log(res);
+            carregarCards();
+            mostrarModalEdit();
+        })
+    }
+
 }
 
 function deletarAgencia() {

@@ -12,6 +12,9 @@ router.get('/pesquisarAgencias/:nome', (req, res) => {
 router.get('/contarAgencias', (req, res) => {
     agenciaController.contarAgencias(req, res);
 })
+router.put('/atualizarAgencia/:idAgencia', (req, res) => {
+    agenciaController.atualizarAgencia(req, res);
+})
 router.post('/cadastrarAgencia', async (req, res) => {
     try {
         const insert = await enderecoController.cadastrarEndereco(req, res);

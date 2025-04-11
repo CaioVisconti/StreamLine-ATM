@@ -24,6 +24,12 @@ function cadastrarAgencia(codigoAgencia, email, numero, fkEndereco, fkEmpresa) {
     return database.executar(instrucaoSql);
 }
 
+function atualizarAgencia(idAgencia, email, numero){
+    const instrucaoSql = `UPDATE agencia SET email = '${email}', telefone = '${numero}' WHERE idAgencia = ${idAgencia};`
+
+    return database.executar(instrucaoSql)
+}
+
 function deletarAgencia(idAgencia){
     const instrucaoSql = `DELETE agencia FROM agencia WHERE idAgencia = ${idAgencia};`
 
@@ -35,5 +41,6 @@ module.exports = {
     pesquisarAgencias,
     contarAgencias,
     cadastrarAgencia,
+    atualizarAgencia,
     deletarAgencia
 };
