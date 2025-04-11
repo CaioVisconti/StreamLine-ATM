@@ -6,6 +6,7 @@ const router = Router();
 router.get('/mostrarAgencias', (req, res) => {
     agenciaController.mostrarCards(req, res);
 })
+
 router.get('/pesquisarAgencias/:nome', (req, res) => {
     agenciaController.pesquisarAgencias(req, res);
 })
@@ -18,7 +19,6 @@ router.put('/atualizarAgencia/:idAgencia', (req, res) => {
 router.post('/cadastrarAgencia', async (req, res) => {
     try {
         const insert = await enderecoController.cadastrarEndereco(req, res);
-        console.log("AAAAAAAAAAAAAAA", insert)
         const fkEndereco = insert.insertId;
         agenciaController.cadastrarAgencia(req, res, fkEndereco);
     } catch (error) {

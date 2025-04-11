@@ -1,5 +1,15 @@
+const nomeUsuario = sessionStorage.NOME_USUARIO;
+
+function carregarDados() {
+    nome_usuario.innerHTML = nomeUsuario;
+    carregarCards()
+    carregarEmpresas()
+    carregarKpi()
+}
+
 function carregarCards() {
     const pesquisa = ipt_pesquisa.value;
+    const filtro = document.getElementById("filtro-tipo").value;
     cardsContainer.innerHTML = "";
     if (pesquisa == "") {
         fetch("/agencias/mostrarAgencias", {
@@ -16,7 +26,7 @@ function carregarCards() {
                     <div class="perfil-agencia">
                     <div class="img-agencia"></div>
                     <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
-                    <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                    <img class="img-edit" data-id="${json[i].idAgencia}" onclick="mostrarModalEdit(this)" src="../assets/icone-editar.png">
                     </div>
                     <div class="info-agencia">
                     <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
@@ -28,7 +38,7 @@ function carregarCards() {
                     }
                 })
         })
-    } else {
+    } else if (pesquisa != "") {
         fetch(`/agencias/pesquisarAgencias/${pesquisa}`, {
             method: "GET",
             headers: {
@@ -44,7 +54,7 @@ function carregarCards() {
                             <div class="perfil-agencia">
                             <div class="img-agencia"></div>
                             <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
-                            <img class="img-edit" value="${json[i].idAgencia}" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                            <img class="img-edit" data-id="${json[i].idAgencia}" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
                             </div>
                             <div class="info-agencia">
                             <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
@@ -54,6 +64,7 @@ function carregarCards() {
                             </div>
                             `
                     }
+                    carregarCards()
                 })
         })
     }
@@ -86,9 +97,12 @@ function mostrarModalCad() {
     }
 }
 
-function mostrarModalEdit() {
+function mostrarModalEdit(cardAtual) {
+    const idAgencia = cardAtual.getAttribute("data-id");
     const modal = document.querySelector(".modal-edit");
     const fade = document.querySelector(".fade");
+
+    modal.setAttribute("data-id", idAgencia)
     if (modal.style.display == "none") {
         modal.style.display = "flex";
         fade.style.display = "block";
@@ -96,6 +110,15 @@ function mostrarModalEdit() {
         modal.style.display = "none"
         fade.style.display = "none";
     }
+}
+
+function fecharModalEdit() {
+    const modal = document.querySelector(".modal-edit");
+    const fade = document.querySelector(".fade");
+
+    modal.style.display = "none"
+    fade.style.display = "none";
+
 }
 
 function mostrarFiltros() {
@@ -195,7 +218,8 @@ function cadastrarAgencia() {
 }
 
 function atualizarAgencia() {
-    const idAgencia = document.getElementById("empresa").textContent;
+    const modal = document.querySelector(".modal-edit");
+    const idAgencia = modal.getAttribute("data-id");
     const email = document.getElementById("iptEmailEdit").value;
     const telefone = document.getElementById("iptNumeroEdit").value;
 
@@ -213,15 +237,17 @@ function atualizarAgencia() {
             }),
         }).then(function (res) {
             console.log(res);
-            carregarCards();
-            mostrarModalEdit();
+            fecharModalEdit()
+            carregarCards()
+            carregarKpi()
         })
     }
 
 }
 
 function deletarAgencia() {
-    const idAgencia = document.getElementById("empresa").textContent;
+    const modal = document.querySelector(".modal-edit");
+    const idAgencia = modal.getAttribute("data-id");
 
     console.log("IdAgencia:", idAgencia);
 
@@ -236,9 +262,9 @@ function deletarAgencia() {
         }).then(function (resultado) {
             console.log(resultado);
             if (resultado.ok) {
-                carregarCards();
-                mostrarModalEdit();
-                carregarKpi();
+                fecharModalEdit()
+                carregarCards()
+                carregarKpi()
             } else {
                 alert("Erro ao apagar agência")
             }

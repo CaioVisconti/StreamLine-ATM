@@ -13,11 +13,11 @@
     <script src="../js/cadastroAgencia.js"></script>
 </head>
 
-<body onload="carregarCards(), carregarEmpresas(), carregarKpi()">
+<body onload="carregarDados()">
     <nav>
         <div class="usuario">
             <div class="img-perfil"></div>
-            <div class="saudacoes">Olá, <br>Nome.</div>
+            <div class="saudacoes">Olá, <br><span id="nome_usuario"></span>.</div>
         </div>
         <div class="barra">
             <span class="problema">Relatar Problema</span>
@@ -54,8 +54,8 @@
                     </select>
                     <select id="filtro-tipo" class="filtro">
                         <option value="" selected disabled>Tipo</option>
-                        <option value="filtro-AZ">A-Z</option>
-                        <option value="filtro-ZA">Z-A</option>
+                        <option value="ASC">A-Z</option>
+                        <option value="DESC">Z-A</option>
                     </select>
                 </div>
                 <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
