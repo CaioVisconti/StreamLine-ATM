@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Agência | StreamLine</title>
-    <link rel="stylesheet" href="../style/cadastrarAgenda.css">
+    <link rel="stylesheet" href="../style/cadastrarAgencia.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet"
@@ -29,13 +29,17 @@
     <div class="container">
         <div class="navlateral">
             <div class="navegacao-paginas">
-                <a href="">Cadastrar Empresas</a>
+                <a href="../root/cadastrarEmpresa.html">Cadastrar Empresas</a>
                 <a href="cadastrarAgencia.html" id="atual">Cadastrar Agências</a>
                 <a href="">Cadastrar Gerentes</a>
             </div>
             <div class="kpi">
                 <span class="titulo">Agências Cadastradas</span>
                 <span class="valor" id="kpi"></span>
+            </div>
+            <div class="kpi">
+                <span class="titulo">Visualizar Contate-nos</span>
+                <button class="btn-nav">Visualizar</button>
             </div>
         </div>
         <div class="agencias">
@@ -47,13 +51,12 @@
                 <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
                 <div class="filtros" style="display: none;">
                     <select id="filtro-categoria" class="filtro">
-                        <option value="" selected disabled>Categoria</option>
-                        <option value="filtro-codigo">Código</option>
-                        <option value="filtro-nome">Nome</option>
-                        <option value="filtro-email">Email</option>
+                        <option value="undefined" selected disabled>Categoria</option>
+                        <option value="cidade">Cidade</option>
+                        <option value="undefined">Empresa</option>
                     </select>
                     <select id="filtro-tipo" class="filtro">
-                        <option value="" selected disabled>Tipo</option>
+                        <option value="undefined" selected disabled>Tipo</option>
                         <option value="ASC">A-Z</option>
                         <option value="DESC">Z-A</option>
                     </select>

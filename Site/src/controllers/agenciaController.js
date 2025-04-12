@@ -21,7 +21,21 @@ const pesquisarAgencias = async (req, res) =>{
         }
         return res.status(200).json(select);
     } catch (error) {
-        return res.status(500).json(error.message);
+        console.log(error)
+    }
+}
+
+const pesquisarAgenciasFiltradas = async (req, res) =>{
+    try{
+        console.log(req.params)
+        const nome = req.params.nome;
+        const select = await database.pesquisarAgenciasFiltradas(nome);
+        if(select.length == 0){
+            return res.status(400).send("Não foi encontrada uma agência com este nome!")
+        }
+        return res.status(200).json(select);
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -30,7 +44,8 @@ const contarAgencias = async (req, res) => {
         const select = await database.contarAgencias();
         return res.status(200).json(select);
     } catch (error){
-        console.log("Ocorreu um erro no controller!", error)
+        console.log("Ocorreu um erro no controller!", error);
+        return res.status(400).json(error)
     }
 }
 
@@ -84,6 +99,7 @@ const deletarAgencia = async (req, res) => {
 module.exports = {
     mostrarCards,
     pesquisarAgencias,
+    pesquisarAgenciasFiltradas,
     contarAgencias,
     cadastrarAgencia,
     atualizarAgencia,

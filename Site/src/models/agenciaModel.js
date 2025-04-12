@@ -12,6 +12,12 @@ function pesquisarAgencias(nome) {
     return database.executar(instrucaoSql);
 }
 
+function pesquisarAgenciasFiltradas(nome) {
+    const instrucaoSql = `SELECT * FROM agencia JOIN endereco ON agencia.fkEndereco = endereco.idEndereco WHERE endereco.cidade LIKE '${nome}%';`;
+  
+    return database.executar(instrucaoSql);
+}
+
 function contarAgencias(){
     const instrucaoSql = `SELECT COUNT(codigoAgencia) AS agencias FROM agencia;`
 
@@ -39,6 +45,7 @@ function deletarAgencia(idAgencia){
 module.exports = {
     mostrarCards,
     pesquisarAgencias,
+    pesquisarAgenciasFiltradas,
     contarAgencias,
     cadastrarAgencia,
     atualizarAgencia,

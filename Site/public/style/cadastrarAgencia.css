@@ -52,9 +52,9 @@ nav {
     cursor: pointer;
 }
 
-.sair button {
+.sair button, .kpi button {
     height: 50px;
-    width: 82px;
+    min-width: 82px;
     border-radius: 10px;
     background-color: #2A5277;
     color: white;
@@ -196,6 +196,12 @@ a {
     width: 100%;
     height: 100%;
     gap: 30px 100px;
+}
+
+.resultado {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
 }
 
 .cards {

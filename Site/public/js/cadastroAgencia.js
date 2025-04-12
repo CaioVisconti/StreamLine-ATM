@@ -7,67 +7,55 @@ function carregarDados() {
     carregarKpi()
 }
 
+function renderizarCards(json) {
+    for (let i = 0; i < json.length; i++) {
+        cardsContainer.innerHTML += `
+            <div class="cards">
+            <div class="perfil-agencia">
+            <div class="img-agencia"></div>
+            <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
+            <img class="img-edit" data-id="${json[i].idAgencia}" onclick="mostrarModalEdit(this)" src="../assets/icone-editar.png">
+            </div>
+            <div class="info-agencia">
+            <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
+            <span class="info">Telefone: <span id="telefone">${json[i].telefone}</span></span>
+            <span class="info">Email: <span id="email">${json[i].email}</span></span>
+            </div>
+            </div>
+            `
+    }
+}
+
 function carregarCards() {
     const pesquisa = ipt_pesquisa.value;
-    const filtro = document.getElementById("filtro-tipo").value;
+    const filtro = document.getElementById("filtro-categoria");
     cardsContainer.innerHTML = "";
-    if (pesquisa == "") {
-        fetch("/agencias/mostrarAgencias", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then((res) => {
-            res.json()
-                .then(json => {
-                    for (let i = 0; i < json.length; i++) {
-                        cardsContainer.innerHTML += `
-                    <div class="cards">
-                    <div class="perfil-agencia">
-                    <div class="img-agencia"></div>
-                    <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
-                    <img class="img-edit" data-id="${json[i].idAgencia}" onclick="mostrarModalEdit(this)" src="../assets/icone-editar.png">
-                    </div>
-                    <div class="info-agencia">
-                    <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
-                    <span class="info">Telefone: <span id="telefone">${json[i].telefone}</span></span>
-                    <span class="info">Email: <span id="email">${json[i].email}</span></span>
-                    </div>
-                    </div>
-                    `
-                    }
-                })
-        })
-    } else if (pesquisa != "") {
-        fetch(`/agencias/pesquisarAgencias/${pesquisa}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then((res) => {
-            res.json()
-                .then(json => {
-                    console.log(json)
-                    for (let i = 0; i < json.length; i++) {
-                        cardsContainer.innerHTML += `
-                            <div class="cards">
-                            <div class="perfil-agencia">
-                            <div class="img-agencia"></div>
-                            <span>Agência - <span id="empresa">${json[i].idAgencia}</span></span>
-                            <img class="img-edit" data-id="${json[i].idAgencia}" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
-                            </div>
-                            <div class="info-agencia">
-                            <span class="info">Código Agência:<span id="codigo">${json[i].codigoAgencia}</span></span>
-                            <span class="info">Telefone: <span id="telefone">${json[i].telefone}</span></span>
-                            <span class="info">Email: <span id="email">${json[i].email}</span></span>
-                            </div>
-                            </div>
-                            `
-                    }
-                    carregarCards()
-                })
-        })
+    let url = "";
+    if (pesquisa == "" && filtro.value == "undefined") {
+        url = "/agencias/mostrarAgencias"
+    } else if (pesquisa != "" && filtro.value == "undefined") {
+        url = `/agencias/pesquisarAgencias/${pesquisa}`
+    } else if (filtro.value != "undefined") {
+        url = `/agencias/pesquisarAgencias/${pesquisa}/${filtro.value}`
     }
+
+    fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        if (res.status == 400) {
+            cardsContainer.innerHTML = `<div class="resultado"><span>Nenhum resultado encontrado! :(</span></div>`
+        }
+        res.json()
+            .then(json => {
+                if (json.length == 0) {
+                    cardsContainer.innerHTML = `<div class="resultado"><span>Nenhuma agência cadastrada! :(</span></div>`;
+                }
+                renderizarCards(json);
+            })
+    })
 }
 
 function carregarKpi() {
@@ -167,6 +155,18 @@ function puxarCep() {
     }
 }
 
+function limparDados() {
+    document.getElementById("codigo-empresa").value = "";
+    document.getElementById("iptCodigoAgencia").value = "";
+    document.getElementById("iptEmail").value = "";
+    document.getElementById("iptNumero").value = "";
+    document.getElementById("iptCEP").value = "";
+    document.getElementById("iptUF").value = "";
+    document.getElementById("iptCidade").value = "";
+    document.getElementById("iptBairro").value = "";
+    document.getElementById("iptLogradouro").value = "";
+}
+
 function cadastrarAgencia() {
     var codigoEmpresaVar = document.getElementById("codigo-empresa").value;
     var codigoAgenciaVar = document.getElementById("iptCodigoAgencia").value;
@@ -205,6 +205,7 @@ function cadastrarAgencia() {
         carregarCards();
         mostrarModalCad();
         carregarKpi();
+        limparDados();
         if (!res.ok) {
             alert("Algum erro ocorreu no cadastro")
 
