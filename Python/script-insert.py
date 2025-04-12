@@ -6,8 +6,13 @@ import mysql.connector
 def conectar():
     return mysql.connector.connect(
         host="localhost",
+<<<<<<< Updated upstream
         user="root",
         password="Agjxsne/2013",
+=======
+        user="streamline",
+        password="Urubu@100",
+>>>>>>> Stashed changes
         database="streamline",
     )
 
@@ -36,7 +41,11 @@ def registrar_dados():
     conn = conectar()
     cursor = conn.cursor()
 
+<<<<<<< Updated upstream
     cursor.execute("INSERT INTO captura1_1 (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco, redeRecebido, redeEnviado, desativados, ativos, total))
+=======
+    cursor.execute("INSERT INTO captura (valor, dtHora) VALUES (%s, now())")
+>>>>>>> Stashed changes
     conn.commit()
     conn.close()
 
@@ -54,11 +63,7 @@ while True:
     discototal = psutil.disk_usage('C:\\').percent
     redeRecebido = psutil.net_io_counters().packets_recv
     redeEnviado = psutil.net_io_counters().packets_sent
-    total = 0
-    ativos = 0
-    desativados = 0
-    
-    
+
     # Só mostra o pid e o status do processo
     for processo in psutil.process_iter(attrs=['pid', 'status']):
         try:
