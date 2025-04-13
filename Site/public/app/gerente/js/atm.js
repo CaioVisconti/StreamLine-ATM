@@ -169,7 +169,6 @@ function mostrarModalCad() {
         if (alert) {
             modal.style.display = "none"
             fade.style.display = "none";
-
         }
     }
 }
@@ -191,6 +190,8 @@ function mostrarModalEdit(indice) {
     pesquisarEdit(indice);
 }
 
+let componentes = [];
+
 function pesquisarEdit(indice) {
     iptModeloEdit.value = vetor.lista[indice].modelo;
     iptIPEdit.value = vetor.lista[indice].ip;
@@ -210,16 +211,59 @@ function pesquisarEdit(indice) {
         .then(json => {
             let listagem = document.getElementById("listagem");
             listagem.innerHTML = "";
+            componentes = json;
             for(let i = 0; i < json.lista.length; i++) {
                 listagem.innerHTML += `
                     <div class="campo-modal-componentes">
                         <span>${json.lista[i].metrica}</span>
-                        <img class="img-edit" onclick="atualizar(${i}, ${idAtm})" src="../../assets/icone-editar.png">
+                        <img class="img-edit" onclick="mostrarModalEditComp(${i}, ${idAtm})" src="../../assets/icone-editar.png">
                     </div>
                 `;
             }
         })
     })
+    listagem.innerHTML += `
+    <div class="campo-modal-componentes">
+        <span onclick="cadastrarComponente(${idAtm})">+</span>
+    </div>`;
+    button_atualizar.innerHTML = `
+        <button onclick="atualizarAtm(${indice}, ${idAtm})">Salvar Mudanças</button>
+    `;
+}
+
+function mostrarModalEditComp(indice) {
+    const modalComponente = document.querySelector(".modal-edit-componente");
+    const modalEditAtm = document.querySelector(".modal-edit");
+    const fade = document.querySelector(".fade");
+    
+    modalEditAtm.style.display == "none";
+
+    if (modalComponente.style.display == "none") {
+        modalComponente.style.display = "flex";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modalComponente.style.display = "none"
+            fade.style.display = "none";
+        }
+    }
+
+    let metrica = componentes.lista[indice].metrica;
+    let componenteAtual = "";
+
+    if(metrica.includes("CPU")) {
+        componenteAtual = "CPU";
+    } else if(metrica.includes("RAM")) {
+        componenteAtual = "RAM";
+    } else if(metrica.includes("DISK")) {
+        componenteAtual = "DISK";
+    } else if(metrica.includes("REDE")) {
+        componenteAtual = "REDE";
+    } else {
+        componenteAtual = "PROCESSOS"
+    }
+
+    componente.innerHTML = componenteAtual;
 }
 
 function mostrarFiltros() {
@@ -322,7 +366,7 @@ function filtrar() {
     })
 }
 
-function atualizar(posicaoVetor, idAtm) {
+function atualizarAtm(posicaoVetor, idAtm) {
     let idATM = Number(idAtm);
     let modelo = iptModeloEdit.value;
     let ip = iptIPEdit.value;
@@ -342,22 +386,18 @@ function atualizar(posicaoVetor, idAtm) {
         fkAgencia: Number(idAgencia)
     }
 
-    console.log(listaAtm);
-    console.log(vetor.lista[posicaoVetor]);
-
-    if(listaAtm != vetor.lista[posicaoVetor]) {
-        console.log("passou aqui no atualizar ");
-        // fetch(`/gerente/${listaAtm}/atualizar`, {
-        //     method: "PUT",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     }
-        // }).then((resultado) => {
-        //     resultado.json()
-        //     .then(json => {
-        //         console.log(json.lista);
-        //     })
-        // })
+    if(JSON.stringify(listaAtm) != JSON.stringify(vetor.lista[posicaoVetor])) {
+        fetch(`/gerente/${listaAtm}/atualizar`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((resultado) => {
+            resultado.json()
+            .then(json => {
+                console.log(json.lista);
+            })
+        })
     }
 }
 

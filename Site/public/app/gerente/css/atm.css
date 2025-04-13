@@ -11,7 +11,6 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
 }
 
 .usuario {
@@ -272,6 +271,20 @@ a {
     z-index: 20;
 }
 
+.modal, .modal-edit-componente {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    position: absolute;
+    padding: 48px;
+    width: 750px;
+    height: 560px;
+    flex-direction: column;
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: white;
+    z-index: 20;
+}
 
 .modal-fechar {
     display: flex;
