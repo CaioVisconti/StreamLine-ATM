@@ -1,4 +1,3 @@
-var empresasParceiras;
 
 
 function carregarCards() {
@@ -18,12 +17,13 @@ function carregarCards() {
             res.json()
                 .then(json => {
                     for (let i = 0; i < json.length; i++) {
+                        console.log(json[i].idEmpresa)
                         cardsContainer.innerHTML += `
                     <div class="cards">
                         <div class="perfil-agencia">
                             <div class="img-agencia"></div>
                             <span id="empresa">${json[i].nome}</span>
-                            <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                            <img class="img-edit" data-id="${json[i].idEmpresa}" onclick="mostrarModalEdit(this)" src="../assets/icone-editar.png">
                         </div>
                         <div class="info-agencia">
                             <span class="info">Código da Empresa: <span style="font-weight: normal;" id="codigo">${json[i].codigo}</span></span>
@@ -79,21 +79,26 @@ function mostrarModalCad() {
     }
 }
 
-function mostrarModalEdit() {
+function mostrarModalEdit(elemento) {
     const modal = document.querySelector(".modal-edit");
     const fade = document.querySelector(".fade");
-    if (modal.style.display == "none") {
+
+    // pega o ID da empresa do botão clicado e salva no modal
+    const idEmpresa = elemento.getAttribute("data-id");
+    modal.setAttribute("data-id", idEmpresa);
+
+    if (modal.style.display == "none" || modal.style.display === "") {
         modal.style.display = "flex";
         fade.style.display = "block";
     } else {
         const alert = confirm("Gostaria de fechar o modal?");
         if (alert) {
-            modal.style.display = "none"
+            modal.style.display = "none";
             fade.style.display = "none";
-
         }
     }
 }
+
 
 function mostrarFiltros() {
     const filtro = document.querySelector(".filtros");
@@ -163,4 +168,32 @@ function empresasParceiras(){
         console.log(erro);
     })
 
+}
+
+
+function deletarEmpresa() {
+    const modal = document.querySelector(".modal-edit");
+    const idEmpresa = modal.getAttribute("data-id");
+
+    console.log("IdEmpresa:", idEmpresa);
+
+
+    if (confirm("Quer apagar a agência mesmo?")) {
+
+        fetch(`/empresas/deletarEmpresa/${idEmpresa}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resultado) {
+            console.log(resultado);
+            if (resultado.ok) {
+                location.reload();
+                fecharModalEdit()
+
+            } else {
+                alert("Erro ao apagar agência")
+            }
+        })
+    }
 }

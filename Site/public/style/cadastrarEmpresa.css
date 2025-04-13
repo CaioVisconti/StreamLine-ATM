@@ -345,6 +345,12 @@ a{
     font-weight: bolder;
 }
 
+
+.modal-fechar img{
+    height: 32px;
+    cursor: pointer;
+}
+
 .modal-container {
     display: flex;
     justify-content: center;

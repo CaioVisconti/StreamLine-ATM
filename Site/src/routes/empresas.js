@@ -15,6 +15,10 @@ router.get('/kpiParceiras', (req, res) => {
     empresaController.kpiParceiras(req, res);
 })
 
+router.delete('/deletarEmpresa/:idEmpresa', async (req, res) => {
+    empresaController.deletarEmpresa(req, res);
+})
+
 
 
 module.exports = router;

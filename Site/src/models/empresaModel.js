@@ -18,8 +18,15 @@ function kpiParceiras() {
     return database.executar(instrucaoSql);
 }
 
+function deletarEmpresa(idEmpresa){
+    const instrucaoSql = `DELETE FROM empresa WHERE idEmpresa = ${idEmpresa};`
+
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
     mostrarEmpresas,
     cadastrarEmpresas,
-    kpiParceiras
+    kpiParceiras,
+    deletarEmpresa
 };

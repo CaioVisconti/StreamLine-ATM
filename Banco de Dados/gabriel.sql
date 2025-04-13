@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS agencia (
   telefone VARCHAR(45) NOT NULL,
   fkEmpresa INT NOT NULL,
   fkEndereco INT NOT NULL,
-  FOREIGN KEY (fkEmpresa) REFERENCES empresa (idEmpresa),
+  FOREIGN KEY (fkEmpresa) REFERENCES empresa (idEmpresa) ON DELETE CASCADE,
   FOREIGN KEY (fkEndereco) REFERENCES endereco (idEndereco)
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS usuario (
   email VARCHAR(45) UNIQUE NOT NULL,
   senha VARCHAR(45) NOT NULL,
   fkAgencia INT,
-  FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
+  FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS atm (
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS atm (
   sistemaOperacional VARCHAR(45) NOT NULL,
   statusATM TINYINT NOT NULL,
   fkAgencia INT NOT NULL,
-  FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia)
+  FOREIGN KEY (fkAgencia) REFERENCES agencia (idAgencia) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS componentes (
@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS parametro (
     fkComponente INT NOT NULL,
     fkAtm INT NOT NULL,
 	PRIMARY KEY (idParametro, fkAtm, fkComponente),
-	FOREIGN KEY (fkAtm) REFERENCES atm(idAtm),
-	FOREIGN KEY (fkComponente) REFERENCES componentes(idComponentes)
+	FOREIGN KEY (fkAtm) REFERENCES atm(idAtm) ON DELETE CASCADE, 
+	FOREIGN KEY (fkComponente) REFERENCES componentes(idComponentes) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS alerta (
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS alerta (
   valor DOUBLE NOT NULL,
   dtHora DATETIME,
   fkParametro INT,
-  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro)
+  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS captura (
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS captura (
   valor DOUBLE,
   dtHora DATETIME,
   fkParametro INT,
-  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro)
+  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro) ON DELETE CASCADE
 );
 
 -- Inserindo empresas manualmente
@@ -195,6 +195,17 @@ CREATE USER "userPython"@"%" IDENTIFIED BY "Urubu100";
 GRANT SELECT ON streamline.teste TO "userPython"@"%";
 FLUSH PRIVILEGES;
 
-SELECT * FROM parametro AS p JOIN atm ON p.fkAtm = atm.idAtm;
+USE streamline;
+CREATE USER "rootPI"@"%" IDENTIFIED BY "Urubu#100";
+GRANT ALL ON streamline.* TO "rootPI"@"%";
+FLUSH PRIVILEGES;
 
-CREATE VIEW teste AS SELECT p.*, atm.hostname, atm.macAdress, componentes.* FROM parametro AS p JOIN atm ON p.fkAtm = atm.idAtm JOIN componentes ON componentes.idComponentes = p.fkComponente;
+SELECT * FROM parametro AS p JOIN atm ON p.fkAtm = atm.idAtm WHERE idAtm = 1;
+
+SELECT p.*, atm.hostname, atm.macAdress, componentes.* FROM parametro AS p JOIN atm ON p.fkAtm = atm.idAtm JOIN componentes ON componentes.idComponentes = p.fkComponente WHERE idAtm = 1;
+
+SELECT * FROM teste;
+
+SELECT p.*, atm.hostname, atm.macAdress, componentes.* FROM parametro AS p JOIN atm ON p.fkAtm = atm.idAtm JOIN componentes ON componentes.idComponentes = p.fkComponente WHERE idAtm = 1;
+
+CREATE VIEW teste AS SELECT p.*, atm.hostname, atm.macAdress, componentes.* FROM parametro AS p JOIN atm ON p.fkAtm = atm.idAtm JOIN componentes ON componentes.idComponentes = p.fkComponente WHERE idAtm = 1;

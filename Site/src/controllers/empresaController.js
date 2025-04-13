@@ -44,9 +44,25 @@ const kpiParceiras = async (req, res) => {
     }
 }
 
+const deletarEmpresa = async (req, res) => {
+    try{
+        const idEmpresa = req.params.idEmpresa;
+        console.log(req.params)
+
+        console.log(idEmpresa)
+
+        await database.deletarEmpresa(idEmpresa);
+        return res.status(200).send("Empresa deletada com sucesso!");
+    } catch (error) {
+        console.log("Erro", error)
+        return res.status(400).json(error.message)
+    }
+}
+
 
 module.exports = {
     mostrarEmpresas,
     cadastrarEmpresas,
-    kpiParceiras
+    kpiParceiras,
+    deletarEmpresa
 }
