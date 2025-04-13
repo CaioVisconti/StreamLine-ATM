@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard em Longo Prazo</title>
+    <link rel="stylesheet" href="../style/dashLongoPrazo.css">
+
+</head>
+<body>
+    <body onload="carregarCards(), empresasParceiras()">
+        <div class="nav-total">
+            <div class="info-user">
+                <div class="foto-user"></div>
+                <div class="msg-user">
+                    <span id="nomeFunc">
+                        
+                    </span>
+                </div>
+            </div>
+            <div class="nav-bar">
+                <div></div>
+                <span>Reportar Problema</span>
+            </div>
+            <button class="btn-nav">Sair</button>
+        </div>
+    
+        <div class="painel">
+            <div class="kpis">
+                <div class="escolha-opcoes">
+                    <div class="escolha-atm">
+                        <span>Selecionar ATM:</span>
+                        <select name="" id="">
+                            <option value="1">ATM 1</option>
+                            <option value="2">ATM 2</option>
+                            <option value="3">ATM 3</option>
+                            <option value="4">ATM 4</option>
+                            <option value="5">ATM 5</option>
+                        </select>
+                    </div>
+                    <div class="escolha-componentes">
+                        <span>Selecione um componente para visualizar seus dados:</span>
+                        <select name="" id="">
+                            <option value="1">CPU</option>
+                            <option value="2">RAM</option>
+                            <option value="3">DISCO</option>
+                            <option value="4">REDES</option>
+                            <option value="5">PROCESSOS</option>
+                        </select>
+                    </div>
+                    <div class="escolha-metricas">
+                        <span>Métricas Disponíveis:</span>
+                        <select name="" id="">
+                            <option value="1">PORCENTAGEM</option>
+                            <option value="2">FREQUÊNCIA</option>
+                            <option value="3">DISPONÍVEL</option>
+                            <option value="4">RECEBIDOS</option>
+                            <option value="5">ENVIADOS</option>
+                        </select>
+                    </div>
+                    <div class="escolha-datas">
+                        <span>Intervalo de Datas:</span>
+                        <div class="botoes">
+                            <button>Última semana</button>
+                            <button>Última mês</button>
+                        </div>
+                    </div>
+                    <div class="gerar-grafico">
+                        <button>Gerar Gráfico</button>
+                    </div>
+
+                    <div class="linha"></div>
+
+                    <div class="alertas">
+                        <span>Visualizar alertas de todos os componentes na última semana</span>
+                        <button>Exibir Alertas</button>
+                    </div>
+                </div>
+            </div>
+</body>
+</html>

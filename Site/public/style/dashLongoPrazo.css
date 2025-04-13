@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+* {
+    font-family: "Inter", sans-serif;
+}
+
+body{
+    background-color: #171D20;
+}
+
+a{
+    text-decoration: none;
+}
+
+.nav-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 11vh;
+}
+
+.info-user{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 15vw;
+    height: 11vh;
+    /* border: 1px solid red; */
+}
+
+.foto-user{
+    background-color: #2A5277;
+    height: 75px;
+    width: 75px;
+    border-radius: 70px;
+}
+
+.msg-user{
+    display: flex;
+    font-family: "Inter", sans-serif;
+    height: 50px;
+    width: 80px;
+    font-size: 22px;
+    color: #FFFFFF;
+}
+
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 70vw;
+    height: 6vh;
+    background-color: rgba(83, 83, 83, 0.39);
+    border-radius: 50px;
+    align-items: center;
+}
+
+.nav-bar span{
+    color: #FFFFFF;
+    font-size: 15px;
+}
+
+.btn-nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    width: 6vw;
+    height: 6vh;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-size: 15px;
+    background-color: #2A5277;
+    cursor: pointer;
+}
+
+.painel{
+    display: flex;
+    align-items: center;
+    height: 85vh;
+    /* border: 1px solid red; */
+
+}
+
+.kpis{
+    display: flex;
+    height: 80vh;
+    width: 20vw;
+    /* border: 1px solid red; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+.escolha-opcoes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 18vw;
+    height: 80vh;
+    /* border: 1px solid red; */
+    background-color: rgba(83, 83, 83, 0.39);
+    border-radius: 10px;
+}
+
+.escolha-atm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    height: 13%;
+    width: 80%;
+    /* border: 1px solid red; */
+}
+
+.escolha-atm select{
+    cursor: pointer;
+    width: 80%;
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+
+.escolha-componentes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    height: 13%;
+    width: 100%;
+    /* border: 1px solid red; */
+}
+
+.escolha-componentes span{
+    text-align: center;
+    cursor: pointer;
+}
+
+.escolha-componentes select{
+    text-align: center;
+    cursor: pointer;
+    width: 70%;
+    border: none;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+
+.escolha-metricas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    height: 13%;
+    width: 100%;
+    /* border: 1px solid red; */
+}
+
+.escolha-metricas span{
+    text-align: center;
+    cursor: pointer;
+}
+
+.escolha-metricas select{
+    text-align: center;
+    cursor: pointer;
+    width: 70%;
+    border: none;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+
+.escolha-datas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    height: 13%;
+    width: 100%;
+    /* border: 1px solid red; */
+}
+
+.escolha-datas span{
+    cursor: pointer;
+    text-align: center;
+}
+
+.botoes{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    height: 35%;
+    /* border: 1px solid red; */
+}
+.botoes button{
+    text-align: center;
+    cursor: pointer;
+    width: 40%;
+    border: none;
+    border-radius: 5px;
+    padding: 2px;
+    border: none;
+}
+
+.gerar-grafico{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    height: 7%;
+    /* border: 1px solid red; */
+}
+
+.gerar-grafico button{
+    width: 50%;
+    border-radius: 5px;
+    padding: 2px;
+    background-color: #2A5277;
+    border: none;
+    color: white;
+}
+
+.linha {
+    width: 100%;
+    height: 0.5px; /* menor que 1px */
+    background-color: white;
+}
+
+.alertas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    height: 17%;
+    width: 100%;
+    /* border: 1px solid red; */
+}
+
+.alertas span{
+    cursor: pointer;
+    text-align: center;
+}
+
+.alertas button{
+    width: 50%;
+    height: 40%;
+    border-radius: 5px;
+    padding: 2px;
+    background-color: #2A5277;
+    border: none;
+    color: white;
+}
