@@ -118,21 +118,21 @@ INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES
 
 -- Inserindo 15 ATMs para a primeira agência do Banco do Brasil
 INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM, fkAgencia) VALUES
-('Jade', 'Gabriel Teste', '192.168.1.1', '20:c1:9b:5e:4e:d0', 'Windows 11', 1, 2),
-('ATM002', 'NCR', '192.168.1.2', '00:1A:2B:3C:4D:5F', 'Windows 10', 1, 2),
-('ATM003', 'Diebold', '192.168.1.3', '00:1A:2B:3C:4D:60', 'Windows 10', 1, 2),
-('ATM004', 'NCR', '192.168.1.4', '00:1A:2B:3C:4D:61', 'Windows 10', 1, 2),
-('ATM005', 'Diebold', '192.168.1.5', '00:1A:2B:3C:4D:62', 'Windows 10', 1, 2),
-('ATM006', 'NCR', '192.168.1.6', '00:1A:2B:3C:4D:63', 'Windows 10', 1, 2),
-('ATM007', 'Diebold', '192.168.1.7', '00:1A:2B:3C:4D:64', 'Windows 10', 1, 2),
-('ATM008', 'NCR', '192.168.1.8', '00:1A:2B:3C:4D:65', 'Windows 10', 1, 2),
-('ATM009', 'Diebold', '192.168.1.9', '00:1A:2B:3C:4D:66', 'Windows 10', 1, 2),
-('ATM010', 'NCR', '192.168.1.10', '00:1A:2B:3C:4D:67', 'Windows 10', 1, 2),
-('ATM011', 'Diebold', '192.168.1.11', '00:1A:2B:3C:4D:68', 'Windows 10', 1, 2),
-('ATM012', 'NCR', '192.168.1.12', '00:1A:2B:3C:4D:69', 'Windows 10', 1, 2),
-('ATM013', 'Diebold', '192.168.1.13', '00:1A:2B:3C:4D:70', 'Windows 10', 1, 2),
-('ATM014', 'NCR', '192.168.1.14', '00:1A:2B:3C:4D:71', 'Windows 10', 1, 2),
-('ATM015', 'Diebold', '192.168.1.15', '00:1A:2B:3C:4D:72', 'Windows 10', 1, 2);
+('Jade', 'Gabriel Teste', '192.168.1.1', '20:c1:9b:5e:4e:d0', 'Windows 11', 1, 1),
+('ATM002', 'NCR', '192.168.1.2', '00:1A:2B:3C:4D:5F', 'Windows 10', 1, 1),
+('ATM003', 'Diebold', '192.168.1.3', '00:1A:2B:3C:4D:60', 'Windows 10', 1, 1),
+('ATM004', 'NCR', '192.168.1.4', '00:1A:2B:3C:4D:61', 'Windows 10', 1, 1),
+('ATM005', 'Diebold', '192.168.1.5', '00:1A:2B:3C:4D:62', 'Windows 10', 1, 1),
+('ATM006', 'NCR', '192.168.1.6', '00:1A:2B:3C:4D:63', 'Windows 10', 1, 1),
+('ATM007', 'Diebold', '192.168.1.7', '00:1A:2B:3C:4D:64', 'Windows 10', 1, 1),
+('ATM008', 'NCR', '192.168.1.8', '00:1A:2B:3C:4D:65', 'Windows 10', 1, 1),
+('ATM009', 'Diebold', '192.168.1.9', '00:1A:2B:3C:4D:66', 'Windows 10', 1, 1),
+('ATM010', 'NCR', '192.168.1.10', '00:1A:2B:3C:4D:67', 'Windows 10', 1, 1),
+('ATM011', 'Diebold', '192.168.1.11', '00:1A:2B:3C:4D:68', 'Windows 10', 1, 1),
+('ATM012', 'NCR', '192.168.1.12', '00:1A:2B:3C:4D:69', 'Windows 10', 1, 1),
+('ATM013', 'Diebold', '192.168.1.13', '00:1A:2B:3C:4D:70', 'Windows 10', 1, 1),
+('ATM014', 'NCR', '192.168.1.14', '00:1A:2B:3C:4D:71', 'Windows 10', 1, 1),
+('ATM015', 'Diebold', '192.168.1.15', '00:1A:2B:3C:4D:72', 'Windows 10', 1, 1);
 
 
 -- MÉTRICAS E CONFIGURAÇÕES
@@ -161,6 +161,12 @@ INSERT INTO parametro (fkAtm, fkComponente, limite, dtAlteracao) VALUES
 (8, 3, 85.0, '2025-03-31'),
 (9, 4, 85.0, '2025-04-06');
 
+
+INSERT INTO streamline.parametro (fkAtm, fkComponente, limite, dtAlteracao) VALUES
+(1, 2, 900, '2025-04-11');
+
+INSERT INTO alerta (valor, dtHora, fkParametro) VALUES
+(12, "2025-12-11 09:12:00", 1);
 -- Selecionar componentes e configurações de tal atm
 /*
 SELECT 
@@ -205,4 +211,4 @@ USE streamline;
 DESC componentes;
 SELECT COUNT(al.fkParametro) AS alertas FROM atm JOIN agencia AS a ON atm.fkAgencia = a.idAgencia JOIN parametro AS p ON atm.idAtm = p.fkAtm JOIN alerta AS al ON al.fkParametro = p.idParametro WHERE idAgencia = 1 GROUP BY a.idAgencia;
 
-SELECT tipo FROM 
+SELECT tipo FROM componentes AS c JOIN parametro AS p ON p.fkComponente = c.idComponentes WHERE p.fkAtm = 1;

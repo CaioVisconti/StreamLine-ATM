@@ -44,4 +44,16 @@ router.post("/cadastrarATM", function (req, res) {
     gerenteController.cadastrarATM(req, res);
 })
 
+router.get("/:componenteAtual/:idAtm/pesquisarConfiguracao", function (req, res) {
+    gerenteController.pesquisarConfiguracao(req, res);
+})
+
+router.put("/:limiteAtual/:idConfig/atualizarParametro", function (req, res) {
+    gerenteController.atualizarParametro(req, res);
+})
+
+router.get("/:idAtm/:comp/procurarConfigDisponivel", function (req, res) {
+    gerenteController.procurarConfigDisponivel(req, res);
+})
+
 module.exports = router;

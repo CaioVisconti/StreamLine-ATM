@@ -379,3 +379,89 @@ a {
 span, .campo-modal-componentes {
     text-align: center;
 }
+
+.campo-modal-configuracao {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    height: 50px;
+    font-size: 24px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 22px
+}
+
+span, .campo-modal-configuracao {
+    text-align: left;
+}
+
+#listagem_configuracoes {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3%;
+    overflow-y: scroll;
+}
+
+#listagem_config {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3%;
+    gap: 6%;
+    overflow-y: scroll;
+}
+
+.modal, .modal-edit-configuracao {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    position: absolute;
+    padding: 48px;
+    width: 500px;
+    height: 350px;
+    flex-direction: column;
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: white;
+    z-index: 20;
+}
+
+.modal-container-config {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 38px;
+    height: 100%;
+}
+
+.add-config {
+    justify-content: center;
+    align-items: center;
+    font-size: 30px
+}
+
+.add-config:hover{
+    cursor: pointer;
+}
+
+.modal, .modal-cad-configuracao {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    position: absolute;
+    padding: 48px;
+    width: 500px;
+    height: 350px;
+    flex-direction: column;
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: white;
+    z-index: 20;
+}

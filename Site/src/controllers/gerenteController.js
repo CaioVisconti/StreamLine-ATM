@@ -1,4 +1,5 @@
 const gerenteModel = require("../models/gerenteModel");
+const { get } = require("../routes/gerente");
 
 function buscarKpiTotal(req, res) {
     let idAgencia = req.params.idAgencia;
@@ -161,6 +162,54 @@ function cadastrarATM(req, res) {
         });
 }
 
+function pesquisarConfiguracao(req, res) {
+    let componente = req.params.componenteAtual;
+    let idAtm = req.params.idAtm;
+
+    gerenteModel.procurarConfiguracao(componente, idAtm)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de atms:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function atualizarParametro(req, res) {
+    let limite = req.params.limiteAtual;
+    let id = req.params.idConfig;
+
+    gerenteModel.atualizarParametro(limite, id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de atms:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function procurarConfigDisponivel(req, res) {
+    let id = req.params.idAtm;
+    let componente = req.params.comp;
+
+    gerenteModel.procurarConfigDisponivel(id, componente)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de atms:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     buscarKpiTotal,
     buscarKpiAlerta,
@@ -171,5 +220,8 @@ module.exports = {
     filtrar,
     procurarComponentes,
     atualizar,
-    cadastrarATM
+    cadastrarATM,
+    pesquisarConfiguracao,
+    atualizarParametro,
+    procurarConfigDisponivel
 }

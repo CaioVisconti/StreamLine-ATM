@@ -170,12 +170,55 @@
                         </div>
                         <div id="lista_configuracoes">
                             <span><b>Configurações:</b></span>
-                            <div id="listagem-config"></div>
+                            <div id="listagem_config"></div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-botao">
-                    <button onclick="atualizar()">Salvar Mudanças</button>
+            </div>
+        </div>
+        <div class="modal-edit-configuracao" style="display: none;">
+            <div class="modal-fechar">
+                <span onclick="mostrarModalEditConfig()">&#x2715;</span>
+            </div>
+            <div class="modal-container-config">
+                <div style="display: flex;flex-direction: row; height: 100%;">
+                    <div class="listagem_cadastro">
+                        <div class="modal-infos">
+                            <span>Medida:</span>
+                            <div class="campo-modal-componentes">
+                                <span id="medida"></span>
+                            </div>
+                        </div>
+                        <div class="modal-infos">
+                            <span>Limite:</span>
+                            <input id="limite" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div id="button_atualizar_config" class="modal-botao">
+                    <button>Salvar Mudanças</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-cad-configuracao" style="display: none;">
+            <div class="modal-fechar">
+                <span onclick="mostrarModalCadConfig()">&#x2715;</span>
+            </div>
+            <div class="modal-container-config">
+                <div style="display: flex;flex-direction: row; height: 100%;">
+                    <div class="listagem_cadastro">
+                        <div class="modal-infos">
+                            <span>Medida:</span>
+                            <select id="slt_medida" class="select-empresa"></select>
+                        </div>
+                        <div class="modal-infos">
+                            <span>Limite:</span>
+                            <input id="ipt_limite" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div id="button_cadastrar_config" class="modal-botao">
+                    <button>Cadastrar</button>
                 </div>
             </div>
         </div>
