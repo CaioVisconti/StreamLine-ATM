@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard em Longo Prazo</title>
     <link rel="stylesheet" href="../style/dashLongoPrazo.css">
+    <script src="../js/dashLongoPrazo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 
 </head>
 <body>
-    <body onload="carregarCards(), empresasParceiras()">
+    <body onload="gerarGraficos()">
         <div class="nav-total">
             <div class="info-user">
                 <div class="foto-user"></div>
@@ -65,34 +68,49 @@
                             <button>Última mês</button>
                         </div>
                     </div>
-                    <div class="gerar-grafico">
+                    <div class="gerar-grafico" onclick="gerarGraficos()">
                         <button>Gerar Gráfico</button>
                     </div>
                     <div class="linha"></div>
                     <div class="alertas">
                         <span>Visualizar alertas de todos os componentes na última semana</span>
-                        <button>Exibir Alertas</button>
+                        <button onclick="exibirAlertas()">Exibir Alertas</button>
                     </div>
                 </div>
             </div>
 
-            <div class="organizar">
+            <div class="organizar" style="display: flex;">
 
                 <div class="kpi-prazo">
                     <div class="kpi-1">
-                        <span>MÉDIA USO GERAL DE CPU: <span>74%</span></span>
+                        <span>MAIOR PICO DE COMPONENTE: <br> <span>PORCENTAGEM </span> <span> CPU: </span><span>74%</span></span>
                     </div>
                     <div class="kpi-2">
-                        <span>DIA COM MAIS ALERTAS: <span>08/04/2025</span></span>
+                        <span>DIA COM MAIS ALERTAS: <br><span>08/04/2025</span></span>
                     </div>
                     <div class="kpi-3">
-                        <span>ATM COM MAIS ALERTAS: <span>ATM 2</span></span>
+                        <span>NÚMEROS DE ALERTAS: <span>12</span></span>
                     </div>
                 </div>
     
                 <div class="fundo">
                     <div class="fundo-grafico">
-    
+                        <div class="titulo-grafico">
+                            <div style="font-weight: bold;" ><span>CPU - <span> 23/03/2025 </span><span>até</span> <span> 30/03/2025 </span> <br> <span>(Porcentagem)</span></div> 
+                            <div class="legenda">
+                              <div class="bolinhas">
+                                <div class="red"></div>
+                                <div class="roxo"></div>
+                              </div>
+                              <div class="legenda-titulo">
+                                <span>LIMITE</span>
+                                <span>REAL</span>
+                              </div>
+                            </div>
+                        </div>
+                        <div id="grafico">
+                            <canvas class="graficos-style" id="meuGrafico"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -108,18 +126,77 @@
                         <div class="kpi-cpu">
                             <div class="kpi-porcentagem">
                                 <span>PORCENTAGEM</span>
-                                <div></div>
+                                <div class="bola">
+                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
+                                </div>
+                              </div>
+                            <div style="height: 5%;"></div>
+                            <div class="kpi-disponivel">
+                                <span>DISPONÍVEL</span>
+                                <div class="bola">
+                                    <span class="numero-alerta" id="cpu-porcentagem">50</span>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ram">
+                        <span>RAM</span>
+                        <div></div>
+                        <div class="kpi-ram">
+                            <div class="kpi-porcentagem">
+                                <span>PORCENTAGEM</span>
+                                <div class="bola">
+                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
+                                </div>
                             </div>
                             <div style="height: 5%;"></div>
                             <div class="kpi-disponivel">
                                 <span>DISPONÍVEL</span>
-                                <div></div>
+                                <div class="bola">
+                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="ram"></div>
-                    <div class="disco"></div>
-                    <div class="pacotes"></div>
+                    <div class="disco">
+                        <span>DISCO</span>
+                        <div></div>
+                        <div class="kpi-disco">
+                            <div class="kpi-porcentagem">
+                                <span>PORCENTAGEM</span>
+                                <div class="bola">
+                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
+                                </div>
+                            </div>
+                            <div style="height: 5%;"></div>
+                            <div class="kpi-disponivel">
+                                <span>DISPONÍVEL</span>
+                                <div class="bola">
+                                    <span class="numero-alerta" id="cpu-porcentagem">50</span>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pacotes">
+                        <span>PACOTES</span>
+                        <div></div>
+                        <div class="kpi-pacotes">
+                            <div class="kpi-porcentagem">
+                                <span>PORCENTAGEM</span>
+                                <div class="bola">
+                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
+                                </div>
+                            </div>
+                            <div style="height: 5%;"></div>
+                            <div class="kpi-disponivel">
+                                <span>DISPONÍVEL</span>
+                                <div class="bola">
+                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

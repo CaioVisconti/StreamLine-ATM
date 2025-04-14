@@ -228,6 +228,7 @@ a{
     background-color: #2A5277;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 .linha {
@@ -260,6 +261,7 @@ a{
     background-color: #2A5277;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 .kpi-prazo{
@@ -284,9 +286,10 @@ a{
 
 .kpi-1{
     display: flex;
+    text-align: center;
     justify-content: center;
-    width: 30%;
     align-items: center;
+    width: 30%;
     height: 100%;
     color: white;
     background-color: rgb(99, 30, 30);
@@ -297,6 +300,7 @@ a{
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     width: 30%;
     height: 100%;
     color: white;
@@ -308,6 +312,7 @@ a{
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     width: 30%;
     height: 100%;
     color: white;
@@ -328,6 +333,9 @@ a{
 
 .fundo-grafico{
     display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
     width: 95%;
     height: 90%;
     /* border: 1px solid orange; */
@@ -335,21 +343,92 @@ a{
     border-radius: 10px;
 }
 
+.legenda{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 13%;
+    border-radius: 20px;
+    align-items: center;
+    /* border: 1px solid red; */
+    color: white;
+    background-color: rgba(46, 50, 52, 1);
+}
+
+.bolinhas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 40%;
+    /* border: 1px solid red; */
+}
+
+.legenda-titulo{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-around;
+    height: 80%;
+    width: 50%;
+    font-size: 15px;
+    /* border: 1px solid red; */
+}
+
+.red{
+    height: 30%;
+    width: 40%;
+    background-color: red;
+    border-radius: 25%;
+}
+
+.roxo{
+    height: 30%;
+    width: 40%;
+    background-color: rgba(141, 52, 249, 1);
+    border-radius: 25%;
+}
+
+.titulo-grafico{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 95%;
+    height: 15%;
+    /* border: 1px solid rgb(106, 255, 0); */
+}
+
+#grafico {
+    display: flex;
+    width: 95%;
+    height: 70%;
+    /* border: 1px solid red; */
+    align-items: center;
+    justify-content: center;
+}
+
+.graficos-style {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
 
 .organizar-compontentes{
     display: flex;
     flex-direction: column;
     font-size: 16px;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     width: 95%;
-    height: 95%;
+    height: 100%;
     /* border: 1px solid orange; */
 }
 
 
 .organizar-compontentes span{
-    font-size: 26px;
+    font-size: 22px;
     color: white;
 }
 
@@ -378,6 +457,92 @@ a{
 }
 
 .kpi-cpu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    height: 90%;
+    /* border: 1px solid red; */
+}
+
+
+.kpi-porcentagem{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 50px;
+    width: 100%;
+    height: 50%;
+    /* border: 1px solid red; */
+}
+
+.kpi-porcentagem span{
+    font-size: 20px;
+}
+
+.kpi-porcentagem div{
+    display: flex;
+    width: 75%;
+    height: 82%;
+    /* border: 1px solid red; */
+    background-color: #5b1919ba;
+    border-radius: 100px;
+}
+
+.bola {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 54px;
+}
+
+
+#cpu-porcentagem{
+    font-size: 40px;
+}
+
+.kpi-disponivel{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 50px;
+    width: 100%;
+    height: 50%;
+    /* border: 1px solid red; */
+}
+
+.kpi-disponivel span{
+    font-size: 20px;
+}
+
+.kpi-disponivel div{
+    width: 75%;
+    height: 82%;
+    /* border: 1px solid red; */
+    background-color: #5b1919ba;
+    border-radius: 100px;
+}
+
+.ram{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25%;
+    height: 95%;
+    border-right: 1px solid white;
+    /* border: 1px solid red; */
+}
+
+.kpi-ram{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -434,19 +599,138 @@ a{
     border-radius: 100px;
 }
 
-.ram{
-    display: flex;
-    width: 25%;
-    height: 100%;
-    border-right: 1px solid white;
-}
+
 .disco{
     display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
     width: 25%;
-    height: 100%;
+    height: 95%;
     border-right: 1px solid white;
+    /* border: 1px solid red; */
 }
+
+.kpi-disco{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    height: 90%;
+    /* border: 1px solid red; */
+}
+
+
+.kpi-porcentagem{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 50px;
+    width: 100%;
+    height: 50%;
+    /* border: 1px solid red; */
+}
+
+.kpi-porcentagem span{
+    font-size: 20px;
+}
+
+.kpi-porcentagem div{
+    width: 75%;
+    height: 82%;
+    /* border: 1px solid red; */
+    background-color: #5b1919ba;
+    border-radius: 100px;
+}
+
+.kpi-disponivel{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 50px;
+    width: 100%;
+    height: 50%;
+    /* border: 1px solid red; */
+}
+
+.kpi-disponivel span{
+    font-size: 20px;
+}
+
+.kpi-disponivel div{
+    width: 75%;
+    height: 82%;
+    /* border: 1px solid red; */
+    background-color: #5b1919ba;
+    border-radius: 100px;
+}
+
 .pacotes{
     display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
     width: 25%;
+    height: 95%;
+    /* border: 1px solid red; */
+}
+
+.kpi-pacotes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    height: 90%;
+    /* border: 1px solid red; */
+}
+
+
+.kpi-porcentagem{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 50px;
+    width: 100%;
+    height: 50%;
+    /* border: 1px solid red; */
+}
+
+.kpi-porcentagem span{
+    font-size: 20px;
+}
+
+.kpi-porcentagem div{
+    width: 75%;
+    height: 82%;
+    /* border: 1px solid red; */
+    background-color: #5b1919ba;
+    border-radius: 100px;
+}
+
+.kpi-disponivel{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 50px;
+    width: 100%;
+    height: 50%;
+    /* border: 1px solid red; */
+}
+
+.kpi-disponivel span{
+    font-size: 20px;
+}
+
+.kpi-disponivel div{
+    width: 75%;
+    height: 82%;
+    /* border: 1px solid red; */
+    background-color: #5b1919ba;
+    border-radius: 100px;
 }
