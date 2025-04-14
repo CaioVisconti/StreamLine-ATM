@@ -40,19 +40,9 @@
 
             <h3>Máquinas e Status:</h3>
 
-            <menu id="menuATM">    
-                <li><button onclick="graficoEspecifico()">ATM 1</button> <div class="status"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 2</button> <div class="status"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 3</button> <div class="status" style="background-color: red;"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 4</button> <div class="status" style="background-color: red;"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 5</button> <div class="status"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 6</button> <div class="status" style="background-color: yellow;"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 7</button> <div class="status"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 8</button> <div class="status"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 9</button> <div class="status"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 10</button> <div class="status"  style="background-color: red;"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 11</button> <div class="status"></div></li>
-                <li><button onclick="graficoEspecifico()">ATM 12</button> <div class="status"  style="background-color: yellow;"></div></li>
+            <menu id="menuATM">  
+            <div id="divAtms">
+            </div>
             </menu>
 
         </div>
@@ -118,8 +108,34 @@
 
 window.onload = function () {
         exibirKPIs();
-        exibirGrafico();
+        exibirAtms();
     };
+
+    const id = sessionStorage.ID_AGENCIA
+
+    function exibirAtms(){
+        console.log("Cheguei")
+        fetch(`/medidas/atms/${id}`,{
+            method: "GET",
+            headers: {
+                "content-Type": "application/json"
+            }
+        })
+        .then((res) => {
+                console.log(res)
+                res.json()
+                .then(json => {
+                    console.log(json)
+                    for (let i = 0; i < json.length; i++) {
+                        console.log(json[i])
+                        divAtms.innerHTML += `<li><button onclick="graficoEspecifico()">ATM ${i+1}</button> <div class="status"></div></li>`
+                    }
+                })
+            })
+            .catch(error => {
+                console.error('Erro ao obter atms:', error);
+            });
+    }
 
     function exibirKPIs() {
         fetch('/medidas/kpis')
@@ -133,7 +149,7 @@ window.onload = function () {
             .then(data => {
                 if (data && data.length > 0) {
                     const kpiData = data[0];
-                    document.getElementById('kpi1').innerText = kpiData.atmsSemAlerta; 
+                    document.getElementById('kpi1').innerText = kpiData.atmsSemAlertas; 
                     document.getElementById('kpi2').innerText = kpiData.atmsMedios;
                     document.getElementById('kpi3').innerText = kpiData.atmsCritico;
                 }

@@ -11,4 +11,9 @@ router.get("/pacotes", function (req, res) {
     medidaController.buscarPacotes(req, res);
 });
 
+router.get("/atms/:id", function (req, res) {
+    medidaController.buscarAtms(req, res);
+
+});
+
 module.exports = router;

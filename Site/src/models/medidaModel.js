@@ -2,11 +2,7 @@ var database = require("../database/config");
 
 function buscarKPIs() {
     var instrucaoSql = `
-    SELECT 
-        viewCritico.atmsCritico,
-        viewMedio.atmsMedios,
-        viewBom.atmsSemAlerta
-    FROM viewCritico, viewMedio, viewBom;
+    SELECT * FROM viewCritico, viewMedio, viewBom;
     `;
     
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -20,7 +16,17 @@ function buscarPacotes() {
     return database.executar(instrucaoSql);
 }
 
+function buscarAtms(idAgencia) {
+    var instrucaoSql = `
+    select idAtm as "ID" from atm
+    join agencia on agencia.idAgencia = atm.fkAgencia
+    where fkAgencia = ${idAgencia};`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarKPIs,
     buscarPacotes,
+    buscarAtms
 };

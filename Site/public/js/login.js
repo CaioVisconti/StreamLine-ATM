@@ -49,7 +49,7 @@ function login() {
             var cargoUsuario = sessionStorage.CARGO_USUARIO;
     
             if (cargoUsuario === "Técnico de Operação" || cargoUsuario === "técnico de operação")  {
-                window.location = "./app/dashTempoReal.html"; 
+                window.location = "./app/dashRealtime.html"; 
             } else if (cargoUsuario === "Gerente" || cargoUsuario === "gerente") {
                 window.location = "./app/gerente/gerenteATM.html"; 
             } else if (cargoUsuario === "Analista de Dados" || cargoUsuario === "analista de dados") {
