@@ -219,6 +219,7 @@ function mostrarModalEdit(indice) {
 }
 
 let componentes = "";
+let vetorRepetidos = "";
 
 function pesquisarEditAtm(indice) {
     iptModeloEdit.value = vetor.lista[indice].modelo;
@@ -240,7 +241,7 @@ function pesquisarEditAtm(indice) {
             let listagem = document.getElementById("listagem");
             listagem.innerHTML = "";
             componentes = json;
-            let vetorRepetidos = [];
+            vetorRepetidos = [];
             for(let i = 0; i < json.lista.length; i++) {
                 let componente = "";
 
@@ -270,9 +271,7 @@ function pesquisarEditAtm(indice) {
 
             if(vetorRepetidos.length <= 4) {
                 listagem.innerHTML += `
-                <div class="campo-modal-componentes" style="text-align: center">
-                    <span onclick="cadastrarComponente(${idAtm})">+</span>
-                </div>`;
+                <div class="campo-modal-componentes botao-cadastrar-componente" onclick="mostrarModalCadComp(${idAtm})">+</div>`;
             }
         })
     })
@@ -317,6 +316,67 @@ function atualizarAtm(posicaoVetor, idAtm) {
 }
 
 let configuracao = "";
+
+function mostrarModalCadComp(idAtm) {
+    const modalComponente = document.querySelector(".modal-cad-componente");
+    const fade = document.querySelector(".fade");
+
+    if (modalComponente.style.display == "none") {
+        modalComponente.style.display = "flex";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modalComponente.style.display = "none"
+            fade.style.display = "none";
+        }
+    }
+
+    // fetch(`/gerente/pesquisarComponentesDisponiveis`, {
+    //     method: "GET",
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     }
+    // }).then((resultado) => {
+    //     resultado.json()
+    //     .then(json => {
+
+    //     })
+    // })
+
+    let vetorComponente = ["CPU", "RAM", "DISCO", "REDE", "PROCESSOS"];
+    slt_componentes.innerHTML = `
+        <option disabled selected>Selecionado</option>
+    `;
+
+    for(let i = 0; i < vetorRepetidos.length; i++) {
+        let elementoAtual = vetorRepetidos[i];
+        let index = -1;
+        for(let j = 0; j < vetorComponente.length; j++) {
+            let elementoComparado = vetorComponente[j];
+
+            if(elementoAtual == elementoComparado) {
+                index = j;
+            }
+        }
+
+        if(index != -1) {
+            vetorComponente.splice(index, 1);
+        }
+    }
+    
+
+    if(vetorComponente.length != 0) {
+        for(let i = 0; i < vetorComponente.length; i++) {
+            slt_componentes.innerHTML += `
+                <option value="${vetorComponente[i]}">${vetorComponente[i]}</option>
+            `;
+        }
+    }
+
+    listagem_config_cad.innerHTML = `
+        <div class="campo-modal-configuracao add-config" onclick="cadastrarComponente(${idAtm})">+</div>
+    `;
+}
 
 function mostrarModalEditComp(indice, idAtm) {
     const modalComponente = document.querySelector(".modal-edit-componente");
@@ -401,7 +461,7 @@ function mostrarModalCadConfig(idAtm, comp) {
         }
     }
     
-    fetch(`/gerente/${idAtm}/${comp}/procurarConfigDisponivel`, {
+    fetch(`/gerente/${comp}/procurarConfigDisponivel`, {
         method: "GET",
         headers :{
             "Content-Type": "application/json"
@@ -409,18 +469,46 @@ function mostrarModalCadConfig(idAtm, comp) {
     }).then((resultado) => {
         resultado.json()
         .then(json => {
-            slt_medida.innerHTML = `<option selected disabled>Selecionar</option>`;
+            slt_medida.innerHTML = `<option disabled>Selecionar</option>`;
             let tiposAnteriores = JSON.stringify(configuracao.lista);
             console.log(tiposAnteriores);
             for(let i = 0; i < json.lista.length; i++) {
                 let tipoAtual = json.lista[i].Tipo;
+                let idAtual = json.lista[i].id;
                 if(!tiposAnteriores.includes(tipoAtual)) {
                     slt_medida.innerHTML += `
-                        <option value="${tipoAtual}">${tipoAtual}</option>
+                        <option value="${idAtual}">${tipoAtual}</option>
                     `;
                 }
             }
+
+            button_cadastrar_config.innerHTML = `
+                <button onclick='cadastrarConfig(${idAtm}, "${comp}")'>Cadastrar</button>
+            `;
         })
+    })
+}
+
+function cadastrarConfig(idAtm, comp) {
+    let limite = Number(ipt_limite.value);
+    let medida = slt_medida.value;
+    let id = idAtm;
+
+    fetch("/gerente/cadastrarConfig", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            limiteServer: limite,
+            medidaServer: medida,
+            idAtmServer: id
+        })
+    }).then((resultado) => {
+        alert("Configuração cadastrada com sucesso!")
+        pesquisarConfiguracao(comp, idAtm);
+        const modalComponente = document.querySelector(".modal-cad-configuracao");
+        modalComponente.style.display = "none"
     })
 }
 
@@ -551,6 +639,6 @@ function filtrar() {
             .then(json => {
                 console.log(json.lista);
                 carregarDados(json.lista);
-            })
+        })
     })
 }

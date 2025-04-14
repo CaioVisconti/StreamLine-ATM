@@ -113,11 +113,26 @@ function atualizarParametro(limite, id) {
     return database.executar(instrucaoSql);
 }
 
-function procurarConfigDisponivel(id, componente) {
-    let instrucaoSql = `SELECT tipo AS Tipo FROM teste WHERE tipo LIKE "%${componente}%" AND fkAtm = ${id};`;
+function procurarConfigDisponivel(componente) {
+    
+    let instrucaoSql = `SELECT tipo AS Tipo, idComponentes AS id FROM componentes WHERE tipo LIKE '%${componente}%';`;
     
     return database.executar(instrucaoSql);
 }
+
+function cadastrarConfig(limite, medida, idAtm) {
+
+    let instrucaoSql = `INSERT INTO parametro (fkAtm, fkComponente, limite, dtAlteracao) VALUES (${idAtm}, ${medida}, ${limite}, now());`;
+    
+    return database.executar(instrucaoSql);
+}
+
+// function pesquisarComponentesDisponiveis() {
+
+//     let instrucaoSql = `SELECT tipo AS Tipo FROM parametro`;
+    
+//     return database.executar(instrucaoSql);
+// }
 
 module.exports = {
     buscarKpiTotal,
@@ -132,5 +147,7 @@ module.exports = {
     cadastrarATM,
     procurarConfiguracao,
     atualizarParametro,
-    procurarConfigDisponivel
+    procurarConfigDisponivel,
+    cadastrarConfig,
+    // pesquisarComponentesDisponiveis
 };

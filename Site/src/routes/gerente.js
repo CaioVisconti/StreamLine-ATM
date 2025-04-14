@@ -52,8 +52,16 @@ router.put("/:limiteAtual/:idConfig/atualizarParametro", function (req, res) {
     gerenteController.atualizarParametro(req, res);
 })
 
-router.get("/:idAtm/:comp/procurarConfigDisponivel", function (req, res) {
+router.get("/:comp/procurarConfigDisponivel", function (req, res) {
     gerenteController.procurarConfigDisponivel(req, res);
 })
+
+router.post("/cadastrarConfig", function (req, res) {
+    gerenteController.cadastrarConfig(req, res);
+})
+
+// router.get("/pesquisarComponentesDisponiveis", function (req, res) {
+//     gerenteController.pesquisarComponentesDisponiveis(req, res);
+// })
 
 module.exports = router;

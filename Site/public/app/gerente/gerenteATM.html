@@ -151,6 +151,31 @@
                 </div>
             </div>
         </div>
+        <div class="modal-cad-componente" style="display: none;">
+            <div class="modal-fechar">
+                <span onclick="mostrarModalCadComp()">&#x2715;</span>
+            </div>
+            <div class="modal-container">
+                <div style="display: flex;flex-direction: row; height: 100%;">
+                    <div class="listagem_cadastro">
+                        <div class="modal-infos">
+                            <span>Componente:</span>
+                            <select id="slt_componentes"></select>
+                        </div>
+                        <div class="modal-infos" id="Identificador" style="display: none;">
+                            <span>Identificador:</span>
+                            <input id="bb" type="text">
+                        </div>
+                        <div id="lista_configuracoes">
+                            <span><b>Configurações:</b></span>
+                            <div id="listagem_config_cad">
+                                <div class="campo-modal-configuracao add-config" onclick="cadastrarComponente()">+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal-edit-componente" style="display: none;">
             <div class="modal-fechar">
                 <span onclick="mostrarModalEditComp()">&#x2715;</span>
@@ -213,7 +238,7 @@
                         </div>
                         <div class="modal-infos">
                             <span>Limite:</span>
-                            <input id="ipt_limite" type="text">
+                            <input id="ipt_limite" type="number">
                         </div>
                     </div>
                 </div>

@@ -195,10 +195,10 @@ function atualizarParametro(req, res) {
 }
 
 function procurarConfigDisponivel(req, res) {
-    let id = req.params.idAtm;
     let componente = req.params.comp;
+    console.log(componente);
 
-    gerenteModel.procurarConfigDisponivel(id, componente)
+    gerenteModel.procurarConfigDisponivel(componente)
     .then((resultado) => {
         res.json({
             lista: resultado
@@ -209,6 +209,37 @@ function procurarConfigDisponivel(req, res) {
         res.status(500).json(erro.sqlMessage);
     });
 }
+
+function cadastrarConfig(req, res) {
+    let limite = req.body.limiteServer;
+    let medida = req.body.medidaServer;
+    let idAtm = req.body.idAtmServer;
+
+    gerenteModel.cadastrarConfig(limite, medida, idAtm)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro no cadastro de configuração:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+// function pesquisarComponentesDisponiveis(req, res) {
+
+//     gerenteModel.pesquisarComponentesDisponiveis()
+//     .then((resultado) => {
+//         res.json({
+//             lista: resultado
+//         })
+//     })
+//     .catch(erro => {
+//         console.error("Erro no cadastro de configuração:", erro);
+//         res.status(500).json(erro.sqlMessage);
+//     });
+// }
 
 module.exports = {
     buscarKpiTotal,
@@ -223,5 +254,7 @@ module.exports = {
     cadastrarATM,
     pesquisarConfiguracao,
     atualizarParametro,
-    procurarConfigDisponivel
+    procurarConfigDisponivel,
+    cadastrarConfig,
+    // pesquisarComponentesDisponiveis
 }
