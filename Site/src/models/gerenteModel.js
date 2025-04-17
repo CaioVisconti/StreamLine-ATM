@@ -129,7 +129,9 @@ function cadastrarConfig(limite, medida, idAtm) {
 
 function removerAtm(id) {
 
-    let instrucaoSql = `DELETE FROM atm WHERE idAtm = ${id}`;
+    let instrucaoSql = `DELETE FROM atm WHERE idAtm = ${id};`;
+
+    return database.executar(instrucaoSql);
 }
 
 module.exports = {

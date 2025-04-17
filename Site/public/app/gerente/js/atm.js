@@ -685,4 +685,33 @@ function mostrarModalDeleteAtm(idAtm) {
             fade.style.display = "none";
         }
     }
+
+    button_remover_atm.innerHTML = `
+        <button onclick="removerAtm(${idAtm})">Remover</button>
+    `;
+}
+
+function removerAtm(idAtm) {
+    let input = ipt_confirmar.value
+
+    if(input != "excluir") {
+        console.log("preenche direito")
+    } else {
+        fetch(`/gerente/${idAtm}/removerAtm`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((resultado) => {
+            carregarDados();
+
+            const modalDelete = document.querySelector(".modal-del-atm");
+            const modal = document.querySelector(".modal-edit");
+            const fade = document.querySelector(".fade");
+
+            modalDelete.style.display = "none";
+            modal.style.display = "none";
+            fade.style.display = "none";
+        })
+    }
 }
