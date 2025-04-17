@@ -85,9 +85,9 @@ function atualizar(listaAtm) {
     let macAdress = listaAtm.macAdress;
     let modelo = listaAtm.modelo;
     let sistemaOperacional = listaAtm.sistemaOperacional;
-    let status = listaAtm.status;
+    let status = listaAtm.statusATM;
 
-    let instrucaoSql = `UPDATE atm SET hostname = "${hostname}", ip = "${ip}", macAdress = "${macAdress}", modelo = "${modelo}", sistemaOperacional = "${sistemaOperacional}", status = ${status} WHERE idAtm = ${idAtm};`;
+    let instrucaoSql = `UPDATE atm SET hostname = "${hostname}", ip = "${ip}", macAdress = "${macAdress}", modelo = "${modelo}", sistemaOperacional = "${sistemaOperacional}", statusATM = ${status} WHERE idAtm = ${idAtm};`;
   
     return database.executar(instrucaoSql);
 }
@@ -127,12 +127,10 @@ function cadastrarConfig(limite, medida, idAtm) {
     return database.executar(instrucaoSql);
 }
 
-// function pesquisarComponentesDisponiveis() {
+function removerAtm(id) {
 
-//     let instrucaoSql = `SELECT tipo AS Tipo FROM parametro`;
-    
-//     return database.executar(instrucaoSql);
-// }
+    let instrucaoSql = `DELETE FROM atm WHERE idAtm = ${id}`;
+}
 
 module.exports = {
     buscarKpiTotal,
@@ -149,5 +147,5 @@ module.exports = {
     atualizarParametro,
     procurarConfigDisponivel,
     cadastrarConfig,
-    // pesquisarComponentesDisponiveis
+    removerAtm
 };

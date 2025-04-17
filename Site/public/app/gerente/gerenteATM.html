@@ -102,7 +102,7 @@
                         <option value="0">Desativado</option>
                     </select>
                 </div>
-                <div class="modal-botaoCad">
+                <div class="modal-botao">
                     <button onclick="registrarATM()">Cadastrar</button>
                 </div>
             </div>
@@ -136,7 +136,7 @@
                         </div>
                         <div class="modal-infos">
                             <select id="sltStatusEdit" class="select-empresa">
-                                <option selected disabled>Selecione o Status</option>
+                                <option selected disabled value="teste">Selecione o Status</option>
                                 <option value="1">Ativo</option>
                                 <option value="0">Desativado</option>
                             </select>
@@ -147,8 +147,7 @@
                         <div id="listagem"></div>
                     </div>
                 </div>
-                <div id="button_atualizar" class="modal-botao">
-                </div>
+                <div id="button_atualizar" class="modal-botao"></div>
             </div>
         </div>
         <div class="modal-cad-componente" style="display: none;">
@@ -160,7 +159,7 @@
                     <div class="listagem_cadastro">
                         <div class="modal-infos">
                             <span>Componente:</span>
-                            <select id="slt_componentes"></select>
+                            <select id="slt_componentes" onchange="corrigirConfiguracao()"></select>
                         </div>
                         <div class="modal-infos" id="Identificador" style="display: none;">
                             <span>Identificador:</span>
@@ -168,9 +167,7 @@
                         </div>
                         <div id="lista_configuracoes">
                             <span><b>Configurações:</b></span>
-                            <div id="listagem_config_cad">
-                                <div class="campo-modal-configuracao add-config" onclick="cadastrarComponente()">+</div>
-                            </div>
+                            <div id="listagem_config_cad" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -244,6 +241,28 @@
                 </div>
                 <div id="button_cadastrar_config" class="modal-botao">
                     <button>Cadastrar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-del-atm" style="display: none;">
+            <div class="modal-fechar">
+                <span onclick="mostrarModalDeleteAtm()">&#x2715;</span>
+            </div>
+            <div class="modal-container-delete">
+                <div style="display: flex;flex-direction: column; height: 30%; width: 100%;">
+                    <div class="listagem_delete">
+                        <div class="modal-infos">
+                            <span style="text-align: center;">Você realmente deseja remover o ATM selecionado?</span>
+                        </div>
+                        <div class="modal-infos">
+                            <span style="text-align: center;">Caso queira, digite a palavra chave abaixo para confirmar exclusão:</span>
+                        </div>
+                        <input class="input-delete" type="text" placeholder="excluir">
+                    </div>
+                </div>
+                </div>
+                <div id="button_remover_atm" class="modal-botao">
+                    <button>Remover</button>
                 </div>
             </div>
         </div>

@@ -197,7 +197,11 @@ function registrarATM() {
             fkAgenciaServer: idAgencia
         })
     }).then((resultado) => {
-        carregarCards();
+        carregarDados();
+        let modal = document.querySelector(".modal");
+        let fade = document.querySelector(".fade");
+        modal.style.display = "none";
+        fade.style.display = "none";
     })
 }
 
@@ -271,12 +275,13 @@ function pesquisarEditAtm(indice) {
 
             if(vetorRepetidos.length <= 4) {
                 listagem.innerHTML += `
-                <div class="campo-modal-componentes botao-cadastrar-componente" onclick="mostrarModalCadComp(${idAtm})">+</div>`;
+                <div class="campo-modal-componentes botao-cadastrar-componente" onclick="mostrarModalCadComp(${idAtm}, ${indice})">+</div>`;
             }
         })
     })
     button_atualizar.innerHTML = `
         <button onclick="atualizarAtm(${indice}, ${idAtm})">Salvar Mudanças</button>
+        <img src="../../assets/icons/trash.png" class="icon-deletar" alt="" onclick="mostrarModalDeleteAtm(${idAtm})">
     `;
 }
 
@@ -287,7 +292,7 @@ function atualizarAtm(posicaoVetor, idAtm) {
     let hostname = iptHostnameEdit.value;
     let macadress = iptMacAdressEdit.value;
     let sistemaOperacional = iptSOEdit.value;
-    let status = Number(sltStatusEdit.value);
+    let status = sltStatusEdit.value;
 
     let listaAtm = {
         idAtm: idATM,
@@ -301,15 +306,23 @@ function atualizarAtm(posicaoVetor, idAtm) {
     }
 
     if(JSON.stringify(listaAtm) != JSON.stringify(vetor.lista[posicaoVetor])) {
-        fetch(`/gerente/${listaAtm}/atualizar`, {
+        fetch(`/gerente/atualizar`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            body: JSON.stringify({
+                lista: listaAtm
+            })
         }).then((resultado) => {
             resultado.json()
             .then(json => {
                 console.log(json.lista);
+                carregarDados();
+                let modal = document.querySelector(".modal-edit");
+                let fade = document.querySelector(".fade");
+                modal.style.display = "none";
+                fade.style.display = "none";
             })
         })
     }
@@ -317,7 +330,7 @@ function atualizarAtm(posicaoVetor, idAtm) {
 
 let configuracao = "";
 
-function mostrarModalCadComp(idAtm) {
+function mostrarModalCadComp(idAtm, indice) {
     const modalComponente = document.querySelector(".modal-cad-componente");
     const fade = document.querySelector(".fade");
 
@@ -330,18 +343,6 @@ function mostrarModalCadComp(idAtm) {
             fade.style.display = "none";
         }
     }
-
-    // fetch(`/gerente/pesquisarComponentesDisponiveis`, {
-    //     method: "GET",
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     }
-    // }).then((resultado) => {
-    //     resultado.json()
-    //     .then(json => {
-
-    //     })
-    // })
 
     let vetorComponente = ["CPU", "RAM", "DISCO", "REDE", "PROCESSOS"];
     slt_componentes.innerHTML = `
@@ -363,7 +364,6 @@ function mostrarModalCadComp(idAtm) {
             vetorComponente.splice(index, 1);
         }
     }
-    
 
     if(vetorComponente.length != 0) {
         for(let i = 0; i < vetorComponente.length; i++) {
@@ -374,8 +374,22 @@ function mostrarModalCadComp(idAtm) {
     }
 
     listagem_config_cad.innerHTML = `
-        <div class="campo-modal-configuracao add-config" onclick="cadastrarComponente(${idAtm})">+</div>
+        <div class="campo-modal-configuracao add-config" onclick="cadastrarComponente(${idAtm}, ${indice})">+</div>
     `;
+}
+
+function corrigirConfiguracao() {
+    listagem_config_cad.style.display = "flex";
+}
+
+function cadastrarComponente(idAtm, indice) {
+    let componente = slt_componentes.value;
+    
+    if(componente == "DISCO") {
+        componente = "DISK";
+    }
+
+    mostrarModalCadConfig(idAtm, componente, indice);
 }
 
 function mostrarModalEditComp(indice, idAtm) {
@@ -403,7 +417,7 @@ function mostrarModalEditComp(indice, idAtm) {
     } else if(metrica.includes("RAM")) {
         componenteAtual = "RAM";
     } else if(metrica.includes("DISK")) {
-        componenteAtual = "DISK";
+        componenteAtual = "DISCO";
     } else if(metrica.includes("REDE")) {
         componenteAtual = "REDE";
     } else {
@@ -411,6 +425,10 @@ function mostrarModalEditComp(indice, idAtm) {
     }
 
     componente.innerHTML = componenteAtual;
+
+    if(componenteAtual == "DISCO") {
+        componenteAtual = "DISK";
+    }
 
     pesquisarConfiguracao(componenteAtual, idAtm);
 }
@@ -439,7 +457,7 @@ function pesquisarConfiguracao(componenteAtual, idAtm) {
                 `;
             }
 
-            if((componenteAtual == "CPU" && json.lista.length < 2) || (componenteAtual == "RAM" && json.lista.length < 3) ||(componenteAtual == "DISCO" && json.lista.length < 3) || (componenteAtual == "REDE" && json.lista.length < 2) || (componenteAtual == "PROCESSOS" && json.lista.length < 3)) {
+            if((componenteAtual == "CPU" && json.lista.length < 2) || (componenteAtual == "RAM" && json.lista.length < 3) ||(componenteAtual == "DISK" && json.lista.length < 3) || (componenteAtual == "REDE" && json.lista.length < 2) || (componenteAtual == "PROCESSOS" && json.lista.length < 3)) {
                 listagem_config.innerHTML += `
                 <div class="campo-modal-configuracao add-config" onclick="mostrarModalCadConfig(${idAtm}, '${componenteAtual}')">+</div>`;
             }
@@ -447,7 +465,7 @@ function pesquisarConfiguracao(componenteAtual, idAtm) {
     })
 }
 
-function mostrarModalCadConfig(idAtm, comp) {
+function mostrarModalCadConfig(idAtm, comp, indice) {
     const modalComponente = document.querySelector(".modal-cad-configuracao");
     const fade = document.querySelector(".fade");
 
@@ -469,27 +487,34 @@ function mostrarModalCadConfig(idAtm, comp) {
     }).then((resultado) => {
         resultado.json()
         .then(json => {
+            ipt_limite.value = "";
             slt_medida.innerHTML = `<option disabled>Selecionar</option>`;
             let tiposAnteriores = JSON.stringify(configuracao.lista);
             console.log(tiposAnteriores);
             for(let i = 0; i < json.lista.length; i++) {
                 let tipoAtual = json.lista[i].Tipo;
                 let idAtual = json.lista[i].id;
-                if(!tiposAnteriores.includes(tipoAtual)) {
+                if(tiposAnteriores == undefined) {
                     slt_medida.innerHTML += `
-                        <option value="${idAtual}">${tipoAtual}</option>
-                    `;
+                            <option value="${idAtual}">${tipoAtual}</option>
+                        `;
+                } else {
+                    if(!tiposAnteriores.includes(tipoAtual)) {
+                        slt_medida.innerHTML += `
+                            <option value="${idAtual}">${tipoAtual}</option>
+                        `;
+                    }
                 }
             }
 
             button_cadastrar_config.innerHTML = `
-                <button onclick='cadastrarConfig(${idAtm}, "${comp}")'>Cadastrar</button>
+                <button onclick='cadastrarConfig(${idAtm}, "${comp}", ${indice})'>Cadastrar</button>
             `;
         })
     })
 }
 
-function cadastrarConfig(idAtm, comp) {
+function cadastrarConfig(idAtm, comp, indice) {
     let limite = Number(ipt_limite.value);
     let medida = slt_medida.value;
     let id = idAtm;
@@ -508,7 +533,10 @@ function cadastrarConfig(idAtm, comp) {
         alert("Configuração cadastrada com sucesso!")
         pesquisarConfiguracao(comp, idAtm);
         const modalComponente = document.querySelector(".modal-cad-configuracao");
-        modalComponente.style.display = "none"
+        modalComponente.style.display = "none";
+        const modalCadastroComponente = document.querySelector(".modal-cad-componente");
+        modalCadastroComponente.style.display = "none";
+        pesquisarEditAtm(indice);
     })
 }
 
@@ -641,4 +669,20 @@ function filtrar() {
                 carregarDados(json.lista);
         })
     })
+}
+
+function mostrarModalDeleteAtm(idAtm) {
+    
+    const modalDelete = document.querySelector(".modal-del-atm");
+    const fade = document.querySelector(".fade");
+
+    if (modalDelete.style.display == "none") {
+        modalDelete.style.display = "flex";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modalDelete.style.display = "none"
+            fade.style.display = "none";
+        }
+    }
 }

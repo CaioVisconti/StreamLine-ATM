@@ -36,7 +36,7 @@ router.get("/:idAtm/procurarComponentes", function (req, res) {
     gerenteController.procurarComponentes(req, res);
 })
 
-router.put("/:listaAtm/atualizar", function (req, res) {
+router.put("/atualizar", function (req, res) {
     gerenteController.atualizar(req, res);
 })
 
@@ -60,8 +60,8 @@ router.post("/cadastrarConfig", function (req, res) {
     gerenteController.cadastrarConfig(req, res);
 })
 
-// router.get("/pesquisarComponentesDisponiveis", function (req, res) {
-//     gerenteController.pesquisarComponentesDisponiveis(req, res);
-// })
+router.delete("/:idAtm/removerAtm", function (req, res) {
+    gerenteController.removerAtm(req, res);
+})
 
 module.exports = router;

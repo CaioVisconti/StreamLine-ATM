@@ -322,9 +322,27 @@ a {
     background-color: rgba(0, 0, 0, 0.25);
 }
 
+.modal-botao {
+    width: 280px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4%;
+}
+
+.icon-deletar {
+    width: 40px;
+    height: 40px;
+    background-size: cover
+}
+
+.icon-deletar:hover {
+    cursor: pointer;
+}
+
 .modal-botao button {
-    width: 216px;
-    height: 60px;
+    width: 100%;
     border-radius: 10px;
     border: none;
     color: black;
@@ -332,6 +350,7 @@ a {
     font-weight: bold;
     background-color: #D9D9D9;
     cursor: pointer;
+    padding: 5%;
 }
 
 #lista_componentes {
@@ -488,4 +507,52 @@ span, .campo-modal-configuracao {
     font-size: 24px;
     background-color: white;
     z-index: 20;
+}
+
+.modal-del-atm {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    position: absolute;
+    padding: 48px;
+    width: 720px;
+    height: 400px;
+    flex-direction: column;
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: white;
+    z-index: 20;
+}
+
+.listagem_delete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5vh ;
+}
+
+.modal-container-delete {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 38px;
+    height: 100%;
+}
+
+#button_remover_atm {
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
+.input-delete {
+    width: 50%;
+    align-self: center;
+    font-size: 24px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 1%;
 }

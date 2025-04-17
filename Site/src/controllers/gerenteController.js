@@ -127,7 +127,7 @@ function procurarComponentes(req, res) {
 }
 
 function atualizar(req, res) {
-    const json = req.params.listaAtm;
+    const json = req.body.lista;
 
     gerenteModel.atualizar(json)
         .then((resultado) => {
@@ -227,19 +227,20 @@ function cadastrarConfig(req, res) {
     });
 }
 
-// function pesquisarComponentesDisponiveis(req, res) {
+function removerAtm(req, res) {
+    let id = req.params.idAtm;
 
-//     gerenteModel.pesquisarComponentesDisponiveis()
-//     .then((resultado) => {
-//         res.json({
-//             lista: resultado
-//         })
-//     })
-//     .catch(erro => {
-//         console.error("Erro no cadastro de configuração:", erro);
-//         res.status(500).json(erro.sqlMessage);
-//     });
-// }
+    gerenteModel.removerAtm(id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de atms:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
 module.exports = {
     buscarKpiTotal,
@@ -256,5 +257,5 @@ module.exports = {
     atualizarParametro,
     procurarConfigDisponivel,
     cadastrarConfig,
-    // pesquisarComponentesDisponiveis
+    removerAtm
 }
