@@ -1,0 +1,326 @@
+[
+    {
+        "fkAtm": 16,
+        "tipo": "CPUPercent",
+        "unidade": "Porcentagem",
+        "valor": 14.8,
+        "limite": 80.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "CPUFreq",
+        "unidade": "GHz",
+        "valor": 1300.0,
+        "limite": 90.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "RAMDisponivel",
+        "unidade": "GB",
+        "valor": 0.88,
+        "limite": 85.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "RAMPercentual",
+        "unidade": "Porcentagem",
+        "valor": 88.5,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKTotal",
+        "unidade": "GB",
+        "valor": 456.78,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKDisponivel",
+        "unidade": "GB",
+        "valor": 340.32,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKPercentual",
+        "unidade": "Porcentagem",
+        "valor": 25.5,
+        "limite": 70.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "REDERecebida",
+        "unidade": "Bytes",
+        "valor": 1079942,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "REDEEnviada",
+        "unidade": "Bytes",
+        "valor": 473933,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:26"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSODesativado",
+        "unidade": "Unidades",
+        "valor": 9,
+        "limite": 70.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:29"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSOAtivos",
+        "unidade": "Unidades",
+        "valor": 273,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:30"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSOTotal",
+        "unidade": "Unidades",
+        "valor": 282,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:30"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "CPUPercent",
+        "unidade": "Porcentagem",
+        "valor": 27.2,
+        "limite": 80.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:31"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "CPUFreq",
+        "unidade": "GHz",
+        "valor": 1300.0,
+        "limite": 90.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:31"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "RAMDisponivel",
+        "unidade": "GB",
+        "valor": 0.82,
+        "limite": 85.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:31"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "RAMPercentual",
+        "unidade": "Porcentagem",
+        "valor": 89.4,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:31"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKTotal",
+        "unidade": "GB",
+        "valor": 456.78,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:31"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKDisponivel",
+        "unidade": "GB",
+        "valor": 340.32,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:32"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKPercentual",
+        "unidade": "Porcentagem",
+        "valor": 25.5,
+        "limite": 70.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:32"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "REDERecebida",
+        "unidade": "Bytes",
+        "valor": 1080187,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:32"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "REDEEnviada",
+        "unidade": "Bytes",
+        "valor": 474148,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:32"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSODesativado",
+        "unidade": "Unidades",
+        "valor": 9,
+        "limite": 70.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:33"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSOAtivos",
+        "unidade": "Unidades",
+        "valor": 273,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:35"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSOTotal",
+        "unidade": "Unidades",
+        "valor": 282,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:35"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "CPUPercent",
+        "unidade": "Porcentagem",
+        "valor": 13.8,
+        "limite": 80.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "CPUFreq",
+        "unidade": "GHz",
+        "valor": 1300.0,
+        "limite": 90.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "RAMDisponivel",
+        "unidade": "GB",
+        "valor": 0.82,
+        "limite": 85.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "RAMPercentual",
+        "unidade": "Porcentagem",
+        "valor": 89.3,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKTotal",
+        "unidade": "GB",
+        "valor": 456.78,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKDisponivel",
+        "unidade": "GB",
+        "valor": 340.32,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "DISKPercentual",
+        "unidade": "Porcentagem",
+        "valor": 25.5,
+        "limite": 70.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "REDERecebida",
+        "unidade": "Bytes",
+        "valor": 1080200,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "REDEEnviada",
+        "unidade": "Bytes",
+        "valor": 474162,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:36"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSODesativado",
+        "unidade": "Unidades",
+        "valor": 9,
+        "limite": 70.0,
+        "alerta": false,
+        "dataHora": "2025-04-18 12:34:37"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSOAtivos",
+        "unidade": "Unidades",
+        "valor": 273,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:39"
+    },
+    {
+        "fkAtm": 16,
+        "tipo": "PROCESSOTotal",
+        "unidade": "Unidades",
+        "valor": 282,
+        "limite": 70.0,
+        "alerta": true,
+        "dataHora": "2025-04-18 12:34:39"
+    }
+]

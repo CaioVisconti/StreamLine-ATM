@@ -1,5 +1,8 @@
 import socket
+import os
 import json
+import boto3
+from dotenv import load_dotenv
 from getmac import get_mac_address
 import psutil
 import time
@@ -171,19 +174,18 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
         i += 1
         
         hora = datetime.now().strftime('%H:%M:%S %d/%m/%Y')
-        
         print(f"\n📅 {i}° Leitura concluída - {hora}")
 
         time.sleep(tempo)
-
+        print(capturas)
         print("\n📂 Gerando Arquivo JSON!\n")
-        with open ("Capturas.json", "w") as arquivo:
+        caminhoArquivo = 'Python/json/Capturas.json'
+        with open (caminhoArquivo, "w") as arquivo: # o python vai abrir o arquivo para leitura (por isso o "w", de write). Se o arq nao existir, ele o cria
             json.dump(capturas, arquivo, indent=4)
         print("\n Arquivo JSON Gerado! ✅\n")
 
 
     print("\n🏁 Monitoramento finalizado com sucesso! ✅\n")
+
     
-
-
 
