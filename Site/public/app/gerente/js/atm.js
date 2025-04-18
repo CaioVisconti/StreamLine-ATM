@@ -281,7 +281,6 @@ function pesquisarEditAtm(indice) {
     })
     button_atualizar.innerHTML = `
         <button onclick="atualizarAtm(${indice}, ${idAtm})">Salvar Mudanças</button>
-        <img src="../../assets/icons/trash.png" class="icon-deletar" alt="" onclick="mostrarModalDeleteAtm(${idAtm})">
     `;
 }
 
@@ -379,6 +378,15 @@ function mostrarModalCadComp(idAtm, indice) {
 }
 
 function corrigirConfiguracao() {
+    let componente = slt_componentes.value;
+    let idf = document.getElementById("div_identificador");
+    
+    if(componente == "CPU") {
+        idf.style.display = "flex";
+    } else {
+        idf.style.display = "none";
+    }
+
     listagem_config_cad.style.display = "flex";
 }
 
@@ -412,6 +420,8 @@ function mostrarModalEditComp(indice, idAtm) {
     let metrica = componentes.lista[indice].metrica;
     let componenteAtual = "";
 
+    console.log(componentes);
+
     if(metrica.includes("CPU")) {
         componenteAtual = "CPU";
     } else if(metrica.includes("RAM")) {
@@ -422,6 +432,17 @@ function mostrarModalEditComp(indice, idAtm) {
         componenteAtual = "REDE";
     } else {
         componenteAtual = "PROCESSOS";
+    }
+
+    if(componenteAtual == "CPU") {
+        identificador.style.display = "flex";
+        let identificadorEditar = document.getElementById("identificadorEditar");
+
+        if(componentes.lista[indice].identificador == null) {
+            identificadorEditar.value = "teste";
+        } else {
+            identificadorEditar.value = componentes.lista[indice].identificador;
+        }
     }
 
     componente.innerHTML = componenteAtual;
@@ -490,7 +511,7 @@ function mostrarModalCadConfig(idAtm, comp, indice) {
             ipt_limite.value = "";
             slt_medida.innerHTML = `<option disabled>Selecionar</option>`;
             let tiposAnteriores = JSON.stringify(configuracao.lista);
-            console.log(tiposAnteriores);
+            
             for(let i = 0; i < json.lista.length; i++) {
                 let tipoAtual = json.lista[i].Tipo;
                 let idAtual = json.lista[i].id;
@@ -544,8 +565,6 @@ function mostrarModalEditConfig(indice, idConfig, compAtual, idAtm) {
     const modalConfig = document.querySelector(".modal-edit-configuracao");
     const fade = document.querySelector(".fade");
 
-    console.log(idConfig);
-
     if (modalConfig.style.display == "none") {
         modalConfig.style.display = "flex";
     } else {
@@ -558,12 +577,14 @@ function mostrarModalEditConfig(indice, idConfig, compAtual, idAtm) {
 
     let unidadeMedida = configuracao.lista[indice].UM;
     let limiteAtual = configuracao.lista[indice].Limite;
+    let id = configuracao.lista[indice].idParametro;
 
     medida.innerHTML = `${unidadeMedida}`;
     limite.value = `${limiteAtual}`;
 
     button_atualizar_config.innerHTML = `
         <button onclick="atualizarConfiguracao(${indice}, ${idConfig}, '${compAtual}', ${idAtm})">Salvar Mudanças</button>
+        <img src="../../assets/icons/trash.png" class="icon-deletar" alt="" onclick="mostrarModalDeleteConfig(${id}, '${compAtual}', ${idAtm}, ${indice})">
     `;
 }
 
@@ -712,6 +733,56 @@ function removerAtm(idAtm) {
             modalDelete.style.display = "none";
             modal.style.display = "none";
             fade.style.display = "none";
+        })
+    }
+}
+
+function mostrarModalDeleteConfig(id, compAtual, idAtm, indice) {
+    
+    const modalDelete = document.querySelector(".modal-del-config");
+    const fade = document.querySelector(".fade");
+
+    if (modalDelete.style.display == "none") {
+        modalDelete.style.display = "flex";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modalDelete.style.display = "none"
+            fade.style.display = "none";
+        }
+    }
+
+    button_remover_config.innerHTML = `
+        <button onclick="removerConfig(${id}, '${compAtual}', ${idAtm}, ${indice})">Remover</button>
+    `;
+}
+
+function removerConfig(id, componenteAtual, idAtm, indice) {
+    let input = ipt_confirmar_config.value;
+
+    if(input != "excluir") {
+        console.log("preenche direito")
+    } else {
+        fetch(`/gerente/${id}/removerConfig`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((resultado) => {
+            carregarDados();
+
+            const modalDelete = document.querySelector(".modal-del-config");
+            const modalConfig = document.querySelector(".modal-edit-configuracao");
+            const modal = document.querySelector(".modal-edit");
+            const fade = document.querySelector(".fade");
+
+            modalDelete.style.display = "none";
+            modalConfig.style.display = "none";
+            modal.style.display = "none";
+            fade.style.display = "none";
+
+            pesquisarConfiguracao(componenteAtual, idAtm);
+            pesquisarEditAtm(indice);
         })
     }
 }

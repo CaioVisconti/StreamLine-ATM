@@ -73,7 +73,7 @@ function filtrar(primeiro, segundo, id) {
 
 function procurarComponentes(idAtm) {
 
-    let instrucaoSql = `SELECT tipo AS metrica FROM componentes AS c JOIN parametro AS p ON p.fkComponente = c.idComponentes WHERE p.fkAtm = ${idAtm};`;
+    let instrucaoSql = `SELECT tipo AS metrica, identificador FROM componentes AS c JOIN parametro AS p ON p.fkComponente = c.idComponentes WHERE p.fkAtm = ${idAtm};`;
     
     return database.executar(instrucaoSql);
 }
@@ -134,6 +134,14 @@ function removerAtm(id) {
     return database.executar(instrucaoSql);
 }
 
+function removerConfig(id) {
+
+    let instrucaoSql = `DELETE FROM parametro WHERE idParametro = ${id};`;
+
+    return database.executar(instrucaoSql);
+
+}
+
 module.exports = {
     buscarKpiTotal,
     buscarKpiAlerta,
@@ -149,5 +157,6 @@ module.exports = {
     atualizarParametro,
     procurarConfigDisponivel,
     cadastrarConfig,
-    removerAtm
+    removerAtm,
+    removerConfig
 };

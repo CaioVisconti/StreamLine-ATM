@@ -556,3 +556,25 @@ span, .campo-modal-configuracao {
     background-color: rgba(0, 0, 0, 0.25);
     padding: 1%;
 }
+
+.modal-del-config {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    position: absolute;
+    padding: 48px;
+    width: 720px;
+    height: 400px;
+    flex-direction: column;
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: white;
+    z-index: 20;
+}
+
+
+#button_remover_config {
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}

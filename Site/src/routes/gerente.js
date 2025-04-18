@@ -64,4 +64,8 @@ router.delete("/:idAtm/removerAtm", function (req, res) {
     gerenteController.removerAtm(req, res);
 })
 
+router.delete("/:id/removerConfig", function (req, res) {
+    gerenteController.removerConfig(req, res);
+})
+
 module.exports = router;

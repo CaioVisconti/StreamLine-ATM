@@ -242,6 +242,21 @@ function removerAtm(req, res) {
     });
 }
 
+function removerConfig(req, res) {
+    let id = req.params.id;
+
+    gerenteModel.removerConfig(id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de atms:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     buscarKpiTotal,
     buscarKpiAlerta,
@@ -257,5 +272,6 @@ module.exports = {
     atualizarParametro,
     procurarConfigDisponivel,
     cadastrarConfig,
-    removerAtm
+    removerAtm,
+    removerConfig
 }

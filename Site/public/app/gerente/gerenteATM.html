@@ -161,7 +161,7 @@
                             <span>Componente:</span>
                             <select id="slt_componentes" onchange="corrigirConfiguracao()"></select>
                         </div>
-                        <div class="modal-infos" id="Identificador" style="display: none;">
+                        <div class="modal-infos" id="div_identificador" style="display: none;">
                             <span>Identificador:</span>
                             <input id="bb" type="text">
                         </div>
@@ -186,7 +186,7 @@
                                 <span id="componente"></span>
                             </div>
                         </div>
-                        <div class="modal-infos" id="Identificador" style="display: none;">
+                        <div class="modal-infos" id="identificador" style="display: none;">
                             <span>Identificador:</span>
                             <input id="bb" type="text">
                         </div>
@@ -262,6 +262,26 @@
                 </div>
                 </div>
                 <div id="button_remover_atm" class="modal-botao"></div>
+            </div>
+            <div class="modal-del-config" style="display: none;">
+                <div class="modal-fechar">
+                    <span onclick="mostrarModalDeleteConfig()">&#x2715;</span>
+                </div>
+                <div class="modal-container-delete">
+                    <div style="display: flex;flex-direction: column; height: 30%; width: 100%;">
+                        <div class="listagem_delete">
+                            <div class="modal-infos">
+                                <span style="text-align: center;">Você realmente deseja remover a configuração selecionada?</span>
+                            </div>
+                            <div class="modal-infos">
+                                <span style="text-align: center;">Caso queira, digite a palavra chave abaixo para confirmar exclusão:</span>
+                            </div>
+                            <input class="input-delete" type="text" placeholder="excluir" id="ipt_confirmar_config">
+                        </div>
+                    </div>
+                    </div>
+                    <div id="button_remover_config" class="modal-botao"></div>
+                </div>
             </div>
         </div>
     </div>
