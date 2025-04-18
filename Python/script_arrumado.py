@@ -1,4 +1,5 @@
 import socket
+import json
 from getmac import get_mac_address
 import psutil
 import time
@@ -99,19 +100,18 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
     configuracoes = buscar_configuracoes(fkAtm)
     tempo = int(input("\n🧑‍🔧 De quanto em quanto tempo deseja realizar o monitoramento (em segundos)? \nDigite: "))
     quantidade = int(input("\n📖 Quantas inserções deseja fazer? \nDigite: "))
+    capturas = []
 
     print("\nIniciando monitoramento... 🔃")
     time.sleep(2)
 
     i = 0
-    
     while i < quantidade:
         
         print(f"\n🔄 Início da leitura {i+1}")
         
         # Percorre o tipo do componente e sua unidadde de medida dentro de configurações (resultado da função buscar_configurações)
         for tipo_componente, medidas in configuracoes.items():
-            
             for unidade in medidas:
                 valor = coletar_valor(tipo_componente) # Coleta o valor correspondente ao tipo de componente
 
@@ -138,8 +138,18 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
                             INSERT INTO captura (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
                         """, (valor, fkParametro))
                         conn.commit()
-                        print("✅ Inserção em 'captura' realizada com sucesso!")
 
+                        capturas.append({
+                            "fkAtm" : fkAtm,
+                            "tipo": tipo_componente,
+                            "unidade": unidade,
+                            "valor": valor,
+                            "limite": limite,
+                            "alerta": valor > limite,
+                            "dataHora": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        })
+
+                        print("✅ Inserção em 'captura' realizada com sucesso!")
                         # Após inserir o valor na tabela captura, o código verifica se o valor coletado excede o limite configurado para aquele parâmetro 
                         if valor > limite:
                             cursor.execute("""
@@ -147,7 +157,6 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
                             """, (valor, fkParametro))
                             conn.commit()
                             print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
-                            
                         else: # Se não passou do limite, ele imprime na tela que o valor está dentro do limite
                             print("🟢 Valor dentro do limite.")
                             
@@ -164,7 +173,17 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
         hora = datetime.now().strftime('%H:%M:%S %d/%m/%Y')
         
         print(f"\n📅 {i}° Leitura concluída - {hora}")
-        
+
         time.sleep(tempo)
 
+        print("\n📂 Gerando Arquivo JSON!\n")
+        with open ("Capturas.json", "w") as arquivo:
+            json.dump(capturas, arquivo, indent=4)
+        print("\n Arquivo JSON Gerado! ✅\n")
+
+
     print("\n🏁 Monitoramento finalizado com sucesso! ✅\n")
+    
+
+
+
