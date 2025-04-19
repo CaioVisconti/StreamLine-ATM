@@ -53,7 +53,7 @@ function login() {
             } else if (cargoUsuario === "Gerente" || cargoUsuario === "gerente") {
                 window.location = "./app/gerente/gerenteATM.html"; 
             } else if (cargoUsuario === "Analista de Dados" || cargoUsuario === "analista de dados") {
-                window.location = "./app/dashDadoHistorico.html";    
+                window.location = "./app/dashLongoPrazo.html";    
             } else if (cargoUsuario === "CEO") {
                 window.location = "./root/cadastrarEmpresa.html";    
             } 

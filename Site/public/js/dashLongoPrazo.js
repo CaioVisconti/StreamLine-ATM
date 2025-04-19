@@ -3,6 +3,17 @@ function exibirAlertas(){
     let dois = document.querySelector(".organizar");
     oi.style.display = "flex";
     dois.style.display = "none";
+
+    let valorAlertaInput_kpi_cpu_disponivel;
+    let valorAlertaInput_kpi_cpu_porcentagem;
+    let valorAlertaInput_kpi_ram_disponivel;
+    let valorAlertaInput_kpi_ram_porcentagem;
+    let valorAlertaInput_kpi_disco_disponivel;
+    let valorAlertaInput_kpi_disco_porcentagem;
+    let valorAlertaInput_kpi_pacotes_disponivel;
+    let valorAlertaInput_kpi_pacotes_porcentagem;
+
+    
 }
 
 function gerarGraficos(){
@@ -65,3 +76,119 @@ function gerarGraficos(){
 }
 
 
+function carregarATMS() {
+    let fkAgencia = sessionStorage.ID_AGENCIA;
+
+    fetch("/dashLongoPrazo/listarAtm", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            idAgenciaServer: fkAgencia
+        })
+    })
+    .then(function (resposta) {
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            console.log("Erro ao buscar componentes.");
+        }
+    })
+    .then(function (atm) {
+        console.log("atm recebidos:", atm);
+
+        var selectatm = document.getElementById("select_atm");
+        var options = `<option disabled selected value="#">Selecione um ATM</option>;`;
+
+        atm.forEach(function (atms) {
+            options += `<option value="${atms.idAtm}">${atms.nome}</option>`;
+        });
+
+        selectatm.innerHTML = options;
+        selectatm.disabled = false; // habilita o select
+    })
+    .catch(function (erro) {
+        console.log("Erro no fetch dos atms:", erro);
+    });
+}
+
+
+function carregarComponentes(){
+
+    let fkAtm = document.getElementById("select_atm").value;
+
+    fetch("/dashLongoPrazo/listarComponentes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            idAtmServer: fkAtm
+        })
+    })
+    .then(function (resposta) {
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            console.log("Erro ao buscar componentes.");
+        }
+    })
+    .then(function (componente) {
+        console.log("componente recebidos:", componente);
+
+        var selectcomponente = document.getElementById("select_componentes");
+        var options = `<option disabled selected value="#">Selecione um Componente</option>;`;
+
+        componente.forEach(function (componentes) {
+            options += `<option value="${componentes.nome}">${componentes.nome}</option>`;
+        });
+
+        selectcomponente.innerHTML = options;
+        selectcomponente.disabled = false; // habilita o select
+    })
+    .catch(function (erro) {
+        console.log("Erro no fetch dos componentes:", erro);
+    });
+
+}
+
+function carregarMetricas(){
+    let fkComponente = document.getElementById("select_componentes").value;
+    let fkAtm = document.getElementById("select_atm").value;
+
+    fetch("/dashLongoPrazo/listarMetricas", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            idComponenteServer: fkComponente,
+            idAtmServer: fkAtm
+        })
+    })
+    .then(function (resposta) {
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            console.log("Erro ao buscar componentes.");
+        }
+    })
+    .then(function (metrica) {
+        console.log("metrica recebidos:", metrica);
+
+        var selectmetrica = document.getElementById("select_metricas");
+        var options = `<option disabled selected value="#">Selecione uma Métrica</option>;`;
+
+        metrica.forEach(function (metricas) {
+            options += `<option value="${metricas.metricas}">${metricas.metricas}</option>`;
+        });
+
+        selectmetrica.innerHTML = options;
+        selectmetrica.disabled = false; // habilita o select
+    })
+    .catch(function (erro) {
+        console.log("Erro no fetch dos metricas:", erro);
+    });
+
+}

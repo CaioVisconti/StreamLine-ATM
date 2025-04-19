@@ -194,6 +194,15 @@ a{
     text-align: center;
 }
 
+.escolha-datas select{
+    text-align: center;
+    cursor: pointer;
+    width: 70%;
+    border: none;
+    border-radius: 5px;
+    padding: 2px;
+}
+
 .botoes{
     display: flex;
     flex-direction: row;
@@ -444,6 +453,17 @@ a{
     background-color: rgba(83, 83, 83, 0.39);
 }
 
+.bola{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    width: 85%;
+    height: 80%;
+    border-radius: 100px;
+    background-color: #2A5277;
+    color: white;
+}
 
 .cpu{
     display: flex;
@@ -461,74 +481,29 @@ a{
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    width: 90%;
     height: 90%;
+    width: 100%;
     /* border: 1px solid red; */
 }
 
-
-.kpi-porcentagem{
+.kpi-cpu-disponivel{
     display: flex;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    border-radius: 50px;
-    width: 100%;
     height: 50%;
+    width: 80%;
     /* border: 1px solid red; */
 }
 
-.kpi-porcentagem span{
-    font-size: 20px;
-}
-
-.kpi-porcentagem div{
+.kpi-cpu-porcentagem{
     display: flex;
-    width: 75%;
-    height: 82%;
-    /* border: 1px solid red; */
-    background-color: #5b1919ba;
-    border-radius: 100px;
-}
-
-.bola {
-  width: 100px;
-  height: 100px;
-  background-color: red;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 54px;
-}
-
-
-#cpu-porcentagem{
-    font-size: 40px;
-}
-
-.kpi-disponivel{
-    display: flex;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    border-radius: 50px;
-    width: 100%;
     height: 50%;
+    width: 80%;
     /* border: 1px solid red; */
-}
-
-.kpi-disponivel span{
-    font-size: 20px;
-}
-
-.kpi-disponivel div{
-    width: 75%;
-    height: 82%;
-    /* border: 1px solid red; */
-    background-color: #5b1919ba;
-    border-radius: 100px;
 }
 
 .ram{
@@ -547,57 +522,31 @@ a{
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    width: 90%;
     height: 90%;
+    width: 100%;
     /* border: 1px solid red; */
 }
 
-
-.kpi-porcentagem{
+.kpi-ram-disponivel{
     display: flex;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    border-radius: 50px;
-    width: 100%;
     height: 50%;
+    width: 80%;
     /* border: 1px solid red; */
 }
 
-.kpi-porcentagem span{
-    font-size: 20px;
-}
-
-.kpi-porcentagem div{
-    width: 75%;
-    height: 82%;
-    /* border: 1px solid red; */
-    background-color: #5b1919ba;
-    border-radius: 100px;
-}
-
-.kpi-disponivel{
+.kpi-ram-porcentagem{
     display: flex;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    border-radius: 50px;
-    width: 100%;
     height: 50%;
+    width: 80%;
     /* border: 1px solid red; */
 }
 
-.kpi-disponivel span{
-    font-size: 20px;
-}
-
-.kpi-disponivel div{
-    width: 75%;
-    height: 82%;
-    /* border: 1px solid red; */
-    background-color: #5b1919ba;
-    border-radius: 100px;
-}
 
 
 .disco{
@@ -616,57 +565,31 @@ a{
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    width: 90%;
     height: 90%;
+    width: 100%;
     /* border: 1px solid red; */
 }
 
-
-.kpi-porcentagem{
+.kpi-disco-disponivel{
     display: flex;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    border-radius: 50px;
-    width: 100%;
     height: 50%;
+    width: 80%;
     /* border: 1px solid red; */
 }
 
-.kpi-porcentagem span{
-    font-size: 20px;
-}
-
-.kpi-porcentagem div{
-    width: 75%;
-    height: 82%;
-    /* border: 1px solid red; */
-    background-color: #5b1919ba;
-    border-radius: 100px;
-}
-
-.kpi-disponivel{
+.kpi-disco-porcentagem{
     display: flex;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    border-radius: 50px;
-    width: 100%;
     height: 50%;
+    width: 80%;
     /* border: 1px solid red; */
 }
 
-.kpi-disponivel span{
-    font-size: 20px;
-}
-
-.kpi-disponivel div{
-    width: 75%;
-    height: 82%;
-    /* border: 1px solid red; */
-    background-color: #5b1919ba;
-    border-radius: 100px;
-}
 
 .pacotes{
     display: flex;
@@ -675,6 +598,7 @@ a{
     justify-content: space-between;
     width: 25%;
     height: 95%;
+    border-right: 1px solid white;
     /* border: 1px solid red; */
 }
 
@@ -683,54 +607,28 @@ a{
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    width: 90%;
     height: 90%;
+    width: 100%;
     /* border: 1px solid red; */
 }
 
-
-.kpi-porcentagem{
+.kpi-pacotes-disponivel{
     display: flex;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    border-radius: 50px;
-    width: 100%;
     height: 50%;
+    width: 80%;
     /* border: 1px solid red; */
 }
 
-.kpi-porcentagem span{
-    font-size: 20px;
-}
-
-.kpi-porcentagem div{
-    width: 75%;
-    height: 82%;
-    /* border: 1px solid red; */
-    background-color: #5b1919ba;
-    border-radius: 100px;
-}
-
-.kpi-disponivel{
+.kpi-pacotes-porcentagem{
     display: flex;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    border-radius: 50px;
-    width: 100%;
     height: 50%;
+    width: 80%;
     /* border: 1px solid red; */
 }
 
-.kpi-disponivel span{
-    font-size: 20px;
-}
-
-.kpi-disponivel div{
-    width: 75%;
-    height: 82%;
-    /* border: 1px solid red; */
-    background-color: #5b1919ba;
-    border-radius: 100px;
-}

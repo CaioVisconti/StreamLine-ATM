@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    <body onload="gerarGraficos()">
+    <body onload="gerarGraficos(), carregarATMS()">
         <div class="nav-total">
             <div class="info-user">
                 <div class="foto-user"></div>
@@ -33,40 +33,28 @@
                 <div class="escolha-opcoes">
                     <div class="escolha-atm">
                         <span>Selecionar ATM:</span>
-                        <select name="" id="">
-                            <option value="1">ATM 1</option>
-                            <option value="2">ATM 2</option>
-                            <option value="3">ATM 3</option>
-                            <option value="4">ATM 4</option>
-                            <option value="5">ATM 5</option>
+                        <select id="select_atm"  oninput="carregarComponentes()">
+                            <!-- <option value="1">ATM 1</option> -->
                         </select>
                     </div>
                     <div class="escolha-componentes">
                         <span>Selecione um componente para visualizar seus dados:</span>
-                        <select name="" id="">
-                            <option value="1">CPU</option>
-                            <option value="2">RAM</option>
-                            <option value="3">DISCO</option>
-                            <option value="4">REDES</option>
-                            <option value="5">PROCESSOS</option>
+                        <select id="select_componentes" oninput="carregarMetricas()" disabled>
+                            <!-- <option value="cpu">CPU</option> -->
                         </select>
                     </div>
                     <div class="escolha-metricas">
                         <span>Métricas Disponíveis:</span>
-                        <select name="" id="">
-                            <option value="1">PORCENTAGEM</option>
-                            <option value="2">FREQUÊNCIA</option>
-                            <option value="3">DISPONÍVEL</option>
-                            <option value="4">RECEBIDOS</option>
-                            <option value="5">ENVIADOS</option>
+                        <select id="select_metricas" disabled>
+                            <!-- <option value="porcentagem">PORCENTAGEM</option> -->
                         </select>
                     </div>
                     <div class="escolha-datas">
                         <span>Intervalo de Datas:</span>
-                        <div class="botoes">
-                            <button>Última semana</button>
-                            <button>Última mês</button>
-                        </div>
+                            <select id="" oninput="carregarData()">
+                                <option value="semana">ÚLTIMA SEMANA</option>
+                                <option value="mes">ÚLTIMO MÊS</option>
+                            </select>
                     </div>
                     <div class="gerar-grafico" onclick="gerarGraficos()">
                         <button>Gerar Gráfico</button>
@@ -80,7 +68,6 @@
             </div>
 
             <div class="organizar" style="display: flex;">
-
                 <div class="kpi-prazo">
                     <div class="kpi-1">
                         <span>MAIOR PICO DE COMPONENTE: <br> <span>PORCENTAGEM </span> <span> CPU: </span><span>74%</span></span>
@@ -117,25 +104,22 @@
 
             </div>
 
-            <div class="organizar-compontentes"  style="display: none;">
+            <!-- <div class="organizar-compontentes" style="display: none;"> -->
+            <div class="organizar-compontentes" style="display: flex;">
                 <span>NÚMEROS DE ALERTAS POR COMPONENTE</span>
                 <div class="fundo">
+
                     <div class="cpu">
                         <span>CPU</span>
                         <div></div>
                         <div class="kpi-cpu">
-                            <div class="kpi-porcentagem">
-                                <span>PORCENTAGEM</span>
-                                <div class="bola">
-                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
-                                </div>
-                              </div>
-                            <div style="height: 5%;"></div>
-                            <div class="kpi-disponivel">
-                                <span>DISPONÍVEL</span>
-                                <div class="bola">
-                                    <span class="numero-alerta" id="cpu-porcentagem">50</span>
-                                  </div>
+                            <div class="kpi-cpu-disponivel">
+                                <span>Disponível</span>
+                                <div class="bola"> <span id="input_kpi_cpu_disponivel" >28</span></div>
+                            </div>
+                            <div class="kpi-cpu-porcentagem">
+                                <span>Porcentagem</span>
+                                <div class="bola"> <span id="input_kpi_cpu_porcentagem" >12</span></div>
                             </div>
                         </div>
                     </div>
@@ -144,59 +128,47 @@
                         <span>RAM</span>
                         <div></div>
                         <div class="kpi-ram">
-                            <div class="kpi-porcentagem">
-                                <span>PORCENTAGEM</span>
-                                <div class="bola">
-                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
-                                </div>
+                            <div class="kpi-ram-disponivel">
+                                <span>Disponível</span>
+                                <div class="bola"> <span id="input_kpi_ram_disponivel" >20</span></div>
                             </div>
-                            <div style="height: 5%;"></div>
-                            <div class="kpi-disponivel">
-                                <span>DISPONÍVEL</span>
-                                <div class="bola">
-                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
-                                </div>
+                            <div class="kpi-ram-porcentagem">
+                                <span>Porcentagem</span>
+                                <div class="bola"> <span id="input_kpi_ram_porcentagem" >10</span></div>
                             </div>
                         </div>
                     </div>
+
                     <div class="disco">
                         <span>DISCO</span>
                         <div></div>
                         <div class="kpi-disco">
-                            <div class="kpi-porcentagem">
-                                <span>PORCENTAGEM</span>
-                                <div class="bola">
-                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
-                                </div>
+                            <div class="kpi-disco-disponivel">
+                                <span>Disponível</span>
+                                <div class="bola"> <span id="input_kpi_disco_disponivel" >18</span></div>
                             </div>
-                            <div style="height: 5%;"></div>
-                            <div class="kpi-disponivel">
-                                <span>DISPONÍVEL</span>
-                                <div class="bola">
-                                    <span class="numero-alerta" id="cpu-porcentagem">50</span>
-                                  </div>
+                            <div class="kpi-disco-porcentagem">
+                                <span>Porcentagem</span>
+                                <div class="bola"> <span id="input_kpi_disco_porcentagem" >07</span></div>
                             </div>
                         </div>
                     </div>
+
                     <div class="pacotes">
                         <span>PACOTES</span>
                         <div></div>
                         <div class="kpi-pacotes">
-                            <div class="kpi-porcentagem">
-                                <span>PORCENTAGEM</span>
-                                <div class="bola">
-                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
-                                </div>
+                            <div class="kpi-pacotes-disponivel">
+                                <span>Disponível</span>
+                                <div class="bola"> <span id="input_kpi_pacotes_disponivel" >14</span></div>
                             </div>
-                            <div style="height: 5%;"></div>
-                            <div class="kpi-disponivel">
-                                <span>DISPONÍVEL</span>
-                                <div class="bola">
-                                  <span class="numero-alerta" id="cpu-porcentagem">50</span>
-                                </div>
+                            <div class="kpi-pacotes-porcentagem">
+                                <span>Porcentagem</span>
+                                <div class="bola"> <span id="input_kpi_pacotes_porcentagem" >05</span></div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
