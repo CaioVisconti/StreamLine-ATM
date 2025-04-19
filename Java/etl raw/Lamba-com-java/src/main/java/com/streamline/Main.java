@@ -3,17 +3,14 @@ package com.streamline;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         FileInputStream inputStream = null;
         CapturaMapper capturaMapper = new CapturaMapper();
         List<Captura> listaCaptura = new ArrayList<>();
-
+        CsvWriter escritor = new CsvWriter();
         try {
             inputStream = new FileInputStream("Capturas.json");
         } catch (FileNotFoundException e) {
@@ -38,25 +35,32 @@ public class Main {
 
         Map<String, List<Captura>> map = organizarDados(listaCaptura);
 
-        for(Map.Entry<String, List<Captura>> infoAtual : map.entrySet()){
+        for (Map.Entry<String, List<Captura>> infoAtual : map.entrySet()) {
             String tipo = infoAtual.getKey();
             List<Captura> listaCap = infoAtual.getValue();
 
             System.out.println("=== " + tipo + " ===");
 
-            for(Captura capAtual : listaCap){
+            for (Captura capAtual : listaCap) {
                 System.out.println("ATM: " + capAtual.getFkAtm() + ", Valor " + capAtual.getValor() + ", Unidade: " + capAtual.getUnidade() + ", Limite: " + capAtual.getLimite() + ", Alerta: " + capAtual.getAlerta() + ", Data Hora: " + capAtual.getDataHora());
             }
 
         }
 
+        try{
+            escritor.escreverCsv(map);
+            System.out.println("CSV escrito com sucesso!");
+        } catch (IOException e){
+            System.out.println("Erro ao tentar escrever CSV! " + e.getMessage());
+        }
+
     }
 
     public static Map<String, List<Captura>> organizarDados(List<Captura> capturas) {
-        Map<String, List<Captura>> capturasMap = new HashMap<>();
+        Map<String, List<Captura>> capturasMap = new LinkedHashMap<>();
 
         for (Captura capAtual : capturas) {
-            if(!capturasMap.containsKey(capAtual.getTipo())){
+            if (!capturasMap.containsKey(capAtual.getTipo())) {
                 capturasMap.put(capAtual.getTipo(), new ArrayList<>());
             }
 
