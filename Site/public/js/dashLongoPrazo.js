@@ -77,6 +77,10 @@ function gerarGraficos(){
 
 
 function carregarATMS() {
+
+    let nomeUsuario = sessionStorage.NOME_USUARIO;
+    document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
+
     let fkAgencia = sessionStorage.ID_AGENCIA;
 
     fetch("/dashLongoPrazo/listarAtm", {
