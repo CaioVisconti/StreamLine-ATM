@@ -106,7 +106,7 @@ function filtrar(req, res) {
             })
         })
         .catch(erro => {
-            console.error("Erro na captura de sistemas operacionais:", erro);
+            console.error("Erro na filtragem:", erro);
             res.status(500).json(erro.sqlMessage);
         });
 }
@@ -257,7 +257,121 @@ function removerConfig(req, res) {
     });
 }
 
+// Página de funcionário
+function buscarKpiFuncionarios(req, res) {
+    let id = req.params.idAgencia;
+
+    gerenteModel.buscarKpiFuncionarios(id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura da kpi total:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function carregarCardsFuncionario(req, res) {
+    let id =  req.params.idAgencia;
+
+    gerenteModel.carregarCardsFuncionario(id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de funcionarios:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarCargo(req, res) {
+
+    let id =  req.params.idAgencia;
+
+    gerenteModel.buscarCargo(id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de cargos:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarEmail(req, res) {
+
+    let id =  req.params.idAgencia;
+
+    gerenteModel.buscarEmail(id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de emails:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarTelefone(req, res) {
+    let id = req.params.idAgencia;
+
+    console.log("teste")
+
+    gerenteModel.buscarTelefone(id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de telefones:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function searchFuncionario(req, res) {
+    let id = req.params.idAgencia;
+    let pesquisa = req.params.pesquisa;
+
+    gerenteModel.searchFuncionario(pesquisa, id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na pesquisa de funcionarios:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function filtrarFuncionario(req, res) {
+    const primeiro = req.params.selecionado;
+    const segundo = req.params.opcao;
+    const id = req.params.idAgencia;
+
+    gerenteModel.filtrarFuncionario(primeiro, segundo, id)
+        .then((resultado) => {
+            res.json({
+                lista: resultado
+            })
+        })
+        .catch(erro => {
+            console.error("Erro na filtragem:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 module.exports = {
+// Página de ATM
     buscarKpiTotal,
     buscarKpiAlerta,
     carregarCards,
@@ -273,5 +387,14 @@ module.exports = {
     procurarConfigDisponivel,
     cadastrarConfig,
     removerAtm,
-    removerConfig
+    removerConfig,
+
+//Página de Funcionário
+    buscarKpiFuncionarios,
+    carregarCardsFuncionario,
+    buscarCargo,
+    buscarEmail,
+    buscarTelefone,
+    searchFuncionario,
+    filtrarFuncionario
 }

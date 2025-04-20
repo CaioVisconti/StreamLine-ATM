@@ -68,4 +68,33 @@ router.delete("/:id/removerConfig", function (req, res) {
     gerenteController.removerConfig(req, res);
 })
 
+// Tela de funcionários:
+router.get("/:idAgencia/buscarKpiFuncionarios", function (req, res) {
+    gerenteController.buscarKpiFuncionarios(req, res);
+})
+
+router.get("/:idAgencia/carregarCardsFuncionario", function (req, res) {
+    gerenteController.carregarCardsFuncionario(req, res);
+})
+
+router.get("/:idAgencia/buscarCargo", function (req, res) {
+    gerenteController.buscarCargo(req, res);
+})
+
+router.get("/:idAgencia/buscarEmail", function (req, res) {
+    gerenteController.buscarEmail(req, res);
+})
+
+router.get("/:idAgencia/buscarTelefone", function (req, res) {
+    gerenteController.buscarTelefone(req, res);
+})
+
+router.get("/:pesquisa/:idAgencia/searchFuncionario", function (req, res) {
+    gerenteController.searchFuncionario(req, res);
+})
+
+router.get("/:selecionado/:opcao/:idAgencia/filtrarFuncionario", function (req, res) {
+    gerenteController.filtrarFuncionario(req, res);
+})
+
 module.exports = router;

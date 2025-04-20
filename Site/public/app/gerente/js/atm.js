@@ -281,6 +281,7 @@ function pesquisarEditAtm(indice) {
     })
     button_atualizar.innerHTML = `
         <button onclick="atualizarAtm(${indice}, ${idAtm})">Salvar Mudanças</button>
+        <img src="../../assets/icons/trash.png" class="icon-deletar" alt="" onclick="mostrarModalDeleteAtm(${idAtm})">
     `;
 }
 
@@ -378,15 +379,6 @@ function mostrarModalCadComp(idAtm, indice) {
 }
 
 function corrigirConfiguracao() {
-    let componente = slt_componentes.value;
-    let idf = document.getElementById("div_identificador");
-    
-    if(componente == "CPU") {
-        idf.style.display = "flex";
-    } else {
-        idf.style.display = "none";
-    }
-
     listagem_config_cad.style.display = "flex";
 }
 
@@ -432,17 +424,6 @@ function mostrarModalEditComp(indice, idAtm) {
         componenteAtual = "REDE";
     } else {
         componenteAtual = "PROCESSOS";
-    }
-
-    if(componenteAtual == "CPU") {
-        identificador.style.display = "flex";
-        let identificadorEditar = document.getElementById("identificadorEditar");
-
-        if(componentes.lista[indice].identificador == null) {
-            identificadorEditar.value = "teste";
-        } else {
-            identificadorEditar.value = componentes.lista[indice].identificador;
-        }
     }
 
     componente.innerHTML = componenteAtual;

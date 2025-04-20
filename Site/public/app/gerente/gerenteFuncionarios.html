@@ -1,161 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funcionários | StreamLine</title>
-    <link rel="stylesheet" href="../../style/cadastrarEmpresa.css">
+    <title>Cadastro de Agência | StreamLine</title>
     <link rel="stylesheet" href="./css/atm.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <script src="./js/funcionario.js"></script>
 </head>
-<body>
-    <div class="nav-total">
-        <div class="info-user">
-            <div class="foto-user"></div>
-            <div class="msg-user">
-                <span>
-                    Olá,
-                    <span id="nomeUsuario">
-                        Nicoly.
-                    </span>
-                </span>
+
+<body onload="carregarDados()">
+    <nav>
+        <div class="usuario">
+            <div class="img-perfil"></div>
+            <div class="saudacoes">Olá, <br><span id="nomeUser">Nome</span>.</div>
+        </div>
+        <div class="barra">
+            <span class="problema">Relatar Problema</span>
+        </div>
+        <div class="sair">
+            <a href="../index.html"><button>Sair</button></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="navlateral">
+            <div class="navegacao-paginas">
+                <a href="./gerenteATM.html">ATM's</a>
+                <a href="./gerenteFuncionarios.html" id="atual">Funcionarios</a>
+                <a href="./gerenteDashboard.html">Dashboard</a>
+            </div>
+            <div class="kpi">
+                <span class="titulo">Quantidade de <br> funcionários cadastrados</span>
+                <span class="valor" id="kpi_total"></span>
+            </div>
+            <div class="kpi">
+                <span class="titulo">Quantidade de <br>funcionários em atividade</span>
+                <span class="valor" id="kpi_atividade"></span>
             </div>
         </div>
-        <div class="nav-bar">
-            <div></div>
-            <a class="link-superior">Reportar Problema</a>
+        <div class="agencias">
+            <div class="pesquisar">
+            <div class="input-pesquisar">
+                <input type="text" id="ipt_pesquisa" oninput="carregarCards()">
+                <img src="../../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
+            </div>
+            <img src="../../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
+            <div class="filtros" style="display: none;">
+                <select id="filtro_categoria" class="filtro" onchange="abrirSegundaFiltragem()">
+                    <option selected disabled>Categoria</option>
+                    <option value="nome">Nome</option>
+                    <option value="cargo">Cargo</option>
+                    <option value="email">Email</option>
+                    <option value="telefone">Telefone</option>
+                </select>
+                <select id="filtro_tipo" class="filtro" onchange="filtrar()">
+                    <option selected disabled>Tipo</option>
+                    <option value="filtro_AZ">A-Z</option>
+                    <option value="filtro_ZA">Z-A</option>
+                </select>
+            </div>
+            <img src="../../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
         </div>
-        <div class="btn-nav" onclick="sair()">Sair</div>
-    </div>
-
-    <div class="painel">
-
-        <div class="kpis">
-            <div class="escolha-opcoes">
-                <div class="espacamento">
-                    <a style="padding-right: 39%;" class="opcao" href="./gerenteATM.html">ATM's</a>
-                    <div class="linha"></div>
-                    <a style="padding-right: 12%;" class="selecionado">Funcionários</a>
-                    <div class="linha"></div>
-                    <a style="padding-right: 20%;" class="opcao" href="./gerenteDashboard.html">Dashboard</a>
-                    <div class="linha"></div>
-                </div>
-            </div>
-            <div class="escolha-kpi">
-                <span class="titulo-kpi">Quantidade de ATM's registrados</span>
-                <span class="numeros-kpi">10</span>
-            </div>
-            <div class="escolha-kpi">
-                <span class="titulo-kpi">Quantidade de ATM's em alerta</span>
-                <span class="numeros-kpi">10</span>
-            </div>
-    </div>
-
-    <div class="agencias">
-        <div class="pesquisar">
-            <div class="ajuste-pesquisa">
-
-                <div class="input-pesquisar">
-                    <input type="text" oninput="">
-                    <img src="../../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
-                </div>
-                <img src="../../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
-                <div class="filtros" style="display: none;">
-                    <select id="filtro-categoria" class="filtro">
-                        <option value="" selected disabled>Categoria</option>
-                        <option value="filtro-codigo">Código</option>
-                        <option value="filtro-nome">Nome</option>
-                        <option value="filtro-email">Email</option>
-                    </select>
-                    <select id="filtro-tipo" class="filtro">
-                        <option value="" selected disabled>Tipo</option>
-                        <option value="filtro-AZ">A-Z</option>
-                        <option value="filtro-ZA">Z-A</option>
-                    </select>
-                </div>
-                <img src="../../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
-
-            </div>
-            <div style="width: 30vw;"></div>
-
+        <div class="cards-container" id="cardsContainer">
         </div>
-        <div class="cards-container">
-            <div class="cards">
-                <div class="perfil-agencia">
-                    <div class="img-agencia"></div>
-                    <span>Agência - <span id="empresa">Banco Safra</span></span>
-                    <img class="img-edit" onclick="mostrarModalEdit()" src="../../assets/icone-editar.png">
-                </div>
-                <div class="info-agencia">
-                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
-                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
-                    <span class="info">Email: <span id="email">email@email.email</span></span>
-                </div>
-            </div>
-            <div class="cards">
-                <div class="perfil-agencia">
-                    <div class="img-agencia"></div>
-                    <span>Agência - <span id="empresa">Banco Safra</span></span>
-                    <img class="img-edit" onclick="mostrarModalEdit()" src="../../assets/icone-editar.png">
-                </div>
-                <div class="info-agencia">
-                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
-                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
-                    <span class="info">Email: <span id="email">email@email.email</span></span>
-                </div>
-            </div>
-            <div class="cards">
-                <div class="perfil-agencia">
-                    <div class="img-agencia"></div>
-                    <span>Agência - <span id="empresa">Banco Safra</span></span>
-                    <img class="img-edit" onclick="mostrarModalEdit()" src="../../assets/icone-editar.png">
-                </div>
-                <div class="info-agencia">
-                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
-                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
-                    <span class="info">Email: <span id="email">email@email.email</span></span>
-                </div>
-            </div>
-            <div class="cards">
-                <div class="perfil-agencia">
-                    <div class="img-agencia"></div>
-                    <span>Agência - <span id="empresa">Banco Safra</span></span>
-                    <img class="img-edit" onclick="mostrarModalEdit()" src="../../assets/icone-editar.png">
-                </div>
-                <div class="info-agencia">
-                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
-                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
-                    <span class="info">Email: <span id="email">email@email.email</span></span>
-                </div>
-            </div>
-            <div class="cards">
-                <div class="perfil-agencia">
-                    <div class="img-agencia"></div>
-                    <span>Agência - <span id="empresa">Banco Safra</span></span>
-                    <img class="img-edit" onclick="mostrarModalEdit()" src="../../assets/icone-editar.png">
-                </div>
-                <div class="info-agencia">
-                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
-                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
-                    <span class="info">Email: <span id="email">email@email.email</span></span>
-                </div>
-            </div>
-                        <div class="cards">
-                <div class="perfil-agencia">
-                    <div class="img-agencia"></div>
-                    <span>Agência - <span id="empresa">Banco Safra</span></span>
-                    <img class="img-edit" onclick="mostrarModalEdit()" src="../../assets/icone-editar.png">
-                </div>
-                <div class="info-agencia">
-                    <span class="info">Código Agência: <span id="codigo">código incrível</span></span>
-                    <span class="info">Telefone: <span id="telefone">4002-8922</span></span>
-                    <span class="info">Email: <span id="email">email@email.email</span></span>
-                </div>
-            </div>
         </div>
     </div>
-
-
-    </div>
-
 </body>
-</html>
+
+<script src="./js/funcionario.js"></script>

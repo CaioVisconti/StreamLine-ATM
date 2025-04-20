@@ -142,7 +142,71 @@ function removerConfig(id) {
 
 }
 
+function buscarKpiFuncionarios(id) {
+
+    let instrucaoSql = `SELECT COUNT(idUsuario) AS qtd FROM usuario WHERE fkAgencia = ${id} AND cargo <> "Gerente"`;
+
+    return database.executar(instrucaoSql);
+}
+
+function carregarCardsFuncionario(id) {
+
+    let instrucaoSql = `SELECT * FROM usuario WHERE fkAgencia = ${id} AND cargo <> "Gerente"`;
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarCargo(id) {
+
+    let instrucaoSql = `SELECT DISTINCT cargo FROM usuario WHERE fkAgencia = ${id} AND cargo <> "Gerente"`;
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarEmail(id) {
+
+    let instrucaoSql = `SELECT email FROM usuario WHERE fkAgencia = ${id} AND cargo <> "Gerente"`;
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarTelefone(id) {
+
+    let instrucaoSql = `SELECT telefone FROM usuario WHERE fkAgencia = ${id} AND cargo <> "Gerente"`;
+
+    return database.executar(instrucaoSql);
+}
+
+function searchFuncionario(pesquisa, id) {
+
+    let instrucaoSql = `SELECT * FROM usuario WHERE fkAgencia = ${id} AND nome LIKE "%${pesquisa}%" AND cargo <> "Gerente"`;
+
+    return database.executar(instrucaoSql)
+}
+
+function filtrarFuncionario(primeiro, segundo, id) {
+    let formato = "ASC";
+
+    console.log(primeiro, segundo, id);
+
+    if(segundo == "filtro_ZA") {
+        formato = "DESC";
+    }
+
+    if(primeiro == "nome") {
+        instrucaoSql = `SELECT * FROM usuario WHERE fkAgencia = ${id} AND cargo <> "Gerente" ORDER BY ${primeiro} ${formato};`;
+    } else if(primeiro == "cargo") {
+        instrucaoSql = `SELECT * FROM usuario WHERE fkAgencia = ${id} AND cargo <> "Gerente" AND cargo = "${segundo}" ORDER BY ${primeiro} ${formato};`;
+    } else {
+        instrucaoSql = `SELECT * FROM usuario WHERE fkAgencia = ${id} AND cargo <> "Gerente" AND ${primeiro} LIKE "%${segundo}%" ORDER BY ${primeiro} ${formato};`;
+    }
+    
+    
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
+// Página de ATM
     buscarKpiTotal,
     buscarKpiAlerta,
     carregarCards,
@@ -158,5 +222,14 @@ module.exports = {
     procurarConfigDisponivel,
     cadastrarConfig,
     removerAtm,
-    removerConfig
+    removerConfig,
+
+// Página de Funcionario
+    buscarKpiFuncionarios,
+    carregarCardsFuncionario,
+    buscarCargo,
+    buscarEmail,
+    buscarTelefone,
+    searchFuncionario,
+    filtrarFuncionario
 };
