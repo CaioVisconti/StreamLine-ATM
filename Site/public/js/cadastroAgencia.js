@@ -1,7 +1,7 @@
 const nomeUsuario = sessionStorage.NOME_USUARIO;
 
 function carregarDados() {
-    nome_usuario.innerHTML = nomeUsuario;
+    nome_usuario.innerHTML += nomeUsuario;
     carregarCards()
     carregarEmpresas()
     carregarKpi()

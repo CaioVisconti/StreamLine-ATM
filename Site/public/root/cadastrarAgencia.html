@@ -1,137 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Agência | StreamLine</title>
-    <link rel="stylesheet" href="../style/cadastrarAgencia.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <title>Cadastro de Empresas | StreamLine</title>
+    <!-- NOVO CSS -->
+    <link rel="stylesheet" href="../style/novoAgencia.css">
     <script src="../js/cadastroAgencia.js"></script>
-</head>
 
+
+</head>
 <body onload="carregarDados()">
-    <nav>
-        <div class="usuario">
-            <div class="img-perfil"></div>
-            <div class="saudacoes">Olá, <br><span id="nome_usuario"></span>.</div>
-        </div>
-        <div class="barra">
-            <span class="problema">Relatar Problema</span>
-        </div>
-        <div class="sair">
-            <a href="../index.html"><button>Sair</button></a>
-        </div>
-    </nav>
-    <div class="container">
-        <div class="navlateral">
-            <div class="navegacao-paginas">
-                <a href="../root/cadastrarEmpresa.html">Cadastrar Empresas</a>
-                <a href="cadastrarAgencia.html" id="atual">Cadastrar Agências</a>
-                <a href="">Cadastrar Gerentes</a>
+    <div class="nav-total">
+        <div class="info-user">
+            <div class="foto-user"></div>
+            <div class="msg-user">
+                <span id="nome_usuario"> Olá, 
+                    
+                </span>
             </div>
-            <div class="kpi">
-                <span class="titulo">Agências Cadastradas</span>
-                <span class="valor" id="kpi"></span>
+        </div>
+        <div class="nav-bar">
+            <div></div>
+            <span>Reportar Problema</span>
+        </div>
+        <a href="../index.html"><button class="btn-nav">Sair</button></a>
+        
+    </div>
+
+    <div class="painel">
+        <div class="kpis">
+            <div class="escolha-opcoes">
+                <div class="espacamento">
+                
+                    <a href="cadastrarEmpresa.html"><span>Cadastrar Empresas</span></a>
+                    <div class="linha"></div>
+                    <a href="cadastrarAgencia.html"><span>Cadastrar Agências</span></a>
+                    <div class="linha"></div>
+                    <span>Cadastrar Gerentes</span>
+                    <div class="linha"></div>
+                </div>
             </div>
-            <div class="kpi">
-                <span class="titulo">Visualizar Contate-nos</span>
+            <div class="escolha-kpi">
+                <span class="info-kpi">Agências Cadastradas</span>
+                <span class="numeros-kpi" id="kpi"></span>
+            </div>
+            <div class="escolha-kpi">
+                <span class="info-kpi">Visualizar Contate-nos</span>
                 <button class="btn-nav">Visualizar</button>
             </div>
         </div>
+
         <div class="agencias">
             <div class="pesquisar">
-                <div class="input-pesquisar">
-                    <input type="text" id="ipt_pesquisa" oninput="carregarCards()">
-                    <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
+                <div class="ajuste-pesquisa">
+                    <div class="input-pesquisar">
+                        <input type="text" id="ipt_pesquisa" oninput="carregarCards()">
+                        <img src="../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
+                    </div>
+                    <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
+                    <div class="filtros" style="display: none;">
+                        <select id="filtro-categoria" class="filtro">
+                            <option value="undefined" selected disabled>Categoria</option>
+                            <option value="cidade">Cidade</option>
+                            <option value="undefined">Empresa</option>
+                        </select>
+                    </div>
+                    <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
                 </div>
-                <img src="../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
-                <div class="filtros" style="display: none;">
-                    <select id="filtro-categoria" class="filtro">
-                        <option value="undefined" selected disabled>Categoria</option>
-                        <option value="cidade">Cidade</option>
-                        <option value="undefined">Empresa</option>
-                    </select>
-                </div>
-                <img src="../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
             </div>
-            <div class="cards-container" id="cardsContainer">
+            <div class="delimitar">
+                <div class="cards-container" id="cardsContainer">
+                </div>
             </div>
         </div>
+    
+
         <div class="fade"></div>
         <div class="modal" style="display: none;">
-            <div class="modal-fechar">
-                <span onclick="mostrarModalCad()">&#x2715;</span>
-            </div>
-            <div class="modal-container">
-                <div class="modal-infos">
-                    <span>Empresa:</span>
-                    <select id="codigo-empresa" class="select-empresa">
-                        <option selected disabled>Selecione a Empresa</option>
-                        <div id="valoresSelect"></div>
-                    </select>
+
+                <div class="modal-fechar">
+                    <span onclick="mostrarModalCad()">&#x2715;</span>
                 </div>
-                <div class="modal-infos">
-                    <span>Código Agência:</span>
-                    <input id="iptCodigoAgencia" type="text">
+                <div class="modal-container">
+                    <div class="modal-infos">
+                        <span>Empresa:</span>
+                        <select id="codigo-empresa" class="select-empresa">
+                            <option selected disabled>Selecione a Empresa</option>
+                            <div id="valoresSelect"></div>
+                        </select>
+                    </div>
+                    <div class="modal-infos">
+                        <span>Código Agência:</span>
+                        <input id="iptCodigoAgencia" type="text">
+                    </div>
+                    <div class="modal-infos">
+                        <span>Email:</span>
+                        <input id="iptEmail" type="text">
+                    </div>
+                    <div class="modal-infos">
+                        <span>Telefone:</span>
+                        <input id="iptNumero" type="text">
+                    </div>
+                    <div class="modal-infos">
+                        <span>CEP:</span>
+                        <input id="iptCEP" oninput="puxarCep()" type="number">
+                    </div>
+                    <div class="modal-infos">
+                        <span>UF:</span>
+                        <input id="iptUF" type="text" disabled>
+                    </div>
+                    <div class="modal-infos">
+                        <span>Cidade:</span>
+                        <input id="iptCidade" type="text" disabled>
+                    </div>
+                    <div class="modal-infos">
+                        <span>Bairro:</span>
+                        <input id="iptBairro" type="text" disabled>
+                    </div>
+                    <div class="modal-infos">
+                        <span>Logradouro:</span>
+                        <input id="iptLogradouro" type="text" disabled>
+                    </div>
+                    <div class="modal-botao">
+                        <button onclick="cadastrarAgencia()">Cadastrar</button>
+                    </div>
                 </div>
-                <div class="modal-infos">
-                    <span>Email:</span>
-                    <input id="iptEmail" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>Telefone:</span>
-                    <input id="iptNumero" type="text">
-                </div>
-                <div class="modal-infos">
-                    <span>CEP:</span>
-                    <input id="iptCEP" oninput="puxarCep()" type="number">
-                </div>
-                <div class="modal-infos">
-                    <span>UF:</span>
-                    <input id="iptUF" type="text" disabled>
-                </div>
-                <div class="modal-infos">
-                    <span>Cidade:</span>
-                    <input id="iptCidade" type="text" disabled>
-                </div>
-                <div class="modal-infos">
-                    <span>Bairro:</span>
-                    <input id="iptBairro" type="text" disabled>
-                </div>
-                <div class="modal-infos">
-                    <span>Logradouro:</span>
-                    <input id="iptLogradouro" type="text" disabled>
-                </div>
-                <div class="modal-botao">
-                    <button onclick="cadastrarAgencia()">Cadastrar</button>
-                </div>
-            </div>
+            
         </div>
+
         <div class="modal-edit" style="display: none;">
-            <div class="modal-fechar">
-                <span onclick="mostrarModalEdit()">&#x2715;</span>
-                <img onclick="deletarAgencia()" src="../assets/icons/trash.png" alt="">
-            </div>
-            <div class="modal-container">
-                <div class="modal-infos">
-                    <span>Email:</span>
-                    <input id="iptEmailEdit" type="text">
+        
+                <div class="modal-fechar">
+                    <span onclick="mostrarModalEdit()">&#x2715;</span>
+                    <img onclick="deletarAgencia()" src="../assets/icons/trash.png" alt="">
                 </div>
-                <div class="modal-infos">
-                    <span>Telefone:</span>
-                    <input id="iptNumeroEdit" type="text">
+                <div class="modal-container">
+                    <div class="modal-infos">
+                        <span>Email:</span>
+                        <input id="iptEmailEdit" type="text">
+                    </div>
+                    <div class="modal-infos">
+                        <span>Telefone:</span>
+                        <input id="iptNumeroEdit" type="text">
+                    </div>
+                    <div class="modal-botao">
+                        <button onclick="atualizarAgencia()">Salvar Mudanças</button>
+                    </div>
                 </div>
-                <div class="modal-botao">
-                    <button onclick="atualizarAgencia()">Salvar Mudanças</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
     </div>
 </body>
-
 </html>
