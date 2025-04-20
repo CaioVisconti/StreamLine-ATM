@@ -8,14 +8,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 public class CsvWriter {
     public ByteArrayOutputStream escreverCsv(List<Captura> listaCaptura) throws IOException {
-        LocalDate localDate = LocalDate.now();
+        LocalDateTime dataHora = LocalDateTime.now();
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
         ByteArrayOutputStream streamSaida = new ByteArrayOutputStream();
-        FileWriter escritor = new FileWriter("capturas " + String.valueOf(localDate) + ".csv", StandardCharsets.UTF_8);
+        FileWriter escritor = new FileWriter("capturas " + String.valueOf(formatador.format(dataHora)) + ".csv", StandardCharsets.UTF_8);
         CSVPrinter csvPrinter = new CSVPrinter(escritor, CSVFormat.DEFAULT.withHeader(
                 "ATM",
                 "Data Hora da Captura",
