@@ -112,6 +112,12 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
     while i < quantidade:
         
         print(f"\n🔄 Início da leitura {i+1}")
+
+        
+        leitura = {
+        "fkAtm": fkAtm,
+        "dataHora": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
         
         # Percorre o tipo do componente e sua unidadde de medida dentro de configurações (resultado da função buscar_configurações)
         for tipo_componente, medidas in configuracoes.items():
@@ -135,22 +141,17 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
                     fkParametro, limite = resultado # O método fetchone() retornará uma tupla contendo o idParametro (chave primária do parâmetro) e o limite associado a esse parâmetro
                     print(f"🔗 fkParametro localizado: {fkParametro} | Limite: {limite}")
 
+                    leitura[tipo_componente] = valor
+                    if "Total" not in tipo_componente and "Disponivel" not in tipo_componente:
+                        leitura[f"limite {tipo_componente}"] = limite
+                        leitura[f"alerta {tipo_componente}"] = valor > limite
+
                     if valor is not None: # Verifica se o valor coletado não é None
                         # Insere na tabela captura
                         cursor.execute("""
                             INSERT INTO captura (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
                         """, (valor, fkParametro))
                         conn.commit()
-
-                        capturas.append({
-                            "fkAtm" : fkAtm,
-                            "tipo": tipo_componente,
-                            "unidade": unidade,
-                            "valor": valor,
-                            "limite": limite,
-                            "alerta": valor > limite,
-                            "dataHora": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                        })
 
                         print("✅ Inserção em 'captura' realizada com sucesso!")
                         # Após inserir o valor na tabela captura, o código verifica se o valor coletado excede o limite configurado para aquele parâmetro 
@@ -177,9 +178,10 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
         print(f"\n📅 {i}° Leitura concluída - {hora}")
 
         time.sleep(tempo)
+        capturas.append(leitura)
         print(capturas)
         print("\n📂 Gerando Arquivo JSON!\n")
-        caminhoArquivo = 'Python/json/Capturas.json'
+        caminhoArquivo = 'Capturas.json'
         with open (caminhoArquivo, "w") as arquivo: # o python vai abrir o arquivo para leitura (por isso o "w", de write). Se o arq nao existir, ele o cria
             json.dump(capturas, arquivo, indent=4)
         print("\n Arquivo JSON Gerado! ✅\n")
