@@ -41,7 +41,7 @@ function buscarKpis() {
     // })
 }
 
-var vetor = "";
+let vetor = "";
 
 function carregarCards(lista) {
     const pesquisa = ipt_pesquisa.value;
@@ -84,7 +84,7 @@ function carregarCards(lista) {
                                 <div class="cards">
                                 <div class="perfil-agencia">
                                 <span id="nome">${json.lista[i].nome}</span>
-                                <img class="img-edit" onclick="mostrarModalEdit(${i})" src="../../assets/icone-editar.png">
+                                <img class="img-edit" onclick="mostrarModalEdit(${i}, ${json.lista[i].idUsuario})" src="../../assets/icone-editar.png">
                                 </div>
                                 <div class="info-agencia">
                                 <span class="info">Cargo: <span id="cargo">${json.lista[i].cargo}</span></span>
@@ -135,7 +135,7 @@ function carregarCards(lista) {
                                 <div class="cards">
                                 <div class="perfil-agencia">
                                 <span id="nome">${json.lista[i].nome}</span>
-                                <img class="img-edit" onclick="mostrarModalEdit(${i})" src="../../assets/icone-editar.png">
+                                <img class="img-edit" onclick="mostrarModalEdit(${i}, ${json.lista[i].idUsuario})" src="../../assets/icone-editar.png">
                                 </div>
                                 <div class="info-agencia">
                                 <span class="info">Cargo: <span id="cargo">${json.lista[i].cargo}</span></span>
@@ -179,7 +179,7 @@ function carregarCards(lista) {
                 <div class="cards">
                 <div class="perfil-agencia">
                 <span id="nome">${listaV[i].nome}</span>
-                <img class="img-edit" onclick="mostrarModalEdit(${i})" src="../../assets/icone-editar.png">
+                <img class="img-edit" onclick="mostrarModalEdit(${i}, ${listaV[i].idUsuario})" src="../../assets/icone-editar.png">
                 </div>
                 <div class="info-agencia">
                 <span class="info">Cargo: <span id="cargo">${listaV[i].cargo}</span></span>
@@ -315,4 +315,173 @@ function filtrar() {
                 carregarDados(json.lista);
         })
     })
+}
+
+function mostrarModalCad() {
+    const modalCadastro = document.querySelector(".modal");
+    const fade = document.querySelector(".fade");
+
+    if (modalCadastro.style.display == "none") {
+        modalCadastro.style.display = "flex";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modalCadastro.style.display = "none"
+            fade.style.display = "none";
+        }
+    }
+}
+
+function cadastrarFuncionario() {
+    let nome = ipt_nome.value;
+    let telefone = ipt_telefone.value;
+    let cargo = slt_cargo.value;
+    let email = ipt_email.value;
+    let senha = ipt_senha.value;
+
+    fetch("/gerente/cadastrarFuncionario", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            nomeServer: nome,
+            telefoneServer: telefone,
+            cargoServer: cargo,
+            emailServer: email,
+            senhaServer: senha,
+            idAgenciaServer: idAgencia
+        })
+    }).then((resultado) => {
+        carregarDados();
+        let modal = document.querySelector(".modal");
+        let fade = document.querySelector(".fade");
+        modal.style.display = "none";
+        fade.style.display = "none";
+    })
+}
+
+function mostrarModalEdit(indice, idUsuario) {
+    const modalEdit = document.querySelector(".modal-edit");
+    const fade = document.querySelector(".fade");
+
+    if (modalEdit.style.display == "none") {
+        modalEdit.style.display = "flex";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modalEdit.style.display = "none"
+            fade.style.display = "none";
+        }
+    }
+
+    if(indice != undefined) {
+        ipt_nomeEdit.value = vetor.lista[indice].nome;
+        ipt_telefoneEdit.value = vetor.lista[indice].telefone;
+
+        if(vetor.lista[indice].cargo == "Técnico de Operação") {
+            slt_cargoEdit.value = 1;
+        } else {
+            slt_cargoEdit.value = 2;
+        }
+
+        ipt_emailEdit.value = vetor.lista[indice].email;
+        ipt_senhaEdit.value = vetor.lista[indice].senha;
+
+        let botao = document.getElementById("botao_atualizar")
+        botao.innerHTML = `
+            <button onclick="atualizarFuncionario(${indice}, ${idUsuario})">Salvar Mudanças</button>     
+            <img src="../../assets/icons/trash.png" class="icon-deletar" alt="" onclick="mostrarModalDelete(${idUsuario})">
+        `;
+    }
+}
+
+function atualizarFuncionario(indice, id) {
+    let nome = ipt_nomeEdit.value;
+    let telefone = ipt_telefoneEdit.value;
+    let cargo = slt_cargoEdit.value;
+    let email = ipt_emailEdit.value;
+    let senha = ipt_senhaEdit.value;
+
+    if(cargo == 1) {
+        cargo = "Técnico de Operação"
+    } else {
+        cargo = "Analista de Dados"
+    }
+
+    let json = {
+        idUsuario: id,
+        nome: nome,
+        telefone: telefone,
+        cargo: cargo,
+        email: email,
+        senha: senha,
+        fkAgencia: Number(idAgencia)
+    }
+
+    if(JSON.stringify(json) != JSON.stringify(vetor.lista[indice])) {
+        console.log(json);
+        fetch(`/gerente/atualizarFuncionario`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                jsonEnvio: json
+            })
+        }).then((resultado) => {
+            resultado.json()
+            .then(json => {
+                carregarDados();
+                let modal = document.querySelector(".modal-edit");
+                let fade = document.querySelector(".fade");
+                modal.style.display = "none";
+                fade.style.display = "none";
+            })
+        })
+    }
+
+}
+
+function mostrarModalDelete(idUsuario) {
+    const modalDelete = document.querySelector(".modal-del-funcionario");
+    const fade = document.querySelector(".fade");
+
+    if (modalDelete.style.display == "none") {
+        modalDelete.style.display = "flex";
+    } else {
+        const alert = confirm("Gostaria de fechar o modal?");
+        if (alert) {
+            modalDelete.style.display = "none"
+            fade.style.display = "none";
+        }
+    }
+
+    button_remover_funcionario.innerHTML = `
+        <button onclick="removerFuncionario(${idUsuario})">Remover</button>
+    `;
+}
+
+function removerFuncionario(idUsuario) {
+    let escrito = ipt_confirmar.value;
+    if(escrito == "excluir") {
+        fetch(`/gerente/${idUsuario}/removerFuncionario`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((resultado) => {
+            carregarDados();
+    
+            const modalDelete = document.querySelector(".modal-del-funcionario");
+            const modalEdit = document.querySelector(".modal-edit");
+            const fade = document.querySelector(".fade");
+    
+            modalDelete.style.display = "none";
+            modalEdit.style.display = "none";
+            fade.style.display = "none";
+        })
+    } else {
+        alert("Preencha corretamente o campo");
+    }
 }

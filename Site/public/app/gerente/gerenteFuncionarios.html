@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Agência | StreamLine</title>
+    <title>Cadastro de Funcionarios | StreamLine</title>
     <link rel="stylesheet" href="./css/atm.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,9 +65,124 @@
             </div>
             <img src="../../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
         </div>
-        <div class="cards-container" id="cardsContainer">
+        <div class="cards-container" id="cardsContainer"></div>
         </div>
+    </div>
+    <div class="fade"></div>
+    <div class="modal" style="display: none;">
+
+        <div class="modal-row">
+
+            <div class="modal-fechar">
+                <span onclick="mostrarModalCad()">&#x2715;</span>
+            </div>
+            <div class="modal-container">
+                <div class="modal-infos">
+                    <span>Nome:</span>
+                    <input type="text" id="ipt_nome">
+                </div>
+                <div class="modal-infos">
+                    <span>Telefone:</span>
+                    <input type="text" id="ipt_telefone">
+                </div>
+                <div class="modal-infos">
+                    <span>Cargo:</span>
+                    <select id="slt_cargo">
+                        <option selected disabled>Selecionar</option>
+                        <option value="Técnico de Operação">Técnico de Operação</option>
+                        <option value="Analista de Dados">Analista de Dados</option>
+                    </select>
+                </div>
+                <div class="modal-infos">
+                    <span>Email</span>
+                    <input type="text" id="ipt_email">
+                </div>
+                <div class="modal-infos">
+                    <span>Senha:</span>
+                    <input type="text" id="ipt_senha">
+                </div>
+            </div>
+    
+            <div class="modal-container-imagem">
+                <div class="modal-foto">
+                    <span>Foto de Perfil:</span>
+                    <div class="foto-modal"></div>
+                </div>
+                <div class="foto-botao">
+                    <button>Fazer Upload</button>
+                </div>
+            </div>
+                
         </div>
+            
+        <div class="modal-botao">
+            <button onclick="cadastrarFuncionario()">Cadastrar</button>
+        </div>
+
+    </div>
+
+    <div class="modal-edit" style="display: none;">
+        <div class="modal-row">
+        
+            <div class="modal-fechar">
+                <span onclick="mostrarModalEdit()">&#x2715;</span>
+                <img onclick="deletarFuncionario()" src="../assets/icons/trash.png" alt="">
+            </div>
+            <div class="modal-container">
+                <div class="modal-infos">
+                    <span>Nome:</span>
+                    <input type="text" id="ipt_nomeEdit">
+                </div>
+                <div class="modal-infos">
+                    <span>Telefone:</span>
+                    <input type="text" id="ipt_telefoneEdit">
+                </div>
+                <div class="modal-infos">
+                    <span>Cargo:</span>
+                    <select id="slt_cargoEdit">
+                        <option value="1">Técnico de Operação</option>
+                        <option value="2">Analista de Dados</option>
+                    </select>
+                </div>
+                <div class="modal-infos">
+                    <span>Email:</span>
+                    <input type="text" id="ipt_emailEdit">
+                </div>
+                <div class="modal-infos">
+                    <span>Senha:</span>
+                    <input type="text" id="ipt_senhaEdit">
+                </div>
+            </div>
+            <div class="modal-container-imagem">
+                <div class="modal-foto">
+                    <span>Foto de Perfil:</span>
+                    <div class="foto-modal"></div>
+                </div>
+                <div class="foto-botao">
+                    <button>Fazer Upload</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-botao" id="botao_atualizar"></div>
+    </div>
+    <div class="modal-del-funcionario" style="display: none;">
+        <div class="modal-fechar">
+            <span onclick="mostrarModalDelete()">&#x2715;</span>
+        </div>
+        <div class="modal-container-delete">
+            <div style="display: flex;flex-direction: column; height: 30%; width: 100%;">
+                <div class="listagem_delete">
+                    <div class="modal-infos">
+                        <span style="text-align: center;">Você realmente deseja remover o funcionário selecionado?</span>
+                    </div>
+                    <div class="modal-infos">
+                        <span style="text-align: center;">Caso queira, digite a palavra chave abaixo para confirmar exclusão:</span>
+                    </div>
+                    <input class="input-delete" type="text" placeholder="excluir" id="ipt_confirmar">
+                </div>
+            </div>
+        </div>
+        <div id="button_remover_funcionario" class="modal-botao"></div>
     </div>
 </body>
 

@@ -97,4 +97,16 @@ router.get("/:selecionado/:opcao/:idAgencia/filtrarFuncionario", function (req, 
     gerenteController.filtrarFuncionario(req, res);
 })
 
+router.post("/cadastrarFuncionario", function (req, res) {
+    gerenteController.cadastrarFuncionario(req, res);
+})
+
+router.put("/atualizarFuncionario", function (req, res) {
+    gerenteController.atualizarFuncionario(req, res);
+})
+
+router.delete("/:idUsuario/removerFuncionario", function (req, res) {
+    gerenteController.removerFuncionario(req, res);
+})
+
 module.exports = router;

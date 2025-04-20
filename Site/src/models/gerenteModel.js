@@ -1,3 +1,4 @@
+const e = require("express");
 const database = require("../database/config");
 
 function buscarKpiTotal(idAgencia) {
@@ -205,6 +206,29 @@ function filtrarFuncionario(primeiro, segundo, id) {
     return database.executar(instrucaoSql);
 }
 
+function cadastrarFuncionario(nome, telefone, cargo, email, senha, idAgencia) {
+
+    let instrucaoSql = `INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES ("${nome}", "${telefone}", "${cargo}", "${email}", "${senha}", ${idAgencia});`;
+
+    return database.executar(instrucaoSql);
+}
+
+function atualizarFuncionario(json) {
+
+    let instrucaoSql = `UPDATE usuario SET nome = "${json.nome}", telefone = "${json.telefone}", cargo = "${json.cargo}", email = "${json.email}", senha = "${json.senha}" WHERE idUsuario = ${json.idUsuario}`;
+
+    return database.executar(instrucaoSql);
+}
+
+function removerFuncionario(id) {
+
+    console.log(id);
+
+    let instrucaoSql = `DELETE FROM usuario WHERE idUsuario = ${id}`;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
 // Página de ATM
     buscarKpiTotal,
@@ -231,5 +255,8 @@ module.exports = {
     buscarEmail,
     buscarTelefone,
     searchFuncionario,
-    filtrarFuncionario
+    filtrarFuncionario,
+    cadastrarFuncionario,
+    atualizarFuncionario,
+    removerFuncionario
 };

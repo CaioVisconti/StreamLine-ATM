@@ -370,6 +370,56 @@ function filtrarFuncionario(req, res) {
         });
 }
 
+function cadastrarFuncionario(req, res) {
+    let nome = req.body.nomeServer;
+    let telefone = req.body.telefoneServer;
+    let cargo = req.body.cargoServer;
+    let email = req.body.emailServer;
+    let senha = req.body.senhaServer;
+    let idAgencia = req.body.idAgenciaServer;
+
+    gerenteModel.cadastrarFuncionario(nome, telefone, cargo, email, senha, idAgencia)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de atms:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function atualizarFuncionario(req, res) {
+    let json = req.body.jsonEnvio;
+
+    gerenteModel.atualizarFuncionario(json)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de atms:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function removerFuncionario(req, res) {
+    let id = req.params.idUsuario;
+
+    gerenteModel.removerFuncionario(id)
+    .then((resultado) => {
+        res.json({
+            lista: resultado
+        })
+    })
+    .catch(erro => {
+        console.error("Erro na captura de atms:", erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
 // Página de ATM
     buscarKpiTotal,
@@ -396,5 +446,8 @@ module.exports = {
     buscarEmail,
     buscarTelefone,
     searchFuncionario,
-    filtrarFuncionario
+    filtrarFuncionario,
+    cadastrarFuncionario,
+    atualizarFuncionario,
+    removerFuncionario
 }
