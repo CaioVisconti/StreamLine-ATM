@@ -3,6 +3,8 @@ package com.streamline;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Main {
@@ -33,41 +35,30 @@ public class Main {
             }
         }
 
-        Map<String, List<Captura>> map = organizarDados(listaCaptura);
-
-        for (Map.Entry<String, List<Captura>> infoAtual : map.entrySet()) {
-            String tipo = infoAtual.getKey();
-            List<Captura> listaCap = infoAtual.getValue();
-
-            System.out.println("=== " + tipo + " ===");
-
-            for (Captura capAtual : listaCap) {
-                System.out.println("ATM: " + capAtual.getFkAtm() + ", Valor " + capAtual.getValor() + ", Unidade: " + capAtual.getUnidade() + ", Limite: " + capAtual.getLimite() + ", Alerta: " + capAtual.getAlerta() + ", Data Hora: " + capAtual.getDataHora());
-            }
-
+        for(Captura capAtual : listaCaptura){
+            System.out.println(capAtual);
         }
 
-        try{
-            escritor.escreverCsv(map);
+        formatarDataHora(listaCaptura);
+
+        try {
+            escritor.escreverCsv(listaCaptura);
             System.out.println("CSV escrito com sucesso!");
-        } catch (IOException e){
-            System.out.println("Erro ao tentar escrever CSV! " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao tentar escrever o CSV! " + e.getMessage());
         }
 
     }
 
-    public static Map<String, List<Captura>> organizarDados(List<Captura> capturas) {
-        Map<String, List<Captura>> capturasMap = new LinkedHashMap<>();
+    public static void formatarDataHora(List<Captura> listaCaptura){
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        for(Captura capAtual : listaCaptura){
+            LocalDateTime dataHora = LocalDateTime.parse(capAtual.getDataHora(), formatador);
 
-        for (Captura capAtual : capturas) {
-            if (!capturasMap.containsKey(capAtual.getTipo())) {
-                capturasMap.put(capAtual.getTipo(), new ArrayList<>());
-            }
+            String dataFormatada = dataHora.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 
-            capturasMap.get(capAtual.getTipo()).add(capAtual);
+            capAtual.setDataHora(dataFormatada);
         }
-        return capturasMap;
     }
-
 
 }
