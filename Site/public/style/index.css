@@ -600,9 +600,6 @@ footer p {
     }
 }
 
-
-
-/* Efeito Hover na Navbar - Estilo Global */
 .navbar a {
     color: white;
     font-weight: 500;
@@ -612,12 +609,11 @@ footer p {
 
 .navbar a:hover {
     color: #5296CD;
-    /* tom azul do projeto */
+   
     transform: scale(1.1);
-    /* aumenta levemente */
+   
 }
 
-/* Linha animada embaixo */
 .navbar a::after {
     content: '';
     position: absolute;
