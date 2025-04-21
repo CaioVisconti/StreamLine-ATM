@@ -583,7 +583,7 @@ span, .campo-modal-configuracao {
 Funcionario
 */
 
-.modal, .modal-edit {
+.modal-funcionario, .modal-edit-funcionario {
     display: flex;
     /* border: 1px solid red; */
     justify-self: center;
@@ -645,7 +645,7 @@ Funcionario
     cursor: pointer;
 }
 
-.modal-container {
+.modal-container-funcionario {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -665,12 +665,12 @@ Funcionario
     /* border: 1px solid red; */
 }
 
-.modal-infos {
+.modal-infos-funcionario {
     display: flex;
     flex-direction: column;
 }
 
-.modal-foto {
+.modal-foto-funcionario {
     display: flex;
     justify-content: space-between;
     height: 50%;
@@ -681,7 +681,7 @@ Funcionario
     align-items: center;
 }
 
-.foto-modal {
+.foto-modal-funcionario {
     width: 80%;
     height: 80%;
     font-size: 18px;
@@ -690,12 +690,12 @@ Funcionario
     background-color: rgba(0, 0, 0, 0.25);
 }
 
-.modal-infos span{
+.modal-infos-funcionario span{
     font-size: 18px;
     font-weight: bold;
 }
 
-.modal-infos input {
+.modal-infos-funcionario input {
     width: 100%;
     height: 45px;
     font-size: 18px;
@@ -704,7 +704,7 @@ Funcionario
     background-color: rgba(0, 0, 0, 0.25);
 }
 
-.modal-botao {
+.modal-botao-funcionario {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -719,7 +719,7 @@ Funcionario
     cursor: pointer;
 }
 
-.modal-botao button{
+.modal-botao-funcionario button{
     width: 30%;
     height: 7vh;
     border-radius: 10px;
@@ -760,7 +760,7 @@ Funcionario
     cursor: pointer;
 }
 
-.modal-infos select {
+.modal-infos-funcionario select {
     width: 100%;
     height: 45px;
     font-size: 18px;

@@ -339,6 +339,25 @@ function cadastrarFuncionario() {
     let email = ipt_email.value;
     let senha = ipt_senha.value;
 
+    let senhaMinuscula = senha.toLowerCase();
+    let senhaMaiuscula = senha.toUpperCase();
+
+    let regex = /[^\w\s]/;
+
+    console.log(cargo);
+
+    if(!nome.includes(" ")) {
+        return alert("Por favor insira o nome completo");
+    } else if(telefone.length != 11) {
+        return alert("Por favor insira um telefone válido");
+    } else if(cargo != "Analista de Dados" && cargo != "Técnico de Operação") {
+        return alert("Por favor escolha um cargo válido");
+    } else if(!email.includes("@") || !email.includes(".com") || email.length < 8) {
+        return alert("Por favor insira um email válido");
+    } else if(senha.length < 8 || senha == senhaMaiuscula || senha == senhaMinuscula || !regex.test(senha) || !/[0-9]/.test(senha)) {
+        return alert("Por favor insira uma senha válida");
+    }
+
     fetch("/gerente/cadastrarFuncionario", {
         method: "POST",
         headers: {
@@ -407,6 +426,23 @@ function atualizarFuncionario(indice, id) {
         cargo = "Técnico de Operação"
     } else {
         cargo = "Analista de Dados"
+    }
+
+    let senhaMinuscula = senha.toLowerCase();
+    let senhaMaiuscula = senha.toUpperCase();
+
+    let regex = /[^\w\s]/;
+
+    if(!nome.includes(" ")) {
+        return alert("Por favor insira o nome completo");
+    } else if(telefone.length != 11) {
+        return alert("Por favor insira um telefone válido");
+    } else if(cargo != "Analista de Dados" && cargo != "Técnico de Operação") {
+        return alert("Por favor escolha um cargo válido");
+    } else if(!email.includes("@") || !email.includes(".com") || email.length < 8) {
+        return alert("Por favor insira um email válido");
+    } else if(senha.length < 8 || senha == senhaMaiuscula || senha == senhaMinuscula || !regex.test(senha) || !/[0-9]/.test(senha)) {
+        return alert("Por favor insira uma senha válida");
     }
 
     let json = {
