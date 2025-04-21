@@ -318,7 +318,7 @@ function filtrar() {
 }
 
 function mostrarModalCad() {
-    const modalCadastro = document.querySelector(".modal");
+    const modalCadastro = document.querySelector(".modal-funcionario");
     const fade = document.querySelector(".fade");
 
     if (modalCadastro.style.display == "none") {
@@ -381,7 +381,7 @@ function cadastrarFuncionario() {
 }
 
 function mostrarModalEdit(indice, idUsuario) {
-    const modalEdit = document.querySelector(".modal-edit");
+    const modalEdit = document.querySelector(".modal-edit-funcionario");
     const fade = document.querySelector(".fade");
 
     if (modalEdit.style.display == "none") {
