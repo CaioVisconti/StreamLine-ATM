@@ -17,7 +17,7 @@ public class CsvWriter {
         LocalDateTime dataHora = LocalDateTime.now();
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
         ByteArrayOutputStream streamSaida = new ByteArrayOutputStream();
-        FileWriter escritor = new FileWriter("capturas " + String.valueOf(formatador.format(dataHora)) + ".csv", StandardCharsets.UTF_8);
+        FileWriter escritor = new FileWriter("capturas ATM " + listaCaptura.get(0).getFkAtm() + " - " + String.valueOf(formatador.format(dataHora)) + ".csv", StandardCharsets.UTF_8);
         CSVPrinter csvPrinter = new CSVPrinter(escritor, CSVFormat.DEFAULT.withHeader(
                 "fkAtm",
                 "dataHora",
