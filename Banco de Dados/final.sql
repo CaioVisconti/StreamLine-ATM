@@ -72,22 +72,6 @@ CREATE TABLE IF NOT EXISTS parametro (
 	FOREIGN KEY (fkComponente) REFERENCES componentes(idComponentes) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS alerta (
-  idAlerta INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  valor DOUBLE NOT NULL,
-  dtHora DATETIME,
-  fkParametro INT,
-  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS captura (
-  idCaptura INT PRIMARY KEY AUTO_INCREMENT,
-  valor DOUBLE,
-  dtHora DATETIME,
-  fkParametro INT,
-  FOREIGN KEY (fkParametro) REFERENCES parametro(idParametro) ON DELETE CASCADE
-);
-
 -- Inserindo empresas manualmente
 INSERT INTO empresa (nome, cnpj, codigo) VALUES
 ('Banco do Brasil', '123456789', 'BB123456'),
