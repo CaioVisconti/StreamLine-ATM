@@ -1,4 +1,4 @@
-create DATABASE streamline;
+CREATE DATABASE streamline;
 USE streamline;
 
 CREATE TABLE IF NOT EXISTS empresa (
@@ -150,58 +150,13 @@ INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES
   (300, CURDATE(), 12, 2),
   (300, CURDATE(), 13, 2);
 
-CREATE USER "rootPI"@"%" IDENTIFIED BY "Urubu#100";
-GRANT ALL ON streamline.* TO "rootPI"@"%";
-FLUSH PRIVILEGES;
-
--- Views de alertas
-
--- View para ATMs com alertas criticos (maiores que o parametro)
-USE streamline_quente;
-CREATE OR REPLACE VIEW viewCritico AS
-SELECT 
-    COUNT(DISTINCT fkAtm) AS atmsCritico
-FROM streamline_quente.alerta
-JOIN parametrizacao ON streamline_quente.alerta.fkParametro = parametrizacao.idParametro
-WHERE streamline_quente.alerta.valor > parametrizacao.limite
-AND TIMESTAMPDIFF(SECOND, streamline_quente.alerta.dtHora, NOW()) BETWEEN 0 AND 60;
-
-SELECT * FROM viewCritico, viewMedio, streamline.viewBom;
-
--- View para ATMs com alertas médios (iguais ao parametro)
-CREATE OR REPLACE VIEW viewMedio AS
-SELECT 
-    COUNT(fkAtm) AS atmsMedios
-FROM streamline_quente.alerta
-JOIN parametrizacao ON streamline_quente.alerta.fkParametro = parametrizacao.idParametro
-WHERE streamline_quente.alerta.valor = parametrizacao.limite
-AND TIMESTAMPDIFF(SECOND, streamline_quente.alerta.dtHora, NOW()) BETWEEN 0 AND 60;
-
--- View com o total de atms
-CREATE OR REPLACE VIEW totalAtms AS
-SELECT 
-    COUNT(atm.idAtm) AS totalAtms
-FROM atm;
-
-SELECT * FROM streamline.totalAtms;
-
--- View para ATMs em situação boa
-CREATE OR REPLACE VIEW viewBom AS
-SELECT 
-    (select * from totalAtms) - ((SELECT * FROM viewCritico) + (SELECT * FROM viewMedio)) AS atmsSemAlertas
-FROM atm
-LIMIT 1;
-
-
-
-CREATE OR REPLACE VIEW viewBom AS
-SELECT 
-    (select count(parametrizacao.fkAtm) from streamline.parametrizacao JOIN streamline_quente.alerta ON streamline_quente.alerta.fkParametro = parametrizacao.idParametro) AS atmsSemAlertas;
-
-SELECT * FROM viewBom;
-
 CREATE VIEW parametrizacao AS 
 SELECT p.*, atm.hostname, atm.macAdress, componentes.tipo,  componentes.unidadeMedida, componentes.funcao
 FROM parametro AS p 
 JOIN atm ON p.fkAtm = atm.idAtm 
 JOIN componentes ON componentes.idComponentes = p.fkComponente;
+
+
+CREATE USER "rootPI"@"%" IDENTIFIED BY "Urubu#100";
+GRANT ALL ON streamline.* TO "rootPI"@"%";
+FLUSH PRIVILEGES;

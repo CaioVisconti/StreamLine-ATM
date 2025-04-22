@@ -2,7 +2,7 @@ var database = require("../database/config");
 
 function buscarKPIs() {
     var instrucaoSql = `
-    SELECT * FROM viewCritico, viewMedio, viewBom;
+    SELECT * FROM viewCritico, viewMedia, viewBom;
     `;
     
     console.log("Executando a instrução SQL: \n" + instrucaoSql);

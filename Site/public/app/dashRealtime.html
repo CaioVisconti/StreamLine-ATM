@@ -16,23 +16,21 @@
 </head>
 <body>
 
-    <header>
-        <div id="user">
-            <div>
-                <img src="" alt="" id="imgUser">
-                <p> Olá, Nome! <br> CARGO </p>
+    <div class="nav-total">
+        <div class="info-user">
+            <div class="foto-user"></div>
+            <div class="msg-user">
+                <span id="nomeFunc">
+                    
+                </span>
             </div>
         </div>
-        
-        <menu id="navbar">
-            <li>Abrir chamado</li>
-            <li>Gerar manual</li>
-        </menu>
-
-        <div id="logout">
-            <button onclick="sair()">SAIR</button>
+        <div class="nav-bar">
+            <div></div>
+            <span>Reportar Problema</span>
         </div>
-    </header>
+        <button class="btn-nav">Sair</button>
+    </div>
 
     <div class="container">
 
@@ -109,11 +107,22 @@
 window.onload = function () {
         exibirKPIs();
         exibirAtms();
+
+        setInterval(function () {
+        exibirKPIs();
+        }, 5000); 
+        
     };
+
 
     const id = sessionStorage.ID_AGENCIA
 
     function exibirAtms(){
+
+    let nomeUsuario = sessionStorage.NOME_USUARIO;
+    document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
+
+
         console.log("Cheguei")
         fetch(`/medidas/atms/${id}`,{
             method: "GET",

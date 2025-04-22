@@ -1,4 +1,5 @@
 CREATE DATABASE streamline_quente;
+use streamline_quente;
 
 CREATE VIEW streamline_quente.parametrizacao AS (SELECT * FROM streamline.parametrizacao);
 
@@ -24,6 +25,3 @@ FLUSH PRIVILEGES;
 
 SELECT * FROM parametrizacao;
 
-INSERT INTO streamline_quente.alerta (valor, dtHora, fkParametro) VALUES
-(71, now(), 1),
-(81, now(), 2);
