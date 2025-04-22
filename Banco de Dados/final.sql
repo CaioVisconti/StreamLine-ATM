@@ -208,3 +208,9 @@ SELECT
     (select * from totalAtms) - ((SELECT * FROM viewCritico) + (SELECT * FROM viewMedio)) AS atmsSemAlertas
 FROM atm
 LIMIT 1;
+
+CREATE VIEW parametrizacao AS 
+SELECT p.*, atm.hostname, atm.macAdress, componentes.tipo,  componentes.unidadeMedida, componentes.funcao
+FROM parametro AS p 
+JOIN atm ON p.fkAtm = atm.idAtm 
+JOIN componentes ON componentes.idComponentes = p.fkComponente;
