@@ -33,27 +33,49 @@ while True:
         break
 
 def registrar_dados():
-    conn = conectar()
-    cursor = conn.cursor()
+        try:
+            conn = conectar()
+            cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO captura1_1 (CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, DISKTotal, DISKDisponivel, DISKPercentual, REDERecebida, REDEEnviada, PROCESSODesativado, PROCESSOAtivos, PROCESSOTotal, dtHora) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())", (porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam, discototal, discoDisponivel, porcentagemDisco, redeRecebido, redeEnviado, desativados, ativos, total))
-    conn.commit()
-    conn.close()
+            cursor.execute("""
+                INSERT INTO captura1 (
+                    CPUPercent, CPUFreq, RAMTotal, RAMDisponivel, RAMPercentual, 
+                    DISKTotal, DISKDisponivel, DISKPercentual, 
+                    REDERecebida, REDEEnviada, PROCESSODesativado, 
+                    PROCESSOAtivos, PROCESSOTotal, dtHora
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())
+            """, (
+                porcentagemCpu, frequenciaCPU, totalram, ramDisponivel, porcentagemRam,
+                discototal, discoDisponivel, porcentagemDisco,
+                redeRecebido, redeEnviado, desativados,
+                ativos, total
+            ))
+
+            conn.commit()
+            conn.close()
+            
+        except Exception as e:
+            print(f"Erro ao inserir no banco: {e}")
 
 i = 0
+
 while True: 
-    discoDisponivel = round(psutil.disk_usage("/").free)
-    discoUso = psutil.disk_usage("/").used
+    
+    discoDisponivel = round(psutil.disk_usage("/").free / (1024 ** 3), 2)
+    discoUso = round(psutil.disk_usage("/").used / (1024 ** 3), 2)
     porcentagemDisco = psutil.disk_usage("/").percent
     porcentagemCpu = psutil.cpu_percent(percpu=False)
-    ramDisponivel = psutil.virtual_memory().free
+    ramDisponivel = round(psutil.virtual_memory().free / (1024 ** 3), 2)
     porcentagemRam = psutil.virtual_memory().percent
     horaLeitura = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
-    frequenciaCPU = psutil.cpu_freq().current
-    totalram = psutil.virtual_memory().total
-    discototal = psutil.disk_usage('C:\\').percent
+    frequenciaCPU = round(psutil.cpu_freq().current / 1000, 2)
+    totalram = round(psutil.virtual_memory().total / (1024 ** 3), 2)
+    discototal = psutil.disk_usage("C:\\").percent
     redeRecebido = psutil.net_io_counters().packets_recv
     redeEnviado = psutil.net_io_counters().packets_sent
+
+    ativos = 0
+    desativados = 0
 
     # Só mostra o pid e o status do processo
     for processo in psutil.process_iter(attrs=['pid', 'status']):
