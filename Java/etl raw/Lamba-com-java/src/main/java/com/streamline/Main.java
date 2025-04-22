@@ -16,7 +16,7 @@ public class Main implements RequestHandler<S3Event, String> {
 
     private final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
 
-    private static final String DESTINATION_BUCKET = "tratadinho-trusted-fofo";
+    private static final String DESTINATION_BUCKET = "trusted-streamline";
 
     public String handleRequest(S3Event s3Event, Context context) {
 
@@ -27,13 +27,13 @@ public class Main implements RequestHandler<S3Event, String> {
             // Leitura do arquivo JSON do bucket de origem
             InputStream s3InputStream = s3Client.getObject(sourceBucket, sourceKey).getObjectContent();
 
-            // Conversão do JSON para uma lista de objetos Stock usando o Mapper
+            // Conversão do JSON para uma lista de capturas usando o Mapper
             CapturaMapper mapper = new CapturaMapper();
             List<Captura> capturas = mapper.mapearCapturas(s3InputStream);
 
             formatarDataHora(capturas);
 
-            // Geração do arquivo CSV a partir da lista de Stock usando o CsvWriter
+            // Geração do arquivo CSV a partir da lista de capturas usando o CsvWriter
             CsvWriter csvWriter = new CsvWriter();
             ByteArrayOutputStream csvOutputStream = csvWriter.escreverCsv(capturas);
 

@@ -101,90 +101,96 @@ fkAtm = validar_atm() # Chamamos a função validar atm para trazer sua FK
 
 if fkAtm: # Se a fk for valida, entramos na seguinte função
     configuracoes = buscar_configuracoes(fkAtm)
-    tempo = int(input("\n🧑‍🔧 De quanto em quanto tempo deseja realizar o monitoramento (em segundos)? \nDigite: "))
     quantidade = int(input("\n📖 Quantas inserções deseja fazer? \nDigite: "))
     capturas = []
 
     print("\nIniciando monitoramento... 🔃")
     time.sleep(2)
 
-    i = 0
-    while i < quantidade:
+    interrompido = False
+    try:
+        i = 0
+        while i < quantidade:
         
-        print(f"\n🔄 Início da leitura {i+1}")
+            print(f"\n🔄 Início da leitura {i+1}")
 
         
-        leitura = {
-        "fkAtm": fkAtm,
-        "dataHora": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        }
-        
-        # Percorre o tipo do componente e sua unidadde de medida dentro de configurações (resultado da função buscar_configurações)
-        for tipo_componente, medidas in configuracoes.items():
-            for unidade in medidas:
-                valor = coletar_valor(tipo_componente) # Coleta o valor correspondente ao tipo de componente
+            leitura = {
+            "fkAtm": fkAtm,
+            "dataHora": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            }
 
-                print(f"\n🧪 Coleta: [{tipo_componente}] ({unidade}) → Valor: {valor}")
+            # Percorre o tipo do componente e sua unidadde de medida dentro de configurações (resultado da função   buscar_configurações)
+            for tipo_componente, medidas in configuracoes.items():
+                for unidade in medidas:
+                    valor = coletar_valor(tipo_componente) # Coleta o valor correspondente ao tipo de componente
 
-                conn = conectar()
-                cursor = conn.cursor()
+                    print(f"\n🧪 Coleta: [{tipo_componente}] ({unidade}) → Valor: {valor}")
 
-                # Executa a consulta para localizar o parâmetro e limite do componente e unidade
-                cursor.execute("""
-                    SELECT p.idParametro, p.limite FROM parametro p
-                    JOIN componentes c ON p.fkComponente = c.idComponentes
-                    WHERE p.fkAtm = %s AND c.tipo = %s AND c.unidadeMedida = %s
-                """, (fkAtm, tipo_componente, unidade))
-                resultado = cursor.fetchone()
+                    conn = conectar()
+                    cursor = conn.cursor()
 
-                if resultado: # Verifica se a consulta trouxe algum resultado
-                    fkParametro, limite = resultado # O método fetchone() retornará uma tupla contendo o idParametro (chave primária do parâmetro) e o limite associado a esse parâmetro
-                    print(f"🔗 fkParametro localizado: {fkParametro} | Limite: {limite}")
+                    # Executa a consulta para localizar o parâmetro e limite do componente e unidade
+                    cursor.execute("""
+                        SELECT p.idParametro, p.limite FROM parametro p
+                        JOIN componentes c ON p.fkComponente = c.idComponentes
+                        WHERE p.fkAtm = %s AND c.tipo = %s AND c.unidadeMedida = %s
+                    """, (fkAtm, tipo_componente, unidade))
+                    resultado = cursor.fetchone()
 
-                    leitura[tipo_componente] = valor
-                    if "Total" not in tipo_componente and "Disponivel" not in tipo_componente:
-                        leitura[f"limite {tipo_componente}"] = limite
-                        leitura[f"alerta {tipo_componente}"] = valor > limite
+                    if resultado: # Verifica se a consulta trouxe algum resultado
+                        fkParametro, limite = resultado # O método fetchone() retornará uma tupla contendo o    idParametro (chave primária do parâmetro) e o limite associado a esse parâmetro
+                        print(f"🔗 fkParametro localizado: {fkParametro} | Limite: {limite}")
 
-                    if valor is not None: # Verifica se o valor coletado não é None
-                        # Insere na tabela captura
-                        cursor.execute("""
-                            INSERT INTO captura (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
-                        """, (valor, fkParametro))
-                        conn.commit()
+                        leitura[tipo_componente] = valor
+                        if "Total" not in tipo_componente and "Disponivel" not in tipo_componente:
+                            leitura[f"limite {tipo_componente}"] = limite
+                            leitura[f"alerta {tipo_componente}"] = valor > limite
 
-                        print("✅ Inserção em 'captura' realizada com sucesso!")
-                        # Após inserir o valor na tabela captura, o código verifica se o valor coletado excede o limite configurado para aquele parâmetro 
-                        if valor > limite:
+                        if valor is not None: # Verifica se o valor coletado não é None
+                            # Insere na tabela captura
                             cursor.execute("""
-                                INSERT INTO alerta (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
+                                INSERT INTO captura (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
                             """, (valor, fkParametro))
                             conn.commit()
-                            print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
-                        else: # Se não passou do limite, ele imprime na tela que o valor está dentro do limite
-                            print("🟢 Valor dentro do limite.")
-                            
-                    else: # Se o valor for None
-                        print("⚠️ Valor inválido (None). Inserção ignorada.")
-                        
-                else:
-                    print(f"❌ Parâmetro não encontrado no banco para [{tipo_componente}] ({unidade})")
 
-                conn.close()
+                            print("✅ Inserção em 'captura' realizada com sucesso!")
+                            # Após inserir o valor na tabela captura, o código verifica se o valor coletado excede  o limite configurado para aquele parâmetro 
+                            if valor > limite:
+                                cursor.execute("""
+                                    INSERT INTO alerta (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
+                                """, (valor, fkParametro))
+                                conn.commit()
+                                print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
+                            else: # Se não passou do limite, ele imprime na tela que o valor está dentro do limite
+                                print("🟢 Valor dentro do limite.")
 
-        i += 1
-        
-        hora = datetime.now().strftime('%H:%M:%S %d/%m/%Y')
-        print(f"\n📅 {i}° Leitura concluída - {hora}")
+                        else: # Se o valor for None
+                            print("⚠️ Valor inválido (None). Inserção ignorada.")
 
-        time.sleep(tempo)
-        capturas.append(leitura)
-        print(capturas)
-        print("\n📂 Gerando Arquivo JSON!\n")
-        caminhoArquivo = 'Capturas.json'
-        with open (caminhoArquivo, "w") as arquivo: # o python vai abrir o arquivo para leitura (por isso o "w", de write). Se o arq nao existir, ele o cria
-            json.dump(capturas, arquivo, indent=4)
-        print("\n Arquivo JSON Gerado! ✅\n")
+                    else:
+                        print(f"❌ Parâmetro não encontrado no banco para [{tipo_componente}] ({unidade})")
+
+                    conn.close()
+
+            i += 1
+
+            hora = datetime.now().strftime('%H:%M:%S %d/%m/%Y')
+            print(f"\n📅 {i}° Leitura concluída - {hora}")
+
+            time.sleep(5)
+            capturas.append(leitura)
+
+            if len(capturas) == 7200 or i == quantidade or interrompido:
+                print("\n📂 Gerando Arquivo JSON!\n")
+                caminhoArquivo = f'Capturas_ATM_{fkAtm}_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json'
+                with open (caminhoArquivo, "w") as arquivo: # o python vai abrir o arquivo para leitura (por isso o     "w", de write). Se o arq nao existir, ele o cria
+                    json.dump(capturas, arquivo, indent=4)
+                print("\n Arquivo JSON Gerado! ✅\n")
+
+    except KeyboardInterrupt:
+        print("\n Monitoramento Interrompido! ⛔")
+        interrompido = True
 
 
     print("\n🏁 Monitoramento finalizado com sucesso! ✅\n")
