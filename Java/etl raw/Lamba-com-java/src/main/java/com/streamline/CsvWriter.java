@@ -3,9 +3,7 @@ package com.streamline;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +15,7 @@ public class CsvWriter {
         LocalDateTime dataHora = LocalDateTime.now();
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
         ByteArrayOutputStream streamSaida = new ByteArrayOutputStream();
-        FileWriter escritor = new FileWriter("capturas ATM " + listaCaptura.get(0).getFkAtm() + " - " + String.valueOf(formatador.format(dataHora)) + ".csv", StandardCharsets.UTF_8);
+        BufferedWriter escritor = new BufferedWriter(new OutputStreamWriter(streamSaida, StandardCharsets.UTF_8));
         CSVPrinter csvPrinter = new CSVPrinter(escritor, CSVFormat.DEFAULT.withHeader(
                 "fkAtm",
                 "dataHora",
