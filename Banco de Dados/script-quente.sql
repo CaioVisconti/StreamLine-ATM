@@ -17,5 +17,13 @@ CREATE TABLE IF NOT EXISTS captura (
 );
 
 CREATE USER IF NOT EXISTS "userPython"@"%" IDENTIFIED BY "Urubu100";
-GRANT SELECT ON streamline_quente.parametrizacao, INSERT ON streamline_quente.captura, INSERT ON streamline_quente.alerta TO "userPython"@"%";
+GRANT SELECT ON streamline_quente.parametrizacao TO "userPython"@"%";
+GRANT INSERT ON streamline_quente.captura TO "userPython"@"%";
+GRANT INSERT ON streamline_quente.alerta TO "userPython"@"%";
 FLUSH PRIVILEGES;
+
+SELECT * FROM parametrizacao;
+
+INSERT INTO streamline_quente.alerta (valor, dtHora, fkParametro) VALUES
+(71, now(), 1),
+(81, now(), 2);
