@@ -5,7 +5,7 @@ const idUsuario = sessionStorage.ID_USUARIO;
 const nomeUsuario = sessionStorage.NOME_USUARIO;
 
 function carregarDados(lista) {
-    nomeUser.innerHTML = nomeUsuario;
+    nomeUser.innerHTML = `Olá, ${nomeUsuario}`;
     buscarKpis();
     carregarCards(lista);
 }

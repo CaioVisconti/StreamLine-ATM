@@ -14,34 +14,49 @@
 </head>
 
 <body onload="carregarDados()">
-    <nav>
-        <div class="usuario">
-            <div class="img-perfil"></div>
-            <div class="saudacoes">Olá, <br><span id="nomeUser">Nome</span>.</div>
+
+    <div class="nav-total">
+        <div class="info-user">
+            <div class="foto-user"></div>
+            <div class="msg-user">
+                <span id="nomeUser">
+                </span>
+            </div>
         </div>
-        <div class="barra">
-            <span class="problema">Relatar Problema</span>
+        <div class="nav-bar">
+            <div></div>
+            <span>Reportar Problema</span>
         </div>
-        <div class="sair">
-            <a href="../../index.html"><button>Sair</button></a>
-        </div>
-    </nav>
+        <a href="../../index.html"><button class="btn-nav">Sair</button></a>
+    </div>
+
     <div class="container">
-        <div class="navlateral">
-            <div class="navegacao-paginas">
-                <a href="./gerenteATM.html" id="atual">ATM's</a>
-                <a href="./gerenteFuncionarios.html">Funcionarios</a>
-                <a href="./gerenteDashboard.html">Dashboard</a>
+
+
+        <div class="kpis">
+            <div class="escolha-opcoes">
+                <div class="espacamento">
+                    <span>ATM's</span>
+                    <div class="linha"></div>
+                    <a href="cadastrarAgencia.html"><span>Funcionarios</span></a>
+                    <div class="linha"></div>
+                    <span>Dashboard</span>
+                    <div class="linha"></div>
+                </div>
             </div>
-            <div class="kpi">
-                <span class="titulo">Quantidade de ATM's <br>registrados</span>
-                <span class="valor" id="kpi_total"></span>
+            <div class="escolha-kpi">
+                <span class="info-kpi">Quantidade de ATM's </span>
+                <span class="numeros-kpi" id="kpi_total"></span>
             </div>
-            <div class="kpi">
-                <span class="titulo">Quantidade de ATM's <br>em alerta</span>
-                <span class="valor" id="kpi_alertas"></span>
+            <div class="escolha-kpi">
+                <span class="info-kpi">Visualizar Contate-nos</span>
+                <button class="btn-nav">Visualizar</button>
             </div>
         </div>
+    
+
+
+
         <div class="agencias">
             <div class="pesquisar">
                 <div class="input-pesquisar">
@@ -65,7 +80,11 @@
                 </div>
                 <img src="../../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
             </div>
-            <div class="cards-container" id="cardsContainer">
+            <div class="delimitar">
+<!-- O card que é carregado -->
+                <div class="cards-container" id="cardsContainer">
+                </div>
+
             </div>
         </div>
         <div class="fade"></div>
@@ -131,10 +150,11 @@
                             <input id="iptMacAdressEdit" type="text">
                         </div>
                         <div class="modal-infos">
-                            <span>Sistema Operacional:</span>
+                            <span>SO:</span>
                             <input id="iptSOEdit" type="text">
                         </div>
                         <div class="modal-infos">
+                            <span>Status:</span>
                             <select id="sltStatusEdit" class="select-empresa">
                                 <option selected disabled value="teste">Selecione o Status</option>
                                 <option value="1">Ativo</option>
