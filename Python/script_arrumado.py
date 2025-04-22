@@ -12,9 +12,9 @@ from datetime import datetime
 def conectar():
     return mysql.connector.connect(
         host="localhost",
-        user="streamline",
-        password="Urubu@100",
-        database="streamline",
+        user="userPython",
+        password="Urubu100",
+        database="streamline_quente",
     )
 
 hostname = socket.gethostname()
@@ -27,7 +27,7 @@ print("MAC Address:", mac)
 def validar_atm():
     conn = conectar()
     cursor = conn.cursor()
-    query = "SELECT idAtm FROM atm WHERE hostname = %s AND macAdress = %s"
+    query = "SELECT fkAtm FROM parametrizacao WHERE hostname = %s AND macAdress = %s"
     cursor.execute(query, (hostname, mac))
     resultado = cursor.fetchone()
     conn.close()
@@ -45,8 +45,7 @@ def buscar_configuracoes(fkAtm):
     conn = conectar()
     cursor = conn.cursor()
     query = """
-    SELECT c.tipo, c.unidadeMedida FROM parametro AS p 
-    JOIN componentes AS c ON p.fkComponente = c.idComponentes
+    SELECT tipo, unidadeMedida FROM parametrizacao AS p
     WHERE p.fkAtm = %s;
     """
     cursor.execute(query, (fkAtm,))
@@ -132,9 +131,7 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
 
                     # Executa a consulta para localizar o parâmetro e limite do componente e unidade
                     cursor.execute("""
-                        SELECT p.idParametro, p.limite FROM parametro p
-                        JOIN componentes c ON p.fkComponente = c.idComponentes
-                        WHERE p.fkAtm = %s AND c.tipo = %s AND c.unidadeMedida = %s
+                        SELECT idParametro, limite FROM parametrizacao WHERE fkAtm = %s AND tipo = %s AND unidadeMedida = %s
                     """, (fkAtm, tipo_componente, unidade))
                     resultado = cursor.fetchone()
 
@@ -149,11 +146,6 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
 
                         if valor is not None: # Verifica se o valor coletado não é None
                             # Insere na tabela captura
-                            cursor.execute("""
-                                INSERT INTO captura (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
-                            """, (valor, fkParametro))
-                            conn.commit()
-
                             print("✅ Inserção em 'captura' realizada com sucesso!")
                             # Após inserir o valor na tabela captura, o código verifica se o valor coletado excede  o limite configurado para aquele parâmetro 
                             if valor > limite:
