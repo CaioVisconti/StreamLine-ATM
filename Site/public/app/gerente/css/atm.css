@@ -334,6 +334,7 @@ a{
     justify-self: center;
     align-self: center;
     position: absolute;
+    left: 30%;
     padding: 48px;
     width: 750px;
     height: 560px;
@@ -360,7 +361,7 @@ a{
     justify-content: center;
     flex-wrap: wrap;
     align-items: center;
-    height: 90vh;
+    height: 80vh;
     width: 100%;
 }
 
@@ -370,10 +371,9 @@ a{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid rgb(183, 0, 255);
 }
 
-.modal-infos input, .select-empresa, #slt_componentes{
+.modal-infos input, .select-empresa{
     width: 50%;
     height: 56px;
     font-size: 24px;
@@ -381,6 +381,15 @@ a{
     border: none;
     background-color: rgba(0, 0, 0, 0.25);
     /* border: 1px solid red; */
+}
+
+.modal-infos input, #slt_componentes {
+    width: 10vw;
+    height: 56px;
+    font-size: 24px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .modal-infos-cad {
@@ -530,14 +539,14 @@ span, .campo-modal-configuracao {
     align-self: center;
     position: absolute;
     padding: 10px;
-    width: 80%;
-    height: 100%;
+    width: 30vw;
+    height: 35vh;
+    left: 35%;
     flex-direction: column;
     border-radius: 10px;
     font-size: 24px;
     background-color: white;
     z-index: 20;
-    border: 1px solid purple;
 }
 
 .modal-container-config {
@@ -589,8 +598,9 @@ span, .campo-modal-configuracao {
     align-self: center;
     position: absolute;
     padding: 48px;
-    width: 750px;
-    height: 560px;
+    left: 30%;
+    width: 40vw;
+    height: 70vh;
     flex-direction: column;
     border-radius: 10px;
     font-size: 24px;
@@ -652,8 +662,9 @@ span, .campo-modal-configuracao {
     align-self: center;
     position: absolute;
     padding: 48px;
-    width: 720px;
-    height: 400px;
+    left: 30%;
+    width: 35vw;
+    height: 50vh;
     flex-direction: column;
     border-radius: 10px;
     font-size: 24px;

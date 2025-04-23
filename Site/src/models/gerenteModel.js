@@ -102,7 +102,7 @@ function cadastrarATM(modelo, hostname, ip, macdress, so, status, fkAgencia) {
 
 function procurarConfiguracao(componente, idAtm) {
 
-    let instrucaoSql = `SELECT limite AS Limite, unidadeMedida AS UM, idParametro, tipo AS Tipo FROM teste WHERE fkAtm = ${idAtm} AND tipo LIKE "%${componente}%";`;
+    let instrucaoSql = `SELECT limite AS Limite, unidadeMedida AS UM, idParametro, tipo AS Tipo FROM parametrizacao WHERE fkAtm = ${idAtm} AND tipo LIKE "%${componente}%";`;
     
     return database.executar(instrucaoSql);
 }
