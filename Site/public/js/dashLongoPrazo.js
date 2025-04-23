@@ -13,8 +13,49 @@ function exibirAlertas(){
     let valorAlertaInput_kpi_pacotes_disponivel;
     let valorAlertaInput_kpi_pacotes_porcentagem;
 
-    
+    const ctx = document.getElementById('meuGrafico2').getContext('2d');
+
+    // Destroi o gráfico antigo se ele já existir
+    if (window.meuGraficoInstance) {
+        window.meuGraficoInstance.destroy();
+    }
+
+    // Criação do gráfico com linha de alerta (linha vermelha no 75)
+    window.meuGraficoInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['CPUPercent', 'CPUFreq', 'RAMPercent', 'Processos', 'DISKPercent'],
+            datasets: [{
+                label: 'Número de alertas',
+                data: [53, 80, 83, 70, 73],
+                borderColor: 'rgb(126, 20, 255)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
+            plugins: {
+                legend: {
+                    display: false 
+                },
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        stepSize: 20
+                    }
+                }
+            }
+        }
+    });
 }
+
+    
 
 function gerarGraficos(){
     let oi = document.querySelector(".organizar-compontentes");
@@ -45,12 +86,12 @@ function gerarGraficos(){
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
+            maintainAspectRatio: false, //  o gráfico respeita o CSS
             plugins: {
                 legend: {
                     display: false 
                 },
-                annotation: { // ✅ Corrigido com vírgula aqui
+                annotation: {
                     annotations: {
                         linhaLimite: {
                             type: 'line',
@@ -142,6 +183,7 @@ function carregarComponentes(){
         console.log("componente recebidos:", componente);
 
         var selectcomponente = document.getElementById("select_componentes");
+        var buttonAlertas = document.getElementById("button_alertas");
         var options = `<option disabled selected value="#">Selecione um Componente</option>;`;
 
         componente.forEach(function (componentes) {
@@ -150,6 +192,8 @@ function carregarComponentes(){
 
         selectcomponente.innerHTML = options;
         selectcomponente.disabled = false; // habilita o select
+        buttonAlertas.disabled = false;
+        buttonAlertas.style = "background-color: #2A5277;"
     })
     .catch(function (erro) {
         console.log("Erro no fetch dos componentes:", erro);

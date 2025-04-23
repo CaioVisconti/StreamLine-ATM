@@ -61,8 +61,8 @@
                     </div>
                     <div class="linha"></div>
                     <div class="alertas">
-                        <span>Visualizar alertas de todos os componentes na última semana</span>
-                        <button onclick="exibirAlertas()">Exibir Alertas</button>
+                        <span>Visualizar alertas de todos os componentes deste ATM</span>
+                        <button onclick="exibirAlertas()" id="button_alertas" disabled style="background-color: #193854;">Exibir Alertas</button>
                     </div>
                 </div>
             </div>
@@ -107,9 +107,28 @@
             <!-- <div class="organizar-compontentes" style="display: none;"> -->
             <div class="organizar-compontentes" style="display: flex;">
                 <span>NÚMEROS DE ALERTAS POR COMPONENTE</span>
-                <div class="fundo">
 
-                    <div class="cpu">
+                    <div class="fundo">
+                        <div class="fundo-grafico">
+                            <div class="titulo-grafico">
+                                <div class="div_alerta" >
+                                    <button onclick="semana_alerta()" class="alerta_perido_button" disabled style="background-color: #193854;">ÚLTIMA SEMANA</button>
+                                    <button onclick="mes_alerta()" class="alerta_perido_button">ÚLTIMO MÊS</button>
+                                    <!-- <span style="color: black;">Período - </span><span style="color: black;"> 23/03/2025 </span><span style="color: black;">até</span> <span style="color: black;"> 30/03/2025 </span> <br> -->
+                                </div> 
+                            </div>
+                            <div id="grafico">
+                                <canvas class="graficos-style" id="meuGrafico2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+                    <!-- <div class="cpu">
                         <span>CPU</span>
                         <div></div>
                         <div class="kpi-cpu">
@@ -167,7 +186,7 @@
                                 <div class="bola"> <span id="input_kpi_pacotes_porcentagem" >05</span></div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
             </div>

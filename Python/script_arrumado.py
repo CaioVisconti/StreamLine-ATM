@@ -1,8 +1,8 @@
 import socket
-import os
+# import os
 import json
-import boto3
-from dotenv import load_dotenv
+# import boto3
+# from dotenv import load_dotenv
 from getmac import get_mac_address
 import psutil
 import time
