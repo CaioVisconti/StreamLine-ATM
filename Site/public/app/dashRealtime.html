@@ -65,36 +65,68 @@
             </div>
 
             <div class="grafico-wrapper">
-
-                <div class="containergrafico">
-
-                    <div class="grafico">
-                        <h2>MÉDIA DOS PACOTES <br> RECEBIDOS E ENVIADOS</h2>
-        
-                        <div class="graf">
-                            <canvas id="myChart"></canvas>
+                <div class="linha-metricas">
+                    <!-- Coluna RAM -->
+                    <div class="coluna-metrica">
+                        <h2 class="titulo-coluna">RAM</h2>
+                        
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Usado</div>
+                            <div class="circulo-indicador circulo-vermelho">92 %</div>
                         </div>
-        
+                        
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Disponível</div>
+                            <div class="circulo-indicador circulo-amarelo">1.2 GB</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Coluna CPU -->
+                    <div class="coluna-metrica">
+                        <h2 class="titulo-coluna">CPU</h2>
+                        
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Usado</div>
+                            <div class="circulo-indicador circulo-vermelho">79 %</div>
+                        </div>
+                        
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Frequência</div>
+                            <div class="circulo-indicador circulo-amarelo">58 %</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Coluna Disco -->
+                    <div class="coluna-metrica">
+                        <h2 class="titulo-coluna">Disco</h2>
+                        
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Usado</div>
+                            <div class="circulo-indicador circulo-verde">22 %</div>
+                        </div>
+                        
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Disponível</div>
+                            <div class="circulo-indicador circulo-verde">16.3 GB</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Coluna Rede -->
+                    <div class="coluna-metrica">
+                        <h2 class="titulo-coluna">Rede</h2>
+                        
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Pacotes Enviados</div>
+                            <div class="circulo-indicador circulo-verde">127</div>
+                        </div>
+                        
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Pacotes Recebidos</div>
+                            <div class="circulo-indicador circulo-verde">127</div>
+                        </div>
                     </div>
                 </div>
-
-                    <!-- <div class="kpilateral">
-
-                        <div class="kpilat">
-                            <p> Média Tempo de resposta</p>
-                            <p id="dados">50s</p>
-                        </div>
-        
-                        <div class="kpilat">
-                            <p> Média Tempo de resposta</p>
-                            <p id="dados"> 50s </p>
-                        </div>
-        
-                    </div>             -->
-
             </div>
-            
-        </div>
 
         </div>
 
