@@ -48,7 +48,7 @@ function login() {
         setTimeout(() => {
             var cargoUsuario = sessionStorage.CARGO_USUARIO;
     
-            if (cargoUsuario === "Técnico de Operação" || cargoUsuario === "técnico de operação")  {
+            if (cargoUsuario === "Tecnico de Operacao" || cargoUsuario === "tecnico de operacao")  {
                 window.location = "./app/dashRealtime.html"; 
             } else if (cargoUsuario === "Gerente" || cargoUsuario === "gerente") {
                 window.location = "./app/gerente/gerenteATM.html"; 
