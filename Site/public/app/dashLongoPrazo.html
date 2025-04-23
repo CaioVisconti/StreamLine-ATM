@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    <body onload="gerarGraficos(), carregarATMS()">
+    <body onload="carregarATMS(), gerarGraficos()">
         <div class="nav-total">
             <div class="info-user">
                 <div class="foto-user"></div>
@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="organizar" style="display: flex;">
+            <div class="organizar">
                 <div class="kpi-prazo">
                     <div class="kpi-1">
                         <span>MAIOR PICO DE COMPONENTE: <br> <span>PORCENTAGEM </span> <span> CPU: </span><span>74%</span></span>
@@ -105,20 +105,41 @@
             </div>
 
             <!-- <div class="organizar-compontentes" style="display: none;"> -->
-            <div class="organizar-compontentes" style="display: flex;">
+            <div class="organizar-compontentes-semana" style="display: none;">
                 <span>NÚMEROS DE ALERTAS POR COMPONENTE</span>
 
                     <div class="fundo">
                         <div class="fundo-grafico">
                             <div class="titulo-grafico">
                                 <div class="div_alerta" >
-                                    <button onclick="semana_alerta()" class="alerta_perido_button" disabled style="background-color: #193854;">ÚLTIMA SEMANA</button>
-                                    <button onclick="mes_alerta()" class="alerta_perido_button">ÚLTIMO MÊS</button>
+                                    <button onclick="semana_alerta()" id="botao_semana" class="alerta_perido_button">ÚLTIMA SEMANA</button>
+                                    <button onclick="mes_alerta()" id="botao_mes" class="alerta_perido_button">ÚLTIMO MÊS</button>
                                     <!-- <span style="color: black;">Período - </span><span style="color: black;"> 23/03/2025 </span><span style="color: black;">até</span> <span style="color: black;"> 30/03/2025 </span> <br> -->
                                 </div> 
                             </div>
                             <div id="grafico">
                                 <canvas class="graficos-style" id="meuGrafico2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="organizar-compontentes-mes" style="display: none;">
+                    <span>NÚMEROS DE ALERTAS POR COMPONENTE</span>
+    
+                        <div class="fundo">
+                            <div class="fundo-grafico">
+                                <div class="titulo-grafico">
+                                    <div class="div_alerta" >
+                                        <button onclick="semana_alerta()" id="botao_semana2" class="alerta_perido_button">ÚLTIMA SEMANA</button>
+                                        <button onclick="mes_alerta()" id="botao_mes2" class="alerta_perido_button">ÚLTIMO MÊS</button>
+                                        <!-- <span style="color: black;">Período - </span><span style="color: black;"> 23/03/2025 </span><span style="color: black;">até</span> <span style="color: black;"> 30/03/2025 </span> <br> -->
+                                    </div> 
+                                </div>
+                                <div id="grafico">
+                                    <canvas class="graficos-style" id="meuGrafico3"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -188,7 +209,6 @@
                         </div>
                     </div> -->
 
-                </div>
             </div>
         </div>
 

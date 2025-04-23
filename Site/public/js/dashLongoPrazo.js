@@ -1,5 +1,113 @@
+function semana_alerta(){
+    let semana = document.querySelector(".organizar-compontentes-semana");
+    let mes = document.querySelector(".organizar-compontentes-mes");
+    let buttonAlertasSemana = document.getElementById("botao_semana");
+    let buttonAlertasMes = document.getElementById("botao_mes");
+    semana.style.display = "flex";
+    mes.style.display = "none";
+    buttonAlertasSemana.style = "background-color: #193854;";
+    buttonAlertasMes.style = "background-color: #2A5277;";
+
+
+
+    const ctx = document.getElementById('meuGrafico2').getContext('2d');
+
+    // Destroi o gráfico antigo se ele já existir
+    if (window.meuGraficoInstance) {
+        window.meuGraficoInstance.destroy();
+    }
+
+    // Criação do gráfico com linha de alerta (linha vermelha no 75)
+    window.meuGraficoInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['CPUPercent', 'CPUFreq', 'RAMPercent', 'Processos', 'DISKPercent'],
+            datasets: [{
+                label: 'Número de alertas',
+                data: [53, 80, 83, 70, 73],
+                borderColor: 'rgb(126, 20, 255)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
+            plugins: {
+                legend: {
+                    display: false 
+                },
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        stepSize: 20
+                    }
+                }
+            }
+        }
+    });
+}
+
+
+function mes_alerta(){
+    let semana = document.querySelector(".organizar-compontentes-semana");
+    let mes = document.querySelector(".organizar-compontentes-mes");
+    let buttonAlertasSemana1 = document.getElementById("botao_semana2");
+    let buttonAlertasMes2 = document.getElementById("botao_mes2");
+    semana.style.display = "none";
+    mes.style.display = "flex";
+    buttonAlertasMes2.style = "background-color: #193854;"; 
+    buttonAlertasSemana1.style = "background-color: #2A5277;";
+
+
+
+    const ctx = document.getElementById('meuGrafico3').getContext('2d');
+
+    // Destroi o gráfico antigo se ele já existir
+    if (window.meuGraficoInstance) {
+        window.meuGraficoInstance.destroy();
+    }
+
+    // Criação do gráfico com linha de alerta (linha vermelha no 75)
+    window.meuGraficoInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['CPUPercent', 'CPUFreq', 'RAMPercent', 'Processos', 'DISKPercent'],
+            datasets: [{
+                label: 'Número de alertas',
+                data: [132, 110, 113, 120, 93],
+                borderColor: 'rgb(126, 20, 255)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
+            plugins: {
+                legend: {
+                    display: false 
+                },
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 30
+                    }
+                }
+            }
+        }
+    });
+}
+
 function exibirAlertas(){
-    let oi = document.querySelector(".organizar-compontentes");
+    let oi = document.querySelector(".organizar-compontentes-semana");
     let dois = document.querySelector(".organizar");
     oi.style.display = "flex";
     dois.style.display = "none";
@@ -58,9 +166,11 @@ function exibirAlertas(){
     
 
 function gerarGraficos(){
-    let oi = document.querySelector(".organizar-compontentes");
+    let oi = document.querySelector(".organizar-compontentes-semana");
+    let ne = document.querySelector(".organizar-compontentes-mes");
     let dois = document.querySelector(".organizar");
     oi.style.display = "none";
+    ne.style.display = "none";
     dois.style.display = "flex";
 
     const ctx = document.getElementById('meuGrafico').getContext('2d');
