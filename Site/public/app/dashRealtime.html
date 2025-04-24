@@ -42,6 +42,16 @@
 
             <menu id="menuATM">
                 <ul id="divAtms">
+
+                    <li><button onclick="graficoEspecifico()">ATM 1</button> <div class="status" id="critico"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 2</button> <div class="status" id="medio"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 3</button> <div class="status" id="bom"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 4</button> <div class="status" id="medio"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 5</button> <div class="status" id="bom"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 6</button> <div class="status" id="critico"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 7</button> <div class="status" id="bom"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 8</button> <div class="status" id="medio"></div></li>
+
                 </ul>
             </menu>
 
@@ -54,17 +64,17 @@
 
                 <div class="kpi" id="bom">
                     <p id="kpi1"></p>
-                    <p>ATMs em bom estado </p>
+                    <p> 3 ATMs em bom estado </p>
                 </div>
 
                 <div class="kpi" id="medio">
                     <p id="kpi2"></p>
-                    <p>ATMs com alertas médios </p>
+                    <p>3 ATMs com alertas médios </p>
                 </div>
 
                 <div class="kpi" id="critico">
                     <p id="kpi3"></p>
-                    <p>ATMs com alertas críticos </p>
+                    <p>2 ATMs com alertas críticos </p>
                 </div>
 
             </div>
@@ -82,12 +92,12 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Usado</div>
-                            <div class="circulo-indicador circulo-vermelho">92 %</div>
+                            <div class="circulo-indicador circulo-vermelho">88.4 %</div>
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Disponível</div>
-                            <div class="circulo-indicador circulo-amarelo">1.2 GB</div>
+                            <div class="circulo-indicador circulo-vermelho">0.9 GB</div>
                         </div>
                     </div>
 
@@ -97,12 +107,12 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Usado</div>
-                            <div class="circulo-indicador circulo-vermelho">79 %</div>
+                            <div class="circulo-indicador circulo-amarelo">30.0 %</div>
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Frequência</div>
-                            <div class="circulo-indicador circulo-amarelo">15 %</div>
+                            <div class="circulo-indicador circulo-verde">3110.0 Hz</div>
                         </div>
                     </div>
 
@@ -112,12 +122,12 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Usado</div>
-                            <div class="circulo-indicador circulo-verde">22 %</div>
+                            <div class="circulo-indicador circulo-verde">28.6 %</div>
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Disponível</div>
-                            <div class="circulo-indicador circulo-verde">16.3 GB</div>
+                            <div class="circulo-indicador circulo-verde">339.75 GB</div>
                         </div>
                     </div>
 
@@ -127,12 +137,12 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Pacotes Enviados</div>
-                            <div class="circulo-indicador circulo-verde">127</div>
+                            <div class="circulo-indicador circulo-verde">43050</div>
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Pacotes Recebidos</div>
-                            <div class="circulo-indicador circulo-verde">127</div>
+                            <div class="circulo-indicador circulo-verde">53661</div>
                         </div>
                     </div>
                 </div>
@@ -147,12 +157,12 @@
 <script>
 
     window.onload = function () {
-        exibirKPIs();
+        // exibirKPIs();
         exibirAtms();
 
-        setInterval(function () {
-            exibirKPIs();
-        }, 5000);
+        // setInterval(function () {
+        //     exibirKPIs();
+        // }, 5000);
 
         graficoAlertasPorATM()
 
@@ -167,6 +177,7 @@
         document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
 
         console.log("Cheguei")
+
         fetch(`/medidas/atms/${id}`, {
             method: "GET",
             headers: {
@@ -230,7 +241,7 @@
     const ctx = document.getElementById('graficoAlertas').getContext('2d');
 
     const nomesATMs = ['ATM 1', 'ATM 2', 'ATM 3', 'ATM 4', 'ATM 5', 'ATM 6', 'ATM 7', 'ATM 8'];
-    const alertas = [0, 1, 3, 2, 0, 4, 0, 2];
+    const alertas = [3, 1, 0, 1, 0, 2, 0, 1];
 
     new Chart(ctx, {
     type: 'bar',
