@@ -1,7 +1,7 @@
 import socket
 # import os
 import json
-# import boto3
+import boto3
 # from dotenv import load_dotenv
 from getmac import get_mac_address
 import psutil
@@ -176,8 +176,15 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
             if len(capturas) == 7200 or i == quantidade or interrompido:
                 print("\n📂 Gerando Arquivo JSON!\n")
                 caminhoArquivo = f'Capturas_ATM_{fkAtm}_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json'
-                with open (caminhoArquivo, "w") as arquivo: # o python vai abrir o arquivo para leitura (por isso o     "w", de write). Se o arq nao existir, ele o cria
+                with open (caminhoArquivo, "w") as arquivo: # o python vai abrir o arquivo para leitura (por isso o "w", de write). Se o arq nao existir, ele o cria
                     json.dump(capturas, arquivo, indent=4)
+
+                s3 = boto3.client('s3')
+                s3.upload_file(
+                    Filename=caminhoArquivo,
+                    Bucket='teste102343',
+                    Key=f'captura/{caminhoArquivo}')
+                
                 print("\n Arquivo JSON Gerado! ✅\n")
 
     except KeyboardInterrupt:

@@ -160,3 +160,17 @@ JOIN componentes ON componentes.idComponentes = p.fkComponente;
 CREATE USER "rootPI"@"%" IDENTIFIED BY "Urubu#100";
 GRANT ALL ON streamline.* TO "rootPI"@"%";
 FLUSH PRIVILEGES;
+
+USE streamline;
+DESC parametro;
+SELECT * FROM streamline_quente.parametrizacao;
+
+INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM, fkAgencia) VALUES
+("notebook-caio", "caio", "192.168.1.164","4C-44-5B-EF-59-39", "Windows 11", 1, 1);
+
+INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES
+(89, "2025-12-11", 1, 6);
+
+UPDATE parametro SET limite = 99 WHERE idParametro = 30;
+
+update atm set macAdress = "4c:44:5b:ef:59:39", hostname = "notebook-caio" WHERE idAtm = 6;

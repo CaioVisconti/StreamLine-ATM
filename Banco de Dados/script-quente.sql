@@ -28,4 +28,7 @@ GRANT INSERT ON streamline_quente.captura TO "userPython"@"%";
 GRANT INSERT ON streamline_quente.alerta TO "userPython"@"%";
 FLUSH PRIVILEGES;
 
-SELECT * FROM parametrizacao;
+SELECT * FROM streamline_quente.alerta;
+
+INSERT INTO streamline_quente.alerta (valor, dtHora, fkParametro) VALUES
+(12, "2025-12-11 08:09:11", 1);
