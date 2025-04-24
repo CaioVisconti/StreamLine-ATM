@@ -222,8 +222,6 @@ function atualizarFuncionario(json) {
 
 function removerFuncionario(id) {
 
-    console.log(id);
-
     let instrucaoSql = `DELETE FROM usuario WHERE idUsuario = ${id}`;
 
     return database.executar(instrucaoSql);

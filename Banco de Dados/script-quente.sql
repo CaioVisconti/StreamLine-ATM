@@ -17,6 +17,11 @@ CREATE TABLE IF NOT EXISTS captura (
   fkParametro INT
 );
 
+CREATE USER IF NOT EXISTS "rootPI"@"%" IDENTIFIED BY "Urubu#100";
+GRANT ALL ON streamline_quente.* TO "rootPI"@"%";
+FLUSH PRIVILEGES;
+
+
 CREATE USER IF NOT EXISTS "userPython"@"%" IDENTIFIED BY "Urubu100";
 GRANT SELECT ON streamline_quente.parametrizacao TO "userPython"@"%";
 GRANT INSERT ON streamline_quente.captura TO "userPython"@"%";
@@ -24,6 +29,3 @@ GRANT INSERT ON streamline_quente.alerta TO "userPython"@"%";
 FLUSH PRIVILEGES;
 
 SELECT * FROM parametrizacao;
-
-
-SELECT * FROM parametrizacao WHERE fkAtm = 1;
