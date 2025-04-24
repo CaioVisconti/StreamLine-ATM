@@ -4,42 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Funcionarios | StreamLine</title>
+    <title>Cadastro de Funcionários | StreamLine</title>
     <link rel="stylesheet" href="./css/atm.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="./js/funcionario.js"></script>
 </head>
 
 <body onload="carregarDados()">
-    <nav>
-        <div class="usuario">
-            <div class="img-perfil"></div>
-            <div class="saudacoes">Olá, <br><span id="nomeUser">Nome</span>.</div>
+
+    <div class="nav-total">
+        <div class="info-user">
+            <div class="foto-user"></div>
+            <div class="msg-user">
+                <span>Oi, <br><span id="nomeUser">
+                </span></span>
+            </div>
         </div>
-        <div class="barra">
-            <span class="problema">Relatar Problema</span>
+        <div class="nav-bar">
+            <div></div>
+            <span>Reportar Problema</span>
         </div>
-        <div class="sair">
-            <a href="../../index.html"><button>Sair</button></a>
-        </div>
-    </nav>
+        <a href="../../index.html"><button class="btn-nav">Sair</button></a>
+    </div>
+
     <div class="container">
-        <div class="navlateral">
-            <div class="navegacao-paginas">
-                <a href="./gerenteATM.html">ATM's</a>
-                <a href="./gerenteFuncionarios.html" id="atual">Funcionarios</a>
-                <a href="./gerenteDashboard.html">Dashboard</a>
+
+
+        <div class="kpis">
+            <div class="escolha-opcoes">
+                <div class="espacamento">
+                    <a href="gerenteATM.html"><span>ATM's</span></a>
+                    <div class="linha"></div>
+                    <a><span>Funcionarios</span></a>
+                    <div class="linha"></div>
+                    <span>Dashboard</span>
+                    <div class="linha"></div>
+                </div>
             </div>
-            <div class="kpi">
-                <span class="titulo">Quantidade de <br> funcionários cadastrados</span>
-                <span class="valor" id="kpi_total"></span>
+            <div class="escolha-kpi">
+                <span class="info-kpi" style="text-align: center;">Quantidade de <br> funcionários cadastrados</span>
+                <span class="numeros-kpi" id="kpi_total"></span>
             </div>
-            <div class="kpi">
-                <span class="titulo">Quantidade de <br>funcionários em atividade</span>
-                <span class="valor" id="kpi_atividade"></span>
+            <div class="escolha-kpi">
+                <span class="info-kpi">Visualizar Contate-nos</span>
+                <button class="btn-nav">Visualizar</button>
             </div>
         </div>
         <div class="agencias">
@@ -65,10 +77,12 @@
             </div>
             <img src="../../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
         </div>
-        <div class="cards-container" id="cardsContainer"></div>
+        <div class="delimitar">
+            <div class="cards-container" id="cardsContainer"></div>
+        </div>
         </div>
     </div>
-    <div class="fade"></div>
+    <div class="fade" style="display: none;"></div>
     <div class="modal-funcionario" style="display: none;">
         <div class="modal-row">
             <div class="modal-fechar">

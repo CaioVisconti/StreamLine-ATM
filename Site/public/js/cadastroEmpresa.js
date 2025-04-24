@@ -4,10 +4,11 @@ function carregarCards() {
 
     var nomeAtual = sessionStorage.NOME_USUARIO;
 
-    nomeFunc.innerHTML += `Olá, ${nomeAtual}`
+    nomeFunc.innerHTML = `Olá, ${nomeAtual}`
     const pesquisa = ipt_pesquisa.value;
     cardsContainer.innerHTML = "";
-    if (pesquisa == "") {
+
+    if (pesquisa.length == 0) {   
         fetch("/empresas/mostrarEmpresas", {
             method: "GET",
             headers: {
@@ -35,7 +36,7 @@ function carregarCards() {
                 })
         })
     } else {
-        fetch(`/empresas/mostrarEmpresas/${pesquisa}`, {
+        fetch(`/empresas/${pesquisa}/mostrarEmpresasSearch`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -43,21 +44,21 @@ function carregarCards() {
         }).then((res) => {
             res.json()
                 .then(json => {
-                    console.log(json)
-                    for (let i = 0; i < json.length; i++) {
-                        cardsContainer.innerHTML += `
+                    let div = document.getElementById("cardsContainer")
+                    for (let i = 0; i <= json.lista.length - 1; i++) {
+                        div.innerHTML += `
                     <div class="cards">
                         <div class="perfil-agencia">
                             <div class="img-agencia"></div>
-                            <span id="empresa">${json[i].Nome}</span>
-                            <img class="img-edit" onclick="mostrarModalEdit()" src="../assets/icone-editar.png">
+                            <span id="empresa">${json.lista[i].nome}</span>
+                            <img class="img-edit" data-id="${json.lista[i].idEmpresa}" onclick="mostrarModalEdit(this)" src="../assets/icone-editar.png">
                         </div>
                         <div class="info-agencia">
-                            <span class="info">Código da Empresa: <span style="font-weight: normal;" id="codigo">${json[i].codigoEmpresa}</span></span>
-                            <span class="info">CNPJ: <span style="font-weight: normal;" id="cnpj">${json[i].cnpj}</span></span>
+                            <span class="info">Código da Empresa: <span style="font-weight: normal;" id="codigo">${json.lista[i].codigo}</span></span>
+                            <span class="info">CNPJ: <span style="font-weight: normal;" id="cnpj">${json.lista[i].cnpj}</span></span>
                         </div>
                     </div> 
-                            `
+                    `
                     }
                 })
         })

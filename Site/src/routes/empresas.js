@@ -19,6 +19,8 @@ router.delete('/deletarEmpresa/:idEmpresa', async (req, res) => {
     empresaController.deletarEmpresa(req, res);
 })
 
-
+router.get("/:pesquisa/mostrarEmpresasSearch", function (req, res) {
+    empresaController.mostrarEmpresasSearch(req, res);
+})
 
 module.exports = router;

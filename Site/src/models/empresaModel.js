@@ -24,9 +24,18 @@ function deletarEmpresa(idEmpresa){
     return database.executar(instrucaoSql)
 }
 
+function mostrarEmpresasSearch(pesquisa) {
+    const instrucaoSql = `SELECT * FROM empresa WHERE nome LIKE "%${pesquisa}%";`;
+
+    console.log(instrucaoSql);
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     mostrarEmpresas,
     cadastrarEmpresas,
     kpiParceiras,
-    deletarEmpresa
+    deletarEmpresa,
+    mostrarEmpresasSearch
 };
