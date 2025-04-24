@@ -22,23 +22,6 @@ function buscarKpis() {
             kpi_total.innerHTML = json.lista[0].qtd;
         })
     })
-
-    // fetch(`/gerente/${idAgencia}/buscarKpiAlertas`, {
-    //     method: "GET",
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     }
-    // }).then((resposta) => {
-    //     resposta.json()
-    //     .then(json => {
-    //         let valor = json.lista[0].alertas;
-    //         if(json.lista.length == 0) {
-    //             kpi_alertas.innerHTML = 0;
-    //         } else {
-    //             kpi_alertas.innerHTML = valor;
-    //         }
-    //     })
-    // })
 }
 
 let vetor = "";
@@ -80,6 +63,14 @@ function carregarCards(lista) {
                                 }
                             }
 
+                            let cargo = "";
+
+                            if(json.lista[i].cargo == "Tecnico de Operacao") {
+                                cargo = "Técnico de Operação";
+                            } else {
+                                cargo = "Amalista de Dados";
+                            }
+
                             cardsContainer.innerHTML += `
                                 <div class="cards">
                                 <div class="perfil-agencia">
@@ -87,7 +78,7 @@ function carregarCards(lista) {
                                 <img class="img-edit" onclick="mostrarModalEdit(${i}, ${json.lista[i].idUsuario})" src="../../assets/icone-editar.png">
                                 </div>
                                 <div class="info-agencia">
-                                <span class="info">Cargo: <span id="cargo">${json.lista[i].cargo}</span></span>
+                                <span class="info">Cargo: <span id="cargo">${cargo}</span></span>
                                 <span class="info">Telefone: <span id="telefone">${telefone}</span></span>
                                 <span class="info">Email: <span id="email">${json.lista[i].email}</span></span>
                                 <span class="info">Senha: <span id="senha_func">${json.lista[i].senha}</span></span>
@@ -129,6 +120,14 @@ function carregarCards(lista) {
                                         telefone += caracterAtual
                                     }
                                 }
+                            }
+
+                            let cargo = "";
+
+                            if(json.lista[i].cargo == "Tecnico de Operacao") {
+                                cargo = "Técnico de Operação";
+                            } else {
+                                cargo = "Amalista de Dados";
                             }
 
                             cardsContainer.innerHTML += `
@@ -173,6 +172,14 @@ function carregarCards(lista) {
                         telefone += caracterAtual
                     }
                 }
+            }
+            
+            let cargo = "";
+
+            if(json.lista[i].cargo == "Tecnico de Operacao") {
+                cargo = "Técnico de Operação";
+            } else {
+                cargo = "Amalista de Dados";
             }
 
             cardsContainer.innerHTML += `
@@ -219,8 +226,17 @@ function abrirSegundaFiltragem() {
                     <option selected disabled>Selecionar</option>
                 `;
                 for(let i = 0; i < json.lista.length; i++) {
+                    
+                    let cargo = "";
+
+                    if(json.lista[i].cargo == "Tecnico de Operacao") {
+                        cargo = "Técnico de Operação";
+                    } else {
+                        cargo = "Amalista de Dados";
+                    }
+
                     segundoFiltro.innerHTML += `
-                        <option value="${json.lista[i].cargo}">${json.lista[i].cargo}</option>
+                        <option value="${json.lista[i].cargo}">${cargo}</option>
                     `;
                 }
             })
@@ -350,7 +366,7 @@ function cadastrarFuncionario() {
         return alert("Por favor insira o nome completo");
     } else if(telefone.length != 11) {
         return alert("Por favor insira um telefone válido");
-    } else if(cargo != "Analista de Dados" && cargo != "Técnico de Operação") {
+    } else if(cargo != "Analista de Dados" && cargo != "Tecnico de Operacao") {
         return alert("Por favor escolha um cargo válido");
     } else if(!email.includes("@") || !email.includes(".com") || email.length < 8) {
         return alert("Por favor insira um email válido");
@@ -398,7 +414,7 @@ function mostrarModalEdit(indice, idUsuario) {
         ipt_nomeEdit.value = vetor.lista[indice].nome;
         ipt_telefoneEdit.value = vetor.lista[indice].telefone;
 
-        if(vetor.lista[indice].cargo == "Técnico de Operação") {
+        if(vetor.lista[indice].cargo == "Tecnico de Operacao") {
             slt_cargoEdit.value = 1;
         } else {
             slt_cargoEdit.value = 2;
@@ -423,7 +439,7 @@ function atualizarFuncionario(indice, id) {
     let senha = ipt_senhaEdit.value;
 
     if(cargo == 1) {
-        cargo = "Técnico de Operação"
+        cargo = "Tecnico de Operação"
     } else {
         cargo = "Analista de Dados"
     }
@@ -437,7 +453,7 @@ function atualizarFuncionario(indice, id) {
         return alert("Por favor insira o nome completo");
     } else if(telefone.length != 11) {
         return alert("Por favor insira um telefone válido");
-    } else if(cargo != "Analista de Dados" && cargo != "Técnico de Operação") {
+    } else if(cargo != "Analista de Dados" && cargo != "Tecnico de Operacao") {
         return alert("Por favor escolha um cargo válido");
     } else if(!email.includes("@") || !email.includes(".com") || email.length < 8) {
         return alert("Por favor insira um email válido");
