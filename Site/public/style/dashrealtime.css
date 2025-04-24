@@ -84,7 +84,7 @@ header {
 }
 
 .container{
-    height: 87vh;
+    height: 86vh;
     display: flex;
     justify-content: space-between;
     margin: 10px;
@@ -98,26 +98,28 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-start; 
+    padding-top: 10px; 
 }
 
 #menuATM {
     list-style: none;
-    height: 90%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-start; 
     width: 100%;
     overflow: auto;
 }
 
 #menuATM li {
-    width: 90%;
+    width: 100%; 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center; 
     align-items: center;
-    margin: 10px;
+    margin: 10px auto; 
+    gap: 20px;
 }
 
 #menuATM li .status {
@@ -136,7 +138,6 @@ header {
     border: none;
     color: white;
     font-weight: bold;
-    padding: 5%;
 }
 
 #menuATM li button:hover {
@@ -148,7 +149,7 @@ header {
 }
 
 .kpi-wrappers{
-    width: 95%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -180,7 +181,7 @@ header {
     color: white;
 }
 
- #critico{
+#critico{
     background: rgba(226, 76, 76, 0.39);
 }
 
@@ -214,10 +215,20 @@ header {
     background-color: #242424;
     border-radius: 10px;
     padding: 10px 0;
-    height: 100%;
-    margin: 15px;
-    position: relative;
+    height: 75%;
+    margin: 10px;
 }
+
+.grafico {
+    height: 100% !important;  
+    display: flex;
+    justify-content: center;
+}
+
+.grafico canvas {
+    height: 100% !important;
+}
+
 
 /* Linha de colunas */
 .linha-metricas {
