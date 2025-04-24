@@ -11,6 +11,11 @@ body {
     color: #fff;
 }
 
+html, body {
+    scroll-behavior: smooth;
+    /* color: rgb(221, 85, 12); */
+}
+
 .topo {
     display: flex;
     justify-content: space-between;
