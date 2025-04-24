@@ -164,6 +164,18 @@ function registrarATM() {
     let macadress = iptMacAdressCad.value;
     let so = iptSOCad.value;
     let status = slt_status.value;
+    
+    if(hostname.length == 0 || modelo.length == 0 || ip.length == 0 || macadress.length == 0 || so.length == 0) {
+        return alert("Por favor preencha todos os campos corretamente.")
+    }
+
+    if(ip.length != 8 || ip.includes(".")) {
+        return alert("Por favor insira um IP válido e sem pontuação.");
+    } else if(macadress.includes(":") || macadress.length != 12) {
+        return alert("Por favor insira um macAdress válido e sem pontuação.");
+    } else if(status != 1 && status != 2) {
+        return alert("Por favor escolha um Status válido.")
+    }
 
     fetch("/gerente/cadastrarATM", {
         method: "POST",
@@ -276,6 +288,18 @@ function atualizarAtm(posicaoVetor, idAtm) {
     let macadress = iptMacAdressEdit.value;
     let sistemaOperacional = iptSOEdit.value;
     let status = sltStatusEdit.value;
+    
+    if(hostname.length == 0 || modelo.length == 0 || ip.length == 0 || macadress.length == 0 || so.length == 0) {
+        return alert("Por favor preencha todos os campos corretamente.")
+    }
+
+    if(ip.length != 11) {
+        return alert("Por favor insira um IP válido e sem pontuação.");
+    } else if(macadress.length != 17) {
+        return alert("Por favor insira um macAdress válido e sem pontuação.");
+    } else if(status != 1 && status != 2) {
+        return alert("Por favor escolha um Status válido.")
+    }
 
     let listaAtm = {
         idAtm: idATM,
@@ -517,6 +541,16 @@ function cadastrarConfig(idAtm, comp, indice) {
     let medida = slt_medida.value;
     let id = idAtm;
 
+    if(limite <= 0) {
+        return alert("Por favor insira um valor válido.")
+    }
+
+    if(medida.includes("Percent")) {
+        if(limite > 100) {
+            return alert("Por favor inserir uma porcentagem válido.")
+        }
+    }
+
     fetch("/gerente/cadastrarConfig", {
         method: "POST",
         headers: {
@@ -568,6 +602,19 @@ function mostrarModalEditConfig(indice, idConfig, compAtual, idAtm) {
 function atualizarConfiguracao(indice, idConfig, compAtual, idAtm) {
     let limiteAtual = limite.value;
     let limiteAnterior = configuracao.lista[indice].Limite;
+    let medida = configuracao.lista[indice].Tipo;
+
+    console.log(indice, idConfig, compAtual, idAtm, medida)
+
+    if(limiteAtual <= 0) {
+        return alert("Por favor insira um valor válido.")
+    }
+
+    if(medida.includes("Percent")) {
+        if(limiteAtual > 100) {
+            return alert("Por favor inserir uma porcentagem válido.")
+        }
+    }
 
     if(limiteAnterior != limiteAtual) {
         fetch(`/gerente/${limiteAtual}/${idConfig}/atualizarParametro`, {

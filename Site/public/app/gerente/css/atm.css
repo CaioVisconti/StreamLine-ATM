@@ -306,7 +306,6 @@ a{
 
 .fade {
     position: fixed;
-    display: none;
     top: 0;
     left: 0;
     width: 100%;
@@ -581,7 +580,7 @@ span, .campo-modal-configuracao {
     border-radius: 10px;
     font-size: 24px;
     background-color: white;
-    z-index: 20;
+    z-index: 40;
     /* border: 1px solid red; */
 }
 
@@ -619,7 +618,7 @@ span, .campo-modal-configuracao {
     border-radius: 10px;
     font-size: 24px;
     background-color: white;
-    z-index: 20;
+    z-index: 40;
 }
 
 .botao-cadastrar-componente {
@@ -661,7 +660,7 @@ span, .campo-modal-configuracao {
     border-radius: 10px;
     font-size: 24px;
     background-color: white;
-    z-index: 20;
+    z-index: 50;
 }
 
 .listagem_delete {
@@ -711,7 +710,7 @@ span, .campo-modal-configuracao {
     border-radius: 10px;
     font-size: 24px;
     background-color: white;
-    z-index: 20;
+    z-index: 50;
 }
 
 
