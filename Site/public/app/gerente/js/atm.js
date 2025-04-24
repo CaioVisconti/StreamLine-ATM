@@ -23,23 +23,6 @@ function buscarKpis() {
             kpi_total.innerHTML = json.lista[0].total;
         })
     })
-
-    fetch(`/gerente/${idAgencia}/buscarKpiAlertas`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then((resposta) => {
-        resposta.json()
-        .then(json => {
-            let valor = json.lista[0].alertas;
-            if(json.lista.length == 0) {
-                kpi_alertas.innerHTML = 0;
-            } else {
-                kpi_alertas.innerHTML = valor;
-            }
-        })
-    })
 }
 
 var vetor = "";
@@ -161,7 +144,7 @@ function carregarCards(lista) {
 
 function mostrarModalCad() {
     const modal = document.querySelector(".modal");
-    const fade = document.querySelector(".fade");
+    const fade = document.getElementById("fade1");
     if (modal.style.display == "none") {
         modal.style.display = "flex";
         fade.style.display = "block";
@@ -199,7 +182,7 @@ function registrarATM() {
     }).then((resultado) => {
         carregarDados();
         let modal = document.querySelector(".modal");
-        let fade = document.querySelector(".fade");
+        let fade = document.getElementById("fade1");
         modal.style.display = "none";
         fade.style.display = "none";
     })
@@ -207,7 +190,7 @@ function registrarATM() {
 
 function mostrarModalEdit(indice) {
     const modal = document.querySelector(".modal-edit");
-    const fade = document.querySelector(".fade");
+    const fade = document.getElementById("fade1");
     if (modal.style.display == "none") {
         modal.style.display = "flex";
         fade.style.display = "block";
@@ -257,7 +240,7 @@ function pesquisarEditAtm(indice) {
                     componente = "DISCO"
                 } else if(json.lista[i].metrica.includes("REDE")) {
                     componente = "REDE"
-                } else if(json.lista[i].metrica.includes("PROCESSOS")) {
+                } else if(json.lista[i].metrica.includes("PROCESSO")) {
                     componente = "PROCESSOS"
                 }
 
@@ -320,7 +303,7 @@ function atualizarAtm(posicaoVetor, idAtm) {
                 console.log(json.lista);
                 carregarDados();
                 let modal = document.querySelector(".modal-edit");
-                let fade = document.querySelector(".fade");
+                let fade = document.getElementById("fade1");
                 modal.style.display = "none";
                 fade.style.display = "none";
             })
@@ -332,7 +315,7 @@ let configuracao = "";
 
 function mostrarModalCadComp(idAtm, indice) {
     const modalComponente = document.querySelector(".modal-cad-componente");
-    const fade = document.querySelector(".fade");
+    const fade = document.getElementById("fade2");
 
     if (modalComponente.style.display == "none") {
         modalComponente.style.display = "flex";
@@ -367,9 +350,15 @@ function mostrarModalCadComp(idAtm, indice) {
 
     if(vetorComponente.length != 0) {
         for(let i = 0; i < vetorComponente.length; i++) {
-            slt_componentes.innerHTML += `
-                <option value="${vetorComponente[i]}">${vetorComponente[i]}</option>
-            `;
+            if(vetorComponente[i] == "PROCESSOS") {
+                slt_componentes.innerHTML += `
+                    <option value="PROCESSO">PROCESSOS</option>
+                `;
+            } else {
+                slt_componentes.innerHTML += `
+                    <option value="${vetorComponente[i]}">${vetorComponente[i]}</option>
+                `;
+            }
         }
     }
 
@@ -389,13 +378,17 @@ function cadastrarComponente(idAtm, indice) {
         componente = "DISK";
     }
 
+    if(componente == "PROCESSOS") {
+        componente = "PROCESSO";
+    }
+
     mostrarModalCadConfig(idAtm, componente, indice);
 }
 
 function mostrarModalEditComp(indice, idAtm) {
     const modalComponente = document.querySelector(".modal-edit-componente");
     const modalEditAtm = document.querySelector(".modal-edit");
-    const fade = document.querySelector(".fade");
+    const fade = document.getElementById("fade2");
     
     modalEditAtm.style.display == "none";
 
@@ -460,6 +453,9 @@ function pesquisarConfiguracao(componenteAtual, idAtm) {
             }
 
             if((componenteAtual == "CPU" && json.lista.length < 2) || (componenteAtual == "RAM" && json.lista.length < 3) ||(componenteAtual == "DISK" && json.lista.length < 3) || (componenteAtual == "REDE" && json.lista.length < 2) || (componenteAtual == "PROCESSOS" && json.lista.length < 3)) {
+                if(componenteAtual == "PROCESSOS") {
+                    componenteAtual = "PROCESSO";
+                }
                 listagem_config.innerHTML += `
                 <div class="campo-modal-configuracao add-config" onclick="mostrarModalCadConfig(${idAtm}, '${componenteAtual}')">+</div>`;
             }
@@ -469,7 +465,7 @@ function pesquisarConfiguracao(componenteAtual, idAtm) {
 
 function mostrarModalCadConfig(idAtm, comp, indice) {
     const modalComponente = document.querySelector(".modal-cad-configuracao");
-    const fade = document.querySelector(".fade");
+    const fade = document.getElementById("fade1");
 
     if (modalComponente.style.display == "none") {
         modalComponente.style.display = "flex";
@@ -544,7 +540,7 @@ function cadastrarConfig(idAtm, comp, indice) {
 
 function mostrarModalEditConfig(indice, idConfig, compAtual, idAtm) {
     const modalConfig = document.querySelector(".modal-edit-configuracao");
-    const fade = document.querySelector(".fade");
+    const fade = document.getElementById("fade1");
 
     if (modalConfig.style.display == "none") {
         modalConfig.style.display = "flex";
@@ -676,7 +672,7 @@ function filtrar() {
 function mostrarModalDeleteAtm(idAtm) {
     
     const modalDelete = document.querySelector(".modal-del-atm");
-    const fade = document.querySelector(".fade");
+    const fade = document.getElementById("fade1");
 
     if (modalDelete.style.display == "none") {
         modalDelete.style.display = "flex";
@@ -709,7 +705,7 @@ function removerAtm(idAtm) {
 
             const modalDelete = document.querySelector(".modal-del-atm");
             const modal = document.querySelector(".modal-edit");
-            const fade = document.querySelector(".fade");
+            const fade = document.getElementById("fade1");
 
             modalDelete.style.display = "none";
             modal.style.display = "none";
@@ -721,7 +717,7 @@ function removerAtm(idAtm) {
 function mostrarModalDeleteConfig(id, compAtual, idAtm, indice) {
     
     const modalDelete = document.querySelector(".modal-del-config");
-    const fade = document.querySelector(".fade");
+    const fade = document.getElementById("fade1");
 
     if (modalDelete.style.display == "none") {
         modalDelete.style.display = "flex";
@@ -755,7 +751,7 @@ function removerConfig(id, componenteAtual, idAtm, indice) {
             const modalDelete = document.querySelector(".modal-del-config");
             const modalConfig = document.querySelector(".modal-edit-configuracao");
             const modal = document.querySelector(".modal-edit");
-            const fade = document.querySelector(".fade");
+            const fade = document.getElementById("fade1");
 
             modalDelete.style.display = "none";
             modalConfig.style.display = "none";

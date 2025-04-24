@@ -191,6 +191,11 @@ a{
     cursor: pointer;
 }
 
+.icon-dash{
+    color: #FFF;
+    font-size: 50px;
+}
+
 .input-pesquisar {
     display: flex;
     align-items: center;
@@ -307,7 +312,6 @@ a{
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    z-index: 10;
 }
 
 .modal, .modal-edit {
@@ -334,15 +338,16 @@ a{
     justify-self: center;
     align-self: center;
     position: absolute;
-    left: 30%;
+    left: 26%;
+    bottom: 3%;
     padding: 48px;
-    width: 750px;
-    height: 560px;
+    width: 40vw;
+    height: 80vh;
     flex-direction: column;
     border-radius: 10px;
     font-size: 24px;
     background-color: white;
-    z-index: 20;
+    z-index: 30;
     /* border: 1px solid red; */
 }
 
@@ -361,11 +366,20 @@ a{
     justify-content: center;
     flex-wrap: wrap;
     align-items: center;
+    align-content: space-between;
     height: 80vh;
     width: 100%;
 }
 
 .modal-infos {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-infos-cad {
     width: 80%;
     display: flex;
     flex-direction: row;
@@ -373,8 +387,28 @@ a{
     justify-content: space-between;
 }
 
-.modal-infos input, .select-empresa{
+.modal-infos-cad input{
     width: 50%;
+    height: 56px;
+    font-size: 24px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25);
+    /* border: 1px solid red; */
+}
+
+.modal-infos input{
+    width: 50%;
+    height: 56px;
+    font-size: 24px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25);
+    /* border: 1px solid red; */
+}
+
+.select-empresa {
+    width: 20vw;
     height: 56px;
     font-size: 24px;
     border-radius: 10px;
@@ -392,7 +426,7 @@ a{
     background-color: rgba(0, 0, 0, 0.25);
 }
 
-.modal-infos-cad {
+.modal-infos-edt {
     width: 90%;
     display: flex;
     flex-direction: row;
@@ -400,7 +434,7 @@ a{
     justify-content: space-between;
 }
 
-.modal-infos-cad input {
+.modal-infos-edt input {
     width: 55%;
     height: 56px;
     font-size: 24px;
@@ -476,8 +510,8 @@ a{
 .campo-modal-componentes {
     display: flex;
     justify-content: space-between;
-    width: 300px;
-    height: 26px;
+    width: 20vw;
+    height: 4vh;
     font-size: 24px;
     border-radius: 10px;
     border: none;
@@ -492,7 +526,7 @@ span, .campo-modal-componentes {
 .campo-modal-configuracao {
     display: flex;
     justify-content: space-between;
-    width: 90%;
+    width: 25vw;
     height: 50px;
     font-size: 24px;
     border-radius: 10px;
@@ -540,13 +574,15 @@ span, .campo-modal-configuracao {
     position: absolute;
     padding: 10px;
     width: 30vw;
-    height: 35vh;
-    left: 35%;
+    height: 40vh;
+    left: 33%;
+    bottom: 30%;
     flex-direction: column;
     border-radius: 10px;
     font-size: 24px;
     background-color: white;
     z-index: 20;
+    /* border: 1px solid red; */
 }
 
 .modal-container-config {
@@ -559,6 +595,7 @@ span, .campo-modal-configuracao {
 }
 
 .add-config {
+    width: 25vw;
     justify-content: center;
     align-items: center;
     font-size: 30px
@@ -574,8 +611,10 @@ span, .campo-modal-configuracao {
     align-self: center;
     position: absolute;
     padding: 48px;
-    width: 500px;
-    height: 350px;
+    left: 30%;
+    bottom: 20%;
+    width: 30vw;
+    height: 45vh;
     flex-direction: column;
     border-radius: 10px;
     font-size: 24px;
@@ -605,7 +644,7 @@ span, .campo-modal-configuracao {
     border-radius: 10px;
     font-size: 24px;
     background-color: white;
-    z-index: 20;
+    z-index: 30;
 }
 
 .modal-del-atm {
@@ -614,8 +653,10 @@ span, .campo-modal-configuracao {
     align-self: center;
     position: absolute;
     padding: 48px;
-    width: 720px;
-    height: 400px;
+    width: 40%;
+    height: 50%;
+    left: 25%;
+    bottom: 23%;
     flex-direction: column;
     border-radius: 10px;
     font-size: 24px;
@@ -663,8 +704,9 @@ span, .campo-modal-configuracao {
     position: absolute;
     padding: 48px;
     left: 30%;
+    bottom: 24%;
     width: 35vw;
-    height: 50vh;
+    height: 55vh;
     flex-direction: column;
     border-radius: 10px;
     font-size: 24px;
@@ -866,4 +908,12 @@ Funcionario
     border-radius: 10px;
     border: none;
     background-color: rgba(0, 0, 0, 0.25);
+}
+
+#fade1 {
+    z-index: 10;
+}
+
+#fade2 {
+    z-index: 21;
 }

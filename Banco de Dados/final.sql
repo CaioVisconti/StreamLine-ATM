@@ -78,22 +78,22 @@ INSERT INTO empresa (nome, cnpj, codigo) VALUES
 ('Caixa Federal', '987654321', 'CEF12345'),
 ('Bradesco', '12435687', 'BRA12345');
 
--- Inserindo endereços para as agências
+-- Inserindo enderecos para as agEncias
 INSERT INTO endereco (cep, logradouro, bairro, cidade, uf) VALUES
-('01001000', 'Av. Paulista, 1000', 'Bela Vista', 'São Paulo', 'SP'),
+('01001000', 'Av. Paulista, 1000', 'Bela Vista', 'Sao Paulo', 'SP'),
 ('20040002', 'Rua da Assembleia, 50', 'Centro', 'Rio de Janeiro', 'RJ'),
 ('30120040', 'Av. Afonso Pena, 2000', 'Centro', 'Belo Horizonte', 'MG');
 
--- INSERÇÃO DE AGÊNCIAS
+-- INSERcaO DE AGENCIAS
 INSERT INTO agencia (codigoAgencia, email, telefone, fkEmpresa, fkEndereco) VALUES
   ('ABC', 'agenciapaulista@bb.com.br', '6134210001', 1, 1),
   ('CBD', 'agenciaassembleia@bb.com.br', '1134210002', 1, 2),
   ('EFG', 'agenciaafonso@bb.com.br', '2134210003', 1, 3);
 
--- Inserindo funcionários só para a primeira agência do Banco do Brasil
+-- Inserindo funcionários só para a primeira agEncia do Banco do Brasil
 INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES
   ('Geraldo', '11987654321', 'Gerente', 'geraldo@bb.com.br', 'senha123', 1),
-  ('Lucas', '11987654322', 'Técnico de Operação', 'lucas@bb.com.br', 'senha123', 1),
+  ('Lucas', '11987654322', 'Tecnico de Operacao', 'lucas@bb.com.br', 'senha123', 1),
   ('Thiago', '11987654323', 'Analista de Dados', 'thiago@bb.com.br', 'senha123', 1),
   ('Ariel', '11987736423', 'CEO', 'ariel@streamline.com.br', 'Urubu#123', NULL),
   ('Caio', '11984364323', 'CEO', 'caio@streamline.com.br', 'Urubu#123', NULL),
@@ -101,23 +101,23 @@ INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES
   ('Guilherme', '11986543323', 'CEO', 'guilherme@streamline.com.br', 'Urubu#123', NULL),
   ('Nicoly', '11987975823', 'CEO', 'nicoly@streamline.com.br', 'Urubu#123', NULL);
 
--- INSERÇÃO DE COMPONENTES
+-- INSERcaO DE COMPONENTES
 INSERT INTO componentes (nome, descricao, tipo, unidadeMedida, funcao) VALUES
   ('CPU', 'PORCENTAGEM', 'CPUPercent', 'Porcentagem', 'cpu_percent'),
-  ('CPU', 'FREQUÊNCIA', 'CPUFreq', 'GHz', 'cpu_freq'),
+  ('CPU', 'FREQUENCIA', 'CPUFreq', 'GHz', 'cpu_freq'),
   ('RAM', 'TOTAL', 'RAMTotal', 'GB', 'virtual_memory.total'),
-  ('RAM', 'DISPONÍVEL', 'RAMDisponivel', 'GB', 'virtual_memory.available'),
+  ('RAM', 'DISPONIVEL', 'RAMDisponivel', 'GB', 'virtual_memory.available'),
   ('RAM', 'PORCENTAGEM', 'RAMPercentual', 'Porcentagem', 'virtual_memory.percent'),
   ('DISCO', 'TOTAL', 'DISKTotal', 'GB', 'disk_usage.total'),
-  ('DISCO', 'DISPONÍVEL', 'DISKDisponivel', 'GB', 'disk_usage.free'),
+  ('DISCO', 'DISPONIVEL', 'DISKDisponivel', 'GB', 'disk_usage.free'),
   ('DISCO', 'PORCENTAGEM', 'DISKPercentual', 'Porcentagem', 'disk_usage.percent'),
   ('REDE', 'RECEBIDA', 'REDERecebida', 'Bytes', 'net_io_counters.bytes_recv'),
   ('REDE', 'ENVIADA', 'REDEEnviada', 'Bytes', 'net_io_counters.bytes_sent'),
-  ('PROCESSOS', 'DESATIVADOS', 'PROCESSODesativado', 'Unidades', 'process_iter.desativados'),
-  ('PROCESSOS', 'ATIVOS', 'PROCESSOAtivos', 'Unidades', 'process_iter.ativos'),
-  ('PROCESSOS', 'TOTAL', 'PROCESSOTotal', 'Unidades', 'process_iter.total');
+  ('PROCESSOS', 'DESATIVADOS', 'PROCESSOSDesativado', 'Unidades', 'process_iter.desativados'),
+  ('PROCESSOS', 'ATIVOS', 'PROCESSOSAtivos', 'Unidades', 'process_iter.ativos'),
+  ('PROCESSOS', 'TOTAL', 'PROCESSOSTotal', 'Unidades', 'process_iter.total');
 
--- INSERÇÃO DE ATMs E PARÂMETROS AGENCIA 1 (Template)
+-- INSERcaO DE ATMs E PARÂMETROS AGENCIA 1 (Template)
 INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM, fkAgencia) VALUES 
 ('ATM007', 'BB 7000', '192.168.1.7', '00:1B:44:11:3A:10', 'Ubuntu 21.9', 1, 1),
 ('ni', 'BB 7000', '192.168.1.1', '3c:21:9c:81:57:22', 'Windows 11', 1, 1);

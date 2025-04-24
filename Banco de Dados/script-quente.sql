@@ -25,3 +25,5 @@ FLUSH PRIVILEGES;
 
 SELECT * FROM parametrizacao;
 
+
+SELECT * FROM parametrizacao WHERE fkAtm = 1;

@@ -11,6 +11,8 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
     <script src="./js/atm.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 
 <body onload="carregarDados()">
@@ -63,6 +65,7 @@
                     <input type="text" id="ipt_pesquisa" oninput="carregarCards()">
                     <img src="../../assets/icon-input.png" alt="ícone de pesquisa" class="input-icon">
                 </div>
+                <!-- <i class='bx bx-list-ul icon-dash' onclick="mostrarFiltros()"></i> -->
                 <img src="../../assets/icon-filtrar.png" onclick="mostrarFiltros()" alt="ícone de filtrar">
                 <div class="filtros" style="display: none;">
                     <select id="filtro_categoria" class="filtro" onchange="abrirSegundaFiltragem()">
@@ -78,6 +81,7 @@
                         <option value="filtro_ZA">Z-A</option>
                     </select>
                 </div>
+                <!-- <i class='bx bx-user-plus icon-dash' onclick="mostrarModalCad()"></i> -->
                 <img src="../../assets/icon-cadastrar.png" onclick="mostrarModalCad()" alt="ícone de cadastro">
             </div>
             <div class="delimitar">
@@ -87,33 +91,33 @@
 
             </div>
         </div>
-        <div class="fade"></div>
+        <div class="fade" id="fade1" style="display: none;"></div>
         <div class="modal" style="display: none;">
             <div class="modal-fechar">
                 <span onclick="mostrarModalCad()">&#x2715;</span>
             </div>
             <div class="modal-container">
-                <div class="modal-infos">
+                <div class="modal-infos-cad">
                     <span>Modelo:</span>
                     <input id="iptModeloCad" type="text">
                 </div>
-                <div class="modal-infos">
+                <div class="modal-infos-cad">
                     <span>IP:</span>
                     <input id="iptIPCad" type="text">
                 </div>
-                <div class="modal-infos">
+                <div class="modal-infos-cad">
                     <span>Hostname:</span>
                     <input id="iptHostnameCad" type="text">
                 </div>
-                <div class="modal-infos">
+                <div class="modal-infos-cad">
                     <span>MacAdress:</span>
                     <input id="iptMacAdressCad" type="text">
                 </div>
-                <div class="modal-infos">
+                <div class="modal-infos-cad">
                     <span>Sistema Operacional:</span>
                     <input id="iptSOCad" type="text">
                 </div>
-                <div class="modal-infos">
+                <div class="modal-infos-cad">
                     <span>Status:</span>
                     <select id="slt_status" class="select-empresa">
                         <option selected disabled>Selecione o Status</option>
@@ -133,27 +137,27 @@
             <div class="modal-container">
                 <div style="display: flex;flex-direction: row; height: 60%;">
                     <div class="listagem_cadastro">
-                        <div class="modal-infos-cad">
+                        <div class="modal-infos-edt">
                             <span>Modelo:</span>
                             <input id="iptModeloEdit" type="text">
                         </div>
-                        <div class="modal-infos-cad">
+                        <div class="modal-infos-edt">
                             <span>IP:</span>
                             <input id="iptIPEdit" type="text">
                         </div>
-                        <div class="modal-infos-cad">
+                        <div class="modal-infos-edt">
                             <span>Hostname:</span>
                             <input id="iptHostnameEdit" type="text">
                         </div>
-                        <div class="modal-infos-cad">
+                        <div class="modal-infos-edt">
                             <span>MacAdress:</span>
                             <input id="iptMacAdressEdit" type="text">
                         </div>
-                        <div class="modal-infos-cad">
+                        <div class="modal-infos-edt">
                             <span>SO:</span>
                             <input id="iptSOEdit" type="text">
                         </div>
-                        <div class="modal-infos-cad">
+                        <div class="modal-infos-edt">
                             <span>Status:</span>
                             <select id="sltStatusEdit" class="select-empresa">
                                 <option selected disabled value="teste">Selecione o Status</option>
@@ -170,6 +174,7 @@
                 <div id="button_atualizar" class="modal-botao"></div>
             </div>
         </div>
+        <div class="fade" id="fade2" style="display: none;"></div>
         <div class="modal-cad-componente" style="display: none;">
             <div class="modal-fechar">
                 <span onclick="mostrarModalCadComp()">&#x2715;</span>
