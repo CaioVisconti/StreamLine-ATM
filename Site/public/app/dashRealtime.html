@@ -21,7 +21,7 @@
 
     <div class="nav-total">
         <div class="info-user">
-            <div class="foto-user"></div>
+            <div class="foto-user" style="background-image: url(../assets/tecnico.jpg); background-size: cover;"></div>
             <div class="msg-user">
                 <span id="nomeFunc">
 
@@ -63,17 +63,17 @@
             <div class="kpis">
 
                 <div class="kpi" id="bom">
-                    <p id="kpi1"></p>
+                    <!-- <p id="kpi1"></p> -->
                     <p> 3 ATMs em bom estado </p>
                 </div>
 
                 <div class="kpi" id="medio">
-                    <p id="kpi2"></p>
+                    <!-- <p id="kpi2"></p> -->
                     <p>3 ATMs com alertas médios </p>
                 </div>
 
                 <div class="kpi" id="critico">
-                    <p id="kpi3"></p>
+                    <!-- <p id="kpi3"></p> -->
                     <p>2 ATMs com alertas críticos </p>
                 </div>
 
@@ -81,8 +81,11 @@
 
             <div class="grafico-wrapper">
 
-                <div class="grafico" id="graficoAtms"> 
-                    <canvas id="graficoAlertas"></canvas> 
+                <div class="grafico" id="graficoAtms">
+                    <span>ALERTAS DE ATM EM TEMPO REAL</span> 
+                    <div class="grafico-mesmo">
+                        <canvas id="graficoAlertas"></canvas> 
+                    </div>
                 </div>
 
                 <div class="linha-metricas" style="display: none;" id="metricasdiv">
@@ -178,26 +181,26 @@
 
         console.log("Cheguei")
 
-        fetch(`/medidas/atms/${id}`, {
-            method: "GET",
-            headers: {
-                "content-Type": "application/json"
-            }
-        })
-            .then((res) => {
-                console.log(res)
-                res.json()
-                    .then(json => {
-                        console.log(json)
-                        for (let i = 0; i < json.length; i++) {
-                            console.log(json[i])
-                            divAtms.innerHTML += `<li><button onclick="graficoEspecifico()">ATM ${i + 1}</button> <div class="status"></div></li>`
-                        }
-                    })
-            })
-            .catch(error => {
-                console.error('Erro ao obter atms:', error);
-            });
+        // fetch(`/medidas/atms/${id}`, {
+        //     method: "GET",
+        //     headers: {
+        //         "content-Type": "application/json"
+        //     }
+        // })
+        //     .then((res) => {
+        //         console.log(res)
+        //         res.json()
+        //             .then(json => {
+        //                 console.log(json)
+        //                 for (let i = 0; i < json.length; i++) {
+        //                     console.log(json[i])
+        //                     divAtms.innerHTML += `<li><button onclick="graficoEspecifico()">ATM ${i + 1}</button> <div class="status"></div></li>`
+        //                 }
+        //             })
+        //     })
+        //     .catch(error => {
+        //         console.error('Erro ao obter atms:', error);
+        //     });
     }
 
     function graficoEspecifico() {
@@ -255,9 +258,17 @@
         }]
     },
     options: {
+        responsive: true,
+            maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
+            plugins: {
+                legend: {
+                    display: false 
+                },
+            },
         scales: {
             y: {
                 beginAtZero: true,
+                max: 4,
                 ticks: {
                     stepSize: 1,
                     color: 'white'  // Cor do texto 
@@ -265,14 +276,20 @@
                 title: {
                     display: true,
                     text: 'Alertas',
-                    color: 'white' // Cor do título 
+                    color: 'white',
+                    font: {
+            size: 20  // Tamanho da fonte em pixels
+        } // Cor do título 
                 }
             },
             x: {
                 title: {
                     display: true,
                     text: 'ATMs',
-                    color: 'white' 
+                    color: 'white',
+                    font: {
+                        size: 20  // Tamanho da fonte em pixels
+                    }    
                 },
                 ticks: {
                     color: 'white' 

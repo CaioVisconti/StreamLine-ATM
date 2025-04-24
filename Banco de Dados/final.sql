@@ -95,7 +95,6 @@ INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES
   ('Geraldo', '11987654321', 'Gerente', 'geraldo@bb.com.br', 'senha123', 1),
   ('Lucas', '11987654322', 'Tecnico de Operacao', 'lucas@bb.com.br', 'senha123', 1),
   ('Thiago', '11987654323', 'Analista de Dados', 'thiago@bb.com.br', 'senha123', 1),
-  ('Ariel', '11987736423', 'CEO', 'ariel@streamline.com.br', 'Urubu#123', NULL),
   ('Caio', '11984364323', 'CEO', 'caio@streamline.com.br', 'Urubu#123', NULL),
   ('Gabriel', '11987652353', 'CEO', 'gabriel@streamline.com.br', 'Urubu#123', NULL),
   ('Guilherme', '11986543323', 'CEO', 'guilherme@streamline.com.br', 'Urubu#123', NULL),
