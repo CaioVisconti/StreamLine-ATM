@@ -41,8 +41,6 @@
                     <div class="linha"></div>
                     <a><span>Funcionarios</span></a>
                     <div class="linha"></div>
-                    <span>Dashboard</span>
-                    <div class="linha"></div>
                 </div>
             </div>
             <div class="escolha-kpi">
@@ -50,7 +48,7 @@
                 <span class="numeros-kpi" id="kpi_total"></span>
             </div>
             <div class="escolha-kpi">
-                <span class="info-kpi">Visualizar Contate-nos</span>
+                <span class="info-kpi">Visualizar Slack</span>
                 <button class="btn-nav">Visualizar</button>
             </div>
         </div>
@@ -119,10 +117,14 @@
                     <span>Foto de Perfil:</span>
                     <div class="foto-modal-funcionario"></div>
                 </div>
-                <div class="foto-botao-funcionario">
-                    <button>Fazer Upload</button>
-                </div>
+
+                <label for="avatar2" class="foto-botao-funcionario">Fazer Upload</label>
+                <input type="file" id="avatar2" name="avatar2" accept="image/png, image/jpeg" hidden />
             </div>
+
+                <!-- <div class="foto-botao-funcionario">
+                    <button>Fazer Upload</button>
+                </div> -->
         </div>
         <div class="modal-botao">
             <button onclick="cadastrarFuncionario()">Cadastrar</button>
@@ -162,13 +164,12 @@
                 </div>
             </div>
             <div class="modal-container-imagem">
-                <div class="modal-foto-funcionario">
-                    <span>Foto de Perfil:</span>
-                    <div class="foto-modal-funcionario"></div>
+                <div id="fotoFuncEdit" class="modal-foto-funcionario">
+                    <!-- <span>Foto de Perfil:</span> -->
+                    <!-- <div id="fotoFuncEdit" class="foto-modal-funcionario"></div> -->
                 </div>
-                <div class="foto-botao-funcionario">
-                    <button>Fazer Upload</button>
-                </div>
+                <label for="avatar2" class="foto-botao-funcionario">Fazer Upload</label>
+                <input type="file" id="avatar2" name="avatar2" accept="image/png, image/jpeg" hidden />
             </div>
         </div>
         <div class="modal-botao" id="botao_atualizar"></div>

@@ -68,7 +68,7 @@ function carregarCards(lista) {
                             if(json.lista[i].cargo == "Tecnico de Operacao") {
                                 cargo = "Técnico de Operação";
                             } else {
-                                cargo = "Amalista de Dados";
+                                cargo = "Analista de Dados";
                             }
 
                             cardsContainer.innerHTML += `
@@ -127,7 +127,7 @@ function carregarCards(lista) {
                             if(json.lista[i].cargo == "Tecnico de Operacao") {
                                 cargo = "Técnico de Operação";
                             } else {
-                                cargo = "Amalista de Dados";
+                                cargo = "Analista de Dados";
                             }
 
                             cardsContainer.innerHTML += `
@@ -179,7 +179,7 @@ function carregarCards(lista) {
             if(json.lista[i].cargo == "Tecnico de Operacao") {
                 cargo = "Técnico de Operação";
             } else {
-                cargo = "Amalista de Dados";
+                cargo = "Analista de Dados";
             }
 
             cardsContainer.innerHTML += `
@@ -232,7 +232,7 @@ function abrirSegundaFiltragem() {
                     if(json.lista[i].cargo == "Tecnico de Operacao") {
                         cargo = "Técnico de Operação";
                     } else {
-                        cargo = "Amalista de Dados";
+                        cargo = "Analista de Dados";
                     }
 
                     segundoFiltro.innerHTML += `
@@ -413,11 +413,14 @@ function mostrarModalEdit(indice, idUsuario) {
     if(indice != undefined) {
         ipt_nomeEdit.value = vetor.lista[indice].nome;
         ipt_telefoneEdit.value = vetor.lista[indice].telefone;
+        let indiceFoto = "";
 
         if(vetor.lista[indice].cargo == "Tecnico de Operacao") {
             slt_cargoEdit.value = 1;
+            indiceFoto = "url(../../assets/tecnico.jpg)";
         } else {
             slt_cargoEdit.value = 2;
+            indiceFoto = "url(../../assets/analista.jpg)";
         }
 
         ipt_emailEdit.value = vetor.lista[indice].email;
@@ -428,6 +431,11 @@ function mostrarModalEdit(indice, idUsuario) {
             <button onclick="atualizarFuncionario(${indice}, ${idUsuario})">Salvar Mudanças</button>     
             <img src="../../assets/icons/trash.png" class="icon-deletar" alt="" onclick="mostrarModalDelete(${idUsuario})">
         `;
+
+        let foto = document.getElementById("fotoFuncEdit");
+        foto.innerHTML = `
+        <span>Foto de Perfil:</span>
+        <div id="fotoFuncEdit" class="foto-modal-funcionario" style="background-image: ${indiceFoto}; background-size: cover;"></div>`
     }
 }
 

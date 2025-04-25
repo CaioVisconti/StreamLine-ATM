@@ -795,39 +795,10 @@ Funcionario
     /* border: 1px solid red; */
 }
 
-.modal-container-imagem{
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    align-items: center;
-    height: 60vh;
-    width: 50%;
-    /* border: 1px solid red; */
-}
 
 .modal-infos-funcionario {
     display: flex;
     flex-direction: column;
-}
-
-.modal-foto-funcionario {
-    display: flex;
-    justify-content: space-between;
-    height: 50%;
-    width: 68%;
-    font-weight: bold;
-    /* border: 1px solid red; */
-    flex-direction: column;
-    align-items: center;
-}
-
-.foto-modal-funcionario {
-    width: 80%;
-    height: 80%;
-    font-size: 18px;
-    border-radius: 100px;
-    /* border: 1px solid red; */
-    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .modal-infos-funcionario span{
@@ -859,18 +830,6 @@ Funcionario
     cursor: pointer;
 }
 
-.modal-botao-funcionario button{
-    width: 30%;
-    height: 7vh;
-    border-radius: 10px;
-    border: none;
-    color: black;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: #D9D9D9;
-    /* border: 1px solid red; */
-    cursor: pointer;
-}
 
 .foto-botao {
     display: flex;
@@ -916,3 +875,62 @@ Funcionario
 #fade2 {
     z-index: 21;
 }
+
+.modal-container-imagem{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    height: 60vh;
+    width: 50%;
+    /* border: 1px solid red; */
+}
+
+
+.modal-foto-funcionario {
+    display: flex;
+    justify-content: space-between;
+    height: 50%;
+    width: 68%;
+    font-weight: bold;
+    /* border: 1px solid red; */
+    flex-direction: column;
+    align-items: center;
+}
+
+.foto-modal-funcionario {
+    width: 80%;
+    height: 80%;
+    font-size: 18px;
+    border-radius: 100px;
+    /* border: 1px solid blue; */
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.foto-botao-funcionario {
+    display: inline-block;
+    width: 40%;
+    height: 7vh;
+    border-radius: 10px;
+    background-color: #D9D9D9;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 7vh;
+    cursor: pointer;
+    border: none;
+}
+
+/* .modal-botao-funcionario button{
+    width: 30%;
+    height: 7vh;
+    border-radius: 10px;
+    border: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #D9D9D9;
+    border: 1px solid red;
+    cursor: pointer;
+} */
