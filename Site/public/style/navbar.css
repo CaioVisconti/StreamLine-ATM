@@ -1,3 +1,8 @@
+body, html{
+    scroll-behavior:smooth;
+    scrollbar-width: none; 
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -12,23 +17,33 @@ a {
 }
 
 .nome-empresa {
-    font-size: 200%;
     display: flex;
+    width: 30%;
+    height: 100%;
     align-items: center;
     color: white;
-    padding-left: 20px;
+    /* padding-left: 20px; */
+    /* border: 1px solid red; */
+}
+
+.nome-empresa img{
+    width: 45%;
+    height: 100%;
+    background-size: cover;
+    /* border: 1px solid orange; */
 }
 
 .navbar {
-    margin: 0;
     display: flex;
+    margin: 0;
     align-items: center; 
     justify-content: space-between; 
     background-color: #000;
     /* padding: 0 20px; */
-    height: 7%;
+    height: 10%;
     width: 100%;
-    position: fixed !important;
+    /* position: fixed !important; */
+    /* border: 1px solid red; */
 
 }
 
@@ -42,6 +57,7 @@ a {
     /* box-shadow: 6px 8px 5px rgb(0, 0, 0); */
     /* padding: 5px 20px; */
     height: 100%;
+    /* border: 1px solid red; */
 }
 
 .links-menu ul {
@@ -70,14 +86,12 @@ ul a {
 
 .botao-login-cadastro {
     display: flex;
-    /* margin-top: 0.3%; */
-    /* flex-direction: row; */
-    margin-right: 1%;
     justify-content: center;
     align-items: center;
     width: 15%;
     height: 100%;
     gap: 5%;
+    /* border: 1px solid red; */
 }
 
 
