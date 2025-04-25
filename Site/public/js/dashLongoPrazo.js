@@ -24,7 +24,7 @@ function semana_alerta(){
             labels: ['CPUPercent', 'CPUFreq', 'RAMPercent', 'Processos', 'DISKPercent'],
             datasets: [{
                 label: 'Número de alertas',
-                data: [53, 80, 83, 70, 73],
+                data: [7, 4, 2, 3, 5],
                 borderColor: 'rgb(126, 20, 255)',
                 borderWidth: 2,
                 tension: 0.3,
@@ -42,7 +42,7 @@ function semana_alerta(){
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 100,
+                    max: 10,
                     ticks: {
                         stepSize: 20
                     }
@@ -79,7 +79,7 @@ function mes_alerta(){
             labels: ['CPUPercent', 'CPUFreq', 'RAMPercent', 'Processos', 'DISKPercent'],
             datasets: [{
                 label: 'Número de alertas',
-                data: [132, 110, 113, 120, 93],
+                data: [21, 18, 25, 12, 7],
                 borderColor: 'rgb(126, 20, 255)',
                 borderWidth: 2,
                 tension: 0.3,
@@ -97,6 +97,7 @@ function mes_alerta(){
             scales: {
                 y: {
                     beginAtZero: true,
+                    max: 30,
                     ticks: {
                         stepSize: 30
                     }
@@ -135,7 +136,7 @@ function exibirAlertas(){
             labels: ['CPUPercent', 'CPUFreq', 'RAMPercent', 'Processos', 'DISKPercent'],
             datasets: [{
                 label: 'Número de alertas',
-                data: [53, 80, 83, 70, 73],
+                data: [7, 4, 2, 3, 5],
                 borderColor: 'rgb(126, 20, 255)',
                 borderWidth: 2,
                 tension: 0.3,
@@ -153,7 +154,7 @@ function exibirAlertas(){
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 100,
+                    max: 10,
                     ticks: {
                         stepSize: 20
                     }
@@ -187,7 +188,7 @@ function gerarGraficos(){
             labels: ['01/04', '02/04', '03/04', '04/04', '05/04', '06/04', '07/04'],
             datasets: [{
                 label: 'Uso da CPU (%)',
-                data: [53, 80, 83, 70, 73, 83, 70],
+                data: [53, 80, 90, 70, 73, 83, 70],
                 borderColor: 'rgba(141, 52, 249, 1)',
                 borderWidth: 2,
                 tension: 0.3,
