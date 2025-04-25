@@ -173,3 +173,5 @@ INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES
 UPDATE parametro SET limite = 99 WHERE idParametro = 30;
 
 update atm set macAdress = "4c:44:5b:ef:59:39", hostname = "notebook-caio" WHERE idAtm = 6;
+
+SELECT * FROM streamline.empresa WHERE nome LIKE "%ban%";

@@ -60,16 +60,6 @@ const deletarEmpresa = async (req, res) => {
 }
 
 const mostrarEmpresasSearch = async (req, res) => {
-    // try{
-    //     let pesquisa = req.params.pesquisa;
-    //     console.log(req.params.pesquisa)
-
-    //     await database.mostrarEmpresasSearch(pesquisa);
-    //     return res.status(200).send("Empresa não encontrada!");
-    // } catch (error) {
-    //     console.log("Erro", error)
-    //     return res.status(400).json(error.message)
-    // }
     let pesquisa = req.params.pesquisa;
 
     database.mostrarEmpresasSearch(pesquisa)
