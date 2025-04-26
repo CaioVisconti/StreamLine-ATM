@@ -934,3 +934,271 @@ Funcionario
     border: 1px solid red;
     cursor: pointer;
 } */
+
+/* RESPONSIVIDADE*/
+@media screen and (min-width: 374px) and (max-width: 376px) {
+    .info-user {
+        width: 35%;
+        justify-content: space-between;
+    }
+
+    .foto-user {
+        width: 50px;
+        height: 50px;
+    }
+
+    .msg-user {
+        font-size: 4vw;
+        width: 16vw;
+        height: fit-content;
+    }
+
+    .nav-bar {  
+        justify-content: center;
+        width: 45vw;
+        height: 6vh;
+    }
+
+    .btn-nav {  
+        width: 16vw;
+        height: 6vh;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .kpis { 
+        flex-direction: row;
+        width: 100%;
+        height: 30vh;
+    }
+
+    .escolha-opcoes { 
+        width: 35%;
+        height: 80%;
+    }
+
+    .espacamento {
+        height: 15vh;
+    }
+
+    .espacamento span {  
+        font-size: 4vw;
+    }
+
+    .escolha-kpi {
+        width: 28vw;
+        height: 80%;
+    }
+    
+    .info-kpi {
+        font-size: 3.5vw;
+        text-align: center;
+    }
+
+    .numeros-kpi {
+        font-size: 12vw;
+    }
+
+    .agencias {  
+        width: 95vw;
+    }
+
+    .pesquisar {
+        width: 90vw;
+    }
+
+    .input-pesquisar {
+        width: 50vw;
+        height: 6.5vh;
+    }
+
+    .input-pesquisar input {
+        height: 6vh;
+        font-size: 4vw;
+    }
+
+    .input-icon {
+        width: 9vw;
+        height: 5vh;
+    }
+
+    .icon-pesquisa {
+        width: 9vw;
+        height: 5vh;
+    }
+
+    .filtros {
+        padding: 1%;
+        width: 60vw;
+    }
+
+    .filtro {
+        height: 6vh;
+        font-size: 3vw;
+        width: 18.5vw;
+    }
+
+    .delimitar {
+        width: 90vw;
+    }
+
+    .cards {
+        width: 35vw;
+    }
+
+    .perfil-agencia {
+        font-size: 3.5vw;
+    }
+    
+    .img-edit {
+        width: 6vw;
+        height: 4vh;
+    }
+
+    .info {
+        font-size: 3vw;
+    }
+}
+
+@media screen and (min-width: 767px) and (max-width: 769px) {
+    .info-user {
+        width: 25vw;
+    }
+
+    .nav-bar {
+       width: 50vw;
+       justify-content: center;
+    }
+
+    .btn-nav {
+        width: 9vw;
+    }
+    
+    .container {
+        flex-direction: column;
+    }
+
+    .kpis { 
+        flex-direction: row;
+        width: 100%;
+        height: 36vh;
+    }
+
+    .info-kpi {
+        font-size: 4vw;
+        text-align: center;
+    }
+
+    .escolha-opcoes {
+        width: 30vw;
+        height: 23vh;
+    }
+
+    .escolha-kpi {
+        width: 30vw;
+        height: 23vh;
+    }
+
+    .agencias {
+        width: 95vw;
+        height: 80vh;
+    }
+
+    .pesquisar {
+        width: 90vw;
+    }
+
+    .input-pesquisar {
+        width: 45vw;
+        height: 6.5vh;
+    }
+
+    .input-pesquisar input {
+        height: 6vh;
+        font-size: 4vw;
+    }
+
+    .delimitar { 
+        width: 90vw;
+    }
+
+    .cards {
+        width: 27%;
+    }
+
+    .perfil-agencia {
+        font-size: 2vw;
+    }
+
+    .info {
+        font-size: 2vw;
+    }
+
+
+}
+
+@media screen and (min-width: 1023px) and (max-width: 1025px)  {
+    .msg-user {
+        font-size: 2vw;
+        width: 19vw;
+        height: fit-content;
+    }
+
+    .nav-bar {
+        width: 60vw;
+    }
+
+    .espacamento span {  
+        font-size: 2.5vw;
+    }
+
+    .info-kpi {
+        font-size: 1.5vw;
+    }
+
+    .numeros-kpi {
+        font-size: 7vw;
+    }
+
+    .input-pesquisar {
+        width: 45vw;
+        height: 7vh;
+    }
+
+    .input-pesquisar input {
+        font-size: 2vw;
+    }
+
+    .input-icon {
+        width: 4vw;
+    }
+
+    .icon-pesquisa {
+        width: 5vw;
+        height: 8vh;
+    }
+
+    .filtros {
+        width: 31vw;
+    }
+
+    .filtro {
+        font-size: 2vw;
+        width: 15vw;
+    }
+
+    .cards-container {
+        height: 90%;
+    }
+
+    .cards {
+        height: 100%;
+    }
+
+    .img-edit {
+        width: 4vw;
+        height: 7vh;
+    }
+}
