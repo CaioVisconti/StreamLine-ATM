@@ -47,7 +47,7 @@ a{
 .nav-bar {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-end;
     width: 70vw;
     height: 6vh;
     background-color: rgba(83, 83, 83, 0.39);
@@ -58,6 +58,8 @@ a{
 .nav-bar span{
     color: #FFFFFF;
     font-size: 15px;
+    margin-right: 20%;
+
 }
 
 .btn-nav{
@@ -109,6 +111,11 @@ a{
     justify-content: space-around;
 }
 
+.kpis2 span, select{
+    font-size: 15px;
+
+}
+
 .escolha-opcoes{
     display: flex;
     flex-direction: column;
@@ -119,6 +126,11 @@ a{
     /* border: 1px solid red; */
     background-color: rgba(83, 83, 83, 0.39);
     border-radius: 10px;
+    font-size: 20px;
+}
+
+.escolha-opcoes select{
+    font-size: 12px;
 }
 
 .escolha-atm{
@@ -508,9 +520,16 @@ a{
     background-color: rgba(83, 83, 83, 0.39);
 }
 
+.mostrar{
+    display: none;
+}
+
 
 @media (max-width: 1030px) {
 
+    .mostrar{
+        display: flex;
+    }
     
     .info-user{
         width: 18vw;
@@ -530,11 +549,23 @@ a{
 
     .nav-bar span{
         color: #FFFFFF;
-        font-size: 25px;
+        font-size: 18px;
+        margin: 0;
     }
 
+    .nav-bar a{
+        display: flex;
+    }
+
+
+    .nav-bar{
+        width: 50vw;
+        justify-content: center;
+    }
+
+
     .escolha-opcoes{
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .escolha-opcoes select{
@@ -547,38 +578,56 @@ a{
 
     .organizar-compontentes-semana{
         width: 100vw;
-        font-size: 25px;
+        font-size: 22px;
 
     }
 
     
     .organizar-compontentes-semana span{
-        font-size: 25px;
+        font-size: 22px;
 
     }
 
 
     .organizar-compontentes-mes{
         width: 100vw;
-        font-size: 25px;
+        font-size: 22px;
 
     }
 
     .organizar-compontentes-mes span{
-        font-size: 25px;
+        font-size: 22px;
 
     }
 
     .organizar{
         width: 100vw;
+        height: 90%;
     }
 
 }
 
 @media (max-width: 770px) {
-    /* .kpis{
-        display: none;
-    } */
+
+    .gerar-grafico button{
+        font-size: 18px;
+    }
+
+    .alertas button{
+        font-size: 18px;
+    }
+
+    .kpis{
+        width: 70vw;
+    }
+
+    .mostrar{
+        display: flex;
+    }
+
+    .btn-nav{
+        width: 10vw;
+    }
 
     .info-user{
         width: 22vw;
@@ -596,6 +645,10 @@ a{
         font-size: 18px;
     }
 
+    .nav-bar{
+        width: 40vw;
+    }
+
     .nav-bar span{
         color: #FFFFFF;
         font-size: 25px;
@@ -607,6 +660,7 @@ a{
 
     .escolha-opcoes select{
         padding: 14px;
+        font-size: 18px;
     }
 
     .div_alerta{
@@ -644,28 +698,45 @@ a{
 
 @media (max-width: 380px){
 
+    .nav-total{
+        justify-content: space-around;
+    }
+
+    .nav-total button{
+        width: 15vw;
+    }
+
     .info-user{
         display: none;
     }
 
     .kpi-1 span{
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .kpi-2 span{
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .kpi-3 span{
-        font-size: 12px;
+        font-size: 10px;
     }
 
-    .btn-nav{
+    /* .btn-nav{
         width: 10vw;
-    }
+    } */
 
     .escolha-opcoes{
         font-size: 15px;
+    }
+
+    .escolha-opcoes select{
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .escolha-opcoes button{
+        font-size: 12px;
     }
 
     .nav-bar span{
