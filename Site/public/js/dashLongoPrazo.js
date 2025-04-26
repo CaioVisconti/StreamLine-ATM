@@ -113,6 +113,23 @@ function exibirAlertas(){
     oi.style.display = "flex";
     dois.style.display = "none";
 
+    let painel = document.getElementById("painels");
+    let filtros = document.getElementById("filtros");
+    let legenda = document.querySelector(".titulo-grafico");
+    
+    if(window.innerWidth < 1030){
+        filtros.style.display = "none"
+        legenda.style.display = "none"
+    }
+
+
+
+    painel.classList.remove("painel")
+    painel.classList.add("painel2")
+
+    filtros.classList.remove("kpis")
+    filtros.classList.add("kpis2")
+
     let valorAlertaInput_kpi_cpu_disponivel;
     let valorAlertaInput_kpi_cpu_porcentagem;
     let valorAlertaInput_kpi_ram_disponivel;
@@ -174,6 +191,21 @@ function gerarGraficos(){
     ne.style.display = "none";
     dois.style.display = "flex";
 
+    let painel = document.getElementById("painels");
+    let filtros = document.getElementById("filtros");
+    let legenda = document.querySelector(".titulo-grafico");
+    
+    if(window.innerWidth < 1030){
+        filtros.style.display = "none"
+        legenda.style.display = "none"
+    }
+    
+    painel.classList.remove("painel")
+    painel.classList.add("painel2")
+    
+    filtros.classList.remove("kpis")
+    filtros.classList.add("kpis2")
+    
     const ctx = document.getElementById('meuGrafico').getContext('2d');
 
     // Destroi o gráfico antigo se ele já existir

@@ -6,10 +6,10 @@ import time
 
 x_data, y_data = [], []
 fig, ax = plt.subplots()
-line, = ax.plot(x_data, y_data, color = "red")
+line, = ax.plot(x_data, y_data, color = "pink")
 
-ax.set_xlim(0, 30)
-ax.set_ylim(0, 30)
+ax.set_xlim(0, 50)
+ax.set_ylim(0, 50)
 ax.set_xlabel("Tempo")
 ax.set_ylabel("Percentual de CPU")
 ax.set_title("Percentual de CPU pelo tempo")
