@@ -92,7 +92,7 @@ INSERT INTO agencia (codigoAgencia, email, telefone, fkEmpresa, fkEndereco) VALU
 
 -- Inserindo funcionários só para a primeira agEncia do Banco do Brasil
 INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES
-  ('Geraldo', '11987654321', 'Gerente', 'geraldo@bb.com.br', 'senha123', 1),
+  ('Marcelo', '11987654321', 'Gerente', 'marcelo@bb.com.br', 'senha123', 1),
   ('Lucas', '11987654322', 'Tecnico de Operacao', 'lucas@bb.com.br', 'senha123', 1),
   ('Thiago', '11987654323', 'Analista de Dados', 'thiago@bb.com.br', 'senha123', 1),
   ('Caio', '11984364323', 'CEO', 'caio@streamline.com.br', 'Urubu#123', NULL),

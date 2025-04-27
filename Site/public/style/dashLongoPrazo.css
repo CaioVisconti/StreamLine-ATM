@@ -55,11 +55,11 @@ a{
     align-items: center;
 }
 
-.nav-bar span{
+.nav-bar a{
     color: #FFFFFF;
     font-size: 15px;
-    margin-right: 20%;
-
+    margin-right: 25%;
+    /* border: 1px solid red; */
 }
 
 .btn-nav{
@@ -547,15 +547,13 @@ a{
         font-size: 18px;
     }
 
-    .nav-bar span{
+    .nav-bar a{
+        display: flex;
         color: #FFFFFF;
         font-size: 18px;
         margin: 0;
     }
 
-    .nav-bar a{
-        display: flex;
-    }
 
 
     .nav-bar{
@@ -649,7 +647,7 @@ a{
         width: 40vw;
     }
 
-    .nav-bar span{
+    .nav-bar a{
         color: #FFFFFF;
         font-size: 25px;
     }
@@ -739,7 +737,7 @@ a{
         font-size: 12px;
     }
 
-    .nav-bar span{
+    .nav-bar a{
         color: #FFFFFF;
         font-size: 15px;
     }

@@ -64,7 +64,8 @@ header {
     align-items: center;
 }
 
-.nav-bar span {
+.nav-bar a {
+    text-decoration: none;
     color: #FFFFFF;
     font-size: 15px;
 }
