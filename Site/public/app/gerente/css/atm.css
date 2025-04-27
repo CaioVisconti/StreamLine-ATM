@@ -276,7 +276,7 @@ a{
 
 .perfil-agencia {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 20%;
@@ -644,6 +644,7 @@ span, .campo-modal-configuracao {
     font-size: 24px;
     background-color: white;
     z-index: 30;
+    border: 2px solid #FF0800;
 }
 
 .modal-del-atm {
@@ -1140,6 +1141,10 @@ Funcionario
 }
 
 @media screen and (min-width: 1023px) and (max-width: 1025px)  {
+    .info-user {
+        width: 27vw;
+    }
+
     .msg-user {
         font-size: 2vw;
         width: 19vw;
@@ -1148,6 +1153,7 @@ Funcionario
 
     .nav-bar {
         width: 60vw;
+        justify-content: center;
     }
 
     .espacamento span {  
@@ -1169,6 +1175,7 @@ Funcionario
 
     .input-pesquisar input {
         font-size: 2vw;
+        height: 10%;
     }
 
     .input-icon {
@@ -1181,12 +1188,12 @@ Funcionario
     }
 
     .filtros {
-        width: 31vw;
+        width: 27vw;
     }
 
     .filtro {
         font-size: 2vw;
-        width: 15vw;
+        width: 10.7vw;
     }
 
     .cards-container {
@@ -1194,11 +1201,44 @@ Funcionario
     }
 
     .cards {
-        height: 100%;
+        height: 50%;
+        width: 27%;
+    }
+
+    .perfil-agencia {
+        font-size: 1.4vw;
+        justify-content: space-between;
     }
 
     .img-edit {
         width: 4vw;
         height: 7vh;
+    }
+
+    .info {
+        font-size: 1.4vw;
+    }
+
+    .modal-edit {
+        padding: 2%;
+    }
+
+    .campo-modal-configuracao {
+        font-size: 1.9vw;
+    }
+
+    .modal-infos input {
+        padding-left: 6%;
+    }
+
+    .modal-botao button {
+        width: 40%;
+        height: 9vh;    
+        font-size: 1.6vw;
+    }
+
+    .modal-cad-componente {
+        left: 25%;
+        bottom: 6%;
     }
 }
