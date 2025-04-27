@@ -43,14 +43,30 @@
             <menu id="menuATM">
                 <ul id="divAtms">
 
-                    <li><button onclick="graficoEspecifico()">ATM 1</button> <div class="status" id="critico"></div></li>
-                    <li><button onclick="graficoEspecifico()">ATM 2</button> <div class="status" id="medio"></div></li>
-                    <li><button onclick="graficoEspecifico()">ATM 3</button> <div class="status" id="bom"></div></li>
-                    <li><button onclick="graficoEspecifico()">ATM 4</button> <div class="status" id="medio"></div></li>
-                    <li><button onclick="graficoEspecifico()">ATM 5</button> <div class="status" id="bom"></div></li>
-                    <li><button onclick="graficoEspecifico()">ATM 6</button> <div class="status" id="critico"></div></li>
-                    <li><button onclick="graficoEspecifico()">ATM 7</button> <div class="status" id="bom"></div></li>
-                    <li><button onclick="graficoEspecifico()">ATM 8</button> <div class="status" id="medio"></div></li>
+                    <li><button onclick="graficoEspecifico()">ATM 1</button>
+                        <div class="status" id="critico"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 2</button>
+                        <div class="status" id="medio"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 3</button>
+                        <div class="status" id="bom"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 4</button>
+                        <div class="status" id="medio"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 5</button>
+                        <div class="status" id="bom"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 6</button>
+                        <div class="status" id="critico"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 7</button>
+                        <div class="status" id="bom"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 8</button>
+                        <div class="status" id="medio"></div>
+                    </li>
 
                 </ul>
             </menu>
@@ -82,9 +98,9 @@
             <div class="grafico-wrapper">
 
                 <div class="grafico" id="graficoAtms">
-                    <span>ALERTAS DE ATM EM TEMPO REAL</span> 
+                    <h1>Quantidade de alertas por atm</h1>
                     <div class="grafico-mesmo">
-                        <canvas id="graficoAlertas"></canvas> 
+                        <canvas id="graficoAlertas"></canvas>
                     </div>
                 </div>
 
@@ -148,6 +164,22 @@
                             <div class="circulo-indicador circulo-verde">53661</div>
                         </div>
                     </div>
+
+                    <!-- Coluna Processos -->
+                    <div class="coluna-metrica">
+                        <h2 class="titulo-coluna">Processos</h2>
+
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Processos Ativos</div>
+                            <div class="circulo-indicador circulo-verde">210</div>
+                        </div>
+
+                        <div class="container-indicador">
+                            <div class="rotulo-indicador">Processos Inativos</div>
+                            <div class="circulo-indicador circulo-verde">8</div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -204,16 +236,16 @@
     }
 
     function graficoEspecifico() {
-    const metricas = document.getElementById("metricasdiv");
-    const graficos = document.getElementById("graficoAtms")
+        const metricas = document.getElementById("metricasdiv");
+        const graficos = document.getElementById("graficoAtms")
 
-    if (metricas.style.display === "none" || metricas.style.display === "") {
-        metricas.style.display = "flex";
-        graficos.style.display = "none";
-    } else {
-        metricas.style.display = "none";
-        graficos.style.display = "flex";
-    }
+        if (metricas.style.display === "none" || metricas.style.display === "") {
+            metricas.style.display = "flex";
+            graficos.style.display = "none";
+        } else {
+            metricas.style.display = "none";
+            graficos.style.display = "flex";
+        }
 
     }
 
@@ -245,38 +277,31 @@
         fontSize = 12;
     }
 
-    const ctx = document.getElementById('graficoAlertas').getContext('2d');
+        const ctx = document.getElementById('graficoAlertas').getContext('2d');
 
-    const nomesATMs = ['ATM 1', 'ATM 2', 'ATM 3', 'ATM 4', 'ATM 5', 'ATM 6', 'ATM 7', 'ATM 8'];
-    const alertas = [3, 1, 0, 1, 0, 2, 0, 1];
+        const nomesATMs = ['ATM 1', 'ATM 2', 'ATM 3', 'ATM 4', 'ATM 5', 'ATM 6', 'ATM 7', 'ATM 8'];
+        const alertas = [3, 1, 0, 1, 0, 2, 0, 1];
 
-    new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: nomesATMs,
-        datasets: [{
-            label: 'Quantidade de Alertas',
-            data: alertas,
-            backgroundColor: 'grey',
-            borderRadius: 5
-        }]
-    },
-    options: {
-        responsive: true,
-            maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
-            plugins: {
-                legend: {
-                    display: false 
-                },
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: nomesATMs,
+                datasets: [{
+                    label: 'Quantidade de Alertas',
+                    data: alertas,
+                    backgroundColor: 'grey',
+                    borderRadius: 5
+                }]
             },
-        scales: {
-            y: {
-                beginAtZero: true,
-                max: 4,
-                ticks: {
-                    stepSize: 1,
-                    color: 'white'  // Cor do texto 
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
+                plugins: {
+                    legend: {
+                        display: false
+                    },
                 },
+<<<<<<< Updated upstream
                 title: {
                     display: true,
                     text: 'Alertas',
@@ -297,13 +322,43 @@
                 },
                 ticks: {
                     color: 'white' 
+=======
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 4,
+                        ticks: {
+                            stepSize: 1,
+                            color: 'white'  // Cor do texto 
+                        },
+                        title: {
+                            display: true,
+                            text: 'Alertas',
+                            color: 'white',
+                            font: {
+                                size: 20  // Tamanho da fonte em pixels
+                            } // Cor do título 
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'ATMs',
+                            color: 'white',
+                            font: {
+                                size: 20  // Tamanho da fonte em pixels
+                            }
+                        },
+                        ticks: {
+                            color: 'white'
+                        }
+                    }
+>>>>>>> Stashed changes
                 }
             }
-        }
-    }
-});
+        });
 
-}
+    }
 
 
 
