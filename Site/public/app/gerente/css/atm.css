@@ -644,7 +644,7 @@ span, .campo-modal-configuracao {
     font-size: 24px;
     background-color: white;
     z-index: 30;
-    border: 2px solid #FF0800;
+    /* border: 2px solid #FF0800; */
 }
 
 .modal-del-atm {
@@ -936,6 +936,12 @@ Funcionario
     cursor: pointer;
 } */
 
+.ordem {
+    display: flex;
+    flex-direction: row;
+    height: 60%;
+}
+
 /* RESPONSIVIDADE*/
 @media screen and (min-width: 374px) and (max-width: 376px) {
     .info-user {
@@ -1137,7 +1143,130 @@ Funcionario
         font-size: 2vw;
     }
 
+    .modal-funcionario {
+        overflow-y: scroll;
+        padding-bottom: 5%;
+        width: 58%;
+    }
 
+    .modal-row {
+        flex-direction: column;
+    }
+
+    .modal-container-funcionario {
+        width: 100%;
+    }
+
+    .modal-container-imagem {
+        width: 100%;
+    }
+
+    .modal-foto-funcionario {
+        width: 100%;
+    }
+
+    .foto-modal-funcionario {
+        width: 55%;
+        border-radius: 100%;
+    }
+
+    .modal-edit-funcionario {
+        overflow-y: scroll;
+        width: 58%;
+    }
+
+    .modal-container-delete {
+        justify-content: flex-start;
+        height: 45%;
+    }
+
+    .modal-edit {
+        overflow-y: scroll;
+    }
+
+    .ordem {
+        flex-direction: column;
+        height: 80vh;
+        padding-bottom: 40%;
+        width: 100%;
+    }
+
+    .listagem_cadastro {
+        width: 100%;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #lista_componentes {
+        height: 35vh;
+    }
+
+    .campo-modal-componentes {
+        width: 90%;
+    }
+
+    .modal-container {
+        height: 100vh;
+    }
+
+    #button_atualizar {
+        padding-bottom: 5%;
+    }
+
+    .modal-edit-componente {
+        width: 50vw;
+        height: 45vh;
+        left: 18.8%;
+        bottom: 25%;
+    }
+
+    .listagem_config {
+        width: 60vw;
+    }
+
+    .campo-modal-configuracao {
+        width: 45vw;
+    }
+
+    .modal-edit-configuracao {
+        width: 60vw;
+        left: 19%;
+    }
+
+    .modal-del-config {
+        left: 20%;
+        width: 48vw;
+        height: 40vh;
+    }
+
+    .modal-container-delete {
+        height: 25vh;
+    }
+
+    .ordem-delete {
+        display: flex;
+        flex-direction: column;
+        height: 30%;
+        width: 100%;
+    }
+
+    .modal-cad-componente {
+        left: 19%;
+        bottom: 25%;
+        width: 50vw;
+        height: 45vh;
+    }
+
+    #slt_componentes {
+        width: 30vw;
+    }
+
+    .modal-cad-configuracao {
+        left: 19%;
+        bottom: 27%;
+        width: 50vw;
+        height: 35vh;
+    }
 }
 
 @media screen and (min-width: 1023px) and (max-width: 1025px)  {
@@ -1240,5 +1369,15 @@ Funcionario
     .modal-cad-componente {
         left: 25%;
         bottom: 6%;
+    }
+
+    .modal-del-funcionario {
+        width: 38vw;
+        height: 45vh;
+    }
+
+    .modal-container-delete {
+        justify-content: flex-start;
+        height: 70%;
     }
 }
