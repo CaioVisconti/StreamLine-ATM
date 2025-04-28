@@ -187,7 +187,7 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
         s3 = boto3.client('s3')
         s3.upload_file(
             Filename=caminhoArquivo,
-            Bucket='raw-streamline',
+            Bucket='braw-streamline',
             Key=f'Capturas_ATM_{fkAtm}_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json')
                 
         print("\n Arquivo JSON Gerado! ✅\n")

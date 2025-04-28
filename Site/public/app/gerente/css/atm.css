@@ -43,7 +43,7 @@ body{
 .nav-bar {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     width: 70vw;
     height: 6vh;
     background-color: rgba(83, 83, 83, 0.39);
@@ -719,6 +719,10 @@ span, .campo-modal-configuracao {
     align-items: center;
     justify-content: center;
     align-self: center;
+}
+
+.icon-dash:hover {
+    cursor: pointer;
 }
 
 /*

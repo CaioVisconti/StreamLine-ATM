@@ -6,7 +6,7 @@ import time
 
 x_data, y_data = [], []
 fig, ax = plt.subplots()
-line, = ax.plot(x_data, y_data, color = "pink")
+line, = ax.plot(x_data, y_data, color = "red")
 
 ax.set_xlim(0, 50)
 ax.set_ylim(0, 50)
