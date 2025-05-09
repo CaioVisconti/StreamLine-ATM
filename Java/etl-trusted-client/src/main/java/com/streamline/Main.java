@@ -25,21 +25,23 @@ public class Main implements RequestHandler<S3Event, String> {
     private static final Log log = LogFactory.getLog(Main.class);
     private final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
 
-    private static final String DESTINATION_BUCKET = "client-streamline";
+    private static final String DESTINATION_BUCKET = "bclient-streamline";
 
     @Override
     public String handleRequest(S3Event s3Event, Context context) {
         String sourceBucket = s3Event.getRecords().get(0).getS3().getBucket().getName();
         String documentoInicial = s3Event.getRecords().get(0).getS3().getObject().getKey();
+        LambdaLogger logger = context.getLogger();
 
         String[] documentoDividido = documentoInicial.split("\\.");
-        String[] nomeDividido = documentoDividido[0].split("_");
+        String[] dir = documentoDividido[0].split("/");
+        String[] nomeDividido = dir[2].split("_");
 
         String extensaoInicial = documentoDividido[1];
         String[] data = nomeDividido[3].split("-");
         Integer dataAnterior = Integer.parseInt(data[0]) - 1;
 
-        String nomeTxt = "%s_%s_%d.%s".formatted(nomeDividido[1], nomeDividido[2], dataAnterior, extensaoInicial);
+        String nomeTxt = "%s/%s/%s_%s_%d.%s".formatted(dir[0], dir[1], nomeDividido[1], nomeDividido[2], dataAnterior, extensaoInicial);
 
         if(extensaoInicial.equals(".txt")) {
             return "fora";
@@ -47,7 +49,7 @@ public class Main implements RequestHandler<S3Event, String> {
 
         List<String> listaDocumentos = new ArrayList<>();
 
-        String nome = "%s_%s_%s_%s".formatted(nomeDividido[0], nomeDividido[1], nomeDividido[2], nomeDividido[3]);
+        String nome = "%s/%s/%s_%s_%s_%s".formatted(dir[0], dir[1], nomeDividido[0], nomeDividido[1], nomeDividido[2], nomeDividido[3]);
 
         S3Client s3Client = S3Client.builder().build();
 
@@ -57,12 +59,15 @@ public class Main implements RequestHandler<S3Event, String> {
                 .build();
 
         ListObjectsV2Iterable response = s3Client.listObjectsV2Paginator(request);
-        LambdaLogger logger = context.getLogger();
 
         for (ListObjectsV2Response page : response) {
             for (S3Object object : page.contents()) {
                 listaDocumentos.add(object.key());
                 logger.log(object.key());
+
+                if(listaDocumentos.size() == 12) {
+                    break;
+                }
             }
         }
 
@@ -73,12 +78,15 @@ public class Main implements RequestHandler<S3Event, String> {
     }
 
     public String novaLista(List<String> indices, String sourceBucket, Context context, S3Event s3Event, String DESTINATION_BUCKET) {
+        LambdaLogger logger = context.getLogger();
         String nomeArquivoRecebido = s3Event.getRecords().get(0).getS3().getObject().getKey();
+        logger.log(nomeArquivoRecebido);
+        logger.log("nomeArquivoRecebido");
         String[] nomeFinal = (nomeArquivoRecebido.split("\\.")[0]).split("_");
         String[] dataDividida = nomeFinal[3].split("-");
-        LambdaLogger logger = context.getLogger();
+        String[] nomeFinalSDiretorio = nomeFinal[0].split("/");
 
-        String nomeEnviado = "%s_%s_%s_%s_%s_%s%s".formatted(nomeFinal[0], nomeFinal[1], nomeFinal[2], dataDividida[0], dataDividida[1], dataDividida[2], ".csv");
+        String nomeEnviado = "analise/dia/%s/%s_%s_%s_%s_%s_%s%s".formatted(nomeFinalSDiretorio[1], nomeFinalSDiretorio[2], nomeFinal[1], nomeFinal[2], dataDividida[0], dataDividida[1], dataDividida[2], ".csv");
 
         logger.log(nomeEnviado);
 
@@ -88,12 +96,12 @@ public class Main implements RequestHandler<S3Event, String> {
         CSVPrinter csvPrinter = null;
 
         String cabecalho = "fkAtm,dataHora,valorCpuPercent,limiteCpuPercent,alertaCpuPercent,valorCPUFreq,limiteCPUFreq,alertaCPUFreq,valorRAMDisponivel,valorRAMPercentual,limiteRAMPercentual,alertaRAMPercentual,valorDISKTotal,valorDISKDisponivel,valorDISKPercentual,limiteDISKPercentual,alertaDISKPercentual,valorREDERecebida,limiteREDERecebida,alertaREDERecebida,valorREDEEnviada,limiteREDEEnviada,alertaREDEEnviada,valorPROCESSODesativado,limitePROCESSODesativado,alertaPROCESSODesativado,valorPROCESSOAtivos,limitePROCESSOAtivos,alertaPROCESSOAtivos,valorPROCESSOTotal";
-        String[] header = cabecalho.split(",");
+        // String[] header = cabecalho.split(",");
 
         try {
             outputStream = new ByteArrayOutputStream();
             writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
-            csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(header[0],header[1],header[2],header[3],header[4],header[5],header[6],header[7],header[8],header[9],header[10],header[11],header[12],header[13],header[14],header[15],header[16],header[17],header[18],header[19],header[20],header[21],header[22],header[23],header[24],header[25],header[26],header[27],header[28],header[29]));
+            csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
         }
         catch (IOException err) {
             System.err.println("Erro ao criar ou escrever no arquivo de saída: " + err.getMessage());
@@ -101,6 +109,7 @@ public class Main implements RequestHandler<S3Event, String> {
         }
 
         try {
+            csvPrinter.printRecord(cabecalho);
             for (String arquivo : indices) {
                 InputStream s3InputStream = s3Client.getObject(sourceBucket, arquivo).getObjectContent();
                 try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(s3InputStream))) {

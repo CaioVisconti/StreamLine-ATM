@@ -188,7 +188,7 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
         s3.upload_file(
             Filename=caminhoArquivo,
             Bucket='braw-streamline',
-            Key=f'Capturas_ATM_{fkAtm}_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json')
+            Key=f'capturas/ATM{fkAtm}/Capturas_ATM_{fkAtm}_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json')
                 
         print("\n Arquivo JSON Gerado! ✅\n")
 
