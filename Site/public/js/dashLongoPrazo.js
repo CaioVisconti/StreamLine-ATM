@@ -213,7 +213,6 @@ function gerarGraficos(){
         window.meuGraficoInstance.destroy();
     }
 
-    // Criação do gráfico com linha de alerta (linha vermelha no 75)
     window.meuGraficoInstance = new Chart(ctx, {
         type: 'line',
         data: {
