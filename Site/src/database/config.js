@@ -6,7 +6,8 @@ var mySqlConfig = {
     database: process.env.DB_DATABASE,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT
+    port: process.env.DB_PORT,
+    multipleStatements: true
 };
 
 // CONEXÃO DO BANCO MYSQL SERVER FRIO
@@ -15,7 +16,8 @@ var mySqlConfigQuente = {
     database: process.env.DB_DATABASE_QUENTE,
     user: process.env.DB_USER_QUENTE,
     password: process.env.DB_PASSWORD_QUENTE,
-    port: process.env.DB_PORT_QUENTE
+    port: process.env.DB_PORT_QUENTE,
+    multipleStatements: true
 };
 
 function executar(instrucao) {

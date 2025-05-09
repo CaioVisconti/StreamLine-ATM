@@ -151,7 +151,7 @@ function verGraficos(id) {
 
     // eu coleto os 6 ultimos dados de uma vez para diminuir a demora para carregar o gráfico
     function primeiraColeta() {
-        fetch(`http://localhost:3333/teste/monitoramento/${valorTeste}`, {
+        fetch(`http://localhost:3333/tempoReal/monitoramento/${valorTeste}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -397,7 +397,7 @@ function verGraficos(id) {
 
     // eu acrescento um dado e retiro o ultimo
     function coletaVariavel() {
-        fetch(`http://localhost:3333/teste/monitoramento/${valorTeste}`, {
+        fetch(`http://localhost:3333/tempoReal/monitoramento/${valorTeste}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -633,7 +633,7 @@ function graficoEspecifico(button) {
     console.log("Valor selecionado:", valor);
 
     function obterDados() {
-        fetch(`http://localhost:3333/teste/monitoramento/${valor}`, {
+        fetch(`http://localhost:3333/tempoReal/monitoramento/${valor}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -660,7 +660,7 @@ function graficoEspecifico(button) {
                 if (ultimoDado.hasOwnProperty("CPUPercent")) {
                     const cpuPercent = ultimoDado.CPUPercent;
                     const cpuPercentLimite = ultimoDado["limite CPUPercent"];
-                    const intervaloCpuPercent = cpuPercentLimite - 10.0
+                    const intervaloCpuPercent = cpuPercentLimite - (cpuPercentLimite * 0.10)
 
                     circuloCpuPercentual.classList.remove(...todasAsClasses);
 
@@ -693,14 +693,14 @@ function graficoEspecifico(button) {
                 if (ultimoDado.hasOwnProperty("CPUFreq")) {
                     const CPUFreq = ultimoDado.CPUFreq;
                     const CPUFreqLimite = ultimoDado["limite CPUFreq"];
-                    const intervaloCPUFreq = CPUFreqLimite - 10.0
+                    const intervaloCPUFreq = CPUFreqLimite - (CPUFreqLimite * 0.10)
 
                     circuloCpuFreq.classList.remove(...todasAsClasses);
 
                     if (CPUFreq >= intervaloCPUFreq && CPUFreq <= CPUFreqLimite) {
                         console.log(" to no if do medio")
                         circuloCpuFreq.classList.add("circulo-indicador", "circulo-amarelo")
-                        document.getElementById("frequenciaCpu").innerHTML = `${cpuPercent}Ghz`;
+                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}Ghz`;
                     }
 
                     else if (CPUFreq > CPUFreqLimite) {
@@ -726,7 +726,7 @@ function graficoEspecifico(button) {
                 if (ultimoDado.hasOwnProperty("RAMPercentual")) {
                     const ramPercent = ultimoDado.RAMPercentual;
                     const ramPercentLimite = ultimoDado["limite RAMPercentual"];
-                    const intervaloramPercent = ramPercentLimite - 10.0
+                    const intervaloramPercent = ramPercentLimite - (ramPercentLimite * 0.10)
 
                     circuloRamPercentual.classList.remove(...todasAsClasses);
 
@@ -762,7 +762,7 @@ function graficoEspecifico(button) {
                 if (ultimoDado.hasOwnProperty("RAMDisponivel")) {
                     const ramDisponivel = ultimoDado.RAMDisponivel;
                     const ramDisponivelLimite = ultimoDado["limite RAMDisponivel"];
-                    const intervaloramDisponivel = ramDisponivelLimite - 10.0
+                    const intervaloramDisponivel = ramDisponivelLimite - (ramDisponivelLimite * 0.10)
 
                     circuloRamDisponivel.classList.remove(...todasAsClasses);
 
@@ -798,7 +798,7 @@ function graficoEspecifico(button) {
                 if (ultimoDado.hasOwnProperty("DISKPercentual")) {
                     const discoUsado = ultimoDado.DISKPercentual;
                     const discoUsadoLimite = ultimoDado["limite DISKPercentual"];
-                    const intervalodiscoUsado = discoUsadoLimite - 10.0
+                    const intervalodiscoUsado = discoUsadoLimite - (discoUsadoLimite * 0.10)
 
                     circuloDiscoUsado.classList.remove(...todasAsClasses);
 
@@ -834,7 +834,7 @@ function graficoEspecifico(button) {
                 if (ultimoDado.hasOwnProperty("DISKDisponivel")) {
                     const discoDisponivel = ultimoDado.DISKDisponivel;
                     const discoDisponivelLimite = ultimoDado["limite DISKDisponivel"];
-                    const intervalodiscoDisponivel = discoDisponivelLimite - 10.0
+                    const intervalodiscoDisponivel = discoDisponivelLimite - (discoDisponivelLimite * 0.10)
 
                     circuloDiscoDisponivel.classList.remove(...todasAsClasses);
 
@@ -870,7 +870,7 @@ function graficoEspecifico(button) {
                 if (ultimoDado.hasOwnProperty("REDEEnviada")) {
                     const redeEnviada = ultimoDado.REDEEnviada;
                     const redeEnviadaLimite = ultimoDado["limite REDEEnviada"];
-                    const intervaloredeEnviada = redeEnviadaLimite - 10.0
+                    const intervaloredeEnviada = redeEnviadaLimite - (redeEnviadaLimite * 0.10)
 
                     circuloRedeEnviada.classList.remove(...todasAsClasses);
 
@@ -906,7 +906,7 @@ function graficoEspecifico(button) {
                 if (ultimoDado.hasOwnProperty("REDERecebida")) {
                     const redeRecebida = ultimoDado.REDERecebida;
                     const redeRecebidaLimite = ultimoDado["limite REDERecebida"];
-                    const intervaloredeRecebida = redeRecebidaLimite - 10.0
+                    const intervaloredeRecebida = redeRecebidaLimite - (redeRecebidaLimite * 0.10)
 
                     circuloRedeRecebida.classList.remove(...todasAsClasses);
 
@@ -941,10 +941,10 @@ function graficoEspecifico(button) {
 
 
                 // PROCESSOAtivos
-                if (ultimoDado.hasOwnProperty("PROCESSOAtivos")) {
-                    const processosAtivos = ultimoDado.PROCESSOAtivos;
-                    const processosAtivosLimite = ultimoDado["limite PROCESSOAtivos"];
-                    const intervaloprocessosAtivos = processosAtivosLimite - 10.0
+                if (ultimoDado.hasOwnProperty("PROCESSOSAtivos")) {
+                    const processosAtivos = ultimoDado.PROCESSOSAtivos;
+                    const processosAtivosLimite = ultimoDado["limite PROCESSOSAtivos"];
+                    const intervaloprocessosAtivos = processosAtivosLimite -  (processosAtivosLimite * 0.10)
 
                     circuloProcessosAtivos.classList.remove(...todasAsClasses);
 
@@ -977,10 +977,10 @@ function graficoEspecifico(button) {
 
 
                 // PROCESSODesativado
-                if (ultimoDado.hasOwnProperty("PROCESSODesativado")) {
-                    const processosDesativados = ultimoDado.PROCESSODesativado;
-                    const processosDesativadosLimite = ultimoDado["limite PROCESSODesativado"];
-                    const intervaloprocessosDesativados = processosDesativadosLimite - 10.0
+                if (ultimoDado.hasOwnProperty("PROCESSOSDesativado")) {
+                    const processosDesativados = ultimoDado.PROCESSOSDesativado;
+                    const processosDesativadosLimite = ultimoDado["limite PROCESSOSDesativado"];
+                    const intervaloprocessosDesativados = processosDesativadosLimite - (processosDesativadosLimite * 0.10)
 
                     circuloProcessosDesativados.classList.remove(...todasAsClasses);
 
