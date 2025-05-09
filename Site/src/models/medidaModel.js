@@ -25,8 +25,19 @@ function buscarAtms(idAgencia) {
     return database.executar(instrucaoSql);
 }
 
+function cores() {
+    var instrucaoSql = `
+    SELECT * from viewCriticoLista;
+    SELECT * from viewMediaLista;
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarKPIs,
     buscarPacotes,
-    buscarAtms
+    buscarAtms,
+    cores
 };
