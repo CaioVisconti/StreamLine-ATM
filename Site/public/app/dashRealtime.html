@@ -9,9 +9,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="../js/dashCurtoPrazo.js"></script>
     <link rel="icon" href="../public/assets/logo_fundo_branco.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
@@ -43,7 +42,7 @@
             <menu id="menuATM">
                 <ul id="divAtms">
 
-                    <li><button onclick="graficoEspecifico()">ATM 1</button>
+                    <!-- <li><button onclick="graficoEspecifico()">ATM 1</button>
                         <div class="status" id="critico"></div>
                     </li>
                     <li><button onclick="graficoEspecifico()">ATM 2</button>
@@ -66,7 +65,7 @@
                     </li>
                     <li><button onclick="graficoEspecifico()">ATM 8</button>
                         <div class="status" id="medio"></div>
-                    </li>
+                    </li> -->
 
                 </ul>
             </menu>
@@ -79,18 +78,18 @@
             <div class="kpis">
 
                 <div class="kpi" id="bom">
-                    <!-- <p id="kpi1"></p> -->
-                    <p> 3 ATMs em bom estado </p>
+                    <p id="kpi1"></p>
+                    <!-- <p> 3 ATMs em bom estado </p> -->
                 </div>
 
                 <div class="kpi" id="medio">
-                    <!-- <p id="kpi2"></p> -->
-                    <p>3 ATMs com alertas médios </p>
+                    <p id="kpi2"></p>
+                    <!-- <p>3 ATMs com alertas médios </p> -->
                 </div>
 
                 <div class="kpi" id="critico">
-                    <!-- <p id="kpi3"></p> -->
-                    <p>2 ATMs com alertas críticos </p>
+                    <p id="kpi3"></p>
+                    <!-- <p>2 ATMs com alertas críticos </p> -->
                 </div>
 
             </div>
@@ -111,12 +110,13 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Usado</div>
-                            <div class="circulo-indicador circulo-vermelho">88.4 %</div>
+                            <div onclick="verGraficos(this.id)" id="circuloRam"><div id="porcentagemRam"></div></div>
+                            <!-- <div class="circulo-indicador circulo-vermelho"><div id="porcentagemRam"></div></div> -->
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Disponível</div>
-                            <div class="circulo-indicador circulo-vermelho">0.9 GB</div>
+                            <div onclick="verGraficos(this.id)" id="circuloRamDisponivel"><div id="disponivelRam"></div></div>
                         </div>
                     </div>
 
@@ -126,12 +126,12 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Usado</div>
-                            <div class="circulo-indicador circulo-amarelo">30.0 %</div>
+                            <div onclick="verGraficos(this.id)" id="circuloCpu"><div id="porcentagemCpu"></div></div>
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Frequência</div>
-                            <div class="circulo-indicador circulo-verde">3110.0 Hz</div>
+                            <div onclick="verGraficos(this.id)" id="circuloCpuFrequencia"><div id="frequenciaCpu"></div></div>
                         </div>
                     </div>
 
@@ -141,12 +141,12 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Usado</div>
-                            <div class="circulo-indicador circulo-verde">28.6 %</div>
+                            <div onclick="verGraficos(this.id)" id="circuloDiscoUsado"><div id="discoUsado"></div></div>
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Disponível</div>
-                            <div class="circulo-indicador circulo-verde">339.75 GB</div>
+                            <div onclick="verGraficos(this.id)" id="circuloDiscoDisponivel"><div id="discoDisponivel"></div></div>
                         </div>
                     </div>
 
@@ -156,12 +156,12 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Pacotes Enviados</div>
-                            <div class="circulo-indicador circulo-verde">43050</div>
+                            <div onclick="verGraficos(this.id)" id="circuloRedeEnviada"><div id="redeEnviada"></div></div>
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Pacotes Recebidos</div>
-                            <div class="circulo-indicador circulo-verde">53661</div>
+                            <div onclick="verGraficos(this.id)" id="circuloRedeRecebida"><div id="redeRecebida"></div></div>
                         </div>
                     </div>
 
@@ -171,16 +171,42 @@
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Processos Ativos</div>
-                            <div class="circulo-indicador circulo-verde">210</div>
+                            <div onclick="verGraficos(this.id)" id="circuloProcessosAtivos"><div id="processosAtivos"></div></div>
                         </div>
 
                         <div class="container-indicador">
                             <div class="rotulo-indicador">Processos Inativos</div>
-                            <div class="circulo-indicador circulo-verde">8</div>
+                            <div onclick="verGraficos(this.id)" id="circuloProcessosDesativados"><div id="processosDesativados"></div></div>
                         </div>
                     </div>
 
                 </div>
+
+                <div class="graficos-componentes" style="display: none;" id="graficoComponentes">
+
+                    
+                    <div class="teste">
+                        <div class="titulo-grafico">
+                            <div class="titulo-metricas"> <span id="nomeMetrica"></span> <span id="tipoMetrica"> </span> <span id="dataMetrica"></span> <span id="horaMetrica"></span> </div>
+                            <div class="legenda">
+                              <div class="bolinhas">
+                                <div class="red"></div>
+                                <div class="roxo"></div>
+                              </div>
+                              <div class="legenda-titulo">
+                                <span>LIMITE</span>
+                                <span>REAL</span>
+                              </div>
+                            </div>
+                        </div>
+                        <canvas class="organizacao-metricas" id="meuGrafico10"></canvas>
+                    </div>
+                </div>
+
+                <div id="carregando" style="display: none; text-align: center; font-weight: bold; color: white;">
+                    Carregando informações...
+                </div>
+
             </div>
 
         </div>
@@ -188,147 +214,5 @@
     </div>
 
 </body>
-
-<script>
-
-    window.onload = function () {
-        // exibirKPIs();
-        exibirAtms();
-
-        // setInterval(function () {
-        //     exibirKPIs();
-        // }, 5000);
-
-        graficoAlertasPorATM()
-
-    };
-
-
-    const id = sessionStorage.ID_AGENCIA
-
-    function exibirAtms() {
-
-        let nomeUsuario = sessionStorage.NOME_USUARIO;
-        document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
-
-        console.log("Cheguei")
-
-        // fetch(`/medidas/atms/${id}`, {
-        //     method: "GET",
-        //     headers: {
-        //         "content-Type": "application/json"
-        //     }
-        // })
-        //     .then((res) => {
-        //         console.log(res)
-        //         res.json()
-        //             .then(json => {
-        //                 console.log(json)
-        //                 for (let i = 0; i < json.length; i++) {
-        //                     console.log(json[i])
-        //                     divAtms.innerHTML += `<li><button onclick="graficoEspecifico()">ATM ${i + 1}</button> <div class="status"></div></li>`
-        //                 }
-        //             })
-        //     })
-        //     .catch(error => {
-        //         console.error('Erro ao obter atms:', error);
-        //     });
-    }
-
-    function graficoEspecifico() {
-        const metricas = document.getElementById("metricasdiv");
-        const graficos = document.getElementById("graficoAtms")
-
-        if (metricas.style.display === "none" || metricas.style.display === "") {
-            metricas.style.display = "flex";
-            graficos.style.display = "none";
-        } else {
-            metricas.style.display = "none";
-            graficos.style.display = "flex";
-        }
-
-    }
-
-    function exibirKPIs() {
-        fetch('/medidas/kpis')
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    console.error('Erro ao obter KPIs');
-                }
-            })
-            .then(data => {
-                if (data && data.length > 0) {
-                    const kpiData = data[0];
-                    document.getElementById('kpi1').innerText = kpiData.atmsSemAlertas;
-                    document.getElementById('kpi2').innerText = kpiData.atmsMedios;
-                    document.getElementById('kpi3').innerText = kpiData.atmsCritico;
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao obter KPIs:', error);
-            });
-    }
-
-    function graficoAlertasPorATM() {
-    let fontSize = 20;
-    if(window.innerWidth < 600){
-        fontSize = 12;
-    }
-
-        const ctx = document.getElementById('graficoAlertas').getContext('2d');
-
-        const nomesATMs = ['ATM 1', 'ATM 2', 'ATM 3', 'ATM 4', 'ATM 5', 'ATM 6', 'ATM 7', 'ATM 8'];
-        const alertas = [3, 1, 0, 1, 0, 2, 0, 1];
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: nomesATMs,
-                datasets: [{
-                    label: 'Quantidade de Alertas',
-                    data: alertas,
-                    backgroundColor: 'grey',
-                    borderRadius: 5
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                },
-                title: {
-                    display: true,
-                    text: 'Alertas',
-                    color: 'white',
-                    font: {
-            size: fontSize  // Tamanho da fonte em pixels
-        } // Cor do título 
-                }
-            },
-            x: {
-                title: {
-                    display: true,
-                    text: 'ATMs',
-                    color: 'white',
-                    font: {
-                        size: fontSize  // Tamanho da fonte em pixels
-                    }    
-                },
-                ticks: {
-                    color: 'white' 
-                }
-            }
-        });
-
-    }
-
-
-
-</script>
 
 </html>
