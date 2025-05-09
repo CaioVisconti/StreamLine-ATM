@@ -187,6 +187,18 @@ header {
     color: white;
 }
 
+.critico {
+    background: rgba(226, 76, 76, 0.39);
+}
+
+.medio {
+    background: rgba(221, 219, 92, 0.39);
+}
+
+.bom {
+    background: rgba(120, 221, 92, 0.39);
+}
+
 #critico {
     background: rgba(226, 76, 76, 0.39);
 }
@@ -314,6 +326,8 @@ header {
     font-size: 28px;
     font-weight: bold;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    /* border: 1px solid red; */
 }
 
 /* Cores das bolinhas */
@@ -327,6 +341,113 @@ header {
 
 .circulo-verde {
     background-color: #3a9e42;
+}
+
+.circulo-cinza {
+    background-color: rgba(110, 108, 108, 0.767);
+}
+
+/* .graficos-componentes{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border: 1px solid red;
+
+} */
+/* .grafico-wrapper .graficos-componentes{
+
+    justify-content: center;
+} */
+
+.graficos-componentes {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    /* border: 1px solid red; */
+    align-items: center;
+    justify-content: center;
+    border-radius: 20%;
+}
+
+.titulo-metricas{
+    color: black;
+    /* font-weight: bold; */
+    font-size: 18px;
+}
+
+.titulo-grafico{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
+    height: 15%;
+    /* border: 1px solid rgb(106, 255, 0); */
+}
+
+.legenda{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 13%;
+    border-radius: 20px;
+    align-items: center;
+    /* border: 1px solid red; */
+    color: white;
+    background-color: rgba(46, 50, 52, 1);
+}
+
+.bolinhas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 40%;
+    /* border: 1px solid red; */
+}
+
+.legenda-titulo{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-around;
+    height: 80%;
+    width: 50%;
+    font-size: 15px;
+    /* border: 1px solid red; */
+}
+
+.red{
+    height: 30%;
+    width: 40%;
+    background-color: red;
+    border-radius: 25%;
+}
+
+.roxo{
+    height: 30%;
+    width: 40%;
+    background-color: rgba(141, 52, 249, 1);
+    border-radius: 25%;
+}
+
+.teste{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 85%;
+    /* border: 1px solid red; */
+    background-color: white;
+    border-radius: 20px;
+}
+
+.organizacao-metricas {
+    width: 92% !important;
+    height: 80% !important;
+    background-color: white;
 }
 
 @media (min-width: 769px) and (max-width: 1030px){
