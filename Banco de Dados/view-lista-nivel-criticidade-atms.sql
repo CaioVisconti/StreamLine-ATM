@@ -3,15 +3,15 @@ use streamline;
 CREATE OR REPLACE VIEW viewCriticoLista AS
 WITH severidade_alertas AS (
     SELECT 
-        fkAtm,
+        p.fkAtm,
         CASE 
             WHEN alerta.valor > p.limite THEN 'critico'
             WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
             ELSE 'baixo'
         END AS nivel
-    FROM streamline_quente.alerta
-    JOIN parametrizacao p ON alerta.fkParametro = p.idParametro
-    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHora, NOW()) BETWEEN 0 AND 10
+    FROM alerta
+    JOIN parametro p ON alerta.fkParametro = p.idParametro
+    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 10
 )
 SELECT 
     fkAtm AS fkAtmCritico
@@ -33,15 +33,15 @@ WHERE severidade = 3;
 CREATE OR REPLACE VIEW viewMediaLista AS
 WITH severidade_alertas AS (
     SELECT 
-        fkAtm,
+        p.fkAtm,
         CASE 
             WHEN alerta.valor > p.limite THEN 'critico'
             WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
             ELSE 'baixo'
         END AS nivel
-    FROM streamline_quente.alerta
-    JOIN parametrizacao p ON alerta.fkParametro = p.idParametro
-    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHora, NOW()) BETWEEN 0 AND 10
+    FROM alerta
+    JOIN parametro p ON alerta.fkParametro = p.idParametro
+    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 10
 )
 SELECT
     fkAtm AS fkAtmMedio
@@ -64,7 +64,7 @@ SELECT * from viewMediaLista;
 
 SELECT * FROM viewCritico, viewMedia, viewBom;
 
-select * from streamline_quente.alerta
-WHERE TIMESTAMPDIFF(SECOND, alerta.dtHora, NOW()) BETWEEN 0 AND 60;
+select * from alerta
+WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 60;
     SELECT * from viewCriticoLista;
     SELECT * from viewMediaLista;

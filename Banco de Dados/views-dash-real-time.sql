@@ -13,15 +13,15 @@ SELECT * FROM totalAtms;
 CREATE OR REPLACE VIEW viewMedia AS
 WITH severidade_alertas AS (
     SELECT 
-        fkAtm,
+        p.fkAtm,
         CASE 
             WHEN alerta.valor > p.limite THEN 'critico'
             WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
             ELSE 'baixo'
         END AS nivel
-    FROM streamline_quente.alerta
-    JOIN parametrizacao p ON alerta.fkParametro = p.idParametro
-    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHora, NOW()) BETWEEN 0 AND 10
+    FROM alerta
+    JOIN parametro p ON alerta.fkParametro = p.idParametro
+    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 10
 )
 SELECT COUNT(*) AS atmsMedios
 FROM (
@@ -42,15 +42,15 @@ WHERE severidade = 2;
 CREATE OR REPLACE VIEW viewCritico AS
 WITH severidade_alertas AS (
     SELECT 
-        fkAtm,
+        p.fkAtm,
         CASE 
             WHEN alerta.valor > p.limite THEN 'critico'
             WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
             ELSE 'baixo'
         END AS nivel
-    FROM streamline_quente.alerta
-    JOIN parametrizacao p ON alerta.fkParametro = p.idParametro
-    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHora, NOW()) BETWEEN 0 AND 10
+    FROM alerta
+    JOIN parametro p ON alerta.fkParametro = p.idParametro
+    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 10
 )
 SELECT COUNT(*) AS atmsCritico
 FROM (
