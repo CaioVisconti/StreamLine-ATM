@@ -1,0 +1,653 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat';
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    background-color: #171D20;
+}
+
+header {
+    height: 10vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+}
+
+.nav-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 11vh;
+}
+
+.info-user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 15vw;
+    height: 11vh;
+}
+
+.foto-user {
+    background-color: #2A5277;
+    height: 65px;
+    width: 65px;
+    border-radius: 70px;
+}
+
+.msg-user {
+    display: flex;
+    font-family: "Inter", sans-serif;
+    height: 50px;
+    width: 80px;
+    font-size: 22px;
+    color: #FFFFFF;
+}
+
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 70vw;
+    height: 6vh;
+    background-color: #53535339;
+    border-radius: 50px;
+    align-items: center;
+}
+
+.nav-bar a {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 15px;
+}
+
+.btn-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    width: 6vw;
+    text-decoration: none;
+    height: 6vh;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-size: 15px;
+    background-color: #2A5277;
+    cursor: pointer;
+}
+
+.container {
+    height: 86vh;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.kpi-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+}
+
+.kpis {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    margin-bottom: 10px;
+}
+
+.kpi {
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    background-color: #53535339;
+    width: 30%;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.kpi p {
+    font-size: 25px;
+    color: white;
+}
+
+.kpi .titulo-kpi {
+    font-size: 15px;
+}
+
+.abas-container {
+    display: flex;
+    width: 80%;
+    justify-content: flex-start;
+}
+
+.abas {
+    display: flex;
+    justify-content: space-around;
+    width: 30%;
+}
+
+.abas button {
+    text-decoration: none;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.749);
+    cursor: pointer;
+}
+
+#atual{
+    text-decoration: none;
+    color: #87C5FF;
+    border-bottom: 1px solid #87C5FF;
+}
+
+.container-grafico {
+    display: flex;
+    width: 95vw;
+    height: 100dvh;
+}
+
+.titulo-grafico {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    height: 25%;
+    width: 90%;
+}
+
+.titulo-grafico span {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    height: 50%;
+}
+
+.valor-titulo {
+    display: flex;
+    height: 20%;
+    align-items: center;
+}
+
+.valor-titulo span {
+    font-weight: bolder;
+    color: white;
+    font-size: 30px;
+}
+
+.grafico {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #53535339;
+    border-radius: 10px;
+    padding: 10px 0;
+    height: 90%;
+    width: 50%;
+    margin: 10px;
+}
+
+.grafico h1 {
+    color: white;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.container-servicos {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.coluna-servicos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 60%;
+}
+
+.rotulo-indicador {
+    color: white;
+    font-size: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+.titulo-coluna {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.container-indicador {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.circulo-indicador {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #78dd5c39;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.circulo-indicador span {
+    font-size: 35px;
+}
+
+#ec2 {
+    background-color: #b63a3a;
+}
+
+#s3 {
+    background-color: #a3a245;
+}
+
+#lambda {
+    background-color: #3a9e42;
+}
+
+.grafico-chart {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.grafico-chart canvas {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.coluna-listagem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bolder;
+}
+
+.coluna-listagem #titulo {
+    font-size: 24px;
+}
+
+@media (min-width: 769px) and (max-width: 1030px) {
+    .nav-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 15vh;
+    }
+
+    .info-user {
+        width: 7vw;
+        height: 12vh;
+    }
+
+    .foto-user {
+        height: 100%;
+        width: 100%;
+        background-position: center;
+    }
+
+    .msg-user {
+        display: none;
+    }
+
+    .nav-bar {
+        width: 70vw;
+        height: 10vh;
+    }
+
+    .nav-bar span {
+        font-size: 18px;
+    }
+
+    .btn-nav {
+        width: 8vw;
+        height: 8vh;
+        font-size: 18px;
+    }
+
+    .container {
+        height: auto;
+        flex-direction: row;
+    }
+
+    #menuATM {
+        flex-direction: column;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    #listaATM {
+        width: 20%;
+        height: 82vh;
+        font-size: 12px;
+    }
+
+    #divAtms {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #divAtms button {
+        font-size: 12px;
+    }
+
+    #menuATM li {
+        width: auto;
+    }
+
+
+    #menuATM li .status {
+        width: 32px;
+        height: 32px;
+    }
+
+    .kpi p {
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .grafico-wrapper {
+        width: 95%;
+        height: 55vh;
+    }
+
+    .grafico span {
+        font-size: 20px;
+    }
+
+    .grafico h1 {
+        font-size: 20px;
+    }
+
+    .grafico-mesmo {
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    .grafico canvas {
+        height: 95% !important;
+        width: 95% !important;
+    }
+
+    .titulo-coluna {
+        font-size: 20px;
+    }
+
+    .rotulo-indicador {
+        font-size: 15px;
+    }
+
+    .circulo-indicador {
+        width: 10vw;
+        height: 16vh;
+        text-align: center;
+        font-size: 18px;
+    }
+
+
+}
+
+@media (min-width: 376px) and (max-width: 768px) {
+    .nav-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 11vh;
+    }
+
+    .info-user {
+        width: 8vw;
+        height: 6vh;
+    }
+
+    .foto-user {
+        height: 100%;
+        width: 100%;
+        background-position: center;
+    }
+
+    .msg-user {
+        display: none;
+    }
+
+    .nav-bar span {
+        font-size: 18px;
+    }
+
+    .btn-nav {
+        width: 10vw;
+        height: 5vh;
+        font-size: 18px;
+    }
+
+    .container {
+        height: 86vh;
+        flex-direction: column;
+    }
+
+    #menuATM {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    #listaATM {
+        height: 20%;
+        width: 100%;
+    }
+
+    #divAtms {
+        gap: 20px;
+        display: flex;
+        width: max-content;
+    }
+
+
+    #divAtms button {
+        font-size: 20px;
+    }
+
+
+    #divAtms li {
+        gap: 1px;
+        width: 18vw;
+    }
+
+    .kpi p {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .grafico-wrapper {
+        width: 100%;
+        height: 50vh;
+    }
+
+    .grafico span {
+        font-size: 18px;
+    }
+
+
+    .grafico h1 {
+        font-size: 18px;
+    }
+
+    .grafico-mesmo {
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    .grafico canvas {
+        height: 95% !important;
+        width: 95% !important;
+    }
+
+    .titulo-coluna {
+        font-size: 20px;
+    }
+
+    .rotulo-indicador {
+        font-size: 15px;
+    }
+
+    .circulo-indicador {
+        width: 18vw;
+        height: 14vh;
+        text-align: center;
+        font-size: 20px;
+    }
+
+
+}
+
+@media (max-width: 380px) {
+    .nav-total {
+        display: flex;
+        height: 11vh;
+    }
+
+    .info-user {
+        width: 10vw;
+        height: 11vh;
+    }
+
+    .foto-user {
+        height: 40px;
+        width: 100%;
+        background-position: center;
+    }
+
+    .msg-user {
+        display: none;
+    }
+
+    .nav-bar {
+        width: 60vw;
+        height: 5vh;
+    }
+
+    .nav-bar span {
+        font-size: 12px;
+    }
+
+    .btn-nav {
+        width: 12vw;
+        height: 5vh;
+        font-size: 12px;
+    }
+
+    .container {
+        height: 80vh;
+        flex-direction: column;
+    }
+
+    #menuATM {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    #menuATM li {
+        gap: 2px;
+    }
+
+    #menuATM li .status {
+        height: 40px;
+        width: 40px;
+    }
+
+    #listaATM {
+        height: 20vh;
+        width: auto;
+    }
+
+    #divAtms {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #divAtms li {
+        width: 30vw;
+    }
+
+    #divAtms button {
+        font-size: 12px;
+    }
+
+    .kpi p {
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .grafico-wrapper {
+        width: 100%;
+        height: auto;
+    }
+
+    .grafico span {
+        font-size: 14px;
+    }
+
+    .grafico h1 {
+        font-size: 14px;
+    }
+
+    .grafico-mesmo {
+        height: 30vh !important;
+        width: 100vw !important;
+    }
+
+    .grafico canvas {
+        height: 95% !important;
+        width: 95% !important;
+    }
+
+    .titulo-coluna {
+        font-size: 12px;
+    }
+
+    .rotulo-indicador {
+        font-size: 7px;
+    }
+
+    .circulo-indicador {
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        font-size: 10px;
+    }
+
+
+}

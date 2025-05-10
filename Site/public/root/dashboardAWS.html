@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard em Tempo Real</title>
+    <link rel="stylesheet" href="../style/dashAWS.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" href="../public/assets/logo_fundo_branco.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/dashAws.js"></script>
+</head>
+
+<body>
+    <div class="nav-total">
+        <div class="info-user">
+            <div class="foto-user" style="background-image: url(../assets/tecnico.jpg); background-size: cover;"></div>
+            <div class="msg-user">
+                <span id="nomeFunc">
+
+                </span>
+            </div>
+        </div>
+        <div class="nav-bar">
+            <a href=""><span>Baixar CSV</span></a>
+            <a href=""><span>Baixar Relatório</span></a>
+            <a href="https://streamline-atm.atlassian.net/servicedesk/customer/portal/1/group/1/create/1"><span>Reportar
+                    Problema</span></a>
+        </div>
+        <a href="../index.html" class="btn-nav">Sair</a>
+    </div>
+
+    <div class="container">
+        <div class="kpi-container">
+            <div class="kpis">
+                <div class="kpi">
+                    <p class="titulo-kpi">Serviço com Maior Impacto Financeiro</p>
+                    <p>EC2</p>
+                </div>
+
+                <div class="kpi">
+                    <p class="titulo-kpi">Preço Médio dos Serviços</p>
+                    <p>$5</p>
+                </div>
+
+                <div class="kpi">
+                    <p class="titulo-kpi">Gasto Total Atual</p>
+                    <p>$152</p>
+                </div>
+            </div>
+            <div class="abas-container">
+                <div class="abas">
+                    <button class="link-abas" id="default" onclick="mudarAba(event, 'Geral')">Visão Geral</button>
+                    <button class="link-abas" onclick="mudarAba(event, 'Previsao')">Previsão &
+                        Análise</button>
+                </div>
+            </div>
+            <div class="container-grafico" id="Geral">
+                <div class="grafico">
+                    <h1>Gasto Por Serviço Durante Todo o Período</h1>
+                    <div class="grafico-chart">
+                        <canvas id="graficoTotal"></canvas>
+                    </div>
+                </div>
+                <div class="grafico">
+                    <h1>Total de Gastos da Última Semana</h1>
+                    <div class="valor-titulo">
+                        <span>$23</span>
+                    </div>
+                    <div class="container-servicos">
+                        <div class="coluna-servicos">
+                            <div class="circulo-indicador" id="ec2">
+                                <span>$12</span>
+                            </div>
+                            <div class="rotulo-indicador">
+                                <span>EC2</span>
+                            </div>
+                        </div>
+                        <div class="coluna-servicos">
+                            <div class="circulo-indicador" id="s3">
+                                <span>$8</span>
+                            </div>
+                            <div class="rotulo-indicador">
+                                <span>S3</span>
+                            </div>
+                        </div>
+                        <div class="coluna-servicos">
+                            <div class="circulo-indicador" id="lambda">
+                                <span>$3</span>
+                            </div>
+                            <div class="rotulo-indicador">
+                                <span>Lambda</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-grafico" id="Previsao">
+                <div class="grafico">
+                    <h1>Gastos Mensais Durante o Último Ano</h1>
+                    <div class="grafico-chart">
+                        <canvas id="custoMensal"></canvas>
+                    </div>
+                </div>
+                <div class="grafico">
+                    <h1>Tendências de Gastos e Previsão</h1>
+                    <div class="grafico-chart">
+                        <canvas id="previsao"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
