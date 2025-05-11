@@ -125,17 +125,14 @@ INSERT INTO usuario (nome, telefone, cargo, email, senha, fkAgencia) VALUES
 INSERT INTO componentes (nome, descricao, tipo, unidadeMedida, funcao) VALUES
   ('CPU', 'PORCENTAGEM', 'CPUPercent', 'Porcentagem', 'cpu_percent'),
   ('CPU', 'FREQUENCIA', 'CPUFreq', 'GHz', 'cpu_freq'),
-  ('RAM', 'TOTAL', 'RAMTotal', 'GB', 'virtual_memory.total'),
   ('RAM', 'DISPONIVEL', 'RAMDisponivel', 'GB', 'virtual_memory.available'),
   ('RAM', 'PORCENTAGEM', 'RAMPercentual', 'Porcentagem', 'virtual_memory.percent'),
-  ('DISCO', 'TOTAL', 'DISKTotal', 'GB', 'disk_usage.total'),
   ('DISCO', 'DISPONIVEL', 'DISKDisponivel', 'GB', 'disk_usage.free'),
   ('DISCO', 'PORCENTAGEM', 'DISKPercentual', 'Porcentagem', 'disk_usage.percent'),
   ('REDE', 'RECEBIDA', 'REDERecebida', 'Bytes', 'net_io_counters.bytes_recv'),
   ('REDE', 'ENVIADA', 'REDEEnviada', 'Bytes', 'net_io_counters.bytes_sent'),
   ('PROCESSOS', 'DESATIVADOS', 'PROCESSOSDesativado', 'Unidades', 'process_iter.desativados'),
   ('PROCESSOS', 'ATIVOS', 'PROCESSOSAtivos', 'Unidades', 'process_iter.ativos'),
-  ('PROCESSOS', 'TOTAL', 'PROCESSOSTotal', 'Unidades', 'process_iter.total');
 
 -- Inserindo ATMs
 INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM, fkAgencia) VALUES 

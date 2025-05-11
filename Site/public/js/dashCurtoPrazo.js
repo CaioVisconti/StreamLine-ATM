@@ -700,19 +700,19 @@ function graficoEspecifico(button) {
                     if (CPUFreq >= intervaloCPUFreq && CPUFreq <= CPUFreqLimite) {
                         console.log(" to no if do medio")
                         circuloCpuFreq.classList.add("circulo-indicador", "circulo-amarelo")
-                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}Ghz`;
+                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
                     }
 
                     else if (CPUFreq > CPUFreqLimite) {
                         console.log(" to no if do  passou do limite")
                         circuloCpuFreq.classList.add("circulo-indicador", "circulo-vermelho")
-                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}Ghz`;
+                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
                     }
 
                     else {
                         console.log("to no if do  suave")
                         circuloCpuFreq.classList.add("circulo-indicador", "circulo-verde")
-                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}Ghz`;
+                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
                     }
                 }
 
@@ -770,21 +770,21 @@ function graficoEspecifico(button) {
                         console.log(" to no if do medio")
                         circuloRamDisponivel.classList.add("circulo-indicador", "circulo-amarelo")
                         // Atualizando os valores no HTML
-                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}Gb`;
+                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
                     }
 
                     else if (ramDisponivel > ramDisponivelLimite) {
                         console.log(" to no if do  passou do limite")
                         circuloRamDisponivel.classList.add("circulo-indicador", "circulo-vermelho")
                         // Atualizando os valores no HTML
-                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}Gb`;
+                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
                     }
 
                     else {
                         console.log("to no if do  suave")
                         circuloRamDisponivel.classList.add("circulo-indicador", "circulo-verde")
                         // Atualizando os valores no HTML
-                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}Gb`;
+                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
                     }
                 }
 
@@ -842,21 +842,21 @@ function graficoEspecifico(button) {
                         console.log(" to no if do medio")
                         circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-amarelo")
                         // Atualizando os valores no HTML
-                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}Gb`;
+                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
                     }
 
                     else if (discoDisponivel > discoDisponivelLimite) {
                         console.log(" to no if do  passou do limite")
                         circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-vermelho")
                         // Atualizando os valores no HTML
-                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}Gb`;
+                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
                     }
 
                     else {
                         console.log("to no if do  suave")
                         circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-verde")
                         // Atualizando os valores no HTML
-                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}Gb`;
+                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
                     }
                 }
 
@@ -878,21 +878,21 @@ function graficoEspecifico(button) {
                         console.log(" to no if do medio")
                         circuloRedeEnviada.classList.add("circulo-indicador", "circulo-amarelo")
                         // Atualizando os valores no HTML
-                        document.getElementById("redeEnviada").innerHTML = `${redeEnviada}`;
+                        document.getElementById("redeEnviada").innerHTML = `${(redeEnviada / (1024 * 1024)).toFixed(2)}MB/s`; //bytes enviados por segundo
                     }
 
                     else if (redeEnviada > redeEnviadaLimite) {
                         console.log(" to no if do  passou do limite")
                         circuloRedeEnviada.classList.add("circulo-indicador", "circulo-vermelho")
                         // Atualizando os valores no HTML
-                        document.getElementById("redeEnviada").innerHTML = `${redeEnviada}`;
+                        document.getElementById("redeEnviada").innerHTML = `${(redeEnviada / (1024 * 1024)).toFixed(2)}MB/s`;
                     }
 
                     else {
                         console.log("to no if do  suave")
                         circuloRedeEnviada.classList.add("circulo-indicador", "circulo-verde")
                         // Atualizando os valores no HTML
-                        document.getElementById("redeEnviada").innerHTML = `${redeEnviada}`;
+                        document.getElementById("redeEnviada").innerHTML = `${(redeEnviada / (1024 * 1024)).toFixed(2)}MB/s`;
                     }
                 }
 
@@ -914,21 +914,21 @@ function graficoEspecifico(button) {
                         console.log(" to no if do medio")
                         circuloRedeRecebida.classList.add("circulo-indicador", "circulo-amarelo")
                         // Atualizando os valores no HTML
-                        document.getElementById("redeRecebida").innerHTML = `${redeRecebida}`;
+                        document.getElementById("redeRecebida").innerHTML = `${(redeRecebida / (1024 * 1024)).toFixed(2)}MB/s`;
                     }
 
                     else if (redeRecebida > redeRecebidaLimite) {
                         console.log(" to no if do  passou do limite")
                         circuloRedeRecebida.classList.add("circulo-indicador", "circulo-vermelho")
                         // Atualizando os valores no HTML
-                        document.getElementById("redeRecebida").innerHTML = `${redeRecebida}`;
+                        document.getElementById("redeRecebida").innerHTML = `${(redeRecebida / (1024 * 1024)).toFixed(2)}MB/s`;
                     }
 
                     else {
                         console.log("to no if do  suave")
                         circuloRedeRecebida.classList.add("circulo-indicador", "circulo-verde")
                         // Atualizando os valores no HTML
-                        document.getElementById("redeRecebida").innerHTML = `${redeRecebida}`;
+                        document.getElementById("redeRecebida").innerHTML = `${(redeRecebida / (1024 * 1024)).toFixed(2)}MB/s`;
                     }
                 }
 
