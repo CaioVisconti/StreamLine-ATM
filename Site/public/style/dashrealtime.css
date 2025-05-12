@@ -177,6 +177,7 @@ header {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    flex-direction: column;
     margin: 10px;
     border-radius: 10px;
 }
@@ -188,27 +189,27 @@ header {
 }
 
 .critico {
-    background: rgba(226, 76, 76, 0.39);
+    background: rgba(226, 76, 76, 0.622);
 }
 
 .medio {
-    background: rgba(221, 219, 92, 0.39);
+    background: rgba(221, 219, 92, 0.622);
 }
 
 .bom {
-    background: rgba(120, 221, 92, 0.39);
+    background: rgba(120, 221, 92, 0.622);
 }
 
 #critico {
-    background: rgba(226, 76, 76, 0.39);
+    background: rgba(226, 76, 76, 0.622);
 }
 
 #medio {
-    background: rgba(221, 219, 92, 0.39);
+    background: rgba(221, 219, 92, 0.622);
 }
 
 #bom {
-    background: rgba(120, 221, 92, 0.39);
+    background: rgba(120, 221, 92, 0.622);
 }
 
 /* .grafico-wrapper{

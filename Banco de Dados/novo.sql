@@ -132,12 +132,13 @@ INSERT INTO componentes (nome, descricao, tipo, unidadeMedida, funcao) VALUES
   ('REDE', 'RECEBIDA', 'REDERecebida', 'Bytes', 'net_io_counters.bytes_recv'),
   ('REDE', 'ENVIADA', 'REDEEnviada', 'Bytes', 'net_io_counters.bytes_sent'),
   ('PROCESSOS', 'DESATIVADOS', 'PROCESSOSDesativado', 'Unidades', 'process_iter.desativados'),
-  ('PROCESSOS', 'ATIVOS', 'PROCESSOSAtivos', 'Unidades', 'process_iter.ativos'),
+  ('PROCESSOS', 'ATIVOS', 'PROCESSOSAtivos', 'Unidades', 'process_iter.ativos');
 
 -- Inserindo ATMs
 INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM, fkAgencia) VALUES 
-('ATM007', 'BB 7000', '192.168.1.7', '00:1B:44:11:3A:10', 'Ubuntu 21.9', 1, 1),
-('ATM002', 'BB 7000', '192.168.1.1', '3c:21:9c:81:57:22', 'Windows 11', 1, 1);
+('ATM001', 'BB 7000', '192.168.1.1', '00:1B:44:11:3A:10', 'Ubuntu 21.9', 1, 1),
+('ATM002', 'BB 7000', '192.168.1.2', '3c:21:9c:81:57:22', 'Windows 11', 1, 1),
+('ATM003', 'BB 7000', '192.168.1.3', '20:c1:9b:5e:4e:d0', 'Windows 11', 1, 1); -- Notebook Gabriel
 
 -- Inserindo parametros para os ATMs
 INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES 
@@ -151,9 +152,6 @@ INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES
   (80.0, CURDATE(), 8, 1),
   (600, CURDATE(), 9, 1), 
   (600, CURDATE(), 10, 1),
-  (300, CURDATE(), 11, 1),
-  (300, CURDATE(), 12, 1),
-  (300, CURDATE(), 13, 1),
   (70.0, CURDATE(), 1, 2),
   (80.0, CURDATE(), 2, 2),
   (85.0, CURDATE(), 3, 2),
@@ -163,10 +161,7 @@ INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES
   (10.0, CURDATE(), 7, 2),
   (80.0, CURDATE(), 8, 2),
   (600, CURDATE(), 9, 2), 
-  (600, CURDATE(), 10, 2),
-  (300, CURDATE(), 11, 2),
-  (300, CURDATE(), 12, 2),
-  (300, CURDATE(), 13, 2);
+  (600, CURDATE(), 10, 2);
 
 -- Criação dos usuários e permissões
 CREATE USER IF NOT EXISTS "rootPI"@"%" IDENTIFIED BY "Urubu100";
@@ -178,3 +173,145 @@ GRANT SELECT ON streamline.parametro TO "userPython"@"%";
 GRANT INSERT ON streamline.captura TO "userPython"@"%";
 GRANT INSERT ON streamline.alerta TO "userPython"@"%";
 FLUSH PRIVILEGES;
+
+-- Criação da View Parametrização
+CREATE VIEW parametrizacao AS 
+SELECT p.*, atm.hostname, atm.macAdress, componentes.tipo,  componentes.unidadeMedida, componentes.funcao
+FROM parametro AS p 
+JOIN atm ON p.fkAtm = atm.idAtm 
+JOIN componentes ON componentes.idComponentes = p.fkComponente;
+
+
+-- Criação das Views Lista de Atm com XPTO alerta
+CREATE OR REPLACE VIEW viewCriticoLista AS
+WITH severidade_alertas AS (
+    SELECT 
+        p.fkAtm,
+        CASE 
+            WHEN alerta.valor > p.limite THEN 'critico'
+            WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
+            ELSE 'baixo'
+        END AS nivel
+    FROM alerta
+    JOIN parametro p ON alerta.fkParametro = p.idParametro
+    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 10
+)
+SELECT 
+    fkAtm AS fkAtmCritico
+FROM (
+    SELECT fkAtm, MAX(
+        CASE nivel
+            WHEN 'critico' THEN 3
+            WHEN 'medio' THEN 2
+            ELSE 1
+        END
+    ) AS severidade
+    FROM severidade_alertas
+    GROUP BY fkAtm
+) AS resultado
+WHERE severidade = 3;
+
+
+-- View para ATMs em situação média
+CREATE OR REPLACE VIEW viewMediaLista AS
+WITH severidade_alertas AS (
+    SELECT 
+        p.fkAtm,
+        CASE 
+            WHEN alerta.valor > p.limite THEN 'critico'
+            WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
+            ELSE 'baixo'
+        END AS nivel
+    FROM alerta
+    JOIN parametro p ON alerta.fkParametro = p.idParametro
+    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 10
+)
+SELECT
+    fkAtm AS fkAtmMedio
+FROM (
+    SELECT fkAtm, MAX(
+        CASE nivel
+            WHEN 'critico' THEN 3
+            WHEN 'medio' THEN 2
+            ELSE 1
+        END
+    ) AS severidade
+    FROM severidade_alertas
+    GROUP BY fkAtm
+) AS resultado
+WHERE severidade = 2;
+
+-- Criação das Views que retornam quantos atm estão com XPTO alerta
+
+-- View com o total de atms
+CREATE OR REPLACE VIEW totalAtms AS
+SELECT 
+    COUNT(atm.idAtm) AS totalAtms
+FROM atm;
+
+SELECT * FROM totalAtms;
+
+
+-- View para ATMs em situação média
+CREATE OR REPLACE VIEW viewMedia AS
+WITH severidade_alertas AS (
+    SELECT 
+        p.fkAtm,
+        CASE 
+            WHEN alerta.valor > p.limite THEN 'critico'
+            WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
+            ELSE 'baixo'
+        END AS nivel
+    FROM alerta
+    JOIN parametro p ON alerta.fkParametro = p.idParametro
+    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 10
+)
+SELECT COUNT(*) AS atmsMedios
+FROM (
+    SELECT fkAtm, MAX(
+        CASE nivel
+            WHEN 'critico' THEN 3
+            WHEN 'medio' THEN 2
+            ELSE 1
+        END
+    ) AS severidade
+    FROM severidade_alertas
+    GROUP BY fkAtm
+) AS resultado
+WHERE severidade = 2;
+
+
+-- View para ATMs em situação crítico
+CREATE OR REPLACE VIEW viewCritico AS
+WITH severidade_alertas AS (
+    SELECT 
+        p.fkAtm,
+        CASE 
+            WHEN alerta.valor > p.limite THEN 'critico'
+            WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
+            ELSE 'baixo'
+        END AS nivel
+    FROM alerta
+    JOIN parametro p ON alerta.fkParametro = p.idParametro
+    WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 10
+)
+SELECT COUNT(*) AS atmsCritico
+FROM (
+    SELECT fkAtm, MAX(
+        CASE nivel
+            WHEN 'critico' THEN 3
+            WHEN 'medio' THEN 2
+            ELSE 1
+        END
+    ) AS severidade
+    FROM severidade_alertas
+    GROUP BY fkAtm
+) AS resultado
+WHERE severidade = 3;
+
+-- View para ATMs em situação boa
+CREATE OR REPLACE VIEW viewBom AS
+SELECT 
+    (select * from totalAtms) - ((SELECT * FROM viewCritico) + (SELECT * FROM viewMedia)) AS atmsSemAlertas
+FROM atm
+LIMIT 1;

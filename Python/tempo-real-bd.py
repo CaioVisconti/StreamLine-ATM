@@ -13,25 +13,23 @@ def conectar():
         host="localhost",
         user="userPython",
         password="Urubu100",
-        database="streamline_quente",
+        database="streamline",
     )
 
-hostname = socket.gethostname()
 mac = get_mac_address()
 
-print("Hostname:", hostname)
 print("MAC Address:", mac)
 
 def validar_atm():
     conn = conectar()
     cursor = conn.cursor()
-    query = "SELECT fkAtm FROM parametrizacao WHERE hostname = %s AND macAdress = %s"
-    cursor.execute(query, (hostname, mac))
+    query = "SELECT fkAtm, hostname FROM parametrizacao WHERE macAdress = %s"
+    cursor.execute(query, (mac, ))
     resultado = cursor.fetchone()
     conn.close()
 
     if resultado:
-        print(f"\n🔹 Bem-vindo, {hostname}! Monitoramento iniciado. 🔹\n")
+        print(f"\n🔹 Bem-vindo, {mac}! Monitoramento iniciado. 🔹\n")
         return resultado[0]
     else:
         print("\n❌ Este ATM não está registrado no banco de dados. ❌")
@@ -130,7 +128,7 @@ if fkAtm:
                             print("✅ Inserção em 'captura' realizada com sucesso!")
                             if valor > limite or (valor >= (limite - 10.0) and valor <= limite):
                                 cursor.execute("""
-                                    INSERT INTO alerta (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
+                                    INSERT INTO alerta (valor, dtHoraAbertura, fkParametro) VALUES (%s, NOW(), %s)
                                 """, (valor, fkParametro))
                                 conn.commit()
                                 print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
