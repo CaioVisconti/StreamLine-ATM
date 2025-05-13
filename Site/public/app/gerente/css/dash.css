@@ -126,3 +126,10 @@ body{
     color: white;
     font-weight: bold;
 }
+
+.botao{
+    z-index: -1;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
