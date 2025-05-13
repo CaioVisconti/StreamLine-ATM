@@ -99,7 +99,7 @@ body{
 }
 
 .kpi-individual{
-    background-color: rgba(83, 83, 83, 0.39);
+    background-color: rgba(107, 107, 107, 0.39);
     border-radius: 8px;
 }
 
@@ -110,6 +110,13 @@ body{
 }
 
 .conteudo{
-    background-color: rgba(83, 83, 83, 0.39);
+    background-color: rgba(107, 107, 107, 0.39);
     border-radius: 8px;
+}
+
+.tituloGrafico h1{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
 }

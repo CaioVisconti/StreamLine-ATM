@@ -13,9 +13,9 @@ from datetime import datetime
 def conectar():
     return mysql.connector.connect(
         host="localhost",
-        user="userPython",
-        password="Urubu100",
-        database="streamline_quente",
+        user="rootPI",
+        password="Urubu#100",
+        database="streamline",
     )
 
 hostname = socket.gethostname()
@@ -143,20 +143,20 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
                         leitura[tipo_componente] = valor
                         if "Total" not in tipo_componente and "Disponivel" not in tipo_componente:
                             leitura[f"limite {tipo_componente}"] = limite
-                            leitura[f"alerta {tipo_componente}"] = valor > limite
+                            # leitura[f"alerta {tipo_componente}"] = valor > limite
 
                         if valor is not None: # Verifica se o valor coletado não é None
                             # Insere na tabela captura
                             print("✅ Inserção em 'captura' realizada com sucesso!")
                             # Após inserir o valor na tabela captura, o código verifica se o valor coletado excede  o limite configurado para aquele parâmetro 
-                            if valor > limite:
-                                cursor.execute("""
-                                    INSERT INTO alerta (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
-                                """, (valor, fkParametro))
-                                conn.commit()
-                                print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
-                            else: # Se não passou do limite, ele imprime na tela que o valor está dentro do limite
-                                print("🟢 Valor dentro do limite.")
+                            # if valor > limite:
+                            #     # cursor.execute("""
+                            #     #     INSERT INTO alerta (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
+                            #     # """, (valor, fkParametro))
+                            #     # conn.commit()
+                            #     print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
+                            # else: # Se não passou do limite, ele imprime na tela que o valor está dentro do limite
+                            print("🟢 Valor dentro do limite.")
 
                         else: # Se o valor for None
                             print("⚠️ Valor inválido (None). Inserção ignorada.")

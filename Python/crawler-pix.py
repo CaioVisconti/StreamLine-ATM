@@ -3,6 +3,7 @@ import requests
 import tempfile
 import os
 import boto3
+from datetime import datetime
 
 def lambda_handler(event, context):
     url = "https://olinda.bcb.gov.br/olinda/servico/Pix_DadosAbertos/versao/v1/odata/EstatisticasTransacoesPix(Database=@Database)?@Database='202503'&$top=500&$format=json&$select=AnoMes,PAG_PFPJ,REC_PFPJ,PAG_REGIAO,REC_REGIAO,PAG_IDADE,REC_IDADE,FORMAINICIACAO,NATUREZA,FINALIDADE,VALOR,QUANTIDADE"
@@ -42,7 +43,7 @@ def lambda_handler(event, context):
             transacoes_renomeadas.append(transacao) # adiciona a nova lista
 
 
-        nome_arquivo = os.path.join(tempfile.gettempdir(), 'dados.json')
+        nome_arquivo = os.path.join(tempfile.gettempdir(), f'dados_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json')
 
         # Salva o novo JSON com campos renomeados
         with open(nome_arquivo, mode='wt') as f:
@@ -53,8 +54,8 @@ def lambda_handler(event, context):
 
         s3.upload_file(
             Filename=nome_arquivo, # Caminho do arquivo local que será enviado
-            Bucket='raw-teste-pix', # Nome do bucket
-            Key='dados.json' # Caminho (chave) dentro do bucket onde o arquivo será salvo (pasta 'pix/')
+            Bucket='braw-streamline', # Nome do bucket
+            Key=f'dados_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json' # Caminho (chave) dentro do bucket onde o arquivo será salvo (pasta 'pix/')
         )
 
         print("Arquivo salvo com sucesso!")
