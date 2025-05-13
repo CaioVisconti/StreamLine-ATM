@@ -58,7 +58,7 @@ function exibirAtms() {
                         console.log(json[i])
                         lista.push(i)
                         // divAtms.innerHTML += `<li><button onclick="graficoEspecifico(this)" data-valor=${i + 1}>ATM ${i + 1}</button> <div id="${i + 1}"></div></li>`
-                        divAtms.innerHTML += `<li><button onclick="graficoEspecifico(this)" data-valor=${i + 1}>ATM ${i + 1}</button> <div id="${i + 1}" class="status bom"></div></li>`
+                        divAtms.innerHTML += `<li><button onclick="obterDados(this)" data-valor=${i + 1}>ATM ${i + 1}</button> <div id="${i + 1}" class="status bom"></div></li>`
                     }
                 })
         })
@@ -621,19 +621,36 @@ function verGraficos(id) {
 
 
 let valorTeste;
+let valorSelecionado = null;
+    
 
-function graficoEspecifico(button) {
-    const metricas = document.getElementById("metricasdiv");
-    const graficos = document.getElementById("graficoAtms");
-    const componentes = document.getElementById("graficoComponentes");
+function obterDados(button) {
+
+        const metricas = document.getElementById("metricasdiv");
+        const graficos = document.getElementById("graficoAtms");
+        const componentes = document.getElementById("graficoComponentes");
+
+        metricas.style.display = "flex";
+        graficos.style.display = "none";
+        componentes.style.display = "none";
+
+    
+        const valor = button.getAttribute("data-valor");
+        valorTeste = button.getAttribute("data-valor");
+        valorSelecionado = valor; // Guarda para reutilizar no intervalo
+        console.log("Valor selecionado:", valor);
 
 
-    const valor = button.getAttribute("data-valor");
-    valorTeste = button.getAttribute("data-valor");
-    console.log("Valor selecionado:", valor);
+        buscarDados();
 
-    function obterDados() {
-        fetch(`http://localhost:3333/tempoReal/monitoramento/${valor}`, {
+}
+
+
+function buscarDados() {
+
+        if (!valorSelecionado) return;
+
+        fetch(`http://localhost:3333/tempoReal/monitoramento/${valorSelecionado}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -642,8 +659,7 @@ function graficoEspecifico(button) {
             .then(res => res.json())
             .then(json => {
                 console.log(json);
-                const ultimoDado = json.dados[json.dados.length - 1]; // pega o último item do array
-                const todasAsClasses = ["circulo-verde", "circulo-amarelo", "circulo-vermelho", "circulo-cinza"];
+
                 const circuloCpuPercentual = document.getElementById("circuloCpu")
                 const circuloCpuFreq = document.getElementById("circuloCpuFrequencia")
                 const circuloRamPercentual = document.getElementById("circuloRam")
@@ -654,7 +670,55 @@ function graficoEspecifico(button) {
                 const circuloRedeRecebida = document.getElementById("circuloRedeRecebida")
                 const circuloProcessosAtivos = document.getElementById("circuloProcessosAtivos")
                 const circuloProcessosDesativados = document.getElementById("circuloProcessosDesativados")
+                const todasAsClasses = ["circulo-verde", "circulo-amarelo", "circulo-vermelho", "circulo-cinza"];
+       
+                // ve se tem dados antes de continuar
+                if (!json.dados || json.dados.length === 0) {
+                    circuloCpuPercentual.classList.remove(...todasAsClasses);
+                    circuloCpuPercentual.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("porcentagemCpu").innerHTML = `N/A`;
 
+                    circuloCpuFreq.classList.remove(...todasAsClasses);
+                    circuloCpuFreq.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("frequenciaCpu").innerHTML = `N/A`;
+
+                    circuloRamPercentual.classList.remove(...todasAsClasses);
+                    circuloRamPercentual.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("porcentagemRam").innerHTML = `N/A`;
+
+                    circuloRamDisponivel.classList.remove(...todasAsClasses);
+                    circuloRamDisponivel.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("disponivelRam").innerHTML = `N/A`;
+
+                    circuloDiscoUsado.classList.remove(...todasAsClasses);
+                    circuloDiscoUsado.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("discoUsado").innerHTML = `N/A`;
+
+                    circuloDiscoDisponivel.classList.remove(...todasAsClasses);
+                    circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("discoDisponivel").innerHTML = `N/A`;
+
+                    circuloRedeEnviada.classList.remove(...todasAsClasses);
+                    circuloRedeEnviada.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("redeEnviada").innerHTML = `N/A`;
+
+                    circuloRedeRecebida.classList.remove(...todasAsClasses);
+                    circuloRedeRecebida.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("redeRecebida").innerHTML = `N/A`;
+
+                    circuloProcessosAtivos.classList.remove(...todasAsClasses);
+                    circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("processosAtivos").innerHTML = `N/A`;
+
+                    circuloProcessosDesativados.classList.remove(...todasAsClasses);
+                    circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-cinza")
+                    document.getElementById("processosDesativados").innerHTML = `N/A`;
+                    
+                    // alert("Sem dados para exibir.");
+                    return;
+                }
+                
+                const ultimoDado = json.dados[json.dados.length - 1]; // pega o último item do array
 
                 // o hasOwnProperty() verifica se o objeto (json) tem uma chave com o nome fornecido
                 if (ultimoDado.hasOwnProperty("CPUPercent")) {
@@ -865,7 +929,6 @@ function graficoEspecifico(button) {
                     document.getElementById("discoDisponivel").innerHTML = `N/A`;
                 }
 
-
                 // REDEEnviada
                 if (ultimoDado.hasOwnProperty("REDEEnviada")) {
                     const redeEnviada = ultimoDado.REDEEnviada;
@@ -900,7 +963,6 @@ function graficoEspecifico(button) {
                     circuloRedeEnviada.classList.add("circulo-indicador", "circulo-cinza")
                     document.getElementById("redeEnviada").innerHTML = `N/A`;
                 }
-
 
                 // REDERecebida
                 if (ultimoDado.hasOwnProperty("REDERecebida")) {
@@ -937,9 +999,6 @@ function graficoEspecifico(button) {
                     document.getElementById("redeRecebida").innerHTML = `N/A`;
                 }
 
-
-
-
                 // PROCESSOAtivos
                 if (ultimoDado.hasOwnProperty("PROCESSOSAtivos")) {
                     const processosAtivos = ultimoDado.PROCESSOSAtivos;
@@ -974,7 +1033,6 @@ function graficoEspecifico(button) {
                     circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-cinza")
                     document.getElementById("processosAtivos").innerHTML = `N/A`;
                 }
-
 
                 // PROCESSODesativado
                 if (ultimoDado.hasOwnProperty("PROCESSOSDesativado")) {
@@ -1011,30 +1069,13 @@ function graficoEspecifico(button) {
                     document.getElementById("processosDesativados").innerHTML = `N/A`;
                 }
 
-
+                setTimeout(buscarDados, 4000);
 
             })
             .catch(error => {
                 console.error('Erro ao obter dados:', error);  // Exibe o erro, caso haja algum
             });
-    }
-
-
-    if (metricas.style.display === "none" || metricas.style.display === "") {
-        metricas.style.display = "flex";
-        graficos.style.display = "none";
-        componentes.style.display = "none";
-
-
-        obterDados();
-
-        setInterval(obterDados, 4000);
-
-    } else {
-        metricas.style.display = "none";
-        componentes.style.display = "none";
-        graficos.style.display = "flex";
-    }
+    
 }
 
 
