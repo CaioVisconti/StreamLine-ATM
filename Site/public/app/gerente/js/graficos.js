@@ -46,9 +46,9 @@ new Chart(categoria, {
                 position: "top",
                 align: "center",
                 labels: {
-                color: '#FFFFFF',
-                boxWidth: 10,
-                boxHeight: 10
+                    color: '#FFFFFF',
+                    boxWidth: 10,
+                    boxHeight: 10
                 }
             },
         },
@@ -70,13 +70,13 @@ new Chart(categoria, {
 const incidentes = document.getElementById("chartIncidentes");
 
 const dataChartIncidentes = {
-  labels: ["ATM001", "ATM002", "ATM003", "ATM004", "ATM005"],
-  datasets: [{
-    label: "Quantidade de alertas",
-    data: [65, 59, 46, 39, 28],
-    backgroundColor: "#2A5277",
-    borderRadius: 5 
-  }]
+    labels: ["ATM001", "ATM002", "ATM003", "ATM004", "ATM005"],
+    datasets: [{
+        label: "Quantidade de alertas",
+        data: [65, 59, 46, 39, 28],
+        backgroundColor: "#2A5277",
+        borderRadius: 5
+    }]
 };
 
 
@@ -90,9 +90,9 @@ new Chart(incidentes, {
                 position: "top",
                 align: "center",
                 labels: {
-                color: '#FFFFFF',
-                boxWidth: 10,
-                boxHeight: 10
+                    color: '#FFFFFF',
+                    boxWidth: 10,
+                    boxHeight: 10
                 }
             },
         },
@@ -125,23 +125,21 @@ const labelsChartChamados = [
 ];
 
 const dataTempoChamados = {
-  labels: labelsChartChamados,
-  datasets: [{
-    label: "Quantidade de alertas",
-    data: [65, 59, 46, 39, 28, 30, 56],
-    backgroundColor: "#F19D5E",
-    borderRadius: 5 
-  },
-  {
-    label: "Tempo médio de resolução",
-    data: [60, 58, 69, 42, 40, 35, 40],
-    backgroundColor: "#2A5277",
-    borderRadius: 5,
-    backgroundColor: "#2A5277"
-  }
-]
+    labels: labelsChartChamados,
+    datasets: [{
+        label: "Quantidade de alertas",
+        data: [65, 59, 46, 39, 28, 30, 56],
+        backgroundColor: "#F19D5E",
+        borderRadius: 5
+    },
+    {
+        label: "Tempo médio de resolução",
+        data: [60, 58, 69, 42, 40, 35, 40],
+        borderRadius: 5,
+        backgroundColor: "#2A5277"
+    }
+    ]
 };
-
 
 new Chart(tempoChamados, {
     type: "bar",
@@ -153,9 +151,9 @@ new Chart(tempoChamados, {
                 position: "top",
                 align: "center",
                 labels: {
-                color: '#FFFFFF',
-                boxWidth: 10,
-                boxHeight: 10
+                    color: '#FFFFFF',
+                    boxWidth: 10,
+                    boxHeight: 10
                 }
             },
         },
