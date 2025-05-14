@@ -46,9 +46,10 @@ header {
 .msg-user {
     display: flex;
     font-family: "Inter", sans-serif;
-    height: 50px;
-    width: 80px;
-    font-size: 22px;
+    justify-content: flex-start;
+    height: 20px;
+    width: 50px;
+    font-size: 18px;
     color: #FFFFFF;
 }
 
@@ -122,6 +123,11 @@ header {
 .kpi p {
     font-size: 25px;
     color: white;
+}
+
+.kpi span {
+    font-size: 12px;
+    color: #87C5FF;
 }
 
 .kpi .titulo-kpi {

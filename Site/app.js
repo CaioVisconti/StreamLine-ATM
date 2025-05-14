@@ -23,7 +23,6 @@ var medidasRouter = require("./src/routes/medidas");
 var empresaRouter = require("./src/routes/empresas");
 var tempoRealRouter = require("./src/routes/tempoReal");
 var dashLongoPrazoRouter = require("./src/routes/dashLongoPrazo");
-var apiAws = require("./src/routes/apiAws");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -37,8 +36,6 @@ app.use("/agencias", agenciaRouter);
 app.use("/medidas", medidasRouter);
 app.use("/empresas", empresaRouter);
 app.use("/dashLongoPrazo", dashLongoPrazoRouter);
-app.use("/apiAws", apiAws)
-app.use("/tempoReal", tempoRealRouter);
 app.use("/", indexRouter)
 
 app.listen(PORTA_APP, function () {

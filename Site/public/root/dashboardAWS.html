@@ -15,6 +15,7 @@
     <link rel="icon" href="../public/assets/logo_fundo_branco.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/dashAws.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
 <body>
@@ -22,8 +23,8 @@
         <div class="info-user">
             <div class="foto-user" style="background-image: url(../assets/tecnico.jpg); background-size: cover;"></div>
             <div class="msg-user">
-                <span id="nomeFunc">
-
+                <!-- <span>Olá,</span>
+                <span id="nomeFunc"> -->
                 </span>
             </div>
         </div>
@@ -45,13 +46,14 @@
                 </div>
 
                 <div class="kpi">
-                    <p class="titulo-kpi">Preço Médio dos Serviços</p>
-                    <p>$5</p>
+                    <p class="titulo-kpi">Gasto Mensal Até o Momento</p>
+                    <p>R$245,20</p>
+                    <span>4% a menos que no mês anterior</span>
                 </div>
 
                 <div class="kpi">
-                    <p class="titulo-kpi">Gasto Total Atual</p>
-                    <p>$152</p>
+                    <p class="titulo-kpi">Gasto Total AWS</p>
+                    <p>R$1580,00</p>
                 </div>
             </div>
             <div class="abas-container">
@@ -71,12 +73,12 @@
                 <div class="grafico">
                     <h1>Total de Gastos da Última Semana</h1>
                     <div class="valor-titulo">
-                        <span>$23</span>
+                        <span>R$77</span>
                     </div>
                     <div class="container-servicos">
                         <div class="coluna-servicos">
                             <div class="circulo-indicador" id="ec2">
-                                <span>$12</span>
+                                <span>R$42</span>
                             </div>
                             <div class="rotulo-indicador">
                                 <span>EC2</span>
@@ -84,7 +86,7 @@
                         </div>
                         <div class="coluna-servicos">
                             <div class="circulo-indicador" id="s3">
-                                <span>$8</span>
+                                <span>R$25</span>
                             </div>
                             <div class="rotulo-indicador">
                                 <span>S3</span>
@@ -92,7 +94,7 @@
                         </div>
                         <div class="coluna-servicos">
                             <div class="circulo-indicador" id="lambda">
-                                <span>$3</span>
+                                <span>R$10</span>
                             </div>
                             <div class="rotulo-indicador">
                                 <span>Lambda</span>

@@ -1,8 +1,10 @@
+const nomeUsuario = sessionStorage.NOME_USUARIO;
 
 window.onload = () => {
     carregarGraficos()
     document.getElementById("default").click()
-
+    sessionStorage
+    nomeFunc.innerHTML = nomeUsuario
 }
 
 function carregarGraficos() {
@@ -12,12 +14,12 @@ function carregarGraficos() {
         data: {
             labels: ['EC2', 'S3', 'Lambda'],
             datasets: [{
-                data: [100, 34, 18],
+                data: [580, 284, 216],
                 borderWidth: 1
             }]
         },
         options: {
-            backgroundColor: ['#c0353c7a', '#c5cc5f7a', '#78dd5c7a'],
+            backgroundColor: '#2A5277',
             scales: {
                 y: {
                     beginAtZero: true,
@@ -56,7 +58,7 @@ function carregarGraficos() {
         data: {
             labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai'],
             datasets: [{
-                data: [250, 230, 400, 320, 380],
+                data: [250, 230, 400, 320, 245,20],
                 borderWidth: 1
             }]
         },
@@ -98,9 +100,9 @@ function carregarGraficos() {
     new Chart(graficoPrevisao, {
         type: 'line',
         data: {
-            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
             datasets: [{
-                data: [250, 230, 400, 320, 380, 410],
+                data: [250, 230, 400, 320, 380, 369, 420],
                 borderWidth: 1,
                 borderColor: '#FFFFFF',
                 tension: 0.1,
