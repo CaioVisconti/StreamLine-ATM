@@ -35,6 +35,7 @@ app.use("/gerente", gerenteRouter);
 app.use("/agencias", agenciaRouter);
 app.use("/medidas", medidasRouter);
 app.use("/empresas", empresaRouter);
+app.use("/tempoReal", tempoRealRouter);
 app.use("/dashLongoPrazo", dashLongoPrazoRouter);
 app.use("/", indexRouter)
 
