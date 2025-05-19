@@ -96,6 +96,25 @@ CREATE TABLE IF NOT EXISTS alerta (
   fkParametro INT
 );
 
+
+CREATE TABLE IF NOT EXISTS awsCusto (
+    idCusto INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    inicio DATE,
+    fim DATE,
+    servico VARCHAR(45),
+    custo FLOAT
+);
+
+CREATE TABLE IF NOT EXISTS awsLogs (
+    idLog INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    requestId VARCHAR(155),
+    duracao INT,
+    memoriaUsada INT,
+    statusLog VARCHAR(15),
+    tipoErro VARCHAR(45),
+    dataRegistro DATETIME
+);
+
 -- Inserindo empresas
 INSERT INTO empresa (nome, cnpj, codigo) VALUES
 ('Banco do Brasil', '123456789', 'BB123456'),
