@@ -9,6 +9,8 @@ import psutil
 import time
 import mysql.connector
 from datetime import datetime
+from jira import JIRA 
+from requests.auth import HTTPBasicAuth
 
 def conectar():
     return mysql.connector.connect(
@@ -23,6 +25,11 @@ mac = get_mac_address()
 
 print("Hostname:", hostname)
 print("MAC Address:", mac)
+
+def conectar_jira():
+    options = {'server': 'https://bancostreamline.atlassian.net/'}
+    auth = HTTPBasicAuth("bancostreamline@gmail.com", "")
+    return JIRA(options=options, basic_auth=(auth.username, auth.password))
 
 # Função onde será feito um select no BD para saber se o hostname e o mac adress estão cadastrados
 def validar_atm():
@@ -150,26 +157,34 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
                             print("✅ Inserção em 'captura' realizada com sucesso!")
                             # Após inserir o valor na tabela captura, o código verifica se o valor coletado excede  o limite configurado para aquele parâmetro 
                             if valor <= (limite * 0.1) or valor > limite:
-                                
+    
                                 if valor <= (limite * 0.1):
-                                    categoria = 'Médio'
+                                    categoria = 'Medium'
                                 elif valor > limite:
-                                    categoria = 'Crítico'
+                                    categoria = 'High'
                                 
                                 cursor.execute("""
                                     INSERT INTO alerta (componente, valor, categoria, dtHoraAbertura, fkParametro) VALUES (%s, %s, %s, NOW(), %s)
                                 """, (tipo_componente, valor, categoria, fkParametro))
                                 conn.commit()
-                                print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
                                 
-                            else: # Se não passou do limite, ele imprime na tela que o valor está dentro do limite
+                                print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
+
+                                jira = conectar_jira()
+
+                                issue_fields = {
+                                    'project': {'key': 'G1ALERTAS'},
+                                    'issuetype': {'name': '[System] Incident'},
+                                    'summary': f'Falha de {tipo_componente} no ATM {fkAtm}',
+                                    'description': f'O ATM de ID {fkAtm} apresentou falha no {tipo_componente} no valor de {valor}.',
+                                    'priority': {'name': str(categoria)}
+                                }
+
+                                new_issue = jira.create_issue(fields=issue_fields)
+                                print(f"Issue criado com sucesso: {new_issue.key}")
+
+                            else:
                                 print("🟢 Valor dentro do limite.")
-
-                        else: # Se o valor for None
-                            print("⚠️ Valor inválido (None). Inserção ignorada.")
-
-                    else:
-                        print(f"❌ Parâmetro não encontrado no banco para [{tipo_componente}] ({unidade})")
 
                     conn.close()
 
