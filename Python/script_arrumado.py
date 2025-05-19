@@ -175,7 +175,7 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
                                 issue_fields = {
                                     'project': {'key': 'G1ALERTAS'},
                                     'issuetype': {'name': '[System] Incident'},
-                                    'summary': f'Falha de {tipo_componente} no ATM {fkAtm}',
+                                    'summary': f'ATM {fkAtm} - {tipo_componente} {valor}',
                                     'description': f'O ATM de ID {fkAtm} apresentou falha no {tipo_componente} no valor de {valor}.',
                                     'priority': {'name': str(categoria)}
                                 }
