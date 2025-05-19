@@ -14,7 +14,7 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="rootPI",
-        password="Urubu#100",
+        password="Urubu100",
         database="streamline",
     )
 
@@ -28,8 +28,8 @@ print("MAC Address:", mac)
 def validar_atm():
     conn = conectar()
     cursor = conn.cursor()
-    query = "SELECT fkAtm FROM parametrizacao WHERE hostname = %s AND macAdress = %s"
-    cursor.execute(query, (hostname, mac))
+    query = "SELECT fkAtm FROM parametrizacao WHERE macAdress = %s"
+    cursor.execute(query, (mac, ))
     resultado = cursor.fetchone()
     conn.close()
 
@@ -68,28 +68,22 @@ def coletar_valor(tipo):
         if tipo == 'CPUPercent':
             return psutil.cpu_percent()
         elif tipo == 'CPUFreq':
-            return round(psutil.cpu_freq().current, 2)  # Em GHz
-        elif tipo == 'RAMTotal':
-            return round(psutil.virtual_memory().total / (1024 ** 3), 2)  # Convertendo de bytes para GB
+            return round(psutil.cpu_freq().current, 2)
         elif tipo == 'RAMDisponivel':
             return round(psutil.virtual_memory().available / (1024 ** 3), 2)
         elif tipo == 'RAMPercentual':
             return psutil.virtual_memory().percent
-        elif tipo == 'DISKTotal':
-            return round(psutil.disk_usage('/').total / (1024 ** 3), 2)  
         elif tipo == 'DISKDisponivel':
-            return round(psutil.disk_usage('/').free / (1024 ** 3), 2) 
+            return round(psutil.disk_usage('/').free / (1024 ** 3), 2)
         elif tipo == 'DISKPercentual':
             return psutil.disk_usage('/').percent
         elif tipo == 'REDERecebida':
-            return psutil.net_io_counters().packets_recv  
+            return psutil.net_io_counters().packets_recv
         elif tipo == 'REDEEnviada':
-            return psutil.net_io_counters().packets_sent 
-        elif tipo == 'PROCESSOTotal':
-            return len(psutil.pids())
-        elif tipo == 'PROCESSOAtivos':
+            return psutil.net_io_counters().packets_sent
+        elif tipo == 'PROCESSOSAtivos':
             return sum(1 for p in psutil.process_iter(['status']) if p.info['status'] == 'running')
-        elif tipo == 'PROCESSODesativado':
+        elif tipo == 'PROCESSOSDesativado':
             return sum(1 for p in psutil.process_iter(['status']) if p.info['status'] != 'running')
         else:
             return None
@@ -147,16 +141,29 @@ if fkAtm: # Se a fk for valida, entramos na seguinte função
 
                         if valor is not None: # Verifica se o valor coletado não é None
                             # Insere na tabela captura
+                            
+                            cursor.execute("""
+                                    INSERT INTO captura (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
+                                """, (valor, fkParametro))
+                            conn.commit()
+                            
                             print("✅ Inserção em 'captura' realizada com sucesso!")
                             # Após inserir o valor na tabela captura, o código verifica se o valor coletado excede  o limite configurado para aquele parâmetro 
-                            # if valor > limite:
-                            #     # cursor.execute("""
-                            #     #     INSERT INTO alerta (valor, dtHora, fkParametro) VALUES (%s, NOW(), %s)
-                            #     # """, (valor, fkParametro))
-                            #     # conn.commit()
-                            #     print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
-                            # else: # Se não passou do limite, ele imprime na tela que o valor está dentro do limite
-                            print("🟢 Valor dentro do limite.")
+                            if valor <= (limite * 0.1) or valor > limite:
+                                
+                                if valor <= (limite * 0.1):
+                                    categoria = 'Médio'
+                                elif valor > limite:
+                                    categoria = 'Crítico'
+                                
+                                cursor.execute("""
+                                    INSERT INTO alerta (componente, valor, categoria, dtHoraAbertura, fkParametro) VALUES (%s, %s, %s, NOW(), %s)
+                                """, (tipo_componente, valor, categoria, fkParametro))
+                                conn.commit()
+                                print("🚨 ALERTA GERADO! Inserção em 'alerta' realizada!")
+                                
+                            else: # Se não passou do limite, ele imprime na tela que o valor está dentro do limite
+                                print("🟢 Valor dentro do limite.")
 
                         else: # Se o valor for None
                             print("⚠️ Valor inválido (None). Inserção ignorada.")
