@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard em Tempo Real</title>
+    <title>Dashboard AWS</title>
     <link rel="stylesheet" href="../style/dashAWS.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,9 +23,8 @@
         <div class="info-user">
             <div class="foto-user" style="background-image: url(../assets/tecnico.jpg); background-size: cover;"></div>
             <div class="msg-user">
-                <!-- <span>Olá,</span>
-                <span id="nomeFunc"> -->
-                </span>
+                <span>Olá, <span id="nomeFunc">
+                </span></span>
             </div>
         </div>
         <div class="nav-bar">
@@ -42,18 +41,18 @@
             <div class="kpis">
                 <div class="kpi">
                     <p class="titulo-kpi">Serviço com Maior Impacto Financeiro</p>
-                    <p>EC2</p>
+                    <div id="servicoMaisCaro"></div>
                 </div>
 
                 <div class="kpi">
                     <p class="titulo-kpi">Gasto Mensal Até o Momento</p>
-                    <p>R$245,20</p>
+                    <p id="gastoMensal">R$</p>
                     <span>4% a menos que no mês anterior</span>
                 </div>
 
                 <div class="kpi">
                     <p class="titulo-kpi">Gasto Total AWS</p>
-                    <p>R$1580,00</p>
+                    <p id="gastoTotal">R$</p>
                 </div>
             </div>
             <div class="abas-container">
@@ -73,43 +72,43 @@
                 <div class="grafico">
                     <h1>Total de Gastos da Última Semana</h1>
                     <div class="valor-titulo">
-                        <span>R$77</span>
+                        <span id="gastoTotalSemana">R$</span>
                     </div>
                     <div class="container-servicos">
                         <div class="coluna-servicos">
                             <div class="circulo-indicador" id="ec2">
-                                <span>R$42</span>
+                                <span id="custo">R$</span>
                             </div>
                             <div class="rotulo-indicador">
-                                <span>EC2</span>
+                                <span id="servico"></span>
                             </div>
                         </div>
                         <div class="coluna-servicos">
                             <div class="circulo-indicador" id="s3">
-                                <span>R$25</span>
+                                <span id="custo">R$</span>
                             </div>
                             <div class="rotulo-indicador">
-                                <span>S3</span>
+                                <span id="servico"></span>
                             </div>
                         </div>
                         <div class="coluna-servicos">
                             <div class="circulo-indicador" id="lambda">
-                                <span>R$10</span>
+                                <span id="custo">R$</span>
                             </div>
                             <div class="rotulo-indicador">
-                                <span>Lambda</span>
+                                <span id="servico"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container-grafico" id="Previsao">
-                <div class="grafico">
+                <!-- <div class="grafico">
                     <h1>Gastos Mensais Durante o Último Ano</h1>
                     <div class="grafico-chart">
                         <canvas id="custoMensal"></canvas>
                     </div>
-                </div>
+                </div> -->
                 <div class="grafico">
                     <h1>Tendências de Gastos e Previsão</h1>
                     <div class="grafico-chart">
@@ -120,4 +119,5 @@
         </div>
     </div>
 </body>
+
 </html>
