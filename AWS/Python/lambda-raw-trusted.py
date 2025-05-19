@@ -11,11 +11,13 @@ s3Client = boto3.client('s3')
 jsonEstruturado = []
 leitura = {}
 
-buckets = s3.Bucket('brawstreamline')
+buckets = s3.Bucket('brawstreamline2')
 
-objeto = s3Client.get_object(Bucket='brawstreamline', Key='analiseAWS/Capturas_AWS.json')
+objeto = s3Client.get_object(Bucket='brawstreamline2', Key='analiseAWS/Capturas_AWS.json')
 string = objeto['Body'].read().decode('utf-8')
 response = json.loads(string)
+
+print(response)
 
 i = 0
 for tempo in response['ResultsByTime']:
@@ -24,6 +26,8 @@ for tempo in response['ResultsByTime']:
 
     for grupo in tempo['Groups']:
         servico = grupo.get('Keys')
+        if(servico[0] == "EC2 - Other"):
+            servico[0] = "EC2"
         custo = float(grupo['Metrics']['UnblendedCost'].get('Amount'))
         leitura = {
             "Inicio": inicio,

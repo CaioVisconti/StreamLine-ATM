@@ -17,11 +17,11 @@ i = 0
 for dadoAtual in response:
     Servico = response[i]['Servico']
     if(Servico == ['AWS Lambda']):
-        response[i]['Custo'] * 100
-    elif(Servico == ['Amazon Elastic Compute Cloud - Compute']):
-        response[i]['Custo'] * 200
+        response[i]['Custo'] *= (4 ** 6) * 5.67
+    elif(Servico == ['Amazon Elastic Compute Cloud - Compute'] or Servico == ["EC2 - Other"]):
+        response[i]['Custo'] *= (5 ** 6) * 5.67
     elif(Servico == ['Amazon Simple Storage Service']):
-        response[i]['Custo'] * 150
+        response[i]['Custo'] *= (15 ** 8) * 5.67
     print(response[i])
     i += 1
 

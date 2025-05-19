@@ -22,7 +22,7 @@ response = client.get_cost_and_usage(
         "Values": [
         "AWS Lambda", 
         "Amazon Simple Storage Service", 
-        "Amazon Elastic Compute Cloud - Compute"
+        "EC2 - Other"
         ]
         }
         },
