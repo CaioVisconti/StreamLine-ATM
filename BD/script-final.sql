@@ -195,14 +195,8 @@ INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES
   (0.20, CURDATE(), 8, 4);
 
 -- Criação dos usuários e permissões
-CREATE USER IF NOT EXISTS "rootPI"@"localhost" IDENTIFIED BY "Urubu#100";
-GRANT ALL ON streamline.* TO "rootPI"@"localhost";
-FLUSH PRIVILEGES;
-
-CREATE USER IF NOT EXISTS "userPython"@"%" IDENTIFIED BY "Urubu100";
-GRANT SELECT ON streamline.parametro TO "userPython"@"%";
-GRANT INSERT ON streamline.captura TO "userPython"@"%";
-GRANT INSERT ON streamline.alerta TO "userPython"@"%";
+CREATE USER IF NOT EXISTS "rootPI"@"%" IDENTIFIED BY "Urubu#100";
+GRANT ALL ON streamline.* TO "rootPI"@"%";
 FLUSH PRIVILEGES;
 
 -- Criação da View Parametrização
