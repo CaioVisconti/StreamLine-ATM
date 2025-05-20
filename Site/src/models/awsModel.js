@@ -7,8 +7,8 @@ function buscarDados() {
 }
 
 function buscarKpi1() {
-    const instrucaoSql = `SELECT servico FROM awsCusto WHERE custo = (SELECT max(custo) as maiorCusto FROM awsCusto) LIMIT 1;`
-
+    const instrucaoSql = `SELECT sum(custo) as custoTotal, (SELECT servico FROM awsCusto ORDER BY custo DESC LIMIT 1) AS servico, (SELECT SUM(custo) FROM awsCusto WHERE servico = (SELECT servico FROM awsCusto ORDER BY custo DESC LIMIT 1)) as custoServico FROM awsCusto;`
+    
     return database.executar(instrucaoSql);
 }
 
@@ -19,7 +19,7 @@ function buscarIndicadores() {
 }
 
 function buscarGastoMensal() {
-    const instrucaoSql = `SELECT SUM(custo) as gastoMensal FROM awsCusto WHERE fim >= CURDATE() - INTERVAL 30 DAY AND inicio <= CURDATE();`
+    const instrucaoSql = `SELECT SUM(custo) as gastoMensal, MONTH(fim) AS mes FROM awsCusto WHERE MONTH(fim) = MONTH(CURDATE()) AND YEAR(fim) = YEAR(CURDATE()) GROUP BY mes;`
 
     return database.executar(instrucaoSql);
 }
@@ -30,11 +30,18 @@ function buscarGastoTotal() {
     return database.executar(instrucaoSql);
 }
 
+function buscarDadosCadaMes() {
+    const instrucaoSql = `SELECT gastoMensal, mes FROM (SELECT SUM(custo) AS gastoMensal, MONTHNAME(fim) AS mes FROM awsCusto GROUP BY mes) AS subquery ORDER BY FIELD(mes, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");`
+
+    return database.executar(instrucaoSql)
+}
+
 
 module.exports = {
 buscarDados,
 buscarKpi1,
 buscarIndicadores,
 buscarGastoMensal,
-buscarGastoTotal
+buscarGastoTotal,
+buscarDadosCadaMes
 };

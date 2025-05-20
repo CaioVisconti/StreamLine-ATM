@@ -45,10 +45,20 @@ const buscarGastoTotal = async (req, res) => {
     }
 }
 
+const buscarDadosCadaMes = async (req, res) => {
+    try{
+        const select = await database.buscarDadosCadaMes();
+        return res.status(200).json(select);
+    } catch (error){
+        return res.status(400).json(error.message);
+    }
+}
+
 module.exports = {
     buscarDados,
     buscarKpi1,
     buscarIndicadores,
     buscarGastoMensal,
-    buscarGastoTotal
+    buscarGastoTotal,
+    buscarDadosCadaMes
 }

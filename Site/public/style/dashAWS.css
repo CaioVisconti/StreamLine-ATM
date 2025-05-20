@@ -140,6 +140,10 @@ header {
     font-size: 15px;
 }
 
+.kpi #servicoMaisCaro span{
+    font-size: 20px;
+} 
+
 .abas-container {
     display: flex;
     width: 80%;

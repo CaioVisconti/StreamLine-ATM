@@ -1,8 +1,8 @@
 const nomeUsuario = sessionStorage.NOME_USUARIO;
 
 window.onload = async () => {
-    porNoGrafico();
-    carregarGraficos();
+    plotarDadosNoGrafico();
+    plotarDadosMensais();
     buscarKpi();
     buscarIndicadores();
     buscarGastoMensal();
@@ -11,54 +11,6 @@ window.onload = async () => {
     nomeFunc.innerHTML = nomeUsuario
 }
 
-function carregarGraficos() {
-    const graficoPrevisao = document.getElementById('previsao');
-    new Chart(graficoPrevisao, {
-        type: 'bar',
-        data: {
-            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
-            datasets: [{
-                data: [250, 230, 400, 320, 380, 369, 420],
-                borderWidth: 1,
-                borderColor: '#FFFFFF',
-                tension: 0.1,
-                fill: false
-            }]
-        },
-        options: {
-            backgroundColor: '#2A5277',
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Custo (R$)',
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    },
-                    ticks: {
-                        color: 'white'
-                    }
-                },
-                x: {
-                    title: {
-                        display: false,
-                    },
-                    ticks: {
-                        color: 'white'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
-}
 function mudarAba(event, nomeAba) {
 
     const conteudo = document.getElementsByClassName("container-grafico");
@@ -84,10 +36,34 @@ function buscarKpi() {
         }
     }).then((res) => {
         res.json().then((json) => {
+            let porcentagem = 0;
             if (json[0].servico == "EC2 - Other") {
                 json[0].servico = "EC2"
             }
-            servicoMaisCaro.innerHTML = json[0].servico;
+            porcentagem = (json[0].custoServico / json[0].custoTotal) * 100
+            servicoMaisCaro.innerHTML = `${json[0].servico}`;
+            kpiServico.innerHTML += `<span style="color: #87C5FF">${porcentagem.toFixed(2)}% do gasto total</span>`
+        })
+    })
+    fetch("/aws/buscarGastoCadaMes",{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        res.json().then((json) => {
+            if(json.length > 1){
+                gastoMesAtual = json[json.length - 1].gastoMensal
+                gastoMesAnterior = json[json.length - 2].gastoMensal
+                comparacao = ((gastoMesAtual - gastoMesAnterior) / gastoMesAnterior) * 100
+                mensagem = "a menos"
+                console.log(comparacao.toFixed(2))
+                if(comparacao > 0){
+                    mensagem = "a mais"
+
+                }
+                kpiIndicador.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
+            }
         })
     })
 }
@@ -108,7 +84,7 @@ function buscarIndicadores() {
                     json[i].servico = "Amazon EC2"
                 }
                 if (json[i].servico == "Amazon Simple Storage Service") {
-                    json[i].servico = "Amazon S3"
+                    json[i].servico = "Amazo S3"
                 }
                 servico[i].innerHTML += json[i].servico
             }
@@ -144,7 +120,7 @@ function buscarGastoTotal() {
     })
 }
 
-function porNoGrafico() {
+function plotarDadosNoGrafico() {
     const dadosServicos = []
     const dadosCusto = []
     fetch("/aws/buscarDados", {
@@ -162,7 +138,7 @@ function porNoGrafico() {
                     json[i].servico = "EC2"
                 }
                 dadosServicos.push(json[i].servico)
-                dadosCusto.push(json[i].custo)
+                dadosCusto.push(json[i].custo.toFixed(2))
             }
 
             const graficoTotal = document.getElementById('graficoTotal');
@@ -210,6 +186,68 @@ function porNoGrafico() {
             });
         })
     })
+}
 
-    return [dadosCusto, dadosServicos]
+function plotarDadosMensais() {
+    const gastoMensal = []
+    const mes = []
+    fetch("/aws/buscarGastoCadaMes", {
+        method: "GET",
+        headers: {
+            "Content-Type": "Application/json"
+        }
+    }).then((res) => {
+        res.json().then((json) => {
+            for (var i = 0; i < json.length; i++) {
+                gastoMensal.push(json[i].gastoMensal.toFixed(2))
+                mes.push(json[i].mes)
+            }
+            const graficoPrevisao = document.getElementById('previsao');
+            new Chart(graficoPrevisao, {
+                type: 'bar',
+                data: {
+                    labels: mes,
+                    datasets: [{
+                        data: gastoMensal,
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF',
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    backgroundColor: '#2A5277',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Custo (R$)',
+                                color: 'white',
+                                font: {
+                                    size: 15
+                                }
+                            },
+                            ticks: {
+                                color: 'white'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: false,
+                            },
+                            ticks: {
+                                color: 'white'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        })
+    })
 }

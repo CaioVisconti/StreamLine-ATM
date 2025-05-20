@@ -6,6 +6,10 @@ router.get("/buscarDados", function (req, res) {
     awsController.buscarDados(req, res);
 })
 
+router.get("/buscarGastoCadaMes", function (req, res) {
+    awsController.buscarDadosCadaMes(req, res);
+})
+
 router.get("/buscarKpi1", function (req, res) {
     awsController.buscarKpi1(req, res);
 })
