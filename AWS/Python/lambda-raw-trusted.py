@@ -26,8 +26,6 @@ for tempo in response['ResultsByTime']:
 
     for grupo in tempo['Groups']:
         servico = grupo.get('Keys')
-        if(servico[0] == "EC2 - Other"):
-            servico[0] = "EC2"
         custo = float(grupo['Metrics']['UnblendedCost'].get('Amount'))
         leitura = {
             "Inicio": inicio,
@@ -51,4 +49,4 @@ with open(dadosEstruturados, mode='wt') as f:
 s3Client.upload_file(
     Filename=dadosEstruturados,
     Bucket='btrustedstreamline',
-    Key=f'analiseAWS/Capturas_AWS_{datetime.now()}.json')
+    Key=f'analiseAWS/Capturas_AWS.json')

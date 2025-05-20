@@ -12,8 +12,6 @@ import java.util.List;
 
 public class CsvWriter {
     public ByteArrayOutputStream escreverCsv(List<Captura> listaCaptura) throws IOException {
-        LocalDateTime dataHora = LocalDateTime.now();
-        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
         ByteArrayOutputStream streamSaida = new ByteArrayOutputStream();
         BufferedWriter escritor = new BufferedWriter(new OutputStreamWriter(streamSaida, StandardCharsets.UTF_8));
         CSVPrinter csvPrinter = new CSVPrinter(escritor, CSVFormat.DEFAULT.withHeader(

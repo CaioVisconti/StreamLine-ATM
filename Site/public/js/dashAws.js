@@ -78,15 +78,24 @@ function buscarIndicadores() {
         res.json().then((json) => {
             let custoTotal = 0
             for (let i = 0; i < json.length; i++) {
-                custo[i].innerHTML += json[i].custo.toFixed(2)
                 custoTotal += json[i].custo
                 if (json[i].servico == "EC2 - Other") {
                     json[i].servico = "Amazon EC2"
                 }
                 if (json[i].servico == "Amazon Simple Storage Service") {
-                    json[i].servico = "Amazo S3"
+                    json[i].servico = "Amazon S3"
                 }
-                servico[i].innerHTML += json[i].servico
+                if (json[i].servico == "AmazonCloudWatch") {
+                    json[i].servico = "Amazon Cloud Watch"
+                }
+                indicadores.innerHTML += `<div class="coluna-servicos">
+                                <div class="circulo-indicador">
+                                    <span id="custo">R$${json[i].custo.toFixed(2)}</span>
+                                </div>
+                                <div class="rotulo-indicador">
+                                    <span id="servico">${json[i].servico}</span>
+                                </div>
+                            </div>`
             }
             gastoTotalSemana.innerHTML += custoTotal.toFixed(2);
         })
@@ -136,6 +145,12 @@ function plotarDadosNoGrafico() {
                 }
                 if (json[i].servico == "EC2 - Other") {
                     json[i].servico = "EC2"
+                }
+                if (json[i].servico == "AWS Lambda") {
+                    json[i].servico = "Lambda"
+                }
+                if (json[i].servico == "AmazonCloudWatch") {
+                    json[i].servico = "Amazon Cloud Watch"
                 }
                 dadosServicos.push(json[i].servico)
                 dadosCusto.push(json[i].custo.toFixed(2))
@@ -202,6 +217,7 @@ function plotarDadosMensais() {
                 gastoMensal.push(json[i].gastoMensal.toFixed(2))
                 mes.push(json[i].mes)
             }
+
             const graficoPrevisao = document.getElementById('previsao');
             new Chart(graficoPrevisao, {
                 type: 'bar',

@@ -73,31 +73,7 @@
                     <div class="valor-titulo">
                         <span id="gastoTotalSemana">R$</span>
                     </div>
-                    <div class="container-servicos">
-                        <div class="coluna-servicos">
-                            <div class="circulo-indicador" id="ec2">
-                                <span id="custo">R$</span>
-                            </div>
-                            <div class="rotulo-indicador">
-                                <span id="servico"></span>
-                            </div>
-                        </div>
-                        <div class="coluna-servicos">
-                            <div class="circulo-indicador" id="s3">
-                                <span id="custo">R$</span>
-                            </div>
-                            <div class="rotulo-indicador">
-                                <span id="servico"></span>
-                            </div>
-                        </div>
-                        <div class="coluna-servicos">
-                            <div class="circulo-indicador" id="lambda">
-                                <span id="custo">R$</span>
-                            </div>
-                            <div class="rotulo-indicador">
-                                <span id="servico"></span>
-                            </div>
-                        </div>
+                    <div class="container-servicos" id="indicadores">
                     </div>
                 </div>
             </div>
@@ -108,7 +84,7 @@
                         <canvas id="custoMensal"></canvas>
                     </div>
                 </div> -->
-                <div class="grafico">
+                <div class="grafico" id="graficoPrevisao">
                     <h1>Tendências de Gastos e Previsão</h1>
                     <div class="grafico-chart">
                         <canvas id="previsao"></canvas>

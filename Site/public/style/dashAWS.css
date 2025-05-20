@@ -176,6 +176,13 @@ header {
     height: 100dvh;
 }
 
+.container-grafico, #Previsao {
+    display: flex;
+    justify-content: center;
+    width: 95vw;
+    height: 100dvh;
+}
+
 .titulo-grafico {
     display: flex;
     align-items: center;
@@ -214,6 +221,17 @@ header {
     padding: 10px 0;
     height: 90%;
     width: 50%;
+    margin: 10px;
+}
+.grafico #graficoPrevisao {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #53535339;
+    border-radius: 10px;
+    padding: 10px 0;
+    height: 90%;
+    width: 100%;
     margin: 10px;
 }
 
@@ -270,7 +288,7 @@ header {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    background-color: #78dd5c39;
+    background-color: #2A5277;
     color: white;
     font-weight: bold;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -278,18 +296,6 @@ header {
 
 .circulo-indicador span {
     font-size: 35px;
-}
-
-#ec2 {
-    background-color: #b63a3a;
-}
-
-#s3 {
-    background-color: #a3a245;
-}
-
-#lambda {
-    background-color: #3a9e42;
 }
 
 .grafico-chart {
