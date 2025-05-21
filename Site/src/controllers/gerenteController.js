@@ -43,6 +43,7 @@ function buscarGraficoTop5(req, res) {
     gerenteModel.buscarGraficoTop5(idAgencia)
         .then((resultado) => {
             if (resultado.length > 0) {
+                console.log("resultado: " + resultado)
                 res.status(200).json(resultado); 
             } else {
                 res.status(204).send("Nenhum resultado encontrado!");
@@ -50,6 +51,7 @@ function buscarGraficoTop5(req, res) {
         })
         .catch((erro) => {
             console.error("Erro na captura do top 5:", erro);
+            console.error("Erro completo:", JSON.stringify(erro));
             res.status(500).json(erro.sqlMessage);
         });
 }

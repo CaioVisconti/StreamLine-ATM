@@ -16,7 +16,7 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="rootPI",
-        password="Urubu100",
+        password="Urubu#100",
         database="streamline",
     )
 

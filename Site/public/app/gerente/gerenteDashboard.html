@@ -25,7 +25,7 @@
     <div class="info-user">
       <div class="foto-user"></div>
       <div class="msg-user">
-          <span id="nomeFunc"></span>
+        <span id="nomeFunc"></span>
       </div>
     </div>
     <div class="nav-bar">
@@ -292,15 +292,16 @@
 <script>
 
   window.onload = function () {
-    exibirKPICriticos(idAgencia);
-    exibirKPIPercentual(idAgencia);
+    exibirKPICriticos();
+    exibirKPIPercentual();
+    plotTop5();
   };
 
   const idAgencia = sessionStorage.ID_AGENCIA
-    let nomeUsuario = sessionStorage.NOME_USUARIO;
-    document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
+  let nomeUsuario = sessionStorage.NOME_USUARIO;
+  document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
 
-  function exibirKPICriticos(idAgencia) {
+  function exibirKPICriticos() {
     fetch(`/gerente/${idAgencia}/buscarKpiCriticos`, {
       method: "GET",
       headers: {
@@ -324,7 +325,7 @@
       });
   }
 
-  function exibirKPIPercentual(idAgencia) {
+  function exibirKPIPercentual() {
     fetch(`/gerente/${idAgencia}/buscarKpiPercentual`, {
       method: "GET",
       headers: {
@@ -347,5 +348,70 @@
         console.error('Erro ao obter KPI percentual de atms bons:', error);
       });
   }
+
+  function plotTop5() {
+    const atm = []
+    const qtdAlertas = []
+
+    fetch(`/gerente/${idAgencia}/buscarGraficoTop5`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then((res) => {
+      res.json().then((json) => {
+        for (var i = 0; i < json.length; i++) {
+          atm.push(json[i].atm)
+          qtdAlertas.push(json[i].qtdAlertas)
+          console.log("push ok")
+        }
+
+        console.log(atm)
+
+        const graficoTop5 = document.getElementById('chartIncidentes');
+
+        new Chart(graficoTop5, {
+          type: 'bar',
+          data: {
+            labels: atm,
+            datasets: [{
+              label: "Quantidade de alertas",
+              data: qtdAlertas, 
+              backgroundColor: "#2A5277",
+              borderRadius: 5
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top",
+                align: "center",
+                labels: {
+                  color: '#FFFFFF',
+                  boxWidth: 10,
+                  boxHeight: 10
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: "#FFFFFF",
+                },
+              },
+              y: {
+                ticks: {
+                  color: "#FFFFFF",
+                },
+                beginAtZero: true
+              },
+            },
+          }
+        });
+      });
+    });
+  }
+
 
 </script>

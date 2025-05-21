@@ -42,23 +42,23 @@ function buscarKpiPercentual(idAgencia) {
 function buscarGraficoTop5(idAgencia) {
 
     let instrucaoSql = `SELECT
-                            COUNT(a.idAlerta) AS total_alertas,
-                            CONCAT("ATM ", idAtm) as dsc_nome_atm
+                            COUNT(a.idAlerta) AS qtdAlertas,
+                            CONCAT("ATM ", idAtm) as atm
                         FROM alerta as a
                         LEFT JOIN parametrizacao AS p
                             ON a.fkParametro = p.idParametro
                         LEFT JOIN atm AS atm
                             ON p.fkAtm = atm.idAtm
                         WHERE
-                            atm.fkAgencia = ${idAgencia};
+                            atm.fkAgencia = ${idAgencia}
                             AND DATE(a.dtHoraAbertura)
                                 BETWEEN DATE_SUB(CURDATE(), INTERVAL 7 DAY)
                                     AND CURDATE()
                             AND categoria in ("High", "Medium")
                         GROUP BY
-                        dsc_nome_atm
+                        atm
                         ORDER BY
-                            total_alertas
+                            qtdAlertas
                         LIMIT 5;`
 
     return database.executar(instrucaoSql);

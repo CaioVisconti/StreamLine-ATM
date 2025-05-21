@@ -67,49 +67,49 @@ new Chart(categoria, {
     },
 });
 
-const incidentes = document.getElementById("chartIncidentes");
+// const incidentes = document.getElementById("chartIncidentes");
 
-const dataChartIncidentes = {
-    labels: ["ATM001", "ATM002", "ATM003", "ATM004", "ATM005"],
-    datasets: [{
-        label: "Quantidade de alertas",
-        data: [65, 59, 46, 39, 28],
-        backgroundColor: "#2A5277",
-        borderRadius: 5
-    }]
-};
+// const dataChartIncidentes = {
+//     labels: ["ATM001", "ATM002", "ATM003", "ATM004", "ATM005"],
+//     datasets: [{
+//         label: "Quantidade de alertas",
+//         data: [65, 59, 46, 39, 28],
+//         backgroundColor: "#2A5277",
+//         borderRadius: 5
+//     }]
+// };
 
 
-new Chart(incidentes, {
-    type: "bar",
-    data: dataChartIncidentes,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: "top",
-                align: "center",
-                labels: {
-                    color: '#FFFFFF',
-                    boxWidth: 10,
-                    boxHeight: 10
-                }
-            },
-        },
-        scales: {
-            x: {
-                ticks: {
-                    color: "#FFFFFF",
-                },
-            },
-            y: {
-                ticks: {
-                    color: "#FFFFFF",
-                },
-            },
-        },
-    },
-});
+// new Chart(incidentes, {
+//     type: "bar",
+//     data: dataChartIncidentes,
+//     options: {
+//         responsive: true,
+//         plugins: {
+//             legend: {
+//                 position: "top",
+//                 align: "center",
+//                 labels: {
+//                     color: '#FFFFFF',
+//                     boxWidth: 10,
+//                     boxHeight: 10
+//                 }
+//             },
+//         },
+//         scales: {
+//             x: {
+//                 ticks: {
+//                     color: "#FFFFFF",
+//                 },
+//             },
+//             y: {
+//                 ticks: {
+//                     color: "#FFFFFF",
+//                 },
+//             },
+//         },
+//     },
+// });
 
 
 const tempoChamados = document.getElementById("chartChamados");
