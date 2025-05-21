@@ -54,12 +54,22 @@ function exibirAtms() {
             res.json()
                 .then(json => {
                     console.log(json)
+                    const menu = document.getElementById('menuATM');
+                    const temScroll = menu.scrollHeight > menu.clientHeight;
+                  
                     for (let i = 0; i < json.length; i++) {
                         console.log(json[i])
                         lista.push(i)
                         // divAtms.innerHTML += `<li><button onclick="graficoEspecifico(this)" data-valor=${i + 1}>ATM ${i + 1}</button> <div id="${i + 1}"></div></li>`
                         divAtms.innerHTML += `<li><button onclick="obterDados(this)" data-valor=${i + 1}>ATM ${i + 1}</button> <div id="${i + 1}" class="status bom"></div></li>`
                     }
+
+                    if (temScroll) {
+                        menu.style.justifyContent = 'flex-start';
+                    } else {
+                        menu.style.justifyContent = 'center';
+                    }
+                    
                 })
         })
         .catch(error => {
@@ -548,10 +558,15 @@ function verGraficos(id) {
         let minimoY;
     
         let minY = Math.min(...dadosMetricas); 
-        minimoY = minY - (minY * 0.20)
 
-        if (minimoY < 0) {
+        if (maxY > limite) {
+            minimoY = limite - (limite * 0.10)
+        }
+        else if (minimoY < 0) {
             minimoY = 0
+        }
+        else{
+            minimoY = minY - (minY * 0.20)
         }
         
         
@@ -1101,59 +1116,64 @@ function exibirKPIs() {
         });
 }
 
+
+
+// gráfico inicial
 function graficoAlertasPorATM() {
-    let fontSize = 20;
-    if (window.innerWidth < 600) {
-        fontSize = 12;
-    }
+    // let fontSize = 20;
+    // if (window.innerWidth < 600) {
+    //     fontSize = 12;
+    // }
 
-    const ctx = document.getElementById('graficoAlertas').getContext('2d');
+        let percent = 23;
+        let bom = 100 - percent
 
-    const nomesATMs = ['ATM 1', 'ATM 2', 'ATM 3', 'ATM 4', 'ATM 5', 'ATM 6', 'ATM 7', 'ATM 8'];
-    const alertas = [3, 1, 0, 1, 0, 2, 0, 1];
+        const ctx = document.getElementById('myChart').getContext('2d');
+        // const gradient = ctx.createLinearGradient(0, 0, 300, 0);
+        // gradient.addColorStop(0, '#00d4ff');
+        // gradient.addColorStop(1, '#00ff88');
 
-    new Chart(ctx, {
-        type: 'bar',
+        // plugin personalizado para centralizar texto pq o externo n funciona nas versões recentes do chart 
+
+        Chart.register({
+        id: 'centerText',
+        beforeDraw: function(chart) {
+            const { width, height, ctx } = chart;
+            ctx.restore();
+            const fontSize = 25;
+            ctx.font = fontSize + "px Arial";
+            ctx.fillStyle = "#ffffff";
+            ctx.textBaseline = "middle";
+
+            const text = bom + "%";
+            const textX = Math.round((width - ctx.measureText(text).width) / 2);
+            const textY = height / 2;
+
+            ctx.fillText(text, textX, textY);
+            ctx.save();
+        }
+        });
+
+        new Chart(ctx, {
+        type: 'doughnut',
         data: {
-            labels: nomesATMs,
             datasets: [{
-                label: 'Quantidade de Alertas',
-                data: alertas,
-                backgroundColor: 'grey',
-                borderRadius: 5
+            data: [percent, bom],
+            backgroundColor: ['#b63a3a', '#0091ff'],
+            borderWidth: 0,
+            cutout: '65%'
             }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
             plugins: {
-                legend: {
-                    display: false
-                },
-            },
-            title: {
-                display: true,
-                text: 'Alertas',
-                color: 'white',
-                font: {
-                    size: fontSize  // Tamanho da fonte em pixels
-                } // Cor do título 
+            legend: { display: false },
+            tooltip: { enabled: false }
             }
         },
-        x: {
-            title: {
-                display: true,
-                text: 'ATMs',
-                color: 'white',
-                font: {
-                    size: fontSize  // Tamanho da fonte em pixels
-                }
-            },
-            ticks: {
-                color: 'white'
-            }
-        }
-    });
+        plugins: ['centerText'] // ativa o plugin que você criou acima
+        });
+
+
 
 }
 

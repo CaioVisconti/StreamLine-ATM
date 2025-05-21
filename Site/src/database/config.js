@@ -1,5 +1,16 @@
 var mysql = require("mysql2");
 
+
+// Para o backend inserir
+const mysql2 = require('mysql2/promise');
+
+const pool = mysql2.createPool({
+    host: 'localhost',  //db na instancia    
+    user: 'rootPI',
+    password: 'Urubu#100',
+    database: 'streamline'
+});
+
 // CONEXÃO DO BANCO MYSQL SERVER FRIO
 var mySqlConfig = {
     host: process.env.DB_HOST,
@@ -70,5 +81,6 @@ function executar_quente(instrucao) {
 
 module.exports = {
     executar,
-    executar_quente
+    executar_quente,
+    pool
 };

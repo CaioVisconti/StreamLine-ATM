@@ -116,7 +116,17 @@ header {
     justify-content: center;
     width: 100%;
     overflow: auto;
+    box-sizing: border-box;
+    /* padding-top: 10px;  */
     /* border: 1px solid red; */
+}
+
+#menuATM::-webkit-scrollbar {
+    width: 6px;
+}
+#menuATM::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 10px;
 }
 
 #menuATM li {
@@ -129,8 +139,8 @@ header {
 }
 
 #menuATM li .status {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
 
     border-radius: 10px;
     border: none;
@@ -241,11 +251,111 @@ header {
 
 .grafico {
     display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+    justify-content: center;
+    flex-direction: row;
     height: 100%;
+    width: 100%;
     /* border: 1px solid red; */
     align-items: center;
+}
+
+.tudo {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    height: 100%;
+    width: 95%;
+    /* border: 1px solid red; */
+    align-items: center;
+}
+
+.esquerda{
+    display: flex;
+    width: 35%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    /* border: 1px solid green; */
+    color: white;
+    font-size: 20px;
+}
+
+.grafiquinho{
+    width: 60%;
+    height: 50%;
+    border-radius: 30%;
+    /* background-color: #2A5277; */
+}
+
+.direita{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 60%;
+    height: 100%;
+    /* border: 1px solid orange; */
+    color: white;
+    font-size: 20px;
+}
+
+.conteudo_tabela{
+    display: block;
+    width: 100%;
+    height: 70%;
+    /* border: 1px solid fuchsia; */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.conteudo_tabela::-webkit-scrollbar {
+    width: 6px;
+}
+.conteudo_tabela::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 10px;
+}
+
+.tabela{
+    margin: 10px auto; 
+    display: flex;
+    width: 90%;
+    height: 15%;
+    border: 1px solid white;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 15px;
+}
+
+.tabela div{
+    display: flex;
+    /* border: 1px solid whitesmoke; */
+    height: 60%;
+    width: 15%;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+}
+
+.tabela button{
+    display: flex;
+    border: 1px solid whitesmoke;
+    height: 60%;
+    width: 10%;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabela h1{
+    display: flex;
+    /* border: 1px solid whitesmoke; */
+    height: 60%;
+    width: 5%;
+    border-radius: 50%;
+    font-size: 10px;
+    background-color: #b63a3a;
 }
 
 .grafico h1 {

@@ -14,6 +14,8 @@
     <link rel="icon" href="../public/assets/logo_fundo_branco.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@1.0.3/dist/chartjs-plugin-doughnutlabel.min.js"></script>
+
 </head>
 
 <body>
@@ -42,30 +44,25 @@
             <menu id="menuATM">
                 <ul id="divAtms">
 
-                    <!-- <li><button onclick="graficoEspecifico()">ATM 1</button>
-                        <div class="status" id="critico"></div>
-                    </li>
-                    <li><button onclick="graficoEspecifico()">ATM 2</button>
+                    <!-- <li><button onclick="graficoEspecifico()">ATM 8</button>
                         <div class="status" id="medio"></div>
-                    </li>
-                    <li><button onclick="graficoEspecifico()">ATM 3</button>
-                        <div class="status" id="bom"></div>
-                    </li>
-                    <li><button onclick="graficoEspecifico()">ATM 4</button>
-                        <div class="status" id="medio"></div>
-                    </li>
-                    <li><button onclick="graficoEspecifico()">ATM 5</button>
-                        <div class="status" id="bom"></div>
-                    </li>
-                    <li><button onclick="graficoEspecifico()">ATM 6</button>
-                        <div class="status" id="critico"></div>
-                    </li>
-                    <li><button onclick="graficoEspecifico()">ATM 7</button>
-                        <div class="status" id="bom"></div>
                     </li>
                     <li><button onclick="graficoEspecifico()">ATM 8</button>
                         <div class="status" id="medio"></div>
-                    </li> -->
+                    </li>                
+                                        <li><button onclick="graficoEspecifico()">ATM 8</button>
+                        <div class="status" id="medio"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 8</button>
+                        <div class="status" id="medio"></div>
+                    </li>                
+                                        <li><button onclick="graficoEspecifico()">ATM 8</button>
+                        <div class="status" id="medio"></div>
+                    </li>
+                    <li><button onclick="graficoEspecifico()">ATM 8</button>
+                        <div class="status" id="medio"></div>
+                    </li>               -->
+
 
                 </ul>
             </menu>
@@ -99,12 +96,57 @@
 
             <div class="grafico-wrapper">
 
+
+
+
                 <div class="grafico" id="graficoAtms">
-                    <h1>Quantidade de alertas por atm</h1>
+                    <div class="tudo">
+
+                        <div class="esquerda">
+                            <div>Aproveitamento dos ATMs</div>
+                            <div  class="grafiquinho">
+                                <canvas id="myChart"></canvas>
+                            </div>
+                            <div>16 Alertas ao Todo</div>
+                        </div>
+
+
+                        <div class="direita">
+                            <div>Ranking de ATM com mais Alertas</div>
+                            <div class="conteudo_tabela">
+                                <div class="tabela"> 
+                                    <h1></h1> <div>ATM - 3</div> <div>7 Alertas</div> <div>Crítico</div> <button>Acessar</button>
+                                </div>
+
+                                <div class="tabela"> 
+                                    <h1></h1> <div>ATM - 1</div> <div>5 Alertas</div> <div>Crítico</div> <button>Acessar</button>
+                                </div>
+
+                                <div class="tabela"> 
+                                    <h1></h1> <div>ATM - 4</div> <div>3 Alertas</div> <div>Crítico</div> <button>Acessar</button>
+                                </div>
+                                
+                                <div class="tabela"> 
+                                    <h1></h1> <div>ATM - 1</div> <div>1 Alertas</div> <div>Crítico</div> <button>Acessar</button>
+                                </div>
+
+                       
+                                     
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- <h1>Quantidade de alertas por atm</h1>
                     <div class="grafico-mesmo">
                         <canvas id="graficoAlertas"></canvas>
-                    </div>
+                    </div> -->
                 </div>
+                
+
+
+
+
 
                 <div class="linha-metricas" style="display: none;" id="metricasdiv">
                     <!-- Coluna RAM -->

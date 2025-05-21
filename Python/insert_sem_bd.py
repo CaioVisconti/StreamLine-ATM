@@ -1,6 +1,9 @@
-import socket
 import os
 import json
+import tempfile
+import boto3
+from jira import JIRA 
+from requests.auth import HTTPBasicAuth
 import psutil
 import time
 from datetime import datetime
@@ -13,9 +16,14 @@ from getmac import get_mac_address
 mac = get_mac_address()
 print(f"🔎 MAC Address detectado: {mac}")
 
+def conectar_jira():
+    options = {'server': 'https://bancostreamline.atlassian.net/'}
+    auth = HTTPBasicAuth("bancostreamline@gmail.com", "")
+    return JIRA(options=options, basic_auth=(auth.username, auth.password))
+
 def consultar_atm():
     try:
-        url_get = f"http://52.206.225.154:8081/validarAtm/mac/{mac}"
+        url_get = f"http://52.206.225.154:8080/validarAtm/mac/{mac}"
         response = requests.get(url_get)
         if response.status_code == 200:
             dados = response.json()
@@ -66,9 +74,13 @@ def coletar_valor(tipo):
         elif tipo == 'DISKPercentual':
             return psutil.disk_usage('/').percent
         elif tipo == 'REDERecebida':
-            return psutil.net_io_counters().packets_recv
+            valor = psutil.net_io_counters().packets_recv / (1024 * 1024)
+            valor_arredondado = round(valor, 2)
+            return valor_arredondado
         elif tipo == 'REDEEnviada':
-            return psutil.net_io_counters().packets_sent
+            valor = psutil.net_io_counters().packets_sent / (1024 * 1024)
+            valor_arredondado = round(valor, 2)
+            return valor_arredondado
         elif tipo == 'PROCESSOSAtivos':
             return sum(1 for p in psutil.process_iter(['status']) if p.info['status'] == 'running')
         elif tipo == 'PROCESSOSDesativado':
@@ -86,6 +98,8 @@ configuracoes, fkAtm = consultar_atm()
 
 if fkAtm:
     quantidade = int(input("\n📖 Quantas inserções deseja fazer? \nDigite: "))
+
+    capturas = []
 
     print("\nIniciando monitoramento... 🔃")
     time.sleep(2)
@@ -165,13 +179,31 @@ if fkAtm:
                         "fkParametro": registro.get(f"fkParametro {nome_parametro}")
                     })
 
+                    if registro.get(nome_parametro) <= (registro.get(f"limite {nome_parametro}") * 0.1):
+                        categoria = 'Medium'
+                    elif registro.get(nome_parametro) > registro.get(f"limite {nome_parametro}"):
+                        categoria = 'High'
+
+                    jira = conectar_jira()
+
+                    issue_fields = {
+                        'project': {'key': 'G1ALERTAS'},
+                        'issuetype': {'name': '[System] Incident'},
+                        'summary': f'ATM {fkAtm} - {nome_parametro} {registro.get(nome_parametro)}',
+                        'description': f'O ATM de ID {fkAtm} apresentou falha no {nome_parametro} no valor de {registro.get(nome_parametro)}.',
+                        'priority': {'name': str(categoria)}
+                    }
+
+                    new_issue = jira.create_issue(fields=issue_fields)
+                    print(f"Issue criado com sucesso: {new_issue.key}")
+
             if alertas:
                 dicionarioAlerta = {
                     "fkAtm": registro["fkAtm"],
                     "alertas": alertas
                 }
                 try:
-                    url = "http://52.206.225.154:8081/dadosInsert/alerta/0"
+                    url = "http://52.206.225.154:8080/dadosInsert/alerta/0"
                     response = requests.get(url, json=dicionarioAlerta) 
                     if response.status_code == 200:
                         print("🚨 Alerta enviado com sucesso para a API.")
@@ -181,18 +213,31 @@ if fkAtm:
                     print(f"⚠️ Erro ao enviar alerta para a API: {e}")
 
 
-
-
             i += 1
             hora = datetime.now().strftime('%H:%M:%S %d/%m/%Y')
             print(f"\n📅 {i}° Leitura concluída - {hora}")
 
             time.sleep(3)
+            capturas.append(leitura)
 
             # aqui em baixo dá para implementar e enviar para o bucket, bd....
     except KeyboardInterrupt:
         print("\n Monitoramento Interrompido! ⛔")
         interrompido = True
+    
+    if len(capturas) == 7200 or i == quantidade or interrompido:
+        print("\n📂 Gerando Arquivo JSON!\n")
+        caminhoArquivo = os.path.join(tempfile.gettempdir(), f'Capturas_ATM_{fkAtm}_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json')
+        with open (caminhoArquivo, mode="wt") as arquivo: # o python vai abrir o arquivo para leitura (por isso o "w", de write). Se o arq nao existir, ele o cria
+            json.dump(capturas, arquivo, indent=4)
+
+        s3 = boto3.client('s3')
+        s3.upload_file(
+            Filename=caminhoArquivo,
+            Bucket='raw-teste-pix',
+            Key=f'Capturas_ATM_{fkAtm}_{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}.json')
+                
+        print("\n Arquivo JSON Gerado! ✅\n")
 
     print("\n🏁 Monitoramento finalizado com sucesso! ✅\n")
 
