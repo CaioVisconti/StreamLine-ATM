@@ -1,6 +1,69 @@
 const e = require("express");
 const database = require("../database/config");
 
+// Dashboard
+
+function buscarKpiCriticos(idAgencia) {
+
+    let instrucaoSql = `select count(idAlerta) as totalCriticos from alerta as a
+                        join parametrizacao as p
+                        on a.fkParametro = p.idParametro
+                        join atm as atm
+                        on atm.idAtm = p.fkAtm
+                        where categoria = "High" 
+                        and date(dtHoraAbertura) = curdate() 
+                        and fkAgencia = ${idAgencia};`
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarKpiPercentual(idAgencia) {
+
+    let instrucaoSql = `SELECT
+                            CONCAT(
+                                ROUND(
+                                    (COUNT(distinct atm.idAtm)
+                                    - COUNT(distinct case when a.categoria in ('High', 'Medium') THEN atm.idAtm END)       
+                                ) * 100
+                                / COUNT(distinct atm.idAtm)
+                            , 2)
+                            , '%') as percentualBons
+                        from atm
+                        LEFT JOIN parametrizacao p
+                            ON p.fkAtm = atm.idAtm
+                        LEFT JOIN alerta a
+                            ON a.fkParametro = p.idParametro
+                                AND DATE(A.dtHoraAbertura) = CURDATE()
+                        WHERE atm.fkAgencia = ${idAgencia};`
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarGraficoTop5(idAgencia) {
+
+    let instrucaoSql = `SELECT
+                            COUNT(a.idAlerta) AS total_alertas,
+                            CONCAT("ATM ", idAtm) as dsc_nome_atm
+                        FROM alerta as a
+                        LEFT JOIN parametrizacao AS p
+                            ON a.fkParametro = p.idParametro
+                        LEFT JOIN atm AS atm
+                            ON p.fkAtm = atm.idAtm
+                        WHERE
+                            atm.fkAgencia = ${idAgencia};
+                            AND DATE(a.dtHoraAbertura)
+                                BETWEEN DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                                    AND CURDATE()
+                            AND categoria in ("High", "Medium")
+                        GROUP BY
+                        dsc_nome_atm
+                        ORDER BY
+                            total_alertas
+                        LIMIT 5;`
+
+    return database.executar(instrucaoSql);
+}
+
 function buscarKpiTotal(idAgencia) {
 
     let instrucaoSql = `SELECT COUNT(atm.fkAgencia) AS total FROM atm JOIN agencia AS a ON atm.fkAgencia = a.idAgencia WHERE idAgencia = ${idAgencia} GROUP BY a.idAgencia;`
@@ -228,6 +291,11 @@ function removerFuncionario(id) {
 }
 
 module.exports = {
+// Pagina da dashboard
+buscarKpiCriticos,
+buscarKpiPercentual,
+buscarGraficoTop5,
+
 // Página de ATM
     buscarKpiTotal,
     buscarKpiAlerta,

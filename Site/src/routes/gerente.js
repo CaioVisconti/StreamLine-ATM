@@ -3,6 +3,19 @@ var router = express.Router();
 
 var gerenteController = require("../controllers/gerenteController");
 
+// Dashboard
+router.get("/:idAgencia/buscarKpiCriticos", function (req, res) {
+    gerenteController.buscarKpiCriticos(req, res);
+})
+
+router.get("/:idAgencia/buscarKpiPercentual", function (req, res) {
+    gerenteController.buscarKpiPercentual(req, res);
+})
+
+router.get("/:idAgencia/buscarGraficoTop5", function (req, res) {
+    gerenteController.buscarGraficoTop5(req, res);
+})
+
 //Recebendo os dados do html e direcionando para a função cadastrar de gerenteController.js
 router.get("/:idAgencia/buscarKpiTotal", function (req, res) {
     gerenteController.buscarKpiTotal(req, res);

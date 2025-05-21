@@ -1,6 +1,59 @@
 const gerenteModel = require("../models/gerenteModel");
 const { get } = require("../routes/gerente");
 
+// Dashboard
+
+function buscarKpiCriticos(req, res) {
+    let idAgencia = req.params.idAgencia;
+
+    gerenteModel.buscarKpiCriticos(idAgencia)
+        .then((resultado) => {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado); 
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!");
+            }
+        })
+        .catch((erro) => {
+            console.error("Erro na captura da kpi de total criticos:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function buscarKpiPercentual(req, res) {
+    let idAgencia = req.params.idAgencia;
+
+    gerenteModel.buscarKpiPercentual(idAgencia)
+        .then((resultado) => {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado); 
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!");
+            }
+        })
+        .catch((erro) => {
+            console.error("Erro na captura da kpi de percentual:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function buscarGraficoTop5(req, res) {
+    let idAgencia = req.params.idAgencia;
+
+    gerenteModel.buscarGraficoTop5(idAgencia)
+        .then((resultado) => {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado); 
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!");
+            }
+        })
+        .catch((erro) => {
+            console.error("Erro na captura do top 5:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 function buscarKpiTotal(req, res) {
     let idAgencia = req.params.idAgencia;
     
@@ -421,6 +474,11 @@ function removerFuncionario(req, res) {
 }
 
 module.exports = {
+// Pagina da dash
+buscarKpiCriticos,
+buscarKpiPercentual,
+buscarGraficoTop5,
+
 // Página de ATM
     buscarKpiTotal,
     buscarKpiAlerta,
