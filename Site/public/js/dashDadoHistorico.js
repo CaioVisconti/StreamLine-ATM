@@ -72,6 +72,16 @@ const labels = [
       }
 
 function graficoMetricas() {
+  console.log("oie");
+  fetch("https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline/bclient-streamline/ATM_6/ultimaSemana/ultimaSemana/teste", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(resposta => {
+    console.log(resposta);
+  })
 
   let metricas = document.getElementById("chartMetricas");
   let cards = document.getElementById("cards")

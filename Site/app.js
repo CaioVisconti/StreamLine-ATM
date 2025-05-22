@@ -23,12 +23,9 @@ var medidasRouter = require("./src/routes/medidas");
 var empresaRouter = require("./src/routes/empresas");
 var tempoRealRouter = require("./src/routes/tempoReal");
 var dashLongoPrazoRouter = require("./src/routes/dashLongoPrazo");
-<<<<<<< Updated upstream
 var awsRouter = require("./src/routes/aws");
-=======
 var validarAtmRouter = require("./src/routes/validarAtm");
 var dadosInsertRouter = require("./src/routes/dadosInsert");
->>>>>>> Stashed changes
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,12 +40,9 @@ app.use("/medidas", medidasRouter);
 app.use("/empresas", empresaRouter);
 app.use("/tempoReal", tempoRealRouter);
 app.use("/dashLongoPrazo", dashLongoPrazoRouter);
-<<<<<<< Updated upstream
 app.use("/aws", awsRouter);
-=======
 app.use("/validarAtm", validarAtmRouter);
 app.use("/dadosInsert", dadosInsertRouter);
->>>>>>> Stashed changes
 app.use("/", indexRouter)
 
 app.listen(PORTA_APP, function () {

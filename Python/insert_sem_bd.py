@@ -11,8 +11,6 @@ import requests
 from getmac import get_mac_address
 
 
-
-
 mac = get_mac_address()
 print(f"🔎 MAC Address detectado: {mac}")
 
@@ -94,8 +92,6 @@ def coletar_valor(tipo):
 
 configuracoes, fkAtm = consultar_atm()
 
-
-
 if fkAtm:
     quantidade = int(input("\n📖 Quantas inserções deseja fazer? \nDigite: "))
 
@@ -136,7 +132,6 @@ if fkAtm:
                         leitura[f"limite {tipo_componente}"] = limite
                         leitura[f"alerta {tipo_componente}"] = valor > limite
                         leitura[f"fkParametro {tipo_componente}"] = id_parametro
-
 
                     else:
                         print(f"❌ Parâmetro não encontrado no banco para [{tipo_componente}] ({unidade})")
