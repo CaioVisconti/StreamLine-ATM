@@ -45,24 +45,25 @@ function buscarKpi() {
             kpiServico.innerHTML += `<span style="color: #87C5FF">${porcentagem.toFixed(2)}% do gasto total</span>`
         })
     })
-    fetch("/aws/buscarGastoCadaMes",{
+    fetch("/aws/buscarGastoCadaMes", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
         }
     }).then((res) => {
         res.json().then((json) => {
-            if(json.length > 1){
+            if (json.length > 1) {
                 gastoMesAtual = json[json.length - 1].gastoMensal
                 gastoMesAnterior = json[json.length - 2].gastoMensal
-                comparacao = ((gastoMesAtual - gastoMesAnterior) / gastoMesAnterior) * 100
-                mensagem = "a menos"
-                console.log(comparacao.toFixed(2))
-                if(comparacao > 0){
-                    mensagem = "a mais"
-
+                if(gastoMesAnterior >= 1){
+                    comparacao = ((gastoMesAtual - gastoMesAnterior) / gastoMesAnterior) * 100
+                    mensagem = "a menos"
+                    if (comparacao > 0) {
+                        mensagem = "a mais"
+                        
+                    }
+                    kpiIndicador.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
                 }
-                kpiIndicador.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
             }
         })
     })
@@ -77,25 +78,33 @@ function buscarIndicadores() {
     }).then((res) => {
         res.json().then((json) => {
             let custoTotal = 0
-            for (let i = 0; i < json.length; i++) {
-                custoTotal += json[i].custo
-                if (json[i].servico == "EC2 - Other") {
-                    json[i].servico = "Amazon EC2"
+            for (let i = 0; i < json.selectMensal.length; i++) {
+                if(json.select[i] == null){
+                    const custoKey = '{"custo": 0.00}';
+                    json.select[i] = JSON.parse(custoKey) 
                 }
-                if (json[i].servico == "Amazon Simple Storage Service") {
-                    json[i].servico = "Amazon S3"
+                custoTotal += json.select[i].custo
+                if (json.selectMensal[i].servico == "EC2 - Other") {
+                    json.selectMensal[i].servico = "EC2"
                 }
-                if (json[i].servico == "AmazonCloudWatch") {
-                    json[i].servico = "Amazon Cloud Watch"
+                if (json.selectMensal[i].servico == "Amazon Simple Storage Service") {
+                    json.selectMensal[i].servico = "Amazon S3"
                 }
-                indicadores.innerHTML += `<div class="coluna-servicos">
-                                <div class="circulo-indicador">
-                                    <span id="custo">R$${json[i].custo.toFixed(2)}</span>
-                                </div>
-                                <div class="rotulo-indicador">
-                                    <span id="servico">${json[i].servico}</span>
-                                </div>
-                            </div>`
+                if (json.selectMensal[i].servico == "AmazonCloudWatch") {
+                    json.selectMensal[i].servico = "Amazon Cloud Watch"
+                }
+
+                indicadores.innerHTML += `<div class="valores-servicos">
+                            <div class="servico-coluna">
+                                <span>${json.selectMensal[i].servico}</span>
+                            </div>
+                            <div class="gasto-coluna">
+                                <span>R$${json.select[i].custo.toFixed(2)}</span>
+                            </div>
+                            <div class="gasto-coluna">
+                                <span>R$${json.selectMensal[i].custo.toFixed(2)}</span>
+                            </div>
+                        </div>`
             }
             gastoTotalSemana.innerHTML += custoTotal.toFixed(2);
         })
@@ -110,7 +119,6 @@ function buscarGastoMensal() {
         }
     }).then((res) => {
         res.json().then((json) => {
-            console.log(json)
             gastoMensal.innerHTML += json[0].gastoMensal.toFixed(2)
         })
     })
@@ -123,7 +131,6 @@ function buscarGastoTotal() {
         }
     }).then((res) => {
         res.json().then((json) => {
-            console.log("AAAAA", json)
             gastoTotal.innerHTML += json[0].gastoTotal.toFixed(2)
         })
     })

@@ -15,7 +15,7 @@ response = client.get_cost_and_usage(
         'End': diaAtual
     },
     Granularity='DAILY',
-    Metrics=['UnblendedCost'],
+    Metrics=['UnblendedCost', 'UsageQuantity'],
     Filter = {
         "Dimensions": {
         "Key": "SERVICE",
@@ -24,7 +24,8 @@ response = client.get_cost_and_usage(
         "Amazon Simple Storage Service", 
         "EC2 - Other",
         "Amazon Elastic Block",
-        "AmazonCloudWatch"
+        "AmazonCloudWatch",
+        "API GateWay"
         ]
         }
         },

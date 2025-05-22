@@ -41,7 +41,7 @@ public class Main {
         try (Connection conn = ConexaoBanco.conectar();
              Statement query = conn.createStatement();) {
             for (DadosAws dadoAtual : listaDados) {
-                String sqlInsert = String.format("INSERT INTO awsCusto (inicio, fim, servico, custo) VALUES ('%s', '%s', '%s', %s)", dadoAtual.getInicio(), dadoAtual.getFim(), dadoAtual.getServico().getFirst(), (dadoAtual.getCusto()));
+                String sqlInsert = String.format("INSERT INTO awsCusto (inicio, fim, servico, custo) VALUES ('%s', '%s', '%s', %s)", dadoAtual.getInicio(), dadoAtual.getFim(), dadoAtual.getServico().getFirst(), (Math.abs(dadoAtual.getCusto())));
                 query.executeUpdate(sqlInsert);
             }
             System.out.println("Insert na tabela awsCusto foi realizado com sucesso!");

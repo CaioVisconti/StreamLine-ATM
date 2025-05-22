@@ -21,7 +21,8 @@ const buscarKpi1 = async (req, res) => {
 const buscarIndicadores = async (req, res) => {
     try{
         const select = await database.buscarIndicadores();
-        return res.status(200).json(select);
+        const selectMensal = await database.buscarIndicadoresMensal();
+        return res.status(200).json({select, selectMensal});
     } catch (error){
         return res.status(400).json(error.message);
     }

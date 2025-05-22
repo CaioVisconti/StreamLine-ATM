@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Lamba-com-java" />
         <module name="arquivo-jar" />
         <module name="AWS" />
-        <module name="etl-trusted-client" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="etl-trusted-client" target="21" />
+      <module name="Lamba-com-java" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>

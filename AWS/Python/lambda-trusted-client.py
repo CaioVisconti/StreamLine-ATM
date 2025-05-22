@@ -24,6 +24,7 @@ for dadoAtual in response:
         response[i]['Custo'] *= (15 ** 8) * 5.67
     elif(Servico == ['AmazonCloudWatch']):
         response[i]['Custo'] *= (8 ** 6) * 5.67
+
     print(response[i])
     i += 1
 
