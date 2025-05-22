@@ -1125,8 +1125,9 @@ function graficoAlertasPorATM() {
     //     fontSize = 12;
     // }
 
-        let percent = 23;
-        let bom = 100 - percent
+        let percent = 25;
+        let dois = 10;
+        let bom = 100 - (percent + dois)
 
         const ctx = document.getElementById('myChart').getContext('2d');
         // const gradient = ctx.createLinearGradient(0, 0, 300, 0);
@@ -1158,8 +1159,8 @@ function graficoAlertasPorATM() {
         type: 'doughnut',
         data: {
             datasets: [{
-            data: [percent, bom],
-            backgroundColor: ['#b63a3a', '#0091ff'],
+            data: [percent, bom, dois],
+            backgroundColor: ['#b63a3a', 'rgba(120, 221, 92, 0.622)', 'rgba(221, 219, 92, 0.622)'],
             borderWidth: 0,
             cutout: '65%'
             }]
