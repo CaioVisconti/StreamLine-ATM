@@ -146,14 +146,14 @@ header {
 
 .abas-container {
     display: flex;
-    width: 80%;
-    justify-content: flex-start;
+    width: 100%;
+    justify-content: center;
 }
 
 .abas {
     display: flex;
-    justify-content: space-around;
-    width: 30%;
+    justify-content: space-evenly;
+    width: 20%;
 }
 
 .abas button {
@@ -176,12 +176,12 @@ header {
     height: 100dvh;
 }
 
-.container-grafico, #Previsao {
+/* .container-grafico, #Previsao {
     display: flex;
     justify-content: center;
     width: 95vw;
     height: 100dvh;
-}
+} */
 
 .titulo-grafico {
     display: flex;
@@ -283,6 +283,8 @@ header {
     background-color: #1f3944;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    font-size: 14px;
+    text-align: center;
 }
 
 .listagem-servicos, .valores-servicos {
@@ -294,6 +296,7 @@ header {
 .servico-coluna{
     border-right: 2px solid #53535339;
 }
+
 .servico-coluna, .gasto-coluna {
     display: flex;
     justify-content: center;
@@ -308,6 +311,16 @@ header {
 
 .servico-coluna, .gasto-coluna {
     width: 50%;
+}
+
+.gasto-coluna button{
+    cursor: pointer;
+    background-color: #1f3944;
+    height: 30px;
+    width: 60%;
+    border-radius: 10px;
+    color: white;
+    border: none;
 }
 
 .container-indicador {

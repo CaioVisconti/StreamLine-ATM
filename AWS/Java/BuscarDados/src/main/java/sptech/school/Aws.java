@@ -35,8 +35,8 @@ public class Aws {
 
     public static List<OutputLogEvent> logsMapper(CloudWatchLogsClient cloudWatchLogsClient, GetLogEventsRequest getLogEventsRequest) {
         return cloudWatchLogsClient.getLogEvents(getLogEventsRequest).events();
-    }
 
+    }
     public static List<String> listarLogStream(CloudWatchLogsClient client, String logGroupName) {
         List<String> streams = new ArrayList<>();
 

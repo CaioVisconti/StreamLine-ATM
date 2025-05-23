@@ -55,12 +55,12 @@ function buscarKpi() {
             if (json.length > 1) {
                 gastoMesAtual = json[json.length - 1].gastoMensal
                 gastoMesAnterior = json[json.length - 2].gastoMensal
-                if(gastoMesAnterior >= 1){
+                if (gastoMesAnterior >= 1) {
                     comparacao = ((gastoMesAtual - gastoMesAnterior) / gastoMesAnterior) * 100
                     mensagem = "a menos"
                     if (comparacao > 0) {
                         mensagem = "a mais"
-                        
+
                     }
                     kpiIndicador.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
                 }
@@ -79,19 +79,19 @@ function buscarIndicadores() {
         res.json().then((json) => {
             let custoTotal = 0
             for (let i = 0; i < json.selectMensal.length; i++) {
-                if(json.select[i] == null){
+                if (json.select[i] == null) {
                     const custoKey = '{"custo": 0.00}';
-                    json.select[i] = JSON.parse(custoKey) 
+                    json.select[i] = JSON.parse(custoKey)
                 }
                 custoTotal += json.select[i].custo
                 if (json.selectMensal[i].servico == "EC2 - Other") {
                     json.selectMensal[i].servico = "EC2"
                 }
                 if (json.selectMensal[i].servico == "Amazon Simple Storage Service") {
-                    json.selectMensal[i].servico = "Amazon S3"
+                    json.selectMensal[i].servico = "S3"
                 }
                 if (json.selectMensal[i].servico == "AmazonCloudWatch") {
-                    json.selectMensal[i].servico = "Amazon Cloud Watch"
+                    json.selectMensal[i].servico = "Cloud Watch"
                 }
 
                 indicadores.innerHTML += `<div class="valores-servicos">
@@ -103,6 +103,9 @@ function buscarIndicadores() {
                             </div>
                             <div class="gasto-coluna">
                                 <span>R$${json.selectMensal[i].custo.toFixed(2)}</span>
+                            </div>
+                            <div class="gasto-coluna">
+                                <button>Ver detalhes</button>
                             </div>
                         </div>`
             }
