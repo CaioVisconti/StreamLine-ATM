@@ -14,10 +14,10 @@ from getmac import get_mac_address
 mac = get_mac_address()
 print(f"🔎 MAC Address detectado: {mac}")
 
-def conectar_jira():
-    options = {'server': 'https://bancostreamline.atlassian.net/'}
-    auth = HTTPBasicAuth("bancostreamline@gmail.com", "")
-    return JIRA(options=options, basic_auth=(auth.username, auth.password))
+# def conectar_jira():
+#     options = {'server': 'https://bancostreamline.atlassian.net/'}
+#     auth = HTTPBasicAuth("bancostreamline@gmail.com", "")
+#     return JIRA(options=options, basic_auth=(auth.username, auth.password))
 
 def consultar_atm():
     try:
@@ -179,7 +179,7 @@ if fkAtm:
                     elif registro.get(nome_parametro) > registro.get(f"limite {nome_parametro}"):
                         categoria = 'High'
 
-                    jira = conectar_jira()
+                    # jira = conectar_jira()
 
                     issue_fields = {
                         'project': {'key': 'G1ALERTAS'},
@@ -189,8 +189,8 @@ if fkAtm:
                         'priority': {'name': str(categoria)}
                     }
 
-                    new_issue = jira.create_issue(fields=issue_fields)
-                    print(f"Issue criado com sucesso: {new_issue.key}")
+                    # new_issue = jira.create_issue(fields=issue_fields)
+                    # print(f"Issue criado com sucesso: {new_issue.key}")
 
             if alertas:
                 dicionarioAlerta = {

@@ -133,6 +133,26 @@ a{
     font-size: 12px;
 }
 
+.escolha-filtro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    height: 13%;
+    width: 80%;
+    /* border: 1px solid red; */
+}
+
+.escolha-filtro select{
+    cursor: pointer;
+    width: 75%;
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+}
+
 .escolha-atm{
     display: flex;
     flex-direction: column;
@@ -188,7 +208,6 @@ a{
     color: white;
     height: 15%;
     width: 100%;
-    /* border: 1px solid red; */
 }
 
 .escolha-metricas span{
@@ -199,12 +218,20 @@ a{
 .escolha-metricas select{
     text-align: center;
     cursor: pointer;
-    width: 60%;
+    width: 11vw;
     border: none;
     border-radius: 5px;
     padding: 7px;
 }
 
+.escolha-metricas input{
+    text-align: center;
+    cursor: pointer;
+    width: 11vw;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+}
 
 .escolha-datas{
     display: flex;

@@ -1,3 +1,7 @@
+function carregarDados() {
+    carregarATMS();
+}
+
 function exibirAlertas(){
     let dois = document.querySelector(".organizar");
     dois.style.display = "none";
@@ -146,9 +150,14 @@ function gerarGraficos(){
     let dataAtual = "";
     for(let i = 0; i < dados.length; i++) {
 
-        dataAtual = (dados[i].dataHora).split("-")
+        if((inicio == fim && metodo == "periodo") || inicio == "ultimoDia") {
+            dataAtual = ((dados[i].dataHora).split(" ")[1])
+        } else {
+            dataAtual = (dados[i].dataHora).split("-")
+            dataAtual = `${dataAtual[2]}/${dataAtual[1]}/${dataAtual[0]}`;
+        }
 
-        listaDatas.push(`${dataAtual[2]}/${dataAtual[1]}/${dataAtual[0]}`);
+        listaDatas.push(dataAtual);
         listaCapturas.push(dados[i][json.r])
         listaLimite.push(dados[i][json.l])
     }
@@ -217,10 +226,6 @@ function carregarKPIS(json) {
             indice = i;
         }
     }
-
-    let medida_captura = document.getElementById("medida_captura")
-
-    medida_captura.innerHTML = `${json.m} ${json.c}: `;
 
     let kpi1_1 = document.querySelector(".kpi-1");
 
@@ -400,6 +405,7 @@ function carregarData() {
 
 function carregarSegundaInput() {
     let data = ipt_de.value;
+    console.log(data);
     let dataInicial = new Date(data);
     let min = new Date(dataInicial.getFullYear(), dataInicial.getMonth(), dataInicial.getDate() - 5);
     let max = new Date(dataInicial.getFullYear(), dataInicial.getMonth(), dataInicial.getDate() + 7);
@@ -486,5 +492,42 @@ function capturas(componente, metrica) {
 }
 
 function formatacaoDataKPI(inicio) {
+    
+}
 
+function mudarFiltros() {
+    let filtro = slt_filtro.value;
+    let data = document.querySelector(".escolha-datas");
+
+    if(filtro == "gerarGrafico") {
+        data.style.display = "flex";
+    } else {
+
+    }
+}
+
+function graficoTempoReal(lista) {
+    let inicio = ipt_inicio.value;
+    let fim = ipt_fim.value;
+    
+}
+
+function pesquisaBinaria(lista, tempo) {
+    let inn = 0;
+    let fmm = 0;
+    let meio;
+    let termo;
+    let dtHora;
+    
+    while(inn < fmm) {
+        meio = (inn + fmm) / 2;
+        termo = lista[meio];
+        dtHora = (termo.dataHora).split(" ")[1]
+        
+        if(dtHora == tempo) {
+            return meio;
+        } else {
+            let data = new Date();
+        }
+    }
 }

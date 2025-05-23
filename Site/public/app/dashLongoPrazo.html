@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    <body onload="carregarATMS()">
+    <body onload="carregarDados()">
         <div class="nav-total">
             <div class="info-user">
                 <div class="foto-user" style="background-image: url(../assets/analista.jpg); background-size: cover;"></div>
@@ -30,26 +30,29 @@
             <a href="../index.html"><button class="btn-nav">Sair</button></a>
         </div>
     
-        <div class="painel" id="painels">
-            <div id="filtros" class="kpis">
+        <div class="painel2" id="painels">
+            <div id="filtros" class="kpis2">    
                 <div class="escolha-opcoes">
+                    <div class="escolha-filtro">
+                        <span>Selecionar:</span>
+                        <select id="slt_filtro" onchange="mudarFiltros()">
+                            <option value="gerarGrafico">Gerar Gráfico</option>
+                            <option value="gerarRevisão">Revisar Captura</option>
+                        </select>
+                    </div>
                     <div class="escolha-atm">
-                        <span>Selecionar ATM:</span>
+                        <div class="linha"></div>
+                        <span>Insira o ATM:</span>
                         <select id="select_atm"  oninput="carregarComponentes()">
-                            <!-- <option value="1">ATM 1</option> -->
                         </select>
                     </div>
                     <div class="escolha-componentes">
                         <span>Selecione um componente para visualizar seus dados:</span>
-                        <select id="select_componentes" oninput="carregarMetricas()" disabled>
-                            <!-- <option value="cpu">CPU</option> -->
-                        </select>
+                        <select id="select_componentes" oninput="carregarMetricas()" disabled></select>
                     </div>
                     <div class="escolha-metricas">
                         <span>Métricas Disponíveis:</span>
-                        <select id="select_metricas" disabled>
-                            <!-- <option value="porcentagem">PORCENTAGEM</option> -->
-                        </select>
+                        <select id="select_metricas" disabled></select>
                     </div>
                     <div class="escolha-datas">
                         <span>Intervalo:</span>
@@ -64,7 +67,7 @@
                     </div>
                     <div id="periodo" class="escolha-metricas" style="display: none;">
                         <span>Intervalos:</span>
-                        <div style="display: flex; flex-direction: row; gap: 1vw;">
+                        <div style="display: flex; flex-direction: column; gap: 0.5vw;">
                             <input id="ipt_de" type="date" placeholder="De:" onchange="carregarSegundaInput()">
                             <div id="segundaInputData">
                                 <input type="date" disabled>
@@ -74,28 +77,23 @@
                     <div class="gerar-grafico" onclick="gerarGraficos()">
                         <button>Gerar Gráfico</button>
                     </div>
-                    <div class="linha"></div>
-                    <div class="alertas">
-                        <span>Visualizar alertas de todos os componentes deste ATM</span>
-                        <button onclick="exibirAlertas()" id="button_alertas" disabled style="background-color: #193854;">Exibir Alertas</button>
-                    </div>
                 </div>
             </div>
-            <div class="dash-inicial" style="display: none;">
-                <div id="kpis" style="display: none;">
+            <div class="dash-inicial" style="display: flex;">
+                <div id="kpis" style="display: flex;">
                     <div class="kpi-prazo">
                         <div class="kpi-1" style="background-color: #ff0000; color: #FFFFFF">
-                            <span>MAIOR PICO DE COMPONENTE: <br> <span id="medida_captura">PORCENTAGEM CPU: </span><span id="pico">90%</span></span>
+                            <span>MAIOR PICO DE COMPONENTE: <br><span id="pico">90%</span></span>
                         </div>
                         <div class="kpi-2" style="background-color: #ff0000; color: #FFFFFF">
                             <span>DIA COM MAIS ALERTAS: <br><span id="momento">03/04/2025</span></span>
                         </div>
                         <div class="kpi-3" style="background-color: #ff0000; color: #FFFFFF;">
-                            <span>NÚMEROS DE ALERTAS: <span id="total">21</span></span>
+                            <span>NÚMEROS DE ALERTAS: <br><span id="total">21</span></span>
                         </div>
                     </div>
                 </div>
-                <div class="organizar" style="display: none;">
+                <div class="organizar" style="display: flex;">
                     <div class="fundo">
                         <div class="fundo-grafico">
                             <div class="titulo-grafico">
