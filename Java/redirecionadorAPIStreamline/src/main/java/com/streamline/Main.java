@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,20 +31,26 @@ public class Main implements RequestHandler<APIGatewayProxyRequestEvent, APIGate
         String metodo = separacao[5];
 
         String arq = "capturas";
-
         String resultado = "";
-        List<Captura> lista = new ArrayList<>();
 
         if(metodo.equals("tempoReal")) {
             TempoReal teste = new TempoReal();
             resultado = teste.transformarTempoReal(srcBucket, arq, separacao, logger);
         } else if(metodo.equals("periodo")) {
             Periodo teste = new Periodo();
-            resultado = teste.transformarPeriodo(lista, srcBucket, arq, separacao, logger);
+            try {
+                resultado = teste.transformarPeriodo(srcBucket, arq, separacao, logger);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             if(per.equals("ultimoDia")) {
-                // UltimoDia teste = new UltimoDia();
-                // resultado = teste.transformarUltimoDia(lista, srcBucket, arq, separacao, logger);
+                UltimoDia teste = new UltimoDia();
+                try {
+                    resultado = teste.transformarUltimoDia(per, srcBucket, arq, separacao, logger);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else if(per.equals("ultimaSemana")) {
                 UltimaSemana teste = new UltimaSemana();
                 resultado = teste.transformarUltimaSemana(srcBucket, arq, separacao, logger);
@@ -55,9 +62,6 @@ public class Main implements RequestHandler<APIGatewayProxyRequestEvent, APIGate
                 resultado = teste.transformarUltimoSemestre(srcBucket, arq, separacao, logger);
             }
         }
-
-        logger.log("resultado");
-        logger.log(resultado);
 
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
         responseEvent.setBody(resultado);

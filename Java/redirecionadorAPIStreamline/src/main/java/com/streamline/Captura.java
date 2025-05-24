@@ -358,6 +358,26 @@ public class Captura {
         return qtdAlertaPROCESSOD;
     }
 
+    public void aumentarQtd(String tipo) {
+        if(tipo.equals("CPUP")) {
+            this.qtdAlertaCPUP++;
+        } else if(tipo.equals("CPUF")) {
+            this.qtdAlertaCPUF++;
+        } else if(tipo.equals("RAMP")) {
+            this.qtdAlertaRAMP++;
+        } else if(tipo.equals("DISKP")) {
+            this.qtdAlertaDISKP++;
+        } else if(tipo.equals("REDEE")) {
+            this.qtdAlertaREDEE++;
+        } else if(tipo.equals("REDER")) {
+            this.qtdAlertaREDER++;
+        } else if(tipo.equals("PROCESSOD")) {
+            this.qtdAlertaPROCESSOD++;
+        } else {
+            this.qtdAlertaPROCESSOA++;
+        }
+    }
+
     @Override
     public String toString() {
         return "Captura{" +
