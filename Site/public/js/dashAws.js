@@ -105,13 +105,17 @@ function buscarIndicadores() {
                                 <span>R$${json.selectMensal[i].custo.toFixed(2)}</span>
                             </div>
                             <div class="gasto-coluna">
-                                <button>Ver detalhes</button>
+                                <button onclick="mostrarModalServico(servico='${json.selectMensal[i].servico}')">Ver detalhes</button>
                             </div>
                         </div>`
             }
             gastoTotalSemana.innerHTML += custoTotal.toFixed(2);
         })
     })
+}
+
+function mostrarModalServico(servico){
+    alert(`${servico}`)
 }
 
 function buscarGastoMensal() {
