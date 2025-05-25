@@ -56,6 +56,25 @@ function buscarGraficoTop5(req, res) {
         });
 }
 
+function buscarGraficoSituacao(req, res) {
+    let idAgencia = req.params.idAgencia;
+
+    gerenteModel.buscarGraficoSituacao(idAgencia)
+        .then((resultado) => {
+            if (resultado.length > 0) {
+                console.log("resultadoAAAAAAAAA: " + resultado)
+                res.status(200).json(resultado); 
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!");
+            }
+        })
+        .catch((erro) => {
+            console.error("Erro na captura do grafico de situacao:", erro);
+            console.error("Erro completo:", JSON.stringify(erro));
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 function buscarKpiTotal(req, res) {
     let idAgencia = req.params.idAgencia;
     
@@ -480,6 +499,7 @@ module.exports = {
 buscarKpiCriticos,
 buscarKpiPercentual,
 buscarGraficoTop5,
+buscarGraficoSituacao,
 
 // Página de ATM
     buscarKpiTotal,

@@ -115,11 +115,24 @@ body{
     border-radius: 8px;
 }
 
-.tituloGrafico h1{
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    text-align: center;
+
+.grafico-header {
+  display: flex;                 /* Ativa o layout Flexbox */
+  justify-content: space-between; /* Empurra o título para a esquerda e o botão para a direita */
+  align-items: center;           /* Alinha verticalmente o título e o botão ao centro */
+  margin-bottom: 1rem;           /* Adiciona um espaço abaixo do cabeçalho, antes da tabela (ajuste conforme necessário) */
+}
+
+.tituloGrafico h1 {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  text-align: center; /* Mantém o texto do título centralizado dentro do div .tituloGrafico */
+  margin: 0;          /* Remove margens padrão do h1 que podem afetar o alinhamento */
+}
+
+.tituloGrafico {
+  flex-grow: 1; /* Permite que o div do título ocupe o espaço disponível, ajudando a centralizar o h1 */
 }
 
 .tituloAlertas{
@@ -128,9 +141,21 @@ body{
     font-weight: bold;
 }
 
-.botao{
+/* .botao{
     z-index: -1;
     display: flex;
     justify-content: end;
     align-items: end;
+} */
+
+.kpiDiv3{
+    border-radius: 8px;
+}
+
+.kpiDiv1{
+    border-radius: 8px;
+}
+
+.kpiDiv2{
+    border-radius: 8px;
 }

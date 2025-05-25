@@ -1,71 +1,71 @@
-const categoria = document.getElementById("chartCategoria");
+// const categoria = document.getElementById("chartCategoria");
 
-const labelsChartCategoria = [
-    "01/05",
-    "02/05",
-    "03/05",
-    "04/05",
-    "05/05",
-    "06/05",
-    "07/05",
-];
-const dataChartCategoria = {
-    labels: labelsChartCategoria,
-    datasets: [
-        {
-            label: "Bom",
-            data: [65, 59, 80, 81, 56, 55, 59],
-            fill: false,
-            borderColor: "#65AE50",
-            tension: 0.1,
-        },
-        {
-            label: "Crítico",
-            data: [20, 10, 15, 34, 27, 50, 30],
-            fill: false,
-            borderColor: "#A12929",
-            tension: 0.1,
-        },
-        {
-            label: "Médio",
-            data: [20, 25, 12, 27, 23, 34, 50],
-            fill: false,
-            borderColor: "#D9AA2A",
-            tension: 0.1,
-        },
-    ],
-};
+// const labelsChartCategoria = [
+//     "01/05",
+//     "02/05",
+//     "03/05",
+//     "04/05",
+//     "05/05",
+//     "06/05",
+//     "07/05",
+// ];
+// const dataChartCategoria = {
+//     labels: labelsChartCategoria,
+    // datasets: [
+    //     {
+    //         label: "Bom",
+    //         data: [65, 59, 80, 81, 56, 55, 59],
+    //         fill: false,
+    //         borderColor: "#65AE50",
+    //         tension: 0.1,
+    //     },
+    //     {
+    //         label: "Crítico",
+    //         data: [20, 10, 15, 34, 27, 50, 30],
+    //         fill: false,
+    //         borderColor: "#A12929",
+    //         tension: 0.1,
+    //     },
+    //     {
+    //         label: "Médio",
+    //         data: [20, 25, 12, 27, 23, 34, 50],
+    //         fill: false,
+    //         borderColor: "#D9AA2A",
+    //         tension: 0.1,
+    //     },
+    // ],
+// };
 
-new Chart(categoria, {
-    type: "line",
-    data: dataChartCategoria,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: "top",
-                align: "center",
-                labels: {
-                    color: '#FFFFFF',
-                    boxWidth: 10,
-                    boxHeight: 10
-                }
-            },
-        },
-        scales: {
-            x: {
-                ticks: {
-                    color: "#FFFFFF",
-                },
-            },
-            y: {
-                ticks: {
-                    color: "#FFFFFF",
-                },
-            },
-        },
-    },
-});
+// new Chart(categoria, {
+//     type: "line",
+//     data: dataChartCategoria,
+//     options: {
+//         responsive: true,
+//         plugins: {
+//             legend: {
+//                 position: "top",
+//                 align: "center",
+//                 labels: {
+//                     color: '#FFFFFF',
+//                     boxWidth: 10,
+//                     boxHeight: 10
+//                 }
+//             },
+//         },
+//         scales: {
+//             x: {
+//                 ticks: {
+//                     color: "#FFFFFF",
+//                 },
+//             },
+//             y: {
+//                 ticks: {
+//                     color: "#FFFFFF",
+//                 },
+//             },
+//         },
+//     },
+// });
 
 // const incidentes = document.getElementById("chartIncidentes");
 

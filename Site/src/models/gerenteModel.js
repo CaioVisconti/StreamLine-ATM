@@ -58,11 +58,39 @@ function buscarGraficoTop5(idAgencia) {
                         GROUP BY
                         atm
                         ORDER BY
-                            qtdAlertas
+                            qtdAlertas desc
                         LIMIT 5;`
 
     return database.executar(instrucaoSql);
 }
+
+function buscarGraficoSituacao(idAgencia) {
+
+    let instrucaoSql = `SELECT
+                            situacao,
+                            COUNT(*) AS total_atms,
+                            dia
+                        FROM (
+                            SELECT
+                                atm.idAtm, DATE(a.dtHoraAbertura) as dia,
+                                CASE
+                                    WHEN MAX(a.categoria = 'High') THEN 'Crítico'
+                                    WHEN MAX(a.categoria = 'Medium') THEN 'Médio'
+                                END AS situacao
+                            FROM atm
+                            JOIN parametrizacao p ON p.fkAtm = atm.idAtm
+                            JOIN alerta a ON a.fkParametro = p.idParametro
+                            WHERE atm.fkAgencia = ${idAgencia} and DATE(a.dtHoraAbertura) BETWEEN CURDATE() - INTERVAL 6 DAY AND CURDATE()
+                            GROUP BY atm.idAtm, dia
+                        ) AS classificacao
+                        GROUP BY situacao, dia
+                        ORDER BY dia;
+`
+
+    return database.executar(instrucaoSql);
+}
+
+// Outros
 
 function buscarKpiTotal(idAgencia) {
 
@@ -295,6 +323,7 @@ module.exports = {
 buscarKpiCriticos,
 buscarKpiPercentual,
 buscarGraficoTop5,
+buscarGraficoSituacao,
 
 // Página de ATM
     buscarKpiTotal,

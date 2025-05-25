@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="nav-bar">
-      <a class="link-superior">Voltar</a>
+      <a class="link-superior" href="gerenteFuncionarios.html">Voltar</a>
       <a class="link-superior">Gerar relatório</a>
       <a class="link-superior">Reportar Problema</a>
     </div>
@@ -41,7 +41,7 @@
     <div class="row g-1 kpi-wrapper align-items-center justify-content-between">
       <div class="col-sm-3 kpi-individual">
         <div class="row">
-          <div class="col">
+          <div class="col kpiDiv1">
             <span class="titulo"> Total de alertas críticos </span>
             <div class="col">
               <span class="valor" id="kpi1"> </span>
@@ -54,7 +54,7 @@
         <div class="row">
           <!-- <i class="bi bi-info-circle-fill"></i> -->
 
-          <div class="col">
+          <div class="col kpiDiv2">
             <span class="titulo"> Tempo médio de resolução </span>
             <div class="col"><span class="valor" id="kpi2"> 60 minutos </span></div>
           </div>
@@ -65,7 +65,7 @@
         <div class="row">
           <!-- <i class="bi bi-info-circle-fill"></i> -->
 
-          <div class="col">
+          <div class="col kpiDiv3">
             <span class="titulo"> Percentual de ATMs sem alertas </span>
             <div class="col">
               <span class="valor" id="kpi3"> </span>
@@ -108,7 +108,7 @@
       <div class="col-6 coluna">
         <div class="p-3 conteudo">
           <div class="tituloGrafico">
-            <h1>Alertas pendentes</h1>
+            <h1>Alertas em andamento</h1>
           </div>
           <div class="conteudoGrafico">
 
@@ -178,13 +178,12 @@
       <div class="col-12 coluna">
         <div class="p-3 conteudo">
 
-
-          <div class="tituloGrafico">
-            <h1>Histórico dos últimos 10 alertas</h1>
-          </div>
-
-          <div class="botao">
-            <button type="button" class="btn btn-secondary">Baixar CSV</button>
+          <div class="grafico-header"> <div class="tituloGrafico">
+              <h1>Histórico dos últimos 10 alertas</h1>
+            </div>
+            <div class="botao">
+              <button type="button" class="btn btn-secondary">Baixar CSV</button>
+            </div>
           </div>
 
           <div class="conteudoGrafico">
@@ -295,11 +294,16 @@
     exibirKPICriticos();
     exibirKPIPercentual();
     plotTop5();
+    buscarGraficoSituacao();
+    exibirUser();
   };
 
   const idAgencia = sessionStorage.ID_AGENCIA
-  let nomeUsuario = sessionStorage.NOME_USUARIO;
-  document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
+
+  function exibirUser() {
+    let nomeUsuario = sessionStorage.NOME_USUARIO;
+    document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
+  }
 
   function exibirKPICriticos() {
     fetch(`/gerente/${idAgencia}/buscarKpiCriticos`, {
@@ -318,6 +322,16 @@
         if (data && data.length > 0) {
           const kpiData = data[0];
           document.getElementById('kpi1').innerText = kpiData.totalCriticos;
+
+          const total = parseInt(kpiData.totalCriticos);
+          console.log(total)
+
+          if (total >= 1) {
+            document.querySelector('.kpiDiv1').style.backgroundColor = "#D9AA2A";
+          }  else {
+            document.querySelector('.kpiDiv1').style.backgroundColor = "#65AE50"; 
+          }
+
         }
       })
       .catch(error => {
@@ -342,6 +356,18 @@
         if (data && data.length > 0) {
           const kpiData = data[0];
           document.getElementById('kpi3').innerText = kpiData.percentualBons;
+
+          const percentual = parseFloat(kpiData.percentualBons);
+          console.log(percentual)
+
+          if (percentual >= 75) {
+            document.querySelector('.kpiDiv3').style.backgroundColor = "#65AE50";
+          } else if (percentual >= 60) {
+            document.querySelector('.kpiDiv3').style.backgroundColor = "#D9AA2A";
+          } else {
+            document.querySelector('.kpiDiv3').style.backgroundColor = "#A12929";
+          }
+
         }
       })
       .catch(error => {
@@ -363,10 +389,10 @@
         for (var i = 0; i < json.length; i++) {
           atm.push(json[i].atm)
           qtdAlertas.push(json[i].qtdAlertas)
-          console.log("push ok")
+          // console.log("push ok")
         }
 
-        console.log(atm)
+        // console.log(atm)
 
         const graficoTop5 = document.getElementById('chartIncidentes');
 
@@ -376,7 +402,7 @@
             labels: atm,
             datasets: [{
               label: "Quantidade de alertas",
-              data: qtdAlertas, 
+              data: qtdAlertas,
               backgroundColor: "#2A5277",
               borderRadius: 5
             }]
@@ -413,5 +439,157 @@
     });
   }
 
+  let dia;
+  let total_atms;
+  let datasFormatadas;
+  let criticos;
+  let medios;
+  let lista;
+
+  function buscarGraficoSituacao() {
+
+    dia = []
+    total_atms = []
+    datasFormatadas = []
+    criticos = []
+    medios = []
+
+    fetch(`/gerente/${idAgencia}/buscarGraficoSituacao`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then((res) => {
+      res.json().then((json) => {
+        lista = json;
+
+        for (var i = 0; i < json.length; i++) {
+
+          const data = new Date(json[i].dia);
+          const dataFormatada = data.toLocaleDateString('pt-BR');
+
+          if (!datasFormatadas.includes(dataFormatada)) {
+            console.log("dataFormatada")
+            console.log(dataFormatada)
+            datasFormatadas.push(dataFormatada);
+          }
+
+          // if(json[i].situacao == "Crítico"){
+          //   criticos.push(json[i].total_atms)
+          //   medios.push(0)
+          // }
+          // if(json[i].situacao == "Médio"){
+          //   medios.push(json[i].total_atms)
+          //   criticos.push(0)
+          // }
+
+          total_atms.push(json[i].total_atms)
+        }
+
+        console.log("lista")
+        console.log(lista.length)
+
+        console.log("datasFormatadas");
+        console.log(datasFormatadas.length);
+
+        let indice = 0;
+        let rep = [];
+
+        for (let i = 0; i < datasFormatadas.length; i++) {
+          let qtd_medios = 0;
+          let qtd_criticos = 0;
+          let dataFormatada;
+
+          for (let j = 0; j < lista.length; j++) {
+            let dia = new Date(lista[j].dia);
+            dataFormatada = dia.toLocaleDateString('pt-BR');
+
+
+            if (datasFormatadas[i] == dataFormatada) {
+
+              if (lista[j].situacao == "Crítico") {
+                qtd_criticos += lista[j].total_atms;
+              }
+
+              if (lista[j].situacao == "Médio") {
+                qtd_medios += lista[j].total_atms;
+              }
+
+              console.log(dataFormatada)
+              console.log(datasFormatadas[i - 1])
+
+              console.log("datasFormatadas[i] == datasFormatadas[i - 1]")
+              console.log(dataFormatada == datasFormatadas[i - 1])
+            }
+          }
+          if (rep.includes(dataFormatada)) {
+            rep.push(dataFormatada)
+            criticos[i - 1] += qtd_criticos;
+            medios[i - 1] += qtd_medios;
+          } else {
+            criticos.push(qtd_criticos)
+            medios.push(qtd_medios)
+          }
+        }
+
+        console.log(medios)
+        console.log(criticos)
+        console.log("indice");
+        console.log(indice);
+
+
+        const graficoSituacao = document.getElementById('chartCategoria');
+
+        new Chart(graficoSituacao, {
+          type: "line",
+          data: {
+            labels: datasFormatadas,
+            datasets: [
+              {
+                label: "Crítico",
+                data: criticos,
+                borderColor: "#A12929",
+                backgroundColor: "#A12929",
+                fill: false,
+                tension: 0.2
+              },
+              {
+                label: "Médio",
+                data: medios,
+                borderColor: "#D9AA2A",
+                backgroundColor: "#D9AA2A",
+                fill: false,
+                tension: 0.2
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top",
+                labels: {
+                  color: '#FFFFFF'
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: "#FFFFFF"
+                }
+              },
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: "#FFFFFF"
+                }
+              }
+            }
+          }
+        });
+      });
+    });
+  }
 
 </script>
