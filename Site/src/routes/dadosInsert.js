@@ -12,7 +12,7 @@ var dados = [
 router.get("/alerta/:id", (req, res) => {
     const id = Number(req.params.id);
     let response = "OOK";
-    console.log(id)
+    // console.log(id)
 
 
     if (req.body.fkAtm && id == 0) {
@@ -20,10 +20,10 @@ router.get("/alerta/:id", (req, res) => {
         let id_recebido = req.body.fkAtm;
         let data_recebida = req.body.dataHora;
 
-        console.log(id_recebido)
-        console.log(data_recebida)
-        let oi = req.body.alertas
-        console.log("to em", oi)
+        // console.log(id_recebido)
+        // console.log(data_recebida)
+        // let oi = req.body.alertas
+        // console.log("to em", oi)
 
 
         dados.forEach((alertas) => {
@@ -61,7 +61,6 @@ router.get("/alerta/:id", (req, res) => {
 
     res.json(response);
 
-    console.log()
 });
 
 module.exports = router;

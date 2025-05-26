@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard em Tempo Real</title>
-    <link rel="stylesheet" href="../style/dashrealtime.css">
+    <script src="../js/dashCurtoPrazo.js"></script>
 
+    <link rel="stylesheet" href="../style/dashrealtime.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="../js/dashCurtoPrazo.js"></script>
     <link rel="icon" href="../public/assets/logo_fundo_branco.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@1.0.3/dist/chartjs-plugin-doughnutlabel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
 
 </head>
 
@@ -30,7 +31,7 @@
             </div>
         </div>
         <div class="nav-bar">
-            <a href="https://streamline-atm.atlassian.net/servicedesk/customer/portal/1/group/1/create/1"><span>Reportar Problema</span></a> 
+             <a href=""><span>Acessar Slack</span></a>  <a href="https://streamline-atm.atlassian.net/servicedesk/customer/portal/1/group/1/create/1"><span>Reportar Problema</span></a> <div style="cursor: pointer; color: white;" onclick="recarregarPagina()" ><span>Início</span></div> 
         </div>
         <a href="../index.html" class="btn-nav">Sair</a>
     </div>
@@ -104,21 +105,23 @@
                     <div class="tudo">
 
                         <div class="esquerda">
-                            <div>Aproveitamento dos ATMs</div>
+                            <div style="text-align: center;">Aproveitamento Geral dos ATMs <br> (Porcentagem) </div>
                             <div  class="grafiquinho">
                                 <canvas id="myChart"></canvas>
                             </div>
-                            <button class="btn-nav">Acessar Slack</button>
+                            <!-- <button class="btn-nav">Acessar Slack</button> -->
                         </div>
 
 
                         <div class="direita">
                             <div>Ranking de ATM com mais Alertas</div>
-                            <div class="conteudo_tabela">
-                                <div class="tabela"> 
-                                    <h1></h1> <div>ATM - 3</div> <div>7 Alertas</div> <div>Crítico</div> <button>Acessar</button>
-                                </div>
+                            <div id="conteudo_tabela" class="conteudo_tabela">
 
+                                <!-- <div class="head"> 
+                                    <div style="border-left: none ;">Nível</div> <div>ATM</div> <div>Alertas</div> <div>Tipo</div> <div>Acessos:</div>
+                                </div> -->
+
+                                <!--
                                 <div class="tabela"> 
                                     <h1 style="background-color: yellow;"></h1> <div>ATM - 4</div> <div>2 Alertas</div> <div>Médio</div> <button>Acessar</button>
                                 </div>
@@ -128,19 +131,7 @@
                                 </div>
                                 <div class="tabela"> 
                                     <h1 style="background-color: greenyellow;"></h1> <div>ATM - 1</div> <div>1 Alertas</div> <div>Bom</div> <button>Acessar</button>
-                                </div>
-
-
-                            <div class="tabela"> 
-                                    <h1 style="background-color: #adff2f;" ></h1> <div>ATM - 4</div> <div>1 Alertas</div> <div>Bom</div> <button>Acessar</button>
-                                </div>
-                                
-                                <div class="tabela"> 
-                                    <h1 style="background-color: greenyellow;"></h1> <div>ATM - 2</div> <div>1 Alertas</div> <div>Bom</div> <button>Acessar</button>
-                                </div>
-                                <div class="tabela"> 
-                                    <h1 style="background-color: greenyellow;"></h1> <div>ATM - 1</div> <div>1 Alertas</div> <div>Bom</div> <button>Acessar</button>
-                                </div>
+                                </div> -->
 
                        
                             </div>
@@ -163,14 +154,14 @@
                     <div class="coluna-metrica">
                         <h2 class="titulo-coluna">RAM</h2>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Usado</div>
+                        <div id="container-indicador-ram-usado" class="container-indicador">
+                            <div id="limite-ram-percent" class="rotulo-indicador"></div>
                             <div onclick="verGraficos(this.id)" id="circuloRam"><div id="porcentagemRam"></div></div>
                             <!-- <div class="circulo-indicador circulo-vermelho"><div id="porcentagemRam"></div></div> -->
                         </div>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Disponível</div>
+                        <div id="container-indicador-ram-disponivel" class="container-indicador">
+                            <div id="limite-ram-disponivel" class="rotulo-indicador"></div>
                             <div onclick="verGraficos(this.id)" id="circuloRamDisponivel"><div id="disponivelRam"></div></div>
                         </div>
                     </div>
@@ -179,13 +170,13 @@
                     <div class="coluna-metrica">
                         <h2 class="titulo-coluna">CPU</h2>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Usado</div>
+                        <div id="container-indicador-cpu-usado" class="container-indicador">
+                            <div id="limite-cpu-percent" class="rotulo-indicador">Usado</div>
                             <div onclick="verGraficos(this.id)" id="circuloCpu"><div id="porcentagemCpu"></div></div>
                         </div>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Frequência</div>
+                        <div id="container-indicador-cpu-freq" class="container-indicador">
+                            <div id="limite-cpu-freq" class="rotulo-indicador">Frequência</div>
                             <div onclick="verGraficos(this.id)" id="circuloCpuFrequencia"><div id="frequenciaCpu"></div></div>
                         </div>
                     </div>
@@ -194,43 +185,43 @@
                     <div class="coluna-metrica">
                         <h2 class="titulo-coluna">Disco</h2>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Usado</div>
+                        <div id="container-indicador-disco-usado" class="container-indicador">
+                            <div id="limite-disco-percent" class="rotulo-indicador">Usado</div>
                             <div onclick="verGraficos(this.id)" id="circuloDiscoUsado"><div id="discoUsado"></div></div>
                         </div>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Disponível</div>
+                        <div id="container-indicador-disco-disponivel" class="container-indicador">
+                            <div id="limite-disco-disponivel" class="rotulo-indicador">Disponível</div>
                             <div onclick="verGraficos(this.id)" id="circuloDiscoDisponivel"><div id="discoDisponivel"></div></div>
                         </div>
                     </div>
 
                     <!-- Coluna Rede -->
                     <div class="coluna-metrica">
-                        <h2 class="titulo-coluna">Rede</h2>
+                        <h2 class="titulo-coluna">Rede (Pacotes)</h2>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Pacotes Enviados</div>
+                        <div id="container-indicador-rede-enviada" class="container-indicador">
+                            <div id="limite-rede-env" class="rotulo-indicador">Pacotes Enviados</div>
                             <div onclick="verGraficos(this.id)" id="circuloRedeEnviada"><div id="redeEnviada"></div></div>
                         </div>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Pacotes Recebidos</div>
+                        <div id="container-indicador-rede-recebida" class="container-indicador">
+                            <div id="limite-rede-rec" class="rotulo-indicador">Pacotes Recebidos</div>
                             <div onclick="verGraficos(this.id)" id="circuloRedeRecebida"><div id="redeRecebida"></div></div>
                         </div>
                     </div>
 
                     <!-- Coluna Processos -->
-                    <div class="coluna-metrica">
+                    <div style="border-right: none;" class="coluna-metrica">
                         <h2 class="titulo-coluna">Processos</h2>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Processos Ativos</div>
+                        <div id="container-indicador-processo-ativo" class="container-indicador">
+                            <div id="limite-processo-ativo" class="rotulo-indicador">Processos Ativos</div>
                             <div onclick="verGraficos(this.id)" id="circuloProcessosAtivos"><div id="processosAtivos"></div></div>
                         </div>
 
-                        <div class="container-indicador">
-                            <div class="rotulo-indicador">Processos Inativos</div>
+                        <div id="container-indicador-processo-desativo" class="container-indicador">
+                            <div id="limite-processo-desativo" class="rotulo-indicador">Processos Inativos</div>
                             <div onclick="verGraficos(this.id)" id="circuloProcessosDesativados"><div id="processosDesativados"></div></div>
                         </div>
                     </div>
@@ -250,7 +241,7 @@
                               </div>
                               <div class="legenda-titulo">
                                 <span>LIMITE</span>
-                                <span>REAL</span>
+                                <span>CAPTURA</span>
                               </div>
                             </div>
                         </div>

@@ -59,7 +59,7 @@ def coletar_valor(tipo):
         if tipo == 'CPUPercent':
             return psutil.cpu_percent()
         elif tipo == 'CPUFreq':
-            return round(psutil.cpu_freq().current, 2)
+            return round(psutil.cpu_freq().current / 1000, 1)
         elif tipo == 'RAMDisponivel':
             return round(psutil.virtual_memory().available / (1024 ** 3), 2)
         elif tipo == 'RAMPercentual':
@@ -69,9 +69,13 @@ def coletar_valor(tipo):
         elif tipo == 'DISKPercentual':
             return psutil.disk_usage('/').percent
         elif tipo == 'REDERecebida':
-            return psutil.net_io_counters().packets_recv
+            valor = psutil.net_io_counters().packets_recv / (1024 * 1024)
+            valor_arredondado = round(valor, 2)
+            return valor_arredondado
         elif tipo == 'REDEEnviada':
-            return psutil.net_io_counters().packets_sent
+            valor = psutil.net_io_counters().packets_sent / (1024 * 1024)
+            valor_arredondado = round(valor, 2)
+            return valor_arredondado
         elif tipo == 'PROCESSOSAtivos':
             return sum(1 for p in psutil.process_iter(['status']) if p.info['status'] == 'running')
         elif tipo == 'PROCESSOSDesativado':
@@ -95,6 +99,7 @@ if fkAtm:
     try:
         i = 0
         while i < quantidade:
+            configuracoes = buscar_configuracoes(fkAtm)
             print(f"\n🔄 Início da leitura {i+1}")
 
             leitura = {

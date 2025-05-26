@@ -2,16 +2,29 @@ window.onload = function () {
     exibirKPIs();
     exibirAtms();
     exibirCores();
-
+    quantidadeATM();
 
     setInterval(function () {
         exibirKPIs();
-        exibirCores()
+        exibirCores();
+        listaAlertas();
+        graficoAlertasPorATM()
     }, 5000);
 
-    graficoAlertasPorATM()
+    setTimeout(function () {
+        listaAlertas();
+    }, 1000);
+
+    setTimeout(function () {
+        graficoAlertasPorATM()
+    }, 1100);
+
 
 };
+
+function recarregarPagina() {
+    location.reload();
+}
 
 const lista = [];
 let dado1;
@@ -19,8 +32,6 @@ let data1;
 let intervaloColeta = null;
 let intervaloGrafico = null;
 let intervaloDatas = null;
-let dadosMetricas = [];
-let dataColetas = [];
 let hora;
 let minutos;
 let segundos;
@@ -31,11 +42,45 @@ let nomeComponente;
 let spanMetrica;
 let diaMetrica;
 let limite;
+const idAgencia = sessionStorage.ID_AGENCIA
+let idAtmAtual;
+let valorSelecionado = null;
+let AtmsMedios = 0;
+let AtmsRuins = 0;
 
+// Exibe KPIs Gerais
+function exibirKPIs() {
+    fetch('/medidas/kpis')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.error('Erro ao obter KPIs');
+            }
+        })
+        .then(data => {
 
+            let pisca = document.getElementById('critico');
+            if (data && data.length > 0) {
+                const kpiData = data[0];
 
-const id = sessionStorage.ID_AGENCIA
+                AtmsMedios = kpiData.atmsMedios
+                AtmsRuins = kpiData.atmsCritico
 
+                document.getElementById('kpi1').innerText = kpiData.atmsSemAlertas;
+                document.getElementById('kpi2').innerText = kpiData.atmsMedios;
+                document.getElementById('kpi3').innerText = kpiData.atmsCritico;
+                if (kpiData.atmsCritico > 0) {
+                    pisca.classList.add('pulsar');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao obter KPIs:', error);
+        });
+}
+
+// Exibe a lista lateral de ATMs
 function exibirAtms() {
 
     let nomeUsuario = sessionStorage.NOME_USUARIO;
@@ -43,7 +88,7 @@ function exibirAtms() {
 
     console.log("Cheguei")
 
-    fetch(`/medidas/atms/${id}`, {
+    fetch(`/medidas/atms/${idAgencia}`, {
         method: "GET",
         headers: {
             "content-Type": "application/json"
@@ -56,7 +101,7 @@ function exibirAtms() {
                     console.log(json)
                     const menu = document.getElementById('menuATM');
                     const temScroll = menu.scrollHeight > menu.clientHeight;
-                  
+
                     for (let i = 0; i < json.length; i++) {
                         console.log(json[i])
                         lista.push(i)
@@ -69,7 +114,7 @@ function exibirAtms() {
                     } else {
                         menu.style.justifyContent = 'center';
                     }
-                    
+
                 })
         })
         .catch(error => {
@@ -77,6 +122,7 @@ function exibirAtms() {
         });
 }
 
+// Exibe as cores ao lado da Lista lateral de ATMs
 function exibirCores() {
     fetch(`/medidas/cores`, {
         method: "GET",
@@ -125,11 +171,504 @@ function exibirCores() {
         });
 }
 
+// Após selecionar um ATM, obtém os dados do mesmo (gera os cards)
+function obterDados(button) {
+
+    const metricas = document.getElementById("metricasdiv");
+    const graficos = document.getElementById("graficoAtms");
+    const componentes = document.getElementById("graficoComponentes");
+
+    metricas.style.display = "flex";
+    graficos.style.display = "none";
+    componentes.style.display = "none";
+
+
+    const valor = button.getAttribute("data-valor");
+    idAtmAtual = button.getAttribute("data-valor");
+    valorSelecionado = valor; // Guarda para reutilizar no intervalo
+    console.log("Valor selecionado:", valor);
+
+
+    CardTempoReal();
+
+}
+
+// Cria os cards de componentes
+function CardTempoReal() {
+
+    if (!valorSelecionado) return;
+
+    fetch(`http://localhost:3333/tempoReal/monitoramento/${valorSelecionado}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(json => {
+            console.log(json);
+
+            const circuloCpuPercentual = document.getElementById("circuloCpu")
+            const circuloCpuFreq = document.getElementById("circuloCpuFrequencia")
+            const circuloRamPercentual = document.getElementById("circuloRam")
+            const circuloRamDisponivel = document.getElementById("circuloRamDisponivel")
+            const circuloDiscoUsado = document.getElementById("circuloDiscoUsado")
+            const circuloDiscoDisponivel = document.getElementById("circuloDiscoDisponivel")
+            const circuloRedeEnviada = document.getElementById("circuloRedeEnviada")
+            const circuloRedeRecebida = document.getElementById("circuloRedeRecebida")
+            const circuloProcessosAtivos = document.getElementById("circuloProcessosAtivos")
+            const circuloProcessosDesativados = document.getElementById("circuloProcessosDesativados")
+            const todasAsClasses = ["circulo-verde", "circulo-amarelo", "circulo-vermelho", "circulo-cinza"];
+            const divRamPercent = document.getElementById("container-indicador-ram-usado");
+            const divRamDisponivel = document.getElementById("container-indicador-ram-disponivel");
+            const divCpuPercent = document.getElementById("container-indicador-cpu-usado");
+            const divCpuFreq = document.getElementById("container-indicador-cpu-freq");
+            const divDiscoPercent = document.getElementById("container-indicador-disco-usado");
+            const divDiscoDisponivel = document.getElementById("container-indicador-disco-disponivel");
+            const divRedeEnviada = document.getElementById("container-indicador-rede-enviada");
+            const divRedeRecebida = document.getElementById("container-indicador-rede-recebida");
+            const divProcessoAtivo = document.getElementById("container-indicador-processo-ativo");
+            const divProcessoDesativo = document.getElementById("container-indicador-processo-desativo");
+
+
+            // ve se tem dados antes de continuar
+            if (!json.dados || json.dados.length === 0) {
+                circuloCpuPercentual.classList.remove(...todasAsClasses);
+                circuloCpuPercentual.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("porcentagemCpu").innerHTML = `N/A`;
+
+                circuloCpuFreq.classList.remove(...todasAsClasses);
+                circuloCpuFreq.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("frequenciaCpu").innerHTML = `N/A`;
+
+                circuloRamPercentual.classList.remove(...todasAsClasses);
+                circuloRamPercentual.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("porcentagemRam").innerHTML = `N/A`;
+
+                circuloRamDisponivel.classList.remove(...todasAsClasses);
+                circuloRamDisponivel.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("disponivelRam").innerHTML = `N/A`;
+
+                circuloDiscoUsado.classList.remove(...todasAsClasses);
+                circuloDiscoUsado.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("discoUsado").innerHTML = `N/A`;
+
+                circuloDiscoDisponivel.classList.remove(...todasAsClasses);
+                circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("discoDisponivel").innerHTML = `N/A`;
+
+                circuloRedeEnviada.classList.remove(...todasAsClasses);
+                circuloRedeEnviada.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("redeEnviada").innerHTML = `N/A`;
+
+                circuloRedeRecebida.classList.remove(...todasAsClasses);
+                circuloRedeRecebida.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("redeRecebida").innerHTML = `N/A`;
+
+                circuloProcessosAtivos.classList.remove(...todasAsClasses);
+                circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("processosAtivos").innerHTML = `N/A`;
+
+                circuloProcessosDesativados.classList.remove(...todasAsClasses);
+                circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-cinza")
+                document.getElementById("processosDesativados").innerHTML = `N/A`;
+
+                // alert("Sem dados para exibir.");
+                return;
+            }
+
+            const ultimoDado = json.dados[json.dados.length - 1]; // pega o último item do array
+
+            // o hasOwnProperty() verifica se o objeto (json) tem uma chave com o nome fornecido
+            if (ultimoDado.hasOwnProperty("CPUPercent")) {
+                const cpuPercent = ultimoDado.CPUPercent;
+                const cpuPercentLimite = ultimoDado["limite CPUPercent"];
+                const intervaloCpuPercent = cpuPercentLimite - (cpuPercentLimite * 0.10)
+                document.getElementById("limite-cpu-percent").innerHTML = ``
+                document.getElementById("limite-cpu-percent").innerHTML += `Usado - Limite: ${cpuPercentLimite}%`
+                
+                divCpuPercent.style.display = "flex";
+                circuloCpuPercentual.classList.remove(...todasAsClasses);
+
+                if (cpuPercent >= intervaloCpuPercent && cpuPercent <= cpuPercentLimite) {
+                    console.log(" to no if do medio")
+                    circuloCpuPercentual.classList.add("circulo-indicador", "circulo-amarelo")
+                    document.getElementById("porcentagemCpu").innerHTML = `${cpuPercent}%`;
+                }
+
+                else if (cpuPercent > cpuPercentLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloCpuPercentual.classList.add("circulo-indicador", "circulo-vermelho")
+                    document.getElementById("porcentagemCpu").innerHTML = `${cpuPercent}%`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloCpuPercentual.classList.add("circulo-indicador", "circulo-verde")
+                    document.getElementById("porcentagemCpu").innerHTML = `${cpuPercent}%`;
+                }
+            }
+
+            else {
+                divCpuPercent.style.display = "none";
+            }
+
+
+            // CPUFREQ
+            if (ultimoDado.hasOwnProperty("CPUFreq")) {
+                const CPUFreq = ultimoDado.CPUFreq;
+                const CPUFreqLimite = ultimoDado["limite CPUFreq"];
+                const intervaloCPUFreq = CPUFreqLimite - (CPUFreqLimite * 0.10)
+                document.getElementById("limite-cpu-freq").innerHTML = ``
+                document.getElementById("limite-cpu-freq").innerHTML += `Frequência - Limite: ${CPUFreqLimite}GHz`
+
+                divCpuFreq.style.display = "flex";
+                circuloCpuFreq.classList.remove(...todasAsClasses);
+
+                if (CPUFreq >= intervaloCPUFreq && CPUFreq <= CPUFreqLimite) {
+                    console.log(" to no if do medio")
+                    circuloCpuFreq.classList.add("circulo-indicador", "circulo-amarelo")
+                    document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
+                }
+
+                else if (CPUFreq > CPUFreqLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloCpuFreq.classList.add("circulo-indicador", "circulo-vermelho")
+                    document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloCpuFreq.classList.add("circulo-indicador", "circulo-verde")
+                    document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
+                }
+            }
+
+            else {
+                divCpuFreq.style.display = "none";
+            }
+
+
+            // RAMPercentual
+            if (ultimoDado.hasOwnProperty("RAMPercentual")) {
+                const ramPercent = ultimoDado.RAMPercentual;
+                const ramPercentLimite = ultimoDado["limite RAMPercentual"];
+                const intervaloramPercent = ramPercentLimite - (ramPercentLimite * 0.10)
+                document.getElementById("limite-ram-percent").innerHTML = ``
+                document.getElementById("limite-ram-percent").innerHTML += `Usado - Limite: ${ramPercentLimite}%`
+
+                divRamPercent.style.display = "flex";
+                circuloRamPercentual.classList.remove(...todasAsClasses);
+
+                if (ramPercent >= intervaloramPercent && ramPercent <= ramPercentLimite) {
+                    console.log(" to no if do medio")
+                    circuloRamPercentual.classList.add("circulo-indicador", "circulo-amarelo")
+                    // Atualizando os valores no HTML
+                    document.getElementById("porcentagemRam").innerHTML = `${ramPercent}%`;
+                }
+
+                else if (ramPercent > ramPercentLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloRamPercentual.classList.add("circulo-indicador", "circulo-vermelho")
+                    // Atualizando os valores no HTML
+                    document.getElementById("porcentagemRam").innerHTML = `${ramPercent}%`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloRamPercentual.classList.add("circulo-indicador", "circulo-verde")
+                    // Atualizando os valores no HTML
+                    document.getElementById("porcentagemRam").innerHTML = `${ramPercent}%`;
+                }
+            }
+
+            else {
+                divRamPercent.style.display = "none";
+            }
+
+
+            // RAMDisponivel
+            if (ultimoDado.hasOwnProperty("RAMDisponivel")) {
+                const ramDisponivel = ultimoDado.RAMDisponivel;
+                const ramDisponivelLimite = ultimoDado["limite RAMDisponivel"];
+                const intervaloramDisponivel = ramDisponivelLimite + (ramDisponivelLimite * 0.10)
+                document.getElementById("limite-ram-disponivel").innerHTML = ``
+                document.getElementById("limite-ram-disponivel").innerHTML += `Disponível - Limite: ${ramDisponivelLimite}GB`
+
+                divRamDisponivel.style.display = "flex";
+                circuloRamDisponivel.classList.remove(...todasAsClasses);
+
+                if (ramDisponivel <= intervaloramDisponivel && ramDisponivel >= ramDisponivelLimite) {
+                    console.log(" to no if do medio")
+                    circuloRamDisponivel.classList.add("circulo-indicador", "circulo-amarelo")
+                    // Atualizando os valores no HTML
+                    document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
+                }
+
+                else if (ramDisponivel < ramDisponivelLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloRamDisponivel.classList.add("circulo-indicador", "circulo-vermelho")
+                    // Atualizando os valores no HTML
+                    document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloRamDisponivel.classList.add("circulo-indicador", "circulo-verde")
+                    // Atualizando os valores no HTML
+                    document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
+                }
+            }
+
+            else {
+                divRamDisponivel.style.display = "none";
+            }
+
+
+            // DISKPercentual
+            if (ultimoDado.hasOwnProperty("DISKPercentual")) {
+                const discoUsado = ultimoDado.DISKPercentual;
+                const discoUsadoLimite = ultimoDado["limite DISKPercentual"];
+                const intervalodiscoUsado = discoUsadoLimite - (discoUsadoLimite * 0.10)
+                document.getElementById("limite-disco-percent").innerHTML = ``
+                document.getElementById("limite-disco-percent").innerHTML += `Usado - Limite: ${discoUsadoLimite}%`
+
+
+
+                divDiscoPercent.style.display = "flex";
+                circuloDiscoUsado.classList.remove(...todasAsClasses);
+
+                if (discoUsado >= intervalodiscoUsado && discoUsado <= discoUsadoLimite) {
+                    console.log(" to no if do medio")
+                    circuloDiscoUsado.classList.add("circulo-indicador", "circulo-amarelo")
+                    // Atualizando os valores no HTML
+                    document.getElementById("discoUsado").innerHTML = `${discoUsado}%`;
+                }
+
+                else if (discoUsado > discoUsadoLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloDiscoUsado.classList.add("circulo-indicador", "circulo-vermelho")
+                    // Atualizando os valores no HTML
+                    document.getElementById("discoUsado").innerHTML = `${discoUsado}%`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloDiscoUsado.classList.add("circulo-indicador", "circulo-verde")
+                    // Atualizando os valores no HTML
+                    document.getElementById("discoUsado").innerHTML = `${discoUsado}%`;
+                }
+            }
+
+            else {
+                divDiscoPercent.style.display = "none";
+            }
+
+
+            // DISKDisponivel
+            if (ultimoDado.hasOwnProperty("DISKDisponivel")) {
+                const discoDisponivel = ultimoDado.DISKDisponivel;
+                const discoDisponivelLimite = ultimoDado["limite DISKDisponivel"];
+                const intervalodiscoDisponivel = discoDisponivelLimite + (discoDisponivelLimite * 0.10)
+                document.getElementById("limite-disco-disponivel").innerHTML = ``
+                document.getElementById("limite-disco-disponivel").innerHTML += `Disponível - Limite: ${discoDisponivelLimite}GB`
+
+                divDiscoDisponivel.style.display = "flex";
+                circuloDiscoDisponivel.classList.remove(...todasAsClasses);
+
+                if (discoDisponivel <= intervalodiscoDisponivel && discoDisponivel >= discoDisponivelLimite) {
+                    console.log(" to no if do medio")
+                    circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-amarelo")
+                    // Atualizando os valores no HTML
+                    document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
+                }
+
+                else if (discoDisponivel < discoDisponivelLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-vermelho")
+                    // Atualizando os valores no HTML
+                    document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-verde")
+                    // Atualizando os valores no HTML
+                    document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
+                }
+            }
+
+            else {
+                divDiscoDisponivel.style.display = "none";
+            }
+
+            // REDEEnviada
+            if (ultimoDado.hasOwnProperty("REDEEnviada")) {
+                const redeEnviada = ultimoDado.REDEEnviada;
+                const redeEnviadaLimite = ultimoDado["limite REDEEnviada"];
+                const intervaloredeEnviada = redeEnviadaLimite - (redeEnviadaLimite * 0.10)
+                document.getElementById("limite-rede-env").innerHTML = ``
+                document.getElementById("limite-rede-env").innerHTML += `Enviados - Limite: ${redeEnviadaLimite}MB/s`
+
+                divRedeEnviada.style.display = "flex";
+                circuloRedeEnviada.classList.remove(...todasAsClasses);
+
+                if (redeEnviada >= intervaloredeEnviada && redeEnviada <= redeEnviadaLimite) {
+                    console.log(" to no if do medio")
+                    circuloRedeEnviada.classList.add("circulo-indicador", "circulo-amarelo")
+                    // Atualizando os valores no HTML
+                    document.getElementById("redeEnviada").innerHTML = `${redeEnviada}MB/s`; //bytes enviados por segundo
+                }
+
+                else if (redeEnviada > redeEnviadaLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloRedeEnviada.classList.add("circulo-indicador", "circulo-vermelho")
+                    // Atualizando os valores no HTML
+                    document.getElementById("redeEnviada").innerHTML = `${redeEnviada}MB/s`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloRedeEnviada.classList.add("circulo-indicador", "circulo-verde")
+                    // Atualizando os valores no HTML
+                    document.getElementById("redeEnviada").innerHTML = `${redeEnviada}MB/s`;
+                }
+            }
+
+            else {
+                divRedeEnviada.style.display = "none";
+            }
+
+            // REDERecebida
+            if (ultimoDado.hasOwnProperty("REDERecebida")) {
+                const redeRecebida = ultimoDado.REDERecebida;
+                const redeRecebidaLimite = ultimoDado["limite REDERecebida"];
+                const intervaloredeRecebida = redeRecebidaLimite - (redeRecebidaLimite * 0.10)
+                document.getElementById("limite-rede-rec").innerHTML = ``
+                document.getElementById("limite-rede-rec").innerHTML += `Recebidos - Limite: ${redeRecebidaLimite}MB/s`
+
+                divRedeRecebida.style.display = "flex";
+                circuloRedeRecebida.classList.remove(...todasAsClasses);
+
+                if (redeRecebida >= intervaloredeRecebida && redeRecebida <= redeRecebidaLimite) {
+                    console.log(" to no if do medio")
+                    circuloRedeRecebida.classList.add("circulo-indicador", "circulo-amarelo")
+                    // Atualizando os valores no HTML
+                    document.getElementById("redeRecebida").innerHTML = `${redeRecebida}MB/s`;
+                }
+
+                else if (redeRecebida > redeRecebidaLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloRedeRecebida.classList.add("circulo-indicador", "circulo-vermelho")
+                    // Atualizando os valores no HTML
+                    document.getElementById("redeRecebida").innerHTML = `${redeRecebida}MB/s`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloRedeRecebida.classList.add("circulo-indicador", "circulo-verde")
+                    // Atualizando os valores no HTML
+                    document.getElementById("redeRecebida").innerHTML = `${redeRecebida}MB/s`;
+                }
+            }
+
+            else {
+                divRedeRecebida.style.display = "none";
+            }
+
+            // PROCESSOAtivos
+            if (ultimoDado.hasOwnProperty("PROCESSOSAtivos")) {
+                const processosAtivos = ultimoDado.PROCESSOSAtivos;
+                const processosAtivosLimite = ultimoDado["limite PROCESSOSAtivos"];
+                const intervaloprocessosAtivos = processosAtivosLimite - (processosAtivosLimite * 0.10)
+                document.getElementById("limite-processo-ativo").innerHTML = ``
+                document.getElementById("limite-processo-ativo").innerHTML += `Processos On - Limite: ${processosAtivosLimite}`
+
+                divProcessoAtivo.style.display = "flex";
+                circuloProcessosAtivos.classList.remove(...todasAsClasses);
+
+                if (processosAtivos >= intervaloprocessosAtivos && processosAtivos <= processosAtivosLimite) {
+                    console.log(" to no if do medio")
+                    circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-amarelo")
+                    // Atualizando os valores no HTML
+                    document.getElementById("processosAtivos").innerHTML = `${processosAtivos}`;
+                }
+
+                else if (processosAtivos > processosAtivosLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-vermelho")
+                    // Atualizando os valores no HTML
+                    document.getElementById("processosAtivos").innerHTML = `${processosAtivos}`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-verde")
+                    // Atualizando os valores no HTML
+                    document.getElementById("processosAtivos").innerHTML = `${processosAtivos}`;
+                }
+            }
+
+            else {
+                divProcessoAtivo.style.display = "none";
+            }
+
+            // PROCESSODesativado
+            if (ultimoDado.hasOwnProperty("PROCESSOSDesativado")) {
+                const processosDesativados = ultimoDado.PROCESSOSDesativado;
+                const processosDesativadosLimite = ultimoDado["limite PROCESSOSDesativado"];
+                const intervaloprocessosDesativados = processosDesativadosLimite - (processosDesativadosLimite * 0.10)
+                document.getElementById("limite-processo-desativo").innerHTML = ``
+                document.getElementById("limite-processo-desativo").innerHTML += `Processos Off - Limite: ${processosDesativadosLimite}`
+
+                divProcessoDesativo.style.display = "flex";
+                circuloProcessosDesativados.classList.remove(...todasAsClasses);
+
+                if (processosDesativados >= intervaloprocessosDesativados && processosDesativados <= processosDesativadosLimite) {
+                    console.log(" to no if do medio")
+                    circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-amarelo")
+                    // Atualizando os valores no HTML
+                    document.getElementById("processosDesativados").innerHTML = `${processosDesativados}`;
+                }
+
+                else if (processosDesativados > processosDesativadosLimite) {
+                    console.log(" to no if do  passou do limite")
+                    circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-vermelho")
+                    // Atualizando os valores no HTML
+                    document.getElementById("processosDesativados").innerHTML = `${processosDesativados}`;
+                }
+
+                else {
+                    console.log("to no if do  suave")
+                    circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-verde")
+                    // Atualizando os valores no HTML
+                    document.getElementById("processosDesativados").innerHTML = `${processosDesativados}`;
+                }
+            }
+
+            else {
+                divProcessoDesativo.style.display = "none";
+            }
+
+            // Define qual será o intervalo para tentar coletar outro dado
+            setTimeout(CardTempoReal, 3000);
+
+        })
+        .catch(error => {
+            console.error('Erro ao obter dados:', error);
+        });
+
+}
+
+
+let tipoComponente;
+// Função que está dentro de cada bolinha e abre o Gráfico de Linha
 function verGraficos(id) {
     const metricas = document.getElementById("metricasdiv");
     const graficos = document.getElementById("graficoAtms");
     const componentes = document.getElementById("graficoComponentes");
     const carregando = document.getElementById("carregando");
+    tipoComponente = id;
 
     // Mostrar o "Carregando..." e esconder tudo
     metricas.style.display = "none";
@@ -137,7 +676,7 @@ function verGraficos(id) {
     componentes.style.display = "none";
     carregando.style.display = "block";
 
-    // Depois de 10 segundos, mostrar a div correta
+    // Depois de 3 segundos, mostrar a div correta
     setTimeout(() => {
         carregando.style.display = "none";
 
@@ -146,9 +685,9 @@ function verGraficos(id) {
         } else {
             graficos.style.display = "flex";
         }
-    }, 4100); 
+    }, 4200);
 
-    console.log(id);
+    console.log(tipoComponente);
 
     // limpar vetores e intervals antigos
     nomeComponente = "";
@@ -160,1022 +699,686 @@ function verGraficos(id) {
     if (intervaloGrafico) clearInterval(intervaloGrafico);
 
     // eu coleto os 6 ultimos dados de uma vez para diminuir a demora para carregar o gráfico
-    function primeiraColeta() {
-        fetch(`http://localhost:3333/tempoReal/monitoramento/${valorTeste}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(res => res.json())
-            .then(json => {
-    
-                if (id == "circuloRam") {
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].RAMPercentual;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-                } else if (id == "circuloRamDisponivel") {
-    
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].RAMDisponivel;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-    
-                } else if (id == "circuloCpu") {
-    
-                    console.log("to aqui em")
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].CPUPercent;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-                } else if (id == "circuloCpuFrequencia") {
-    
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].CPUFreq;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-    
-                } else if (id == "circuloDiscoUsado") {
-    
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].DISKPercentual;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-                } else if (id == "circuloDiscoDisponivel") {
-    
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].DISKDisponivel;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-    
-                } else if (id == "circuloRedeEnviada") {
-    
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].REDEEnviada;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-    
-                } else if (id == "circuloRedeRecebida") {
-    
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].REDERecebida;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-    
-                } else if (id == "circuloProcessosAtivos") {
-    
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].PROCESSOAtivos;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-    
-    
-                } else if (id == "circuloProcessosDesativados") {
-    
-                    for (let i = 0; i < json.dados.length; i++) {
-                        const dadoAtual = json.dados[i].PROCESSODesativado;
-                        const dataAtual = json.dados[i].dataHora;
-    
-                        let partesHora = dataAtual.split(' ')[1].split(':');
-                        let partesDia = dataAtual.split(' ')[0].split('-');
-    
-                        dia = partesDia[2];
-                        mes = partesDia[1];
-                        ano = partesDia[0];
-    
-                        hora = partesHora[0];
-                        minutos = partesHora[1];
-                        segundos = partesHora[2];
-    
-                        dadosMetricas.push(dadoAtual);
-                        dataColetas.push(`${minutos}:${segundos}`);
-                        diaMetrica = `${dia}/${mes}/${ano}`;
-                    }
-                }
-    
-    
-                // console.log(dadosMetricas);
-            })
-            .catch(error => {
-                console.error('Erro ao obter dados:', error);
-            });
-    }
-
+    primeiraColeta();
     // eu acrescento um dado e retiro o ultimo
-    function coletaVariavel() {
-        fetch(`http://localhost:3333/tempoReal/monitoramento/${valorTeste}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
+    intervaloColeta = setInterval(coletaUm, 4000, 'tipoComponente');
+    // depois da primeira, começa a coletar a cada 4 segundos normalmente
+    intervaloGrafico = setInterval(atualizarGrafico, 4100);
+    console.log("tipoComponente: ", id)
+
+// setInterval(coletaUm, 4000, 'meuParametro');
+}
+
+let dadosMetricas = [];
+let dataColetas = [];
+
+// Realiza a coleta dos 6 últimos registros (Gráfico de Linha), usa o id de verGraficos(id) para saber qual a métrica atual
+function primeiraColeta() {
+
+    fetch(`http://localhost:3333/tempoReal/monitoramento/${idAtmAtual}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(json => {
+
+            console.log("to testando: ", json.dados[0].dataHora)
+
+            if (tipoComponente == "circuloRam") {
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].RAMPercentual;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+            } else if (tipoComponente == "circuloRamDisponivel") {
+
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].RAMDisponivel;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+
+            } else if (tipoComponente == "circuloCpu") {
+
+                console.log("to aqui em")
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].CPUPercent;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+            } else if (tipoComponente == "circuloCpuFrequencia") {
+
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].CPUFreq;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+
+            } else if (tipoComponente == "circuloDiscoUsado") {
+
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].DISKPercentual;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+            } else if (tipoComponente == "circuloDiscoDisponivel") {
+
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].DISKDisponivel;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+
+            } else if (tipoComponente == "circuloRedeEnviada") {
+
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].REDEEnviada;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+
+            } else if (tipoComponente == "circuloRedeRecebida") {
+
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].REDERecebida;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+
+            } else if (tipoComponente == "circuloProcessosAtivos") {
+
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].PROCESSOSAtivos;
+                    const dataAtual = json.dados[i].dataHora;
+
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
+
+
+            } else if (tipoComponente == "circuloProcessosDesativados") {
+
+                for (let i = 0; i < json.dados.length; i++) {
+                    const dadoAtual = json.dados[i].PROCESSOSDesativado;
+                    const dataAtual = json.dados[i].dataHora;
+
+                    let partesHora = dataAtual.split(' ')[1].split(':');
+                    let partesDia = dataAtual.split(' ')[0].split('-');
+
+                    dia = partesDia[2];
+                    mes = partesDia[1];
+                    ano = partesDia[0];
+
+                    hora = partesHora[0];
+                    minutos = partesHora[1];
+                    segundos = partesHora[2];
+
+                    dadosMetricas.push(dadoAtual);
+                    dataColetas.push(`${minutos}Min:${segundos}Seg`);
+                    diaMetrica = `${dia}/${mes}/${ano}`;
+                }
             }
+
+
+
+
+
+            // console.log(dadosMetricas);
         })
-            .then(res => res.json())
-            .then(json => {
-                const ultimoDado = json.dados[json.dados.length - 1];
+        .catch(error => {
+            console.error('Erro ao obter dados:', error);
+        });
+}
 
-                if (id == "circuloRam") {
-                    dado1 = ultimoDado.RAMPercentual;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "RAM";
-                    spanMetrica = "(Porcentagem)";
-                    limite = ultimoDado["limite RAMPercentual"];
+// Realiza a coleta, inclui no vetor e exclui o registro mais antigo (Gráfico de Linha), usa o id de verGraficos(id) para saber qual a métrica atual
+function coletaUm() {
+    console.log("Atm Atual: ", idAtmAtual)
+    fetch(`http://localhost:3333/tempoReal/monitoramento/${idAtmAtual}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(json => {
+            const ultimoDado = json.dados[json.dados.length - 1];
 
-                } else if (id == "circuloRamDisponivel") {
-                    dado1 = ultimoDado.RAMDisponivel;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "RAM";
-                    spanMetrica = "(Disponível)";
-                    limite = ultimoDado["limite RAMDisponivel"];
+            if (tipoComponente == "circuloRam") {
+                dado1 = ultimoDado.RAMPercentual;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "RAM";
+                spanMetrica = "(Porcentagem)";
+                limite = ultimoDado["limite RAMPercentual"];
 
-
-                } else if (id == "circuloCpu") {
-                    dado1 = ultimoDado.CPUPercent;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "CPU";
-                    spanMetrica = "(Porcentagem)";
-                    limite = ultimoDado["limite CPUPercent"];
-
-                } else if (id == "circuloCpuFrequencia") {
-                    dado1 = ultimoDado.CPUFreq;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "CPU";
-                    spanMetrica = "(Frequência)";
-                    limite = ultimoDado["limite CPUFreq"];
-
-
-                } else if (id == "circuloDiscoUsado") {
-                    dado1 = ultimoDado.DISKPercentual;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "DISCO";
-                    spanMetrica = "(Porcentagem)";
-                    limite = ultimoDado["limite DISKPercentual"];
-
-                } else if (id == "circuloDiscoDisponivel") {
-                    dado1 = ultimoDado.DISKDisponivel;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "DISCO";
-                    spanMetrica = "(Disponível)";
-                    limite = ultimoDado["limite DISKDisponivel"];
+            } else if (tipoComponente == "circuloRamDisponivel") {
+                dado1 = ultimoDado.RAMDisponivel;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "RAM";
+                spanMetrica = "(Disponível)";
+                limite = ultimoDado["limite RAMDisponivel"];
 
 
-                } else if (id == "circuloRedeEnviada") {
-                    dado1 = ultimoDado.REDEEnviada;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "REDE";
-                    spanMetrica = "(Enviada)";
-                    limite = ultimoDado["limite REDEEnviada"];
+            } else if (tipoComponente == "circuloCpu") {
+                dado1 = ultimoDado.CPUPercent;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "CPU";
+                spanMetrica = "(Porcentagem)";
+                limite = ultimoDado["limite CPUPercent"];
+
+            } else if (tipoComponente == "circuloCpuFrequencia") {
+                dado1 = ultimoDado.CPUFreq;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "CPU";
+                spanMetrica = "(GHz)";
+                limite = ultimoDado["limite CPUFreq"];
 
 
-                } else if (id == "circuloRedeRecebida") {
-                    dado1 = ultimoDado.REDERecebida;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "REDE";
-                    spanMetrica = "(Recebida)";
-                    limite = ultimoDado["limite REDERecebida"];
+            } else if (tipoComponente == "circuloDiscoUsado") {
+                dado1 = ultimoDado.DISKPercentual;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "DISCO";
+                spanMetrica = "(Porcentagem)";
+                limite = ultimoDado["limite DISKPercentual"];
+
+            } else if (tipoComponente == "circuloDiscoDisponivel") {
+                dado1 = ultimoDado.DISKDisponivel;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "DISCO";
+                spanMetrica = "(Disponível)";
+                limite = ultimoDado["limite DISKDisponivel"];
 
 
-                } else if (id == "circuloProcessosAtivos") {
-                    dado1 = ultimoDado.PROCESSOAtivos;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "PROCESSOS";
-                    spanMetrica = "(Ativos)";
-                    limite = ultimoDado["limite PROCESSOAtivos"];
+            } else if (tipoComponente == "circuloRedeEnviada") {
+                dado1 = ultimoDado.REDEEnviada;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "REDE";
+                spanMetrica = "(Enviada MB/s)";
+                limite = ultimoDado["limite REDEEnviada"];
 
 
-                } else if (id == "circuloProcessosDesativados") {
-                    dado1 = ultimoDado.PROCESSODesativado;
-                    data1 = ultimoDado.dataHora;
-                    nomeComponente = "PROCESSOS";
-                    spanMetrica = "(Desativados)";
-                    limite = ultimoDado["limite PROCESSODesativado"];
-                }
-
-                if (dadosMetricas.length >= 6) {
-                    dadosMetricas.shift();
-                }
-
-                if (dataColetas.length >= 6) {
-                    dataColetas.shift();
-                }
+            } else if (tipoComponente == "circuloRedeRecebida") {
+                dado1 = ultimoDado.REDERecebida;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "REDE";
+                spanMetrica = "(Recebida MB/s)";
+                limite = ultimoDado["limite REDERecebida"];
 
 
-                // split(' ') separa a data da hora → ["2025-05-05", "17:53:02"]
-                // [1] pega a parte da hora (':' define as separações)
-                let partesHora = data1.split(' ')[1].split(':');
-                let partesDia = data1.split(' ')[0].split('-');
+            } else if (tipoComponente == "circuloProcessosAtivos") {
+                dado1 = ultimoDado.PROCESSOSAtivos;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "PROCESSOS";
+                spanMetrica = "(Ativos)";
+                limite = ultimoDado["limite PROCESSOSAtivos"];
 
-                dia = partesDia[2];
-                mes = partesDia[1];
-                ano = partesDia[0];
 
-                hora = partesHora[0];
-                minutos = partesHora[1];
-                segundos = partesHora[2];
+            } else if (tipoComponente == "circuloProcessosDesativados") {
+                dado1 = ultimoDado.PROCESSOSDesativado;
+                data1 = ultimoDado.dataHora;
+                nomeComponente = "PROCESSOS";
+                spanMetrica = "(Desativados)";
+                limite = ultimoDado["limite PROCESSOSDesativado"];
+            }
 
-                dadosMetricas.push(dado1);
-                dataColetas.push(`${minutos}:${segundos}`);
-                diaMetrica = `${dia}/${mes}/${ano}`;
+            if (dadosMetricas.length >= 6) {
+                dadosMetricas.shift();
+            }
 
-                // console.log(dadosMetricas);
-            })
-            .catch(error => {
-                console.error('Erro ao obter dados:', error);
-            });
+            if (dataColetas.length >= 6) {
+                dataColetas.shift();
+            }
+
+
+            // split(' ') separa a data da hora → ["2025-05-05", "17:53:02"]
+            // [1] pega a parte da hora (':' define as separações)
+            let partesHora = data1.split(' ')[1].split(':');
+            let partesDia = data1.split(' ')[0].split('-');
+
+            dia = partesDia[2];
+            mes = partesDia[1];
+            ano = partesDia[0];
+
+            hora = partesHora[0];
+            minutos = partesHora[1];
+            segundos = partesHora[2];
+
+            dadosMetricas.push(dado1);
+            dataColetas.push(`${minutos}Min:${segundos}Seg`);
+            diaMetrica = `${dia}/${mes}/${ano}`;
+
+            // console.log(dadosMetricas);
+        })
+        .catch(error => {
+            console.error('Erro ao obter dados:', error);
+        });
+}
+
+// Função que atualiza o gráfico após ele ser exibido
+function atualizarGrafico() {
+
+    let nomeMetrica = document.getElementById("nomeMetrica");
+    let tipoMetrica = document.getElementById("tipoMetrica");
+    let dataMetrica = document.getElementById("dataMetrica");
+    let horaMetrica = document.getElementById("horaMetrica");
+
+    nomeMetrica.innerHTML = `${nomeComponente}`;
+    tipoMetrica.innerHTML = `- ${spanMetrica}`;
+    dataMetrica.innerHTML = `- ${diaMetrica}`;
+    horaMetrica.innerHTML = `- Horário: ${hora}h`;
+
+    const ctx = document.getElementById('meuGrafico10').getContext('2d');
+
+    if (window.meuGrafico) {
+        window.meuGrafico.destroy();
     }
 
-    function atualizarGrafico() {
-
-        let nomeMetrica = document.getElementById("nomeMetrica");
-        let tipoMetrica = document.getElementById("tipoMetrica");
-        let dataMetrica = document.getElementById("dataMetrica");
-        let horaMetrica = document.getElementById("horaMetrica");
-
-        nomeMetrica.innerHTML = `${nomeComponente}`;
-        tipoMetrica.innerHTML = `- ${spanMetrica}`;
-        dataMetrica.innerHTML = `- ${diaMetrica}`;
-        horaMetrica.innerHTML = `- ${hora}h`;
-
-        const ctx = document.getElementById('meuGrafico10').getContext('2d');
-
-        if (window.meuGrafico) {
-            window.meuGrafico.destroy();
-        }
-
-        let maximoY;
-
-        let maxY = Math.max(...dadosMetricas);  // mesmo que Math.max(10, 20, 5, 30) pega 30
-        
-        if (maxY > limite) {
-            maximoY = maxY + (maxY * 0.20);
-        } else {
-            maximoY = limite + (limite * 0.30);
-        }
-
-        let minimoY;
     
-        let minY = Math.min(...dadosMetricas); 
+    let maximoY;
+    
+    let maxY = Math.max(...dadosMetricas);  // mesmo que Math.max(10, 20, 5, 30) pega 30
+    
+    if (maxY > limite) {
+        maximoY = maxY + (maxY * 0.20);
+    } else {
+        maximoY = limite + (limite * 0.30);
+    }
+    
+    if (spanMetrica == "(Porcentagem)") {
+        maximoY = 100
+    }
 
-        if (maxY > limite) {
-            minimoY = limite - (limite * 0.10)
-        }
-        else if (minimoY < 0) {
-            minimoY = 0
-        }
-        else{
-            minimoY = minY - (minY * 0.20)
-        }
-        
-        
+    if (nomeComponente == "RAM" && spanMetrica == "(Disponível)") {
+        maximoY = 16
+    }
+
+    let minimoY;
+
+    let minY = Math.min(...dadosMetricas);
+
+    if (maxY > limite) {
+        minimoY = limite - (limite * 0.10)
+    }
+    else if (minimoY < 0) {
+        minimoY = 0
+    }
+    else {
+        minimoY = minY - (minY * 0.20)
+    }
 
 
-        window.meuGrafico = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: dataColetas,
-                datasets: [{
-                    label: 'Uso da CPU (%)',
-                    data: dadosMetricas,
-                    borderColor: 'rgba(141, 52, 249, 1)',
-                    borderWidth: 2,
-                    tension: 0.3,
-                    fill: true,
-                    backgroundColor: 'rgba(141, 52, 249, 0.1)'
-                }]
+
+
+    window.meuGrafico = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dataColetas,
+            datasets: [{
+                label: 'Uso da CPU (%)',
+                data: dadosMetricas,
+                borderColor: 'rgba(141, 52, 249, 1)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true,
+                backgroundColor: 'rgba(141, 52, 249, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                annotation: {
+                    annotations: {
+                        linhaLimite: {
+                            type: 'line',
+                            yMin: limite,
+                            yMax: limite,
+                            borderColor: 'red',
+                            borderWidth: 2
+                        }
+                    }
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    annotation: {
-                        annotations: {
-                            linhaLimite: {
-                                type: 'line',
-                                yMin: limite,
-                                yMax: limite,
-                                borderColor: 'red',
-                                borderWidth: 2
+            scales: {
+                x: {
+                    ticks: {
+                        color: 'black',
+                        font: { size: 16 }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    max: maximoY,
+                    min: minimoY,
+                    ticks: {
+                        stepSize: 5,
+                        color: 'black',
+                        font: { size: 16 }
+                    }
+                }
+            }
+        }
+    });
+}
+
+
+let qtd = 0
+let qtdAtms = 0;
+
+function quantidadeATM() {
+
+    fetch(`http://localhost:3333/validarAtm/atms/1`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(json => {
+            qtdAtms = json[0]["count(idAtm)"];
+            // console.log("Quantidade de ATMs:", qtdAtms);
+        })
+        .catch(error => {
+            console.error('Erro ao obter a quantidade de ATMs:', error);
+        });
+}
+
+
+function listaAlertas() {
+    let oine = document.getElementById("conteudo_tabela");
+    oine.innerHTML = "";
+
+    let linhas = [];
+    let totalBuscados = 0;
+
+    for (let i = 1; i <= qtdAtms; i++) {
+        const atmAtual = i;
+
+        fetch(`http://localhost:3333/dadosInsert/alerta/${atmAtual}`)
+            .then(res => res.json())
+            .then(json => {
+                if (
+                    json &&
+                    Array.isArray(json.dados) &&
+                    json.dados.length > 0 &&
+                    Array.isArray(json.dados[json.dados.length - 1])
+                ) {
+                    const ultimoRegistro = json.dados[json.dados.length - 1];
+                    let qtd = ultimoRegistro.length;
+
+                    // Começa assumindo que todos os alertas são médios
+                    let tipo = "Médio";
+                    let estilo = "medio";
+
+                    for (let j = 0; j < qtd; j++) {
+                        let alerta = ultimoRegistro[j];
+                        let parametro = alerta.parametro;
+                        let valor = alerta.valor;
+                        let limite = alerta.limite;
+
+                        if (parametro.includes("Disponivel")) {
+                          
+                            if (valor < limite) {
+                                tipo = "Crítico";
+                                estilo = "critico";
+                                break;
+                            }
+                        } else {
+                            
+                            if (valor > limite) {
+                                tipo = "Crítico";
+                                estilo = "critico";
+                                break;
                             }
                         }
                     }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: 'black',
-                            font: { size: 16 }
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        max: maximoY,
-                        min: minimoY,
-                        ticks: {
-                            stepSize: 5,
-                            color: 'black',
-                            font: { size: 16 }
-                        }
-                    }
+
+                    linhas.push({
+                        tipo: tipo,
+                        html: `
+                            <div class="tabela"> 
+                                <h1 class="corLista" id="${estilo}"></h1> 
+                                <div>ATM - ${atmAtual}</div> 
+                                <div>${qtd} Alertas</div> 
+                                <div>${tipo}</div> 
+                                <button class="btn-nav-lista" data-valor=${atmAtual} onclick="obterDados(this)">Acessar</button>
+                            </div>
+                        `
+                    });
                 }
-            }
-        });
-    }
-
-
-    primeiraColeta();
-
-    // depois da primeira, começa a coletar a cada 4 segundos normalmente
-    intervaloColeta = setInterval(coletaVariavel, 4000);
-    intervaloGrafico = setInterval(atualizarGrafico, 4100);
-
-}
-
-
-let valorTeste;
-let valorSelecionado = null;
-    
-
-function obterDados(button) {
-
-        const metricas = document.getElementById("metricasdiv");
-        const graficos = document.getElementById("graficoAtms");
-        const componentes = document.getElementById("graficoComponentes");
-
-        metricas.style.display = "flex";
-        graficos.style.display = "none";
-        componentes.style.display = "none";
-
-    
-        const valor = button.getAttribute("data-valor");
-        valorTeste = button.getAttribute("data-valor");
-        valorSelecionado = valor; // Guarda para reutilizar no intervalo
-        console.log("Valor selecionado:", valor);
-
-
-        buscarDados();
-
-}
-
-
-function buscarDados() {
-
-        if (!valorSelecionado) return;
-
-        fetch(`http://localhost:3333/tempoReal/monitoramento/${valorSelecionado}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(res => res.json())
-            .then(json => {
-                console.log(json);
-
-                const circuloCpuPercentual = document.getElementById("circuloCpu")
-                const circuloCpuFreq = document.getElementById("circuloCpuFrequencia")
-                const circuloRamPercentual = document.getElementById("circuloRam")
-                const circuloRamDisponivel = document.getElementById("circuloRamDisponivel")
-                const circuloDiscoUsado = document.getElementById("circuloDiscoUsado")
-                const circuloDiscoDisponivel = document.getElementById("circuloDiscoDisponivel")
-                const circuloRedeEnviada = document.getElementById("circuloRedeEnviada")
-                const circuloRedeRecebida = document.getElementById("circuloRedeRecebida")
-                const circuloProcessosAtivos = document.getElementById("circuloProcessosAtivos")
-                const circuloProcessosDesativados = document.getElementById("circuloProcessosDesativados")
-                const todasAsClasses = ["circulo-verde", "circulo-amarelo", "circulo-vermelho", "circulo-cinza"];
-       
-                // ve se tem dados antes de continuar
-                if (!json.dados || json.dados.length === 0) {
-                    circuloCpuPercentual.classList.remove(...todasAsClasses);
-                    circuloCpuPercentual.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("porcentagemCpu").innerHTML = `N/A`;
-
-                    circuloCpuFreq.classList.remove(...todasAsClasses);
-                    circuloCpuFreq.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("frequenciaCpu").innerHTML = `N/A`;
-
-                    circuloRamPercentual.classList.remove(...todasAsClasses);
-                    circuloRamPercentual.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("porcentagemRam").innerHTML = `N/A`;
-
-                    circuloRamDisponivel.classList.remove(...todasAsClasses);
-                    circuloRamDisponivel.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("disponivelRam").innerHTML = `N/A`;
-
-                    circuloDiscoUsado.classList.remove(...todasAsClasses);
-                    circuloDiscoUsado.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("discoUsado").innerHTML = `N/A`;
-
-                    circuloDiscoDisponivel.classList.remove(...todasAsClasses);
-                    circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("discoDisponivel").innerHTML = `N/A`;
-
-                    circuloRedeEnviada.classList.remove(...todasAsClasses);
-                    circuloRedeEnviada.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("redeEnviada").innerHTML = `N/A`;
-
-                    circuloRedeRecebida.classList.remove(...todasAsClasses);
-                    circuloRedeRecebida.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("redeRecebida").innerHTML = `N/A`;
-
-                    circuloProcessosAtivos.classList.remove(...todasAsClasses);
-                    circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("processosAtivos").innerHTML = `N/A`;
-
-                    circuloProcessosDesativados.classList.remove(...todasAsClasses);
-                    circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("processosDesativados").innerHTML = `N/A`;
-                    
-                    // alert("Sem dados para exibir.");
-                    return;
-                }
-                
-                const ultimoDado = json.dados[json.dados.length - 1]; // pega o último item do array
-
-                // o hasOwnProperty() verifica se o objeto (json) tem uma chave com o nome fornecido
-                if (ultimoDado.hasOwnProperty("CPUPercent")) {
-                    const cpuPercent = ultimoDado.CPUPercent;
-                    const cpuPercentLimite = ultimoDado["limite CPUPercent"];
-                    const intervaloCpuPercent = cpuPercentLimite - (cpuPercentLimite * 0.10)
-
-                    circuloCpuPercentual.classList.remove(...todasAsClasses);
-
-                    if (cpuPercent >= intervaloCpuPercent && cpuPercent <= cpuPercentLimite) {
-                        console.log(" to no if do medio")
-                        circuloCpuPercentual.classList.add("circulo-indicador", "circulo-amarelo")
-                        document.getElementById("porcentagemCpu").innerHTML = `${cpuPercent}%`;
-                    }
-
-                    else if (cpuPercent > cpuPercentLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloCpuPercentual.classList.add("circulo-indicador", "circulo-vermelho")
-                        document.getElementById("porcentagemCpu").innerHTML = `${cpuPercent}%`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloCpuPercentual.classList.add("circulo-indicador", "circulo-verde")
-                        document.getElementById("porcentagemCpu").innerHTML = `${cpuPercent}%`;
-                    }
-                }
-
-                else {
-                    circuloCpuPercentual.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("porcentagemCpu").innerHTML = `N/A`;
-                }
-
-
-                // CPUFREQ
-                if (ultimoDado.hasOwnProperty("CPUFreq")) {
-                    const CPUFreq = ultimoDado.CPUFreq;
-                    const CPUFreqLimite = ultimoDado["limite CPUFreq"];
-                    const intervaloCPUFreq = CPUFreqLimite - (CPUFreqLimite * 0.10)
-
-                    circuloCpuFreq.classList.remove(...todasAsClasses);
-
-                    if (CPUFreq >= intervaloCPUFreq && CPUFreq <= CPUFreqLimite) {
-                        console.log(" to no if do medio")
-                        circuloCpuFreq.classList.add("circulo-indicador", "circulo-amarelo")
-                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
-                    }
-
-                    else if (CPUFreq > CPUFreqLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloCpuFreq.classList.add("circulo-indicador", "circulo-vermelho")
-                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloCpuFreq.classList.add("circulo-indicador", "circulo-verde")
-                        document.getElementById("frequenciaCpu").innerHTML = `${CPUFreq}GHz`;
-                    }
-                }
-
-                else {
-                    circuloCpuFreq.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("frequenciaCpu").innerHTML = `N/A`;
-                }
-
-
-                // RAMPercentual
-                if (ultimoDado.hasOwnProperty("RAMPercentual")) {
-                    const ramPercent = ultimoDado.RAMPercentual;
-                    const ramPercentLimite = ultimoDado["limite RAMPercentual"];
-                    const intervaloramPercent = ramPercentLimite - (ramPercentLimite * 0.10)
-
-                    circuloRamPercentual.classList.remove(...todasAsClasses);
-
-                    if (ramPercent >= intervaloramPercent && ramPercent <= ramPercentLimite) {
-                        console.log(" to no if do medio")
-                        circuloRamPercentual.classList.add("circulo-indicador", "circulo-amarelo")
-                        // Atualizando os valores no HTML
-                        document.getElementById("porcentagemRam").innerHTML = `${ramPercent}%`;
-                    }
-
-                    else if (ramPercent > ramPercentLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloRamPercentual.classList.add("circulo-indicador", "circulo-vermelho")
-                        // Atualizando os valores no HTML
-                        document.getElementById("porcentagemRam").innerHTML = `${ramPercent}%`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloRamPercentual.classList.add("circulo-indicador", "circulo-verde")
-                        // Atualizando os valores no HTML
-                        document.getElementById("porcentagemRam").innerHTML = `${ramPercent}%`;
-                    }
-                }
-
-                else {
-                    circuloRamPercentual.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("porcentagemRam").innerHTML = `N/A`;
-                }
-
-
-                // RAMDisponivel
-                if (ultimoDado.hasOwnProperty("RAMDisponivel")) {
-                    const ramDisponivel = ultimoDado.RAMDisponivel;
-                    const ramDisponivelLimite = ultimoDado["limite RAMDisponivel"];
-                    const intervaloramDisponivel = ramDisponivelLimite - (ramDisponivelLimite * 0.10)
-
-                    circuloRamDisponivel.classList.remove(...todasAsClasses);
-
-                    if (ramDisponivel >= intervaloramDisponivel && ramDisponivel <= ramDisponivelLimite) {
-                        console.log(" to no if do medio")
-                        circuloRamDisponivel.classList.add("circulo-indicador", "circulo-amarelo")
-                        // Atualizando os valores no HTML
-                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
-                    }
-
-                    else if (ramDisponivel > ramDisponivelLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloRamDisponivel.classList.add("circulo-indicador", "circulo-vermelho")
-                        // Atualizando os valores no HTML
-                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloRamDisponivel.classList.add("circulo-indicador", "circulo-verde")
-                        // Atualizando os valores no HTML
-                        document.getElementById("disponivelRam").innerHTML = `${ramDisponivel}GB`;
-                    }
-                }
-
-                else {
-                    circuloRamDisponivel.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("disponivelRam").innerHTML = `N/A`;
-                }
-
-
-                // DISKPercentual
-                if (ultimoDado.hasOwnProperty("DISKPercentual")) {
-                    const discoUsado = ultimoDado.DISKPercentual;
-                    const discoUsadoLimite = ultimoDado["limite DISKPercentual"];
-                    const intervalodiscoUsado = discoUsadoLimite - (discoUsadoLimite * 0.10)
-
-                    circuloDiscoUsado.classList.remove(...todasAsClasses);
-
-                    if (discoUsado >= intervalodiscoUsado && discoUsado <= discoUsadoLimite) {
-                        console.log(" to no if do medio")
-                        circuloDiscoUsado.classList.add("circulo-indicador", "circulo-amarelo")
-                        // Atualizando os valores no HTML
-                        document.getElementById("discoUsado").innerHTML = `${discoUsado}%`;
-                    }
-
-                    else if (discoUsado > discoUsadoLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloDiscoUsado.classList.add("circulo-indicador", "circulo-vermelho")
-                        // Atualizando os valores no HTML
-                        document.getElementById("discoUsado").innerHTML = `${discoUsado}%`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloDiscoUsado.classList.add("circulo-indicador", "circulo-verde")
-                        // Atualizando os valores no HTML
-                        document.getElementById("discoUsado").innerHTML = `${discoUsado}%`;
-                    }
-                }
-
-                else {
-                    circuloDiscoUsado.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("discoUsado").innerHTML = `N/A`;
-                }
-
-
-                // DISKDisponivel
-                if (ultimoDado.hasOwnProperty("DISKDisponivel")) {
-                    const discoDisponivel = ultimoDado.DISKDisponivel;
-                    const discoDisponivelLimite = ultimoDado["limite DISKDisponivel"];
-                    const intervalodiscoDisponivel = discoDisponivelLimite - (discoDisponivelLimite * 0.10)
-
-                    circuloDiscoDisponivel.classList.remove(...todasAsClasses);
-
-                    if (discoDisponivel >= intervalodiscoDisponivel && discoDisponivel <= discoDisponivelLimite) {
-                        console.log(" to no if do medio")
-                        circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-amarelo")
-                        // Atualizando os valores no HTML
-                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
-                    }
-
-                    else if (discoDisponivel > discoDisponivelLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-vermelho")
-                        // Atualizando os valores no HTML
-                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-verde")
-                        // Atualizando os valores no HTML
-                        document.getElementById("discoDisponivel").innerHTML = `${discoDisponivel}GB`;
-                    }
-                }
-
-                else {
-                    circuloDiscoDisponivel.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("discoDisponivel").innerHTML = `N/A`;
-                }
-
-                // REDEEnviada
-                if (ultimoDado.hasOwnProperty("REDEEnviada")) {
-                    const redeEnviada = ultimoDado.REDEEnviada;
-                    const redeEnviadaLimite = ultimoDado["limite REDEEnviada"];
-                    const intervaloredeEnviada = redeEnviadaLimite - (redeEnviadaLimite * 0.10)
-
-                    circuloRedeEnviada.classList.remove(...todasAsClasses);
-
-                    if (redeEnviada >= intervaloredeEnviada && redeEnviada <= redeEnviadaLimite) {
-                        console.log(" to no if do medio")
-                        circuloRedeEnviada.classList.add("circulo-indicador", "circulo-amarelo")
-                        // Atualizando os valores no HTML
-                        document.getElementById("redeEnviada").innerHTML = `${(redeEnviada / (1024 * 1024)).toFixed(2)}MB/s`; //bytes enviados por segundo
-                    }
-
-                    else if (redeEnviada > redeEnviadaLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloRedeEnviada.classList.add("circulo-indicador", "circulo-vermelho")
-                        // Atualizando os valores no HTML
-                        document.getElementById("redeEnviada").innerHTML = `${(redeEnviada / (1024 * 1024)).toFixed(2)}MB/s`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloRedeEnviada.classList.add("circulo-indicador", "circulo-verde")
-                        // Atualizando os valores no HTML
-                        document.getElementById("redeEnviada").innerHTML = `${(redeEnviada / (1024 * 1024)).toFixed(2)}MB/s`;
-                    }
-                }
-
-                else {
-                    circuloRedeEnviada.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("redeEnviada").innerHTML = `N/A`;
-                }
-
-                // REDERecebida
-                if (ultimoDado.hasOwnProperty("REDERecebida")) {
-                    const redeRecebida = ultimoDado.REDERecebida;
-                    const redeRecebidaLimite = ultimoDado["limite REDERecebida"];
-                    const intervaloredeRecebida = redeRecebidaLimite - (redeRecebidaLimite * 0.10)
-
-                    circuloRedeRecebida.classList.remove(...todasAsClasses);
-
-                    if (redeRecebida >= intervaloredeRecebida && redeRecebida <= redeRecebidaLimite) {
-                        console.log(" to no if do medio")
-                        circuloRedeRecebida.classList.add("circulo-indicador", "circulo-amarelo")
-                        // Atualizando os valores no HTML
-                        document.getElementById("redeRecebida").innerHTML = `${(redeRecebida / (1024 * 1024)).toFixed(2)}MB/s`;
-                    }
-
-                    else if (redeRecebida > redeRecebidaLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloRedeRecebida.classList.add("circulo-indicador", "circulo-vermelho")
-                        // Atualizando os valores no HTML
-                        document.getElementById("redeRecebida").innerHTML = `${(redeRecebida / (1024 * 1024)).toFixed(2)}MB/s`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloRedeRecebida.classList.add("circulo-indicador", "circulo-verde")
-                        // Atualizando os valores no HTML
-                        document.getElementById("redeRecebida").innerHTML = `${(redeRecebida / (1024 * 1024)).toFixed(2)}MB/s`;
-                    }
-                }
-
-                else {
-                    circuloRedeRecebida.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("redeRecebida").innerHTML = `N/A`;
-                }
-
-                // PROCESSOAtivos
-                if (ultimoDado.hasOwnProperty("PROCESSOSAtivos")) {
-                    const processosAtivos = ultimoDado.PROCESSOSAtivos;
-                    const processosAtivosLimite = ultimoDado["limite PROCESSOSAtivos"];
-                    const intervaloprocessosAtivos = processosAtivosLimite -  (processosAtivosLimite * 0.10)
-
-                    circuloProcessosAtivos.classList.remove(...todasAsClasses);
-
-                    if (processosAtivos >= intervaloprocessosAtivos && processosAtivos <= processosAtivosLimite) {
-                        console.log(" to no if do medio")
-                        circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-amarelo")
-                        // Atualizando os valores no HTML
-                        document.getElementById("processosAtivos").innerHTML = `${processosAtivos}`;
-                    }
-
-                    else if (processosAtivos > processosAtivosLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-vermelho")
-                        // Atualizando os valores no HTML
-                        document.getElementById("processosAtivos").innerHTML = `${processosAtivos}`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-verde")
-                        // Atualizando os valores no HTML
-                        document.getElementById("processosAtivos").innerHTML = `${processosAtivos}`;
-                    }
-                }
-
-                else {
-                    circuloProcessosAtivos.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("processosAtivos").innerHTML = `N/A`;
-                }
-
-                // PROCESSODesativado
-                if (ultimoDado.hasOwnProperty("PROCESSOSDesativado")) {
-                    const processosDesativados = ultimoDado.PROCESSOSDesativado;
-                    const processosDesativadosLimite = ultimoDado["limite PROCESSOSDesativado"];
-                    const intervaloprocessosDesativados = processosDesativadosLimite - (processosDesativadosLimite * 0.10)
-
-                    circuloProcessosDesativados.classList.remove(...todasAsClasses);
-
-                    if (processosDesativados >= intervaloprocessosDesativados && processosDesativados <= processosDesativadosLimite) {
-                        console.log(" to no if do medio")
-                        circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-amarelo")
-                        // Atualizando os valores no HTML
-                        document.getElementById("processosDesativados").innerHTML = `${processosDesativados}`;
-                    }
-
-                    else if (processosDesativados > processosDesativadosLimite) {
-                        console.log(" to no if do  passou do limite")
-                        circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-vermelho")
-                        // Atualizando os valores no HTML
-                        document.getElementById("processosDesativados").innerHTML = `${processosDesativados}`;
-                    }
-
-                    else {
-                        console.log("to no if do  suave")
-                        circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-verde")
-                        // Atualizando os valores no HTML
-                        document.getElementById("processosDesativados").innerHTML = `${processosDesativados}`;
-                    }
-                }
-
-                else {
-                    circuloProcessosDesativados.classList.add("circulo-indicador", "circulo-cinza")
-                    document.getElementById("processosDesativados").innerHTML = `N/A`;
-                }
-
-                setTimeout(buscarDados, 4000);
-
             })
             .catch(error => {
-                console.error('Erro ao obter dados:', error);  // Exibe o erro, caso haja algum
+                console.warn(`Erro ao buscar alertas do ATM ${atmAtual}:`, error);
+            })
+            .finally(() => {
+                totalBuscados++;
+
+                if (totalBuscados === qtdAtms) {
+                    linhas.sort((a, b) => {
+                        if (a.tipo === "Crítico" && b.tipo !== "Crítico") return -1;
+                        if (a.tipo !== "Crítico" && b.tipo === "Crítico") return 1;
+                        return 0;
+                    });
+
+                    for (let k = 0; k < linhas.length; k++) {
+                        oine.innerHTML += linhas[k].html;
+                    }
+                }
             });
-    
-}
-
-
-function exibirKPIs() {
-    fetch('/medidas/kpis')
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                console.error('Erro ao obter KPIs');
-            }
-        })
-        .then(data => {
-            if (data && data.length > 0) {
-                const kpiData = data[0];
-                document.getElementById('kpi1').innerText = kpiData.atmsSemAlertas;
-                document.getElementById('kpi2').innerText = kpiData.atmsMedios;
-                document.getElementById('kpi3').innerText = kpiData.atmsCritico;
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao obter KPIs:', error);
-        });
+    }
 }
 
 
 
-// gráfico inicial
+
+
+// Gráfico tela inicial
+let chartAtm = null;
+let chartAtmDataCache = null; // guarda os últimos dados usados
+
 function graficoAlertasPorATM() {
-    // let fontSize = 20;
-    // if (window.innerWidth < 600) {
-    //     fontSize = 12;
-    // }
+    let bom = qtdAtms - (AtmsRuins + AtmsMedios);
 
-        let percent = 25;
-        let dois = 10;
-        let bom = 100 - (percent + dois)
+    let ruimPorcentagem = (AtmsRuins / qtdAtms) * 100;
+    let medioPorcentagem = (AtmsMedios / qtdAtms) * 100;
+    let bomPorcentagem = (bom / qtdAtms) * 100;
 
-        const ctx = document.getElementById('myChart').getContext('2d');
-        // const gradient = ctx.createLinearGradient(0, 0, 300, 0);
-        // gradient.addColorStop(0, '#00d4ff');
-        // gradient.addColorStop(1, '#00ff88');
+    const newData = [ruimPorcentagem, bomPorcentagem, medioPorcentagem];
 
-        // plugin personalizado para centralizar texto pq o externo n funciona nas versões recentes do chart 
+    // Compara com os dados antigos: se forem iguais, não atualiza
+    if (
+        chartAtmDataCache &&
+        JSON.stringify(chartAtmDataCache) === JSON.stringify(newData)
+    ) {
+        console.log("Os dados do gráfico não mudaram. Nenhuma atualização feita.");
+        return; // sai da função sem atualizar o gráfico
+    }
 
-        Chart.register({
-        id: 'centerText',
-        beforeDraw: function(chart) {
-            const { width, height, ctx } = chart;
-            ctx.restore();
-            const fontSize = 25;
-            ctx.font = fontSize + "px Arial";
-            ctx.fillStyle = "#ffffff";
-            ctx.textBaseline = "middle";
+    // Atualiza cache com novos dados
+    chartAtmDataCache = newData;
 
-            const text = bom + "%";
-            const textX = Math.round((width - ctx.measureText(text).width) / 2);
-            const textY = height / 2;
+    const ctx = document.getElementById('myChart').getContext('2d');
 
-            ctx.fillText(text, textX, textY);
-            ctx.save();
-        }
-        });
+    if (chartAtm !== null) {
+        chartAtm.destroy();
+    }
 
-        new Chart(ctx, {
-        type: 'doughnut',
+    chartAtm = new Chart(ctx, {
+        type: 'pie',
         data: {
+            labels: ['Ruim', 'Bom', 'Médio'],
             datasets: [{
-            data: [percent, bom, dois],
-            backgroundColor: ['#b63a3a', 'rgba(120, 221, 92, 0.622)', 'rgba(221, 219, 92, 0.622)'],
-            borderWidth: 0,
-            cutout: '65%'
+                data: newData,
+                backgroundColor: ['#b63a3a', 'rgba(120, 221, 92, 0.622)', 'rgba(229, 226, 55, 0.96)'],
+                borderWidth: 0,
             }]
         },
         options: {
             plugins: {
-            legend: { display: false },
-            tooltip: { enabled: false }
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        color: '#FFFFFF',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                datalabels: {
+                    formatter: (value) => {
+                        return value > 0 ? `${value.toFixed(1)}%` : '';
+                    },
+                    color: '#FFFFFF',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    }
+                }
             }
         },
-        plugins: ['centerText'] // ativa o plugin que você criou acima
-        });
-
-
-
+        plugins: [ChartDataLabels]
+    });
 }
+
+
+
+
+
 
 

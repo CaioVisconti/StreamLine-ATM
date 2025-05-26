@@ -21,7 +21,7 @@ print(f"🔎 MAC Address detectado: {mac}")
 
 def consultar_atm():
     try:
-        url_get = f"http://52.206.225.154:8080/validarAtm/mac/{mac}"
+        url_get = f"http://localhost:3333/validarAtm/mac/{mac}"
         response = requests.get(url_get)
         if response.status_code == 200:
             dados = response.json()
@@ -55,14 +55,14 @@ def consultar_atm():
     except Exception as e:
         print(f"❌ Erro ao consultar dados (GET): {e}")
 
-    time.sleep(2)
+    time.sleep(1)
 
 def coletar_valor(tipo):
     try:
         if tipo == 'CPUPercent':
             return psutil.cpu_percent()
         elif tipo == 'CPUFreq':
-            return round(psutil.cpu_freq().current, 2)
+            return round(psutil.cpu_freq().current / 1000, 1)
         elif tipo == 'RAMDisponivel':
             return round(psutil.virtual_memory().available / (1024 ** 3), 2)
         elif tipo == 'RAMPercentual':
@@ -104,6 +104,7 @@ if fkAtm:
     try:
         i = 0
         while i < quantidade:
+            configuracoes, fkAtm = consultar_atm()
             print(f"\n🔄 Início da leitura {i+1}")
 
             leitura = {
@@ -122,16 +123,22 @@ if fkAtm:
                     print(f"🔗 fkParametro localizado: {id_parametro} | Limite: {limite}")
 
                     # exemplo de uso
-                    if valor > limite:
+                    if valor > limite or (valor >= (limite - (limite * 0.10)) and valor < limite):
                         print(f"🚨 ALERTA: Valor {valor} ultrapassou o limite de {limite} ({tipo_componente})")
                     else:
                         print("🟢 Valor dentro do limite.")
                     
                     leitura[tipo_componente] = valor
-                    if "Total" not in tipo_componente:
+                    if "Disponivel" not in tipo_componente:
                         leitura[f"limite {tipo_componente}"] = limite
-                        leitura[f"alerta {tipo_componente}"] = valor > limite
+                        leitura[f"alerta {tipo_componente}"] = valor > limite  or (valor >= (limite - (limite * 0.10)) and valor < limite)
                         leitura[f"fkParametro {tipo_componente}"] = id_parametro
+
+                    elif "Disponivel" in tipo_componente:
+                        leitura[f"limite {tipo_componente}"] = limite
+                        leitura[f"alerta {tipo_componente}"] = valor < limite  or (valor <= (limite + (limite * 0.10)) and valor > limite)
+                        leitura[f"fkParametro {tipo_componente}"] = id_parametro
+                    
 
                     else:
                         print(f"❌ Parâmetro não encontrado no banco para [{tipo_componente}] ({unidade})")
@@ -149,7 +156,7 @@ if fkAtm:
             # print(dicionario["dados"]) 
 
             try:
-                url = "http://52.206.225.154:8080/tempoReal/monitoramento/0"
+                url = "http://localhost:3333/tempoReal/monitoramento/0"
                 response = requests.get(url, json=dicionario)
                 if response.status_code == 200:
                     print("📡 Dados enviados com sucesso para a API.")
@@ -174,20 +181,20 @@ if fkAtm:
                         "fkParametro": registro.get(f"fkParametro {nome_parametro}")
                     })
 
-                    if registro.get(nome_parametro) <= (registro.get(f"limite {nome_parametro}") * 0.1):
-                        categoria = 'Medium'
-                    elif registro.get(nome_parametro) > registro.get(f"limite {nome_parametro}"):
-                        categoria = 'High'
+                    # if registro.get(nome_parametro) >= (registro.get(f"limite {nome_parametro}") * 0.9) and registro.get(nome_parametro) <= (registro.get(f"limite {nome_parametro}")):
+                    #     categoria = 'Medium'
+                    # elif registro.get(nome_parametro) > registro.get(f"limite {nome_parametro}"):
+                    #     categoria = 'High'
 
                     # jira = conectar_jira()
 
-                    issue_fields = {
-                        'project': {'key': 'G1ALERTAS'},
-                        'issuetype': {'name': '[System] Incident'},
-                        'summary': f'ATM {fkAtm} - {nome_parametro} {registro.get(nome_parametro)}',
-                        'description': f'O ATM de ID {fkAtm} apresentou falha no {nome_parametro} no valor de {registro.get(nome_parametro)}.',
-                        'priority': {'name': str(categoria)}
-                    }
+                    # issue_fields = {
+                    #     'project': {'key': 'G1ALERTAS'},
+                    #     'issuetype': {'name': '[System] Incident'},
+                    #     'summary': f'ATM {fkAtm} - {nome_parametro} {registro.get(nome_parametro)}',
+                    #     'description': f'O ATM de ID {fkAtm} apresentou falha no {nome_parametro} no valor de {registro.get(nome_parametro)}.',
+                    #     'priority': {'name': str(categoria)}
+                    # }
 
                     # new_issue = jira.create_issue(fields=issue_fields)
                     # print(f"Issue criado com sucesso: {new_issue.key}")
@@ -198,7 +205,7 @@ if fkAtm:
                     "alertas": alertas
                 }
                 try:
-                    url = "http://52.206.225.154:8080/dadosInsert/alerta/0"
+                    url = "http://localhost:3333/dadosInsert/alerta/0"
                     response = requests.get(url, json=dicionarioAlerta) 
                     if response.status_code == 200:
                         print("🚨 Alerta enviado com sucesso para a API.")
@@ -206,6 +213,7 @@ if fkAtm:
                         print(f"⚠️ Falha ao enviar alerta para a API. Status code: {response.status_code}")
                 except Exception as e:
                     print(f"⚠️ Erro ao enviar alerta para a API: {e}")
+
 
 
             i += 1

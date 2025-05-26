@@ -85,6 +85,22 @@ header {
     cursor: pointer;
 }
 
+.btn-nav-lista {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    width: 6vw;
+    text-decoration: none;
+    height: 6vh;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-size: 12px;
+    background-color: #2A5277;
+    cursor: pointer;
+    border: none;
+}
+
 .container {
     height: 86vh;
     display: flex;
@@ -203,7 +219,7 @@ header {
 }
 
 .medio {
-    background: rgba(221, 219, 92, 0.622);
+    background: rgba(210, 207, 50, 0.752);
 }
 
 .bom {
@@ -215,7 +231,7 @@ header {
 }
 
 #medio {
-    background: rgba(221, 219, 92, 0.622);
+    background: rgba(210, 207, 50, 0.752);
 }
 
 #bom {
@@ -282,10 +298,12 @@ header {
 }
 
 .grafiquinho{
-    width: 60%;
-    height: 50%;
-    border-radius: 30%;
-    /* background-color: #2A5277; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70%;
+    /* border: 1px solid red; */
 }
 
 .direita{
@@ -317,6 +335,17 @@ header {
     border-radius: 10px;
 }
 
+.head{
+    margin: 10px auto;
+    display: flex;
+    width: 90%;
+    height: 15%;
+    border: 1px solid white;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 15px;
+}
+
 .tabela{
     margin: 10px auto; 
     display: flex;
@@ -326,6 +355,17 @@ header {
     justify-content: space-around;
     align-items: center;
     font-size: 15px;
+}
+
+.head div{
+    display: flex;
+    /* border: 1px solid whitesmoke; */
+    height: 60%;
+    width: 15%;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
 }
 
 .tabela div{
@@ -341,21 +381,20 @@ header {
 
 .tabela button{
     display: flex;
-    border: 1px solid whitesmoke;
+    /* border: 1px solid whitesmoke; */
     height: 60%;
     width: 10%;
     justify-content: center;
     align-items: center;
 }
 
-.tabela h1{
+.corLista{
     display: flex;
     /* border: 1px solid whitesmoke; */
     height: 60%;
     width: 5%;
     border-radius: 50%;
     font-size: 10px;
-    background-color: #b63a3a;
 }
 
 .grafico h1 {
@@ -398,6 +437,8 @@ header {
     width: 20%;
     padding: 10px 0;
     position: relative;
+    border-right: 1px solid gray;
+
 }
 
 /* Título da coluna */
@@ -416,6 +457,7 @@ header {
     margin: 10px 0;
     width: 100%;
 }
+
 
 /* Label do indicador */
 .rotulo-indicador {
@@ -443,11 +485,28 @@ header {
 
 /* Cores das bolinhas */
 .circulo-vermelho {
-    background-color: #b63a3a;
+    background-color: rgb(182, 58, 58);
 }
 
+@keyframes pulsar {
+    0% {
+        box-shadow: 0 0 0px rgb(182, 58, 58); /* Sem sombra no início */
+    }
+    50% {
+        box-shadow: 0 0 15px rgb(203, 62, 62); /* Expande o brilho */
+    }
+    100% {
+        box-shadow: 0 0 0px rgb(182, 58, 58); /* Volta ao estado inicial */
+    }
+}
+
+.pulsar {
+    animation: pulsar 1.5s infinite; /* Animação de 1.5 segundos, repetindo infinitamente */
+}
+
+
 .circulo-amarelo {
-    background-color: #a3a245;
+    background-color: rgba(210, 207, 50, 0.752);
 }
 
 .circulo-verde {
@@ -500,7 +559,7 @@ header {
     display: flex;
     flex-direction: row;
     height: 100%;
-    width: 13%;
+    width: 15%;
     border-radius: 20px;
     align-items: center;
     /* border: 1px solid red; */
