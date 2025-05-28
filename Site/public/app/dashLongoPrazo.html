@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard em Longo Prazo</title>
     <link rel="stylesheet" href="../style/dashLongoPrazo.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link href='https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css' rel='stylesheet'>
     <script src="../js/dashLongoPrazo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
@@ -54,16 +56,25 @@
                         <span>Métricas Disponíveis:</span>
                         <select id="select_metricas" disabled></select>
                     </div>
-                    <div class="escolha-datas">
+                    <div class="escolha-datas" style="display: flex;">
                         <span>Intervalo:</span>
-                            <select id="slt_intervalo" oninput="carregarData()">
-                                <option value="#" selected disabled>SELECIONAR</option>
-                                <option value="ultimoDia">ÚLTIMO DIA</option>
-                                <option value="ultimaSemana">ÚLTIMA SEMANA</option>
-                                <option value="ultimoMes">ÚLTIMO MÊS</option>
-                                <option value="ultimoSemestre">ÚLTIMO SEMESTRE</option>
-                                <option value="personalizado">PERSONALIZADO</option>
-                            </select>
+                        <select id="slt_intervalo" oninput="carregarData()">
+                            <option value="#" selected disabled>SELECIONAR</option>
+                            <option value="ultimoDia">ÚLTIMO DIA</option>
+                            <option value="ultimaSemana">ÚLTIMA SEMANA</option>
+                            <option value="ultimoMes">ÚLTIMO MÊS</option>
+                            <option value="ultimoSemestre">ÚLTIMO SEMESTRE</option>
+                            <option value="personalizado">PERSONALIZADO</option>
+                        </select>
+                    </div>
+                    <div class="escolha-data" style="display: none;">
+                        <span>Data:</span>
+                        <input id="ipt_dia" type="date">
+                    </div>
+                    <div class="escolha-horario" style="display: none;">
+                        <span>Horário:</span>
+                        <input type="time" id="ipt_horario_de">
+                        <input type="time" id="ipt_horario_ate">
                     </div>
                     <div id="periodo" class="escolha-metricas" style="display: none;">
                         <span>Intervalos:</span>
@@ -126,6 +137,96 @@
                     </div>
                 </div>
             </div>
+            <div class="dash-filtrada" style="display: none;">
+                <div style="display: flex; flex-direction: column; height: 100%; width: 80%; align-items: center;">
+                    <div id="kpis-filtrado" style="display: flex;">
+                        <div class="kpi-prazo-filtrado">
+                            <div class="kpi-1-filtrado" style="background-color: rgba(83, 83, 83, 0.39); color: #FFFFFF">
+                                <span>QUANTIDADE DE ALERTAS NA ÚLTIMA SEMANA: <br><span id="total_filtrado">300</span></span>
+                            </div>
+                            <div class="kpi-2-filtrado" style="background-color: rgba(83, 83, 83, 0.39); color: #FFFFFF">
+                                <span>QUANTIDADE DE ALERTAS CRÍTICOS NA ÚLTIMA SEMANA: <br><span id="total_criticos">211</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="organizar" style="display: flex;">
+                        <div class="fundo-filtrado"> 
+                            <i class='bx  bxs-play bx-flip-horizontal icone-ida' onclick="retornarInicio()" style="justify-self: center;"></i>
+                            <div class="fundo-grafico-filtrado">
+                                <div class="titulo-grafico">
+                                    <div style="font-weight: bold;" ><span id="componente_grafico_inicial"></span></div> 
+                                </div>
+                                <div id="grafico">
+                                    <canvas class="graficos-style" id="meuGrafico"></canvas>
+                                </div>
+                            </div>
+                            <i class='bx  bxs-play icone-retorno' onclick="retornarInicio()"></i>
+                        </div>
+                    </div>
+                </div>
+                <div id="listagem" style="background-color: rgba(83, 83, 83, 0.39);border-radius: 10px;; width: 20%; height: 98%; display: flex; flex-direction: column; align-items: center; gap: 1%;">
+                    <div class="card" style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
+                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
+                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
+                            </div>
+                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
+                        </div>
+                    </div>
+                    <div class="linha-listagem"></div>
+                    <div style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
+                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
+                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
+                            </div>
+                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
+                        </div>
+                    </div>
+                    <div class="linha-listagem"></div>
+                    <div style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
+                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
+                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
+                            </div>
+                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
+                        </div>
+                    </div>
+                    <div class="linha-listagem"></div>
+                    <div style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
+                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
+                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
+                            </div>
+                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
+                        </div>
+                    </div>
+                    <div class="linha-listagem"></div>
+                    <div style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
+                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
+                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
+                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
+                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
+                            </div>
+                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 </body>
 </html>

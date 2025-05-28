@@ -35,8 +35,46 @@ function listarMetricas(hostComponente, idAtm) {
     return database.executar(instrucaoSql);
 }
 
+function buscarKPI1(fkAgencia) {
+    const instrucaoSql = `
+        SELECT COUNT(*) AS qtd FROM alerta AS a
+            JOIN parametro AS p ON a.fkParametro = p.idParametro
+            JOIN atm ON atm.idAtm = p.fkAtm
+            WHERE dtHoraAbertura > DATE_SUB(CURDATE(), INTERVAL 1 WEEK)
+            AND dtHoraAbertura < CURDATE()
+            AND fkAgencia = ${fkAgencia};
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarKPI2(fkAgencia) {
+    const instrucaoSql = `
+        SELECT COUNT(*) AS qtd FROM alerta AS a
+            JOIN parametro AS p ON a.fkParametro = p.idParametro
+            JOIN atm ON atm.idAtm = p.fkAtm
+            WHERE dtHoraAbertura > DATE_SUB(CURDATE(), INTERVAL 1 WEEK)
+            AND dtHoraAbertura < CURDATE()
+            AND categoria = "High"
+            AND fkAgencia = ${fkAgencia};
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarGraficoAlertas(fkAgencia) {
+    const instrucaoSql = `
+        SELECT * FROM alertasDetalhados WHERE fkAgencia = ${fkAgencia};
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     listarAtm,
     listarComponentes,
-    listarMetricas
+    listarMetricas,
+    buscarKPI1,
+    buscarKPI2,
+    buscarGraficoAlertas
 };

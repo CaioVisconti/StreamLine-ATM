@@ -1,5 +1,80 @@
 function carregarDados() {
     carregarATMS();
+
+    let fkAgencia = sessionStorage.ID_AGENCIA;
+
+    fetch(`/dashLongoPrazo/buscarKPI1`, {
+        method: "POST",
+        headers : {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: fkAgencia
+        })
+    })
+    .then(function (resposta) {
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            console.log("Erro ao buscar componentes.");
+        }
+    })
+    .then(function (componente) {
+        console.log("total:", componente);
+        let kpi = document.getElementById("total_filtrado");
+        kpi.innerHTML = componente[0].qtd;
+    })
+    .catch(function (erro) {
+        console.log("Erro no fetch dos componentes:", erro);
+    });
+
+    fetch(`/dashLongoPrazo/buscarKPI2`, {
+        method: "POST",
+        headers : {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: fkAgencia
+        })
+    })
+    .then(function (resposta) {
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            console.log("Erro ao buscar componentes.");
+        }
+    })
+    .then(function (componente) {
+        console.log("criticos:", componente);
+        let kpi2 = document.getElementById("total_criticos");
+        kpi2.innerHTML = componente[0].qtd;
+    })
+    .catch(function (erro) {
+        console.log("Erro no fetch dos componentes:", erro);
+    });
+
+    fetch(`/dashLongoPrazo/buscarGraficoAlertas`, {
+        method: "POST",
+        headers : {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: fkAgencia
+        })
+    })
+    .then(function (resposta) {
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            console.log("Erro ao buscar componentes.");
+        }
+    })
+    .then(function (componente) {
+        console.log("dados:", componente);
+    })
+    .catch(function (erro) {
+        console.log("Erro no fetch dos componentes:", erro);
+    });
 }
 
 function exibirAlertas(){
@@ -80,25 +155,41 @@ let listaGeral = [];
 let periodo = false;
 
 function gerarGraficos(){
+    let filtro = slt_filtro.value;
     let atm = select_atm.value;
     let componente = select_componentes.value;
     let metrica = select_metricas.value;
-
+    
     let json = capturas(componente, metrica);
     
     let inicio;
     let fim;
+    
+    let metodo;
 
-    let metodo = "teste";
+    let dashFiltrada = document.querySelector(".dash-filtrada");
+    let dashInicial = document.querySelector(".dash-inicial");
 
-    if(periodo) {
-        inicio = ipt_de.value.split("-");
-        inicio = `${inicio[2]}-${inicio[1]}-${inicio[0]}`;
-        fim = ipt_ate.value.split("-");
-        fim = `${fim[2]}-${fim[1]}-${fim[0]}`;
-        metodo = "periodo";
+    dashFiltrada.style.display = "flex"
+    dashInicial.style.display = "none"
+    
+    if(filtro == "gerarGrafico") {
+        metodo = "teste"
+        if(periodo) {
+            inicio = ipt_de.value.split("-");
+            inicio = `${inicio[2]}-${inicio[1]}-${inicio[0]}`;
+            fim = ipt_ate.value.split("-");
+            fim = `${fim[2]}-${fim[1]}-${fim[0]}`;
+            metodo = "periodo";
+        } else {
+            inicio = fim = slt_intervalo.value;
+        }
+        console.log("GRAFICONORMAL")
     } else {
-        inicio = fim = slt_intervalo.value;
+        metodo = "tempoReal"
+        inicio = ipt_dia.value.split("-");
+        inicio = `${inicio[2]}-${inicio[1]}-${inicio[0]}`;
+        fim = inicio;
     }
 
     listaDatas = [];
@@ -109,11 +200,9 @@ function gerarGraficos(){
     let ne = document.querySelector(".organizar-compontentes-mes");
     let dois = document.querySelector(".organizar");
     let kpis = document.getElementById("kpis");
-    let dashInicial = document.querySelector(".dash-inicial");
     ne.style.display = "none";
     dois.style.display = "flex";
     kpis.style.display = "flex";
-    dashInicial.style.display = "flex";
 
     let painel = document.getElementById("painels");
     let filtros = document.getElementById("filtros");
@@ -146,7 +235,12 @@ function gerarGraficos(){
   })
   .then(dados => {
     listaGeral = dados;
-    console.log(dados);
+
+    if(metodo == "tempoReal") {
+        graficoTempoReal(dados, json);
+        return
+    }
+
     let dataAtual = "";
     for(let i = 0; i < dados.length; i++) {
 
@@ -497,37 +591,91 @@ function formatacaoDataKPI(inicio) {
 
 function mudarFiltros() {
     let filtro = slt_filtro.value;
-    let data = document.querySelector(".escolha-datas");
+    let datas = document.querySelector(".escolha-datas");
+    let data = document.querySelector(".escolha-data");
+    let horario = document.querySelector(".escolha-horario");
+    
+    let maquina = document.getElementById("select_atm");
 
     if(filtro == "gerarGrafico") {
-        data.style.display = "flex";
+        data.style.display = "none";
+        horario.style.display = "none";
+        datas.style.display = "flex";
     } else {
-
+        datas.style.display = "none"
+        data.style.display = "flex";
+        horario.style.display = "flex";
     }
+
+    maquina.value = "#"
 }
 
-function graficoTempoReal(lista) {
-    let inicio = ipt_inicio.value;
-    let fim = ipt_fim.value;
+function graficoTempoReal(lista, json) {
+
+    let inicio = ipt_horario_de.value;
+    inicio = `${inicio}:00`;
+    let fim = ipt_horario_ate.value;
+    fim = `${fim}:00`;
+
+    if(lista.length == 0) {
+        return console.log("numfoi")
+    }
+
+    inicio = pesquisaBinaria(lista, inicio)
+    fim = pesquisaBinaria(lista, fim)
+
+    console.log('(lista[fim].dataHora).split(" ")[1]')
+    console.log((lista[fim].dataHora).split(" ")[1])
+
+    if((lista[fim].dataHora).split(" ")[1] != fim) {
+        fim -= 1;
+    }
     
+    let criacao = setInterval(function () {
+       console.log(lista[inicio].dataHora);
+       console.log(lista[inicio][json.r]);
+       console.log(lista[inicio][json.l]);
+       
+       if(inicio == fim) {
+           clearInterval(criacao)
+        }
+        inicio++;
+    }, 5000)
 }
 
 function pesquisaBinaria(lista, tempo) {
     let inn = 0;
-    let fmm = 0;
+    let fmm = lista.length - 1;
     let meio;
     let termo;
     let dtHora;
+    let termoModificado = new Date(2025, 1, 12, tempo.split(":")[0], tempo.split(":")[1], tempo.split(":")[2])
     
     while(inn < fmm) {
-        meio = (inn + fmm) / 2;
+        meio = Math.ceil((inn + fmm) / 2);
         termo = lista[meio];
         dtHora = (termo.dataHora).split(" ")[1]
-        
+
         if(dtHora == tempo) {
             return meio;
         } else {
-            let data = new Date();
+            let data = new Date(2025, 1, 12, dtHora.split(":")[0], dtHora.split(":")[1], dtHora.split(":")[2]);
+
+            if(data > termoModificado) {
+                fmm = meio - 1
+            } else {
+                inn = meio + 1
+            }
         }
     }
+
+    return Math.floor(meio)
+}
+
+function retornarInicio() {
+    let dashInicial = document.querySelector(".dash-inicial");
+    let dashAtual = document.querySelector(".dash-filtrada");
+
+    dashAtual.style.display = "none"
+    dashInicial.style.display = "flex"
 }

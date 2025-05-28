@@ -101,6 +101,16 @@ a{
     justify-content: space-around;
 }
 
+.kpis-filtrado {
+    display: flex;
+    height: 80vh;
+    width: 65vw;
+    /* border: 1px solid red; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
 .kpis2{
     display: flex;
     height: 80vh;
@@ -258,6 +268,56 @@ a{
     padding: 7px;
 }
 
+.escolha-data{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    height: 13%;
+    width: 100%;
+    /* border: 1px solid red; */
+}
+
+.escolha-data span{
+    cursor: pointer;
+    text-align: center;
+}
+
+.escolha-data input{
+    text-align: center;
+    cursor: pointer;
+    width: 60%;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+}
+
+.escolha-horario{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    height: 13%;
+    width: 100%;
+    /* border: 1px solid red; */
+}
+
+.escolha-horario span{
+    cursor: pointer;
+    text-align: center;
+}
+
+.escolha-horario input{
+    text-align: center;
+    cursor: pointer;
+    width: 60%;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+}
+
 .gerar-grafico{
     display: flex;
     flex-direction: row;
@@ -302,6 +362,12 @@ a{
     background-color: white;
 }
 
+.linha-listagem {
+    width: 90%;
+    height: 0.5px; /* menor que 1px */
+    background-color: white;
+}
+
 .alertas{
     display: flex;
     flex-direction: column;
@@ -338,6 +404,15 @@ a{
     justify-content: space-between;
 }
 
+.kpi-prazo-filtrado {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    height: 15vh;
+    /* border: 1px solid red; */
+    justify-content: space-between;
+}
+
 .organizar{
     display: flex;
     flex-direction: column;
@@ -360,12 +435,32 @@ a{
     border-radius: 10px;
 }
 
+.kpi-1-filtrado {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    height: 100%;
+    border-radius: 10px;
+}
+
 .kpi-2{
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     width: 30%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.kpi-2-filtrado{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 45%;
     height: 100%;
     border-radius: 10px;
 }
@@ -391,12 +486,62 @@ a{
     background-color: rgba(83, 83, 83, 0.39);
 }
 
-.fundo-grafico{
+.fundo-filtrado {
+    display: flex;
+    width: 95%;
+    height: 90%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    /* border: 1px solid orange; */
+    background-color: rgba(83, 83, 83, 0.39);
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.fundo-grafico {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     flex-direction: column;
     width: 95%;
+    height: 85%;
+    /* border: 1px solid orange; */
+    background-color: white;
+    border-radius: 10px;
+    gap: 1%;
+}
+
+.icone-retorno {
+    color:#ffffff;
+    font-size: 1.8rem;
+    height: fit-content;
+}
+
+.icone-retorno:hover {
+    cursor: pointer;
+    color: #2A5277;
+}
+
+.icone-ida {
+    color:#ffffff;
+    font-size: 1.8rem;
+    height: fit-content;
+    transform: scaleX(-1);
+}
+
+.icone-ida:hover {
+    cursor: pointer;
+    color: #2A5277;
+}
+
+.fundo-grafico-filtrado {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    width: 90%;
     height: 90%;
     /* border: 1px solid orange; */
     background-color: white;
@@ -552,6 +697,14 @@ a{
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    width: 85%;
+    height: 100%;
+}
+
+.dash-filtrada {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     width: 85%;
     height: 100%;
 }

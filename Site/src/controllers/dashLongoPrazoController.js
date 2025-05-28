@@ -44,10 +44,48 @@ const listarMetricas = async (req, res) => {
     }
 }
 
+const buscarKPI1 = async (req, res) => {
+    try {
+        let fkAgencia = req.body.id;
+
+        const kpi1 = await database.buscarKPI1(fkAgencia);
+        return res.status(200).json(kpi1)
+    } catch (error) {
+        console.error("Erro completo:", error);
+        return res.status(400).json(error.message);
+    }
+}
+
+const buscarKPI2 = async (req, res) => {
+    try {
+        let fkAgencia = req.body.id;
+
+        const kpi1 = await database.buscarKPI2(fkAgencia);
+        return res.status(200).json(kpi1)
+    } catch (error) {
+        console.error("Erro completo:", error);
+        return res.status(400).json(error.message);
+    }
+}
+
+const buscarGraficoAlertas = async (req, res) => {
+    try {
+        let fkAgencia = req.body.id;
+
+        const kpi1 = await database.buscarGraficoAlertas(fkAgencia);
+        return res.status(200).json(kpi1)
+    } catch (error) {
+        console.error("Erro completo:", error);
+        return res.status(400).json(error.message);
+    }
+}
 
 module.exports = {
     listarAtm,
     listarComponentes,
-    listarMetricas
+    listarMetricas,
+    buscarKPI1,
+    buscarKPI2,
+    buscarGraficoAlertas
 }
 
