@@ -1344,7 +1344,7 @@ function graficoAlertasPorATM() {
             labels: ['Ruim', 'Bom', 'Médio'],
             datasets: [{
                 data: newData,
-                backgroundColor: ['#b63a3a', 'rgba(120, 221, 92, 0.622)', 'rgba(229, 226, 55, 0.96)'],
+                backgroundColor: ['#b63a3a', 'rgba(120, 221, 92, 0.622)', 'rgba(210, 207, 50, 0.752)'],
                 borderWidth: 0,
             }]
         },

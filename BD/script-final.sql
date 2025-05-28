@@ -1,4 +1,4 @@
-create DATABASE IF NOT EXISTS streamline;
+create DATABASE streamline;
 USE streamline;
 
 CREATE TABLE IF NOT EXISTS empresa (
@@ -93,24 +93,6 @@ CREATE TABLE IF NOT EXISTS alerta (
   fkParametro INT
 );
 
-CREATE TABLE IF NOT EXISTS awsCusto (
-    idCusto INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    inicio DATE,
-    fim DATE,
-    servico VARCHAR(45),
-    custo FLOAT
-);
-
-CREATE TABLE IF NOT EXISTS awsLogs (
-    idLog INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    requestId VARCHAR(155),
-    duracao INT,
-    memoriaUsada INT,
-    statusLog VARCHAR(15),
-    tipoErro VARCHAR(45),
-    dataRegistro DATETIME
-);
-
 -- Inserindo empresas
 INSERT INTO empresa (nome, cnpj, codigo) VALUES
 ('Banco do Brasil', '123456789', 'BB123456'),
@@ -162,32 +144,32 @@ INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM,
 -- Inserindo parametros para os ATMs
 INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES 
   (70.0, CURDATE(), 1, 1),
-  (1500, CURDATE(), 2, 1),
-  (85.0, CURDATE(), 3, 1),
+  (3.0, CURDATE(), 2, 1),
+  (3.0, CURDATE(), 3, 1),
   (15.0, CURDATE(), 4, 1),
   (80.0, CURDATE(), 5, 1),
   (90.0, CURDATE(), 6, 1),
   (0.20, CURDATE(), 7, 1),
   (0.20, CURDATE(), 8, 1),
   (70.0, CURDATE(), 1, 2),
-  (1500, CURDATE(), 2, 2),
-  (85.0, CURDATE(), 3, 2),
+  (3.0, CURDATE(), 2, 2),
+  (3.0, CURDATE(), 3, 2),
   (15.0, CURDATE(), 4, 2),
   (80.0, CURDATE(), 5, 2),
   (90.0, CURDATE(), 6, 2),
   (0.20, CURDATE(), 7, 2),
   (0.20, CURDATE(), 8, 2),
   (70.0, CURDATE(), 1, 3),
-  (1500, CURDATE(), 2, 3),
-  (85.0, CURDATE(), 3, 3),
+  (3.0, CURDATE(), 2, 3),
+  (3.0, CURDATE(), 3, 3),
   (15.0, CURDATE(), 4, 3),
   (80.0, CURDATE(), 5, 3),
   (90.0, CURDATE(), 6, 3),
   (0.20, CURDATE(), 7, 3),
   (0.20, CURDATE(), 8, 3),
   (70.0, CURDATE(), 1, 4),
-  (1500, CURDATE(), 2, 4),
-  (85.0, CURDATE(), 3, 4),
+  (3.0, CURDATE(), 2, 4),
+  (3.0, CURDATE(), 3, 4),
   (15.0, CURDATE(), 4, 4),
   (80.0, CURDATE(), 5, 4),
   (90.0, CURDATE(), 6, 4),
@@ -218,13 +200,26 @@ CREATE OR REPLACE VIEW viewCriticoLista AS
 WITH severidade_alertas AS (
     SELECT 
         p.fkAtm,
+        c.descricao AS nome_metrica,
         CASE 
-            WHEN alerta.valor > p.limite THEN 'critico'
-            WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
-            ELSE 'baixo'
+            -- Se a descrição do componente contém "disponivel", usamos a lógica invertida
+            WHEN LOWER(c.descricao) LIKE '%disponivel%' THEN
+                CASE
+                    WHEN alerta.valor < p.limite THEN 'critico'
+                    WHEN alerta.valor BETWEEN p.limite AND (p.limite + p.limite * 0.10) THEN 'medio'
+                    ELSE 'baixo'
+                END
+            -- Lógica padrão
+            ELSE
+                CASE
+                    WHEN alerta.valor > p.limite THEN 'critico'
+                    WHEN alerta.valor BETWEEN (p.limite - p.limite * 0.10) AND p.limite THEN 'medio'
+                    ELSE 'baixo'
+                END
         END AS nivel
     FROM alerta
     JOIN parametro p ON alerta.fkParametro = p.idParametro
+    JOIN componentes c ON p.fkComponente = c.idComponentes
     WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 5
 )
 SELECT 
@@ -248,13 +243,26 @@ CREATE OR REPLACE VIEW viewMediaLista AS
 WITH severidade_alertas AS (
     SELECT 
         p.fkAtm,
+        c.descricao AS nome_metrica,
         CASE 
-            WHEN alerta.valor > p.limite THEN 'critico'
-            WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
-            ELSE 'baixo'
+            -- Lógica para componentes "disponíveis"
+            WHEN LOWER(c.descricao) LIKE '%disponivel%' THEN
+                CASE
+                    WHEN alerta.valor < p.limite THEN 'critico'
+                    WHEN alerta.valor BETWEEN p.limite AND (p.limite + p.limite * 0.10) THEN 'medio'
+                    ELSE 'baixo'
+                END
+            -- Lógica padrão
+            ELSE
+                CASE
+                    WHEN alerta.valor > p.limite THEN 'critico'
+                    WHEN alerta.valor BETWEEN (p.limite - p.limite * 0.10) AND p.limite THEN 'medio'
+                    ELSE 'baixo'
+                END
         END AS nivel
     FROM alerta
     JOIN parametro p ON alerta.fkParametro = p.idParametro
+    JOIN componentes c ON p.fkComponente = c.idComponentes
     WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 5
 )
 SELECT
@@ -283,18 +291,30 @@ FROM atm;
 SELECT * FROM totalAtms;
 
 
--- View para ATMs em situação média
 CREATE OR REPLACE VIEW viewMedia AS
 WITH severidade_alertas AS (
     SELECT 
         p.fkAtm,
+        c.descricao AS nome_metrica,
         CASE 
-            WHEN alerta.valor > p.limite THEN 'critico'
-            WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
-            ELSE 'baixo'
+            -- Lógica para componentes que contêm "disponivel"
+            WHEN LOWER(c.descricao) LIKE '%disponivel%' THEN
+                CASE
+                    WHEN alerta.valor < p.limite THEN 'critico'
+                    WHEN alerta.valor BETWEEN p.limite AND (p.limite + p.limite * 0.10) THEN 'medio'
+                    ELSE 'baixo'
+                END
+            -- Lógica padrão para os demais
+            ELSE
+                CASE
+                    WHEN alerta.valor > p.limite THEN 'critico'
+                    WHEN alerta.valor BETWEEN (p.limite - p.limite * 0.10) AND p.limite THEN 'medio'
+                    ELSE 'baixo'
+                END
         END AS nivel
     FROM alerta
     JOIN parametro p ON alerta.fkParametro = p.idParametro
+    JOIN componentes c ON p.fkComponente = c.idComponentes
     WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 5
 )
 SELECT COUNT(*) AS atmsMedios
@@ -317,13 +337,26 @@ CREATE OR REPLACE VIEW viewCritico AS
 WITH severidade_alertas AS (
     SELECT 
         p.fkAtm,
+        c.descricao AS nome_metrica,
         CASE 
-            WHEN alerta.valor > p.limite THEN 'critico'
-            WHEN alerta.valor BETWEEN p.limite - 10 AND p.limite THEN 'medio'
-            ELSE 'baixo'
+            -- Lógica para componentes que contêm "disponivel"
+            WHEN LOWER(c.descricao) LIKE '%disponivel%' THEN
+                CASE
+                    WHEN alerta.valor < p.limite THEN 'critico'
+                    WHEN alerta.valor BETWEEN p.limite AND (p.limite + p.limite * 0.10) THEN 'medio'
+                    ELSE 'baixo'
+                END
+            -- Lógica padrão para os demais
+            ELSE
+                CASE
+                    WHEN alerta.valor > p.limite THEN 'critico'
+                    WHEN alerta.valor BETWEEN (p.limite - p.limite * 0.10) AND p.limite THEN 'medio'
+                    ELSE 'baixo'
+                END
         END AS nivel
     FROM alerta
     JOIN parametro p ON alerta.fkParametro = p.idParametro
+    JOIN componentes c ON p.fkComponente = c.idComponentes
     WHERE TIMESTAMPDIFF(SECOND, alerta.dtHoraAbertura, NOW()) BETWEEN 0 AND 5
 )
 SELECT COUNT(*) AS atmsCritico
