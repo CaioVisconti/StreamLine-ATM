@@ -108,7 +108,8 @@ header {
     margin-bottom: 10px;
 }
 
-.kpi {
+.kpi,
+.kpi_modal {
     display: flex;
     flex-direction: column;
     height: 100px;
@@ -120,18 +121,18 @@ header {
     border-radius: 10px;
 }
 
-.kpi p{
+.kpi p {
     font-size: 25px;
     color: white;
 }
 
 
-.kpi div{
+.kpi div {
     font-size: 20px;
     color: white;
 }
 
-.kpi span{
+.kpi span {
     font-size: 12px;
     color: #87C5FF;
 }
@@ -140,9 +141,9 @@ header {
     font-size: 15px;
 }
 
-.kpi #servicoMaisCaro span{
+.kpi #servicoMaisCaro span {
     font-size: 20px;
-} 
+}
 
 .abas-container {
     display: flex;
@@ -164,7 +165,7 @@ header {
     cursor: pointer;
 }
 
-#atual{
+#atual {
     text-decoration: none;
     color: #87C5FF;
     border-bottom: 1px solid #87C5FF;
@@ -216,6 +217,7 @@ header {
     width: 50%;
     margin: 10px;
 }
+
 .grafico #graficoPrevisao {
     display: flex;
     align-items: center;
@@ -266,12 +268,13 @@ header {
     margin: 10px;
 }
 
-.container-servicos{
+.container-servicos {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
 
-.listagem-servicos{
+.listagem-servicos,
+.listagem-modal {
     background-color: #1f3944;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -279,17 +282,22 @@ header {
     text-align: center;
 }
 
-.listagem-servicos, .valores-servicos {
+.listagem-servicos,
+.listagem-modal,
+.valores-servicos {
     display: flex;
     height: 15%;
     width: 100%;
 }
 
-.servico-coluna{
+.servico-coluna,
+.modal-coluna {
     border-right: 2px solid #53535339;
 }
 
-.servico-coluna, .gasto-coluna {
+.servico-coluna,
+.modal-coluna,
+.gasto-coluna {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -298,14 +306,16 @@ header {
     font-weight: bold;
     font-size: 18;
     width: 50%;
-    border-bottom: 1px solid #535353;   
+    border-bottom: 1px solid #535353;
 }
 
-.servico-coluna, .gasto-coluna {
+.servico-coluna,
+.modal-coluna,
+.gasto-coluna {
     width: 50%;
 }
 
-.gasto-coluna button{
+.gasto-coluna button {
     cursor: pointer;
     background-color: #1f3944;
     height: 30px;
@@ -347,7 +357,7 @@ header {
     width: 100%;
 }
 
-.modalServico{
+.modalServico {
     background-color: #182134;
     display: flex;
     flex-direction: column;
@@ -362,32 +372,57 @@ header {
     border-radius: 10px;
 }
 
-.titulo-modal{
-    display: flex;
-    justify-content: flex-start;
-    width: 90%;
-    height: 15%;
+.modal-coluna span {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.modal-coluna #status {
+    font-weight: 600;
+    width: 25%;
     border-radius: 10px;
+}
+
+.titulo-modal {
+    display: flex;
+    background-color: #131c2e;
+    justify-content: flex-start;
+    width: 100%;
+    height: 15%;
+    justify-content: center;
+    align-items: center;
+    border: solid #1b2945;
+    border-radius: 10px;
+}
+
+.kpi_modal {
     border: solid #1b2945;
     background-color: #131c2e;
 }
 
-.kpi-container-modal{
+.kpi-container-modal {
     display: flex;
+    /* background-color: #131c2e; */
+    border-radius: 10px;
     align-items: center;
     justify-content: space-evenly;
     width: 100%;
 }
 
-.container-grafico-modal{
+.container-grafico-modal {
     display: flex;
     justify-content: center;
     width: 100%;
     height: 40%;
 }
 
-.container-grafico-modal .grafico{
+.container-grafico-modal .grafico {
     width: 100%;
+    background-color: #131c2e;
+}
+
+.listagem-modal {
+    background-color: transparent;
 }
 
 

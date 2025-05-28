@@ -36,7 +36,7 @@
         <a href="../index.html" class="btn-nav">Sair</a>
     </div>
 
-    <div class="container">
+    <div class="container" id="container_geral">
         <div class="kpi-container">
             <div class="kpis">
                 <div class="kpi" id="kpiServico">
@@ -95,12 +95,6 @@
                 </div>
             </div>
             <div class="container-grafico" id="Previsao">
-                <!-- <div class="grafico">
-                    <h1>Gastos Mensais Durante o Último Ano</h1>
-                    <div class="grafico-chart">
-                        <canvas id="custoMensal"></canvas>
-                    </div>
-                </div> -->
                 <div class="grafico" id="graficoPrevisao">
                     <h1>Tendências de Gastos e Previsão</h1>
                     <div class="grafico-chart">
@@ -108,16 +102,25 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modalServico">
-            <div class="titulo-modal">Servico</div> 
-            <div class="kpi-container-modal">
-                <div class="kpi">Kpi</div>
-                <div class="kpi">Kpi</div>
-                <div class="kpi">Kpi</div>
-            </div>
-            <div class="container-grafico-modal">
-                <div class="grafico">Grafico</div>
+            <div class="modalServico" id="modal_servico" style="display: none;">
+                <div class="titulo-modal" id="titulo_modal"></div>
+                    <div class="kpi-container-modal">
+                        <div class="kpi_modal" id="kpiUm">
+                            <p class="titulo-kpi" id="modal_kpi1"></p>
+                            <p class="valor-kpi" id="valor_kpi1"></p>
+                        </div>
+                        <div class="kpi_modal" id="kpiDois">
+                            <p class="titulo-kpi" id="modal_kpi2"></p>
+                            <p class="valor-kpi" id="valor_kpi2"></p>
+                        </div>
+                        <div class="kpi_modal" id="kpiTres">
+                            <p class="titulo-kpi" id="modal_kpi3"></p>
+                            <p class="valor-kpi" id="valor_kpi3"></p>
+                        </div>
+                    </div>
+                <div class="container-grafico-modal">
+                    <div class="grafico" id="graficoModal"></div>
+                </div>
             </div>
         </div>
     </div>

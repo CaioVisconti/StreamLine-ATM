@@ -7,8 +7,8 @@ window.onload = async () => {
     buscarIndicadores();
     buscarGastoMensal();
     buscarGastoTotal();
-    document.getElementById("default").click()
-    nomeFunc.innerHTML = nomeUsuario
+    document.getElementById("default").click();
+    nomeFunc.innerHTML = nomeUsuario;
 }
 
 function mudarAba(event, nomeAba) {
@@ -60,13 +60,37 @@ function buscarKpi() {
                     mensagem = "a menos"
                     if (comparacao > 0) {
                         mensagem = "a mais"
-
                     }
                     kpiIndicador.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
                 }
             }
         })
     })
+}
+
+function carregarGraficoServico() {
+    if (servicoAtual == "ec2") {
+        graficoModal.innerHTML = `<div class="container-servicos" id="indicadores_modal">
+        <div class="listagem-modal">
+                            <div class="gasto-coluna">
+                                <span>Nome</span>
+                                <div class="valor-servico">
+                                </div>
+                            </div>
+                            <div class="gasto-coluna">
+                                <span>Tipo</span>
+                            </div>
+                            <div class="gasto-coluna">
+                                <span>Status</span>
+                            </div>
+                        </div>
+                        </div>`
+    }
+
+    if (servicoAtual == "s3") {
+        graficoModal.innerHTML = ``
+    }
+
 }
 
 function buscarIndicadores() {
@@ -91,7 +115,7 @@ function buscarIndicadores() {
                     json.selectMensal[i].servico = "S3"
                 }
                 if (json.selectMensal[i].servico == "AmazonCloudWatch") {
-                    json.selectMensal[i].servico = "Cloud Watch"
+                    json.selectMensal[i].servico = "CloudWatch"
                 }
 
                 indicadores.innerHTML += `<div class="valores-servicos">
@@ -114,9 +138,119 @@ function buscarIndicadores() {
     })
 }
 
-function mostrarModalServico(servico){
-    alert(`${servico}`)
+let servicoAtual = null
+
+function mostrarModalServico(servico) {
+    let modal = document.querySelector(".modalServico");
+    servicoAtual = servico.toLowerCase()
+    if (servico == "EC2") {
+        servico = "Instâncias EC2"
+        modal_kpi1.innerHTML = "<span>Instâncias Ativas</span>"
+        modal_kpi2.innerHTML = "Total de Instâncias"
+        modal_kpi3.innerHTML = ""
+    }
+    if (servico == "S3") {
+        servico = "Amazon S3"
+        modal_kpi1.innerHTML = ""
+        modal_kpi2.innerHTML = "Objetos Totais"
+        modal_kpi3.innerHTML = "Quantidade de Buckets"
+    }
+    if (servico == "AWS Lambda") {
+        servico = "Amazon Lambda"
+        modal_kpi1.innerHTML = "Lambda"
+        modal_kpi2.innerHTML = ""
+        modal_kpi3.innerHTML = ""
+    }
+    if (servico == "CloudWatch") {
+        modal_kpi1.innerHTML = "CloudWatch"
+        modal_kpi2.innerHTML = ""
+        modal_kpi3.innerHTML = ""
+
+    }
+
+    titulo_modal.innerHTML = servico
+    if (modal.style.display == "none") {
+        modal.style.display = "block"
+        buscarDadosServicos()
+        carregarGraficoServico()
+    } else {
+        modal.style.display = "none"
+    }
+
 }
+
+function carregarDadosEc2(json) {
+    let instanciasAtivas = 0
+    let totalInstancias = 0
+    for (let i = 0; i < json[servicoAtual].length; i++) {
+        let corFonte = "#ff5d5d"
+        let corFundo = "#400000"
+
+        if (json[servicoAtual][i].status !== "stopped") {
+            corFundo = "#104000"
+            corFonte = "#5dff73"
+            instanciasAtivas++
+        }
+
+        totalInstancias++
+
+        indicadores_modal.innerHTML += `<div class="valores-servicos">
+                            <div class="modal-coluna">
+                                <span>${json[servicoAtual][i].nome}</span>
+                            </div>
+                            <div class="modal-coluna">
+                                <span>${json[servicoAtual][i].tipo}</span>
+                            </div>
+                            <div class="modal-coluna">
+                                <span id="status" style="color: ${corFonte}; background-color: ${corFundo}">${json[servicoAtual][i].status}</span>
+                            </div>
+                        </div>`
+    }
+
+    if (servicoAtual == "ec2") {
+        valor_kpi1.innerHTML = instanciasAtivas
+        valor_kpi2.innerHTML = totalInstancias
+        valor_kpi3.innerHTML = instanciasAtivas
+    }
+}
+
+function carregarDadosS3(json) {
+    let totalObjs = 0
+    let totalBuckets = 0
+    for (let i = 0; i < json[servicoAtual].length; i++) {
+        totalBuckets++
+        totalObjs += json[servicoAtual][i].quantidadeArquivos
+    }
+
+    if (servicoAtual == "s3") {
+        // valor_kpi1.innerHTML 
+        valor_kpi2.innerHTML = totalBuckets
+        valor_kpi3.innerHTML = totalObjs
+    }
+
+
+}
+
+function buscarDadosServicos() {
+    fetch("/aws/buscarDetalhesAws", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        res.json().then((json) => {
+            carregarGraficoServico()
+            if(servicoAtual == "ec2"){
+                carregarDadosEc2(json)
+            }
+            if(servicoAtual == "s3"){
+                carregarDadosS3(json)
+            }
+
+        })
+    }).catch((erro) => console.error(erro))
+}
+
 
 function buscarGastoMensal() {
     fetch("/aws/buscarGastoMensal", {
