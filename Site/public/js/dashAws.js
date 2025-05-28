@@ -69,26 +69,38 @@ function buscarKpi() {
 }
 
 function carregarGraficoServico() {
-    if (servicoAtual == "ec2") {
-        graficoModal.innerHTML = `<div class="container-servicos" id="indicadores_modal">
-        <div class="listagem-modal">
+    let titulo1 = "Nome";
+    let titulo2 = "Tipo";
+    let titulo3 = "Status";
+    if (servicoAtual == "s3") {
+        titulo1 = "Nome";
+        titulo2 = "Armazenamento Usado";
+        titulo3 = "% do total";
+    }
+    if (servicoAtual == "lambda") {
+        titulo1 = "Nome";
+        titulo2 = "Linguagem";
+        titulo3 = "Timeout";
+    }
+    graficoModal.innerHTML = `<div class="container-servicos" id="indicadores_modal">
+        <div class="listagem-modal" id="listagem_modal">
                             <div class="gasto-coluna">
-                                <span>Nome</span>
+                                <span>${titulo1}</span>
                                 <div class="valor-servico">
                                 </div>
                             </div>
                             <div class="gasto-coluna">
-                                <span>Tipo</span>
+                                <span>${titulo2}</span>
                             </div>
                             <div class="gasto-coluna">
-                                <span>Status</span>
+                                <span>${titulo3}</span>
                             </div>
                         </div>
                         </div>`
-    }
-
-    if (servicoAtual == "s3") {
-        graficoModal.innerHTML = ``
+    if(servicoAtual == "lambda"){
+             listagem_modal.innerHTML += `<div class="gasto-coluna">
+                                <span>Memória Usada</span>
+                            </div>`
     }
 
 }
@@ -116,6 +128,9 @@ function buscarIndicadores() {
                 }
                 if (json.selectMensal[i].servico == "AmazonCloudWatch") {
                     json.selectMensal[i].servico = "CloudWatch"
+                }
+                if (json.selectMensal[i].servico == "AWS Lambda") {
+                    json.selectMensal[i].servico = "Lambda"
                 }
 
                 indicadores.innerHTML += `<div class="valores-servicos">
@@ -151,9 +166,9 @@ function mostrarModalServico(servico) {
     }
     if (servico == "S3") {
         servico = "Amazon S3"
-        modal_kpi1.innerHTML = ""
+        modal_kpi1.innerHTML = "Quantidade de Buckets"
         modal_kpi2.innerHTML = "Objetos Totais"
-        modal_kpi3.innerHTML = "Quantidade de Buckets"
+        modal_kpi3.innerHTML = "Tamanho Total"
     }
     if (servico == "AWS Lambda") {
         servico = "Amazon Lambda"
@@ -217,15 +232,60 @@ function carregarDadosEc2(json) {
 function carregarDadosS3(json) {
     let totalObjs = 0
     let totalBuckets = 0
+    let tamanhoTotal = 0
+    let porcentagem = 0
     for (let i = 0; i < json[servicoAtual].length; i++) {
+        tamanhoTotal += json[servicoAtual][i].tamanhoBucket
+    }
+    for (let i = 0; i < json[servicoAtual].length; i++) {
+        porcentagem = json[servicoAtual][i].tamanhoBucket / tamanhoTotal * 100
         totalBuckets++
         totalObjs += json[servicoAtual][i].quantidadeArquivos
+
+        indicadores_modal.innerHTML += `<div class="valores-servicos">
+        <div class="modal-coluna">
+                                <span>${json[servicoAtual][i].nome}</span>
+                            </div>
+                            <div class="modal-coluna">
+                            <span>${json[servicoAtual][i].tamanhoBucket}KB</span>
+                            </div>
+                            <div class="modal-coluna">
+                            <span id="status">${porcentagem.toFixed(2)}%</span>
+                            </div>
+                            </div>`
     }
 
     if (servicoAtual == "s3") {
-        // valor_kpi1.innerHTML 
-        valor_kpi2.innerHTML = totalBuckets
-        valor_kpi3.innerHTML = totalObjs
+        valor_kpi1.innerHTML = totalBuckets
+        valor_kpi2.innerHTML = totalObjs
+        valor_kpi3.innerHTML = tamanhoTotal + "KB"
+    }
+
+
+}
+
+function carregarDadosLambda(json) {
+    for (let i = 0; i < json[servicoAtual].length; i++) {
+        indicadores_modal.innerHTML += `<div class="valores-servicos">
+        <div class="modal-coluna">
+                                <span>${json[servicoAtual][i].nomeFuncao}</span>
+                            </div>
+                            <div class="modal-coluna">
+                            <span>${json[servicoAtual][i].linguagem}</span>
+                            </div>
+                            <div class="modal-coluna">
+                            <span id="status">${json[servicoAtual][i].timeout}</span>
+                            </div>
+                            <div class="modal-coluna">
+                            <span id="status">${json[servicoAtual][i].memoria}</span>
+                            </div>
+                            </div>`
+    }
+
+    if (servicoAtual == "s3") {
+        valor_kpi1.innerHTML = totalBuckets
+        valor_kpi2.innerHTML = totalObjs
+        valor_kpi3.innerHTML = tamanhoTotal + "KB"
     }
 
 
@@ -240,11 +300,14 @@ function buscarDadosServicos() {
     }).then((res) => {
         res.json().then((json) => {
             carregarGraficoServico()
-            if(servicoAtual == "ec2"){
+            if (servicoAtual == "ec2") {
                 carregarDadosEc2(json)
             }
-            if(servicoAtual == "s3"){
+            if (servicoAtual == "s3") {
                 carregarDadosS3(json)
+            }
+            if (servicoAtual == "lambda") {
+                carregarDadosLambda(json)
             }
 
         })

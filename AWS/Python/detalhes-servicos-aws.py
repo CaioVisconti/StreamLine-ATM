@@ -1,6 +1,7 @@
 import boto3
 import json
 import requests
+from datetime import date
 
 def enviar_dados(jsonParaEnviar):
     url = "http://localhost:3333/aws/enviarDetalhesAws"
@@ -10,15 +11,56 @@ def enviar_dados(jsonParaEnviar):
 
 ec2 = boto3.client('ec2', region_name="us-east-1")
 s3 = boto3.client('s3')
+awsLambda = boto3.client('lambda', region_name="us-east-1")
+cloudWatch = boto3.client('cloudwatch', region_name="us-east-1")
+
+respostaLambda = awsLambda.list_functions()
 
 respostaS3 = s3.list_buckets()
 
 respostaEc2 = ec2.describe_instances()
 
+funcoesLambda = []
+
 jsonReposta = {
     "ec2": [],
-    "s3": []
+    "s3": [],
+    "lambda": []
 }
+for funcao in respostaLambda['Functions']:
+    nomeFuncao = funcao['FunctionName']
+    linguagemUsada = funcao['Runtime']
+    timeout = funcao['Timeout']
+    memoria = funcao['MemorySize']
+    leituraLambda = {
+        "nomeFuncao": nomeFuncao,
+        "linguagem": linguagemUsada,
+        "timeout": timeout,
+        "memoria": memoria
+    }
+    funcoesLambda.append(nomeFuncao)
+    jsonReposta['lambda'].append(leituraLambda)
+
+for lambdaAtual in funcoesLambda:
+    respostaCloudwatch = cloudWatch.get_metric_statistics(
+    Namespace='AWS/Lambda',
+    MetricName='Number of invokes',
+    Dimensions=[
+        {
+            'Name': 'FunctionName',
+            'Value': lambdaAtual
+        }
+    ],
+    StartTime=date(2025, 5, 27).strftime("%Y/%m/%d"),
+    EndTime=date.today().strftime("%Y/%m/%d"),
+    Period=60,
+    Statistics=[
+        'SampleCount'
+    ]
+)
+    print(respostaCloudwatch)
+    
+
 
 for bucket in respostaS3['Buckets']:
     listaObj = []
