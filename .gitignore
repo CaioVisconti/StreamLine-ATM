@@ -1,4 +1,6 @@
 BD/Dockerfile
 docker-compose.yml
 Servidor
-Python/teste.py
+Python/teste-nicoly.py
+Python/teste-caio.py
+Python/teste-gui.py
