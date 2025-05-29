@@ -400,7 +400,7 @@ function gerarGraficos() {
             </div>
             <div class="organizar" style="display: flex;">
                 <div class="fundo">
-                    <i class='bx  bxs-play bx-flip-horizontal icone-ida' onclick="retornarInicio(${telas.length - 1})" style="justify-self: center;"></i>
+                    <i class='bx  bxs-play bx-flip-horizontal icone-ida' onclick="retornarInicio(${telas.length})" style="justify-self: center;"></i>
                     <div class="fundo-grafico">
                         <div class="titulo-grafico">
                             <div style="font-weight: bold;" ><span id="componente_grafico${telas.length}"></span></div> 
@@ -419,7 +419,7 @@ function gerarGraficos() {
                             <canvas class="graficos-style" id="meuGrafico${telas.length}"></canvas>
                         </div>
                     </div>
-                    <i class='bx  bxs-play icone-retorno' onclick="retornarInicio(${telas.length + 1})"></i>
+                    <i class='bx  bxs-play icone-retorno' onclick="direcionarProximo(${telas.length + 2})"></i>
                 </div>
             </div>
         </div>
@@ -508,10 +508,6 @@ function gerarGraficos() {
     filtros.classList.add("kpis2")
     
     const ctx = document.getElementById(`meuGrafico${telas.length}`).getContext('2d');
-    
-    if (window.meuGraficoInstance) {
-        window.meuGraficoInstance.destroy();
-    }
 
     let url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${atm}/${fim}/${inicio}/${metodo}`
 
@@ -964,14 +960,40 @@ function pesquisaBinaria(lista, tempo) {
     return Math.floor(meio)
 }
 
-function retornarInicio() {
+function retornarInicio(termo) {
+    console.log("termo RETORNAR")
+    console.log(termo)
     let dashAtual = document.querySelector(".dash-filtrada");
     let dashFiltrada;
 
     for(let i = 1; i <= telas.length; i++) {
         dashFiltrada = document.getElementById(`dash${i}`);
-        dashFiltrada.style.display = "none"
+        dashFiltrada.style.display = "none";
     }
 
-    dashAtual.style.display = "flex"
+    dashAtual.style.display = "none";
+
+    if(termo == 1) {
+        dashAtual.style.display = "flex";
+    } else {
+        dashFiltrada = document.getElementById(`dash${termo-1}`);
+        dashFiltrada.style.display = "flex";
+    }
+}
+
+function direcionarProximo(termo) {
+    console.log("termo DIRECIONAR")
+    console.log(termo)
+    let dashAtual = document.querySelector(".dash-filtrada");
+    let dashFiltrada;
+
+    for(let i = 1; i <= telas.length; i++) {
+        dashFiltrada = document.getElementById(`dash${i}`);
+        dashFiltrada.style.display = "none";
+    }
+
+    dashAtual.style.display = "none";
+
+    dashFiltrada = document.getElementById(`dash${termo+1}`);
+    dashFiltrada.style.display = "flex";
 }
