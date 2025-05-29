@@ -43,7 +43,7 @@ dadosAws = os.path.join(tempfile.gettempdir(), f'Capturas_AWS.json')
 with open(dadosAws, mode='wt') as f:
     json.dump(response, f)
 
-s3.upload_file(
-    Filename=dadosAws,
-    Bucket='brawstreamline2',
-    Key=f'analiseAWS/Capturas_AWS.json')
+# s3.upload_file(
+#     Filename=dadosAws,
+#     Bucket='brawstreamline2',
+#     Key=f'analiseAWS/Capturas_AWS.json')

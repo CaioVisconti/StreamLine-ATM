@@ -374,6 +374,12 @@ let periodo = false;
 
 function gerarGraficos() {
     telas.push(1)
+    
+    let filtro = slt_filtro.value;
+    let atm = select_atm.value;
+    let componente = select_componentes.value;
+    let metrica = select_metricas.value;
+    let intervalo = slt_intervalo.value;
 
     let dash = document.getElementById("painels");
 
@@ -419,13 +425,20 @@ function gerarGraficos() {
         </div>
     `;
 
+    
+    slt_filtro.value = filtro
+    select_atm.value = atm;
+    select_componentes.value = componente;
+    select_metricas.value = metrica;
+    slt_intervalo.value = intervalo;
+
     let nxtInit = document.getElementById("nxt_inicial");
     nxtInit.style.color = "blue"
 
-    let filtro = slt_filtro.value;
-    let atm = select_atm.value;
-    let componente = select_componentes.value;
-    let metrica = select_metricas.value;
+    filtro = slt_filtro.value;
+    atm = select_atm.value;
+    componente = select_componentes.value;
+    metrica = select_metricas.value;
     
     let json = capturas(componente, metrica);
     
@@ -531,7 +544,9 @@ function gerarGraficos() {
         listaLimite.push(dados[i][json.l])
     }
 
-    componente_grafico.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} <br> (${json.m})`;
+    let componenteGrafico = document.getElementById(`componente_grafico${telas.length}`);
+
+    componenteGrafico.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} <br> (${json.m})`;
 
     window.meuGraficoInstance = new Chart(ctx, {
         type: 'line',
@@ -885,9 +900,6 @@ function mudarFiltros() {
         horario.style.display = "flex";
         intervalo.style.display = "none";
     }
-
-
-    maquina.value = "#"
 }
 
 function graficoTempoReal(lista, json) {
