@@ -3,14 +3,15 @@ window.onload = function () {
     exibirAtms();
     exibirCores();
     quantidadeATM();
-
+    
     setInterval(function () {
         exibirKPIs();
         exibirCores();
         listaAlertas();
-        graficoAlertasPorATM()
+        graficoAlertasPorATM();
+        limparRota()
     }, 5000);
-
+    
     setTimeout(function () {
         listaAlertas();
     }, 1000);
@@ -18,8 +19,8 @@ window.onload = function () {
     setTimeout(function () {
         graficoAlertasPorATM()
     }, 1100);
-
-
+    
+    
 };
 
 function recarregarPagina() {
@@ -47,6 +48,16 @@ let idAtmAtual;
 let valorSelecionado = null;
 let AtmsMedios = 0;
 let AtmsRuins = 0;
+let AtmsBons = 0;
+let listaAtms; 
+let listaAtmsRetirar; 
+let listaFiltrada;
+
+function limparRota() {
+    for (let l = 0; l < listaFiltrada.length; l++) {
+        fetch(`http://localhost:3333/dadosInsert/limpar/${l}`)
+    }
+}
 
 // Exibe KPIs Gerais
 function exibirKPIs() {
@@ -64,6 +75,7 @@ function exibirKPIs() {
             if (data && data.length > 0) {
                 const kpiData = data[0];
 
+                AtmsBons = kpiData.atmsSemAlertas
                 AtmsMedios = kpiData.atmsMedios
                 AtmsRuins = kpiData.atmsCritico
 
@@ -124,6 +136,7 @@ function exibirAtms() {
 
 // Exibe as cores ao lado da Lista lateral de ATMs
 function exibirCores() {
+    listaAtmsRetirar = [];
     fetch(`/medidas/cores`, {
         method: "GET",
         headers: {
@@ -136,6 +149,7 @@ function exibirCores() {
 
             const criticos = json[0];
             const medios = json[1];
+
 
             // resetar elementos
             for (let atm = 1; atm <= lista.length; atm++) {
@@ -154,6 +168,7 @@ function exibirCores() {
                     nivel.classList.remove("bom", "medio");
                     nivel.classList.add("critico");
                 }
+                listaAtmsRetirar.push(atm)
             }
 
             //  os estilos dos médios
@@ -164,7 +179,10 @@ function exibirCores() {
                     nivel2.classList.remove("bom", "critico");
                     nivel2.classList.add("medio");
                 }
+                listaAtmsRetirar.push(atm)
             }
+
+            listaFiltrada = listaAtms.filter(item => !listaAtmsRetirar.includes(item));
         })
         .catch(error => {
             console.error('Erro ao obter dados:', error);
@@ -229,6 +247,12 @@ function CardTempoReal() {
             const divRedeRecebida = document.getElementById("container-indicador-rede-recebida");
             const divProcessoAtivo = document.getElementById("container-indicador-processo-ativo");
             const divProcessoDesativo = document.getElementById("container-indicador-processo-desativo");
+            const colunaProcesso = document.getElementById("coluna-processos")
+            const colunaRam = document.getElementById("coluna-ram")
+            const colunaCpu = document.getElementById("coluna-cpu")
+            const colunaDisco = document.getElementById("coluna-disco")
+            const colunaRede = document.getElementById("coluna-rede")
+
 
 
             // ve se tem dados antes de continuar
@@ -348,6 +372,12 @@ function CardTempoReal() {
                 divCpuFreq.style.display = "none";
             }
 
+            if (divCpuPercent.style.display == "none" && divCpuFreq.style.display == "none") {
+                colunaCpu.style.display = "none"
+            } else {
+                colunaCpu.style.display = "flex"
+            }
+
 
             // RAMPercentual
             if (ultimoDado.hasOwnProperty("RAMPercentual")) {
@@ -422,6 +452,11 @@ function CardTempoReal() {
 
             else {
                 divRamDisponivel.style.display = "none";
+            }
+            if (divRamDisponivel.style.display == "none" && divRamPercent.style.display == "none") {
+                colunaRam.style.display = "none"
+            } else {
+                colunaRam.style.display = "flex"
             }
 
 
@@ -501,6 +536,11 @@ function CardTempoReal() {
             else {
                 divDiscoDisponivel.style.display = "none";
             }
+            if (divDiscoDisponivel.style.display == "none" && divDiscoPercent.style.display == "none") {
+                colunaDisco.style.display = "none"
+            } else {
+                colunaDisco.style.display = "flex"
+            }            
 
             // REDEEnviada
             if (ultimoDado.hasOwnProperty("REDEEnviada")) {
@@ -576,6 +616,12 @@ function CardTempoReal() {
                 divRedeRecebida.style.display = "none";
             }
 
+            if (divRedeEnviada.style.display == "none" && divRedeRecebida.style.display == "none") {
+                colunaRede.style.display = "none"
+            } else {
+                colunaRede.style.display = "flex"
+            }
+
             // PROCESSOAtivos
             if (ultimoDado.hasOwnProperty("PROCESSOSAtivos")) {
                 const processosAtivos = ultimoDado.PROCESSOSAtivos;
@@ -648,6 +694,14 @@ function CardTempoReal() {
 
             else {
                 divProcessoDesativo.style.display = "none";
+            }
+
+            if (divProcessoAtivo.style.display == "none" && divProcessoDesativo.style.display == "none") {
+                colunaProcesso.style.display = "none"
+                colunaRede.style.borderRight = "none"
+            } else {
+                colunaProcesso.style.display = "flex"
+                colunaRede.style.borderRight = "1px solid gray"
             }
 
             // Define qual será o intervalo para tentar coletar outro dado
@@ -1201,7 +1255,7 @@ let qtd = 0
 let qtdAtms = 0;
 
 function quantidadeATM() {
-
+    listaAtms = [];
     fetch(`http://localhost:3333/validarAtm/atms/1`, {
         method: "GET",
         headers: {
@@ -1212,6 +1266,9 @@ function quantidadeATM() {
         .then(json => {
             qtdAtms = json[0]["count(idAtm)"];
             // console.log("Quantidade de ATMs:", qtdAtms);
+            for (let i = 1; i <= qtdAtms; i++) {
+                listaAtms.push(i); 
+            }
         })
         .catch(error => {
             console.error('Erro ao obter a quantidade de ATMs:', error);
@@ -1219,9 +1276,23 @@ function quantidadeATM() {
 }
 
 
+
 function listaAlertas() {
     let oine = document.getElementById("conteudo_tabela");
     oine.innerHTML = "";
+
+    if(AtmsBons === qtdAtms){
+        fetch(`http://localhost:3333/dadosInsert/limpar`)
+        oine.innerHTML = 
+        `
+            <div class="headOk"> 
+                <div class="atmsBons" style="width: 50%">Todos os Atm's em Bom estado</div> 
+                <div class="atmsBons">0 Alertas</div> 
+                <div class="atmsBons">OK</div> 
+            </div>
+        `;
+        return
+    }
 
     let linhas = [];
     let totalBuscados = 0;
@@ -1244,7 +1315,6 @@ function listaAlertas() {
                     // Começa assumindo que todos os alertas são médios
                     let tipo = "Médio";
                     let estilo = "medio";
-
                     for (let j = 0; j < qtd; j++) {
                         let alerta = ultimoRegistro[j];
                         let parametro = alerta.parametro;
@@ -1269,7 +1339,7 @@ function listaAlertas() {
                     }
 
                     linhas.push({
-                        tipo: tipo,
+                        criticidade: tipo,
                         html: `
                             <div class="tabela"> 
                                 <h1 class="corLista" id="${estilo}"></h1> 
@@ -1281,6 +1351,7 @@ function listaAlertas() {
                         `
                     });
                 }
+
             })
             .catch(error => {
                 console.warn(`Erro ao buscar alertas do ATM ${atmAtual}:`, error);
@@ -1290,8 +1361,8 @@ function listaAlertas() {
 
                 if (totalBuscados === qtdAtms) {
                     linhas.sort((a, b) => {
-                        if (a.tipo === "Crítico" && b.tipo !== "Crítico") return -1;
-                        if (a.tipo !== "Crítico" && b.tipo === "Crítico") return 1;
+                        if (a.criticidade === "Crítico" && b.criticidade !== "Crítico") return -1;
+                        if (a.criticidade !== "Crítico" && b.criticidade === "Crítico") return 1;
                         return 0;
                     });
 
@@ -1299,6 +1370,7 @@ function listaAlertas() {
                         oine.innerHTML += linhas[k].html;
                     }
                 }
+                
             });
     }
 }

@@ -60,7 +60,7 @@ def consultar_atm():
 def coletar_valor(tipo):
     try:
         if tipo == 'CPUPercent':
-            return psutil.cpu_percent()
+            return psutil.cpu_percent() 
         elif tipo == 'CPUFreq':
             return round(psutil.cpu_freq().current / 1000, 1)
         elif tipo == 'RAMDisponivel':
@@ -123,7 +123,9 @@ if fkAtm:
                     print(f"🔗 fkParametro localizado: {id_parametro} | Limite: {limite}")
 
                     # exemplo de uso
-                    if valor > limite or (valor >= (limite - (limite * 0.10)) and valor < limite):
+                    if "Disponivel" not in tipo_componente and valor > limite or (valor >= (limite - (limite * 0.10)) and valor < limite):
+                        print(f"🚨 ALERTA: Valor {valor} ultrapassou o limite de {limite} ({tipo_componente})")
+                    elif "Disponivel" in tipo_componente and valor < limite or (valor <= (limite + (limite * 0.10)) and valor > limite):
                         print(f"🚨 ALERTA: Valor {valor} ultrapassou o limite de {limite} ({tipo_componente})")
                     else:
                         print("🟢 Valor dentro do limite.")
@@ -134,12 +136,11 @@ if fkAtm:
                         leitura[f"alerta {tipo_componente}"] = valor > limite  or (valor >= (limite - (limite * 0.10)) and valor < limite)
                         leitura[f"fkParametro {tipo_componente}"] = id_parametro
 
+                    
                     elif "Disponivel" in tipo_componente:
                         leitura[f"limite {tipo_componente}"] = limite
                         leitura[f"alerta {tipo_componente}"] = valor < limite  or (valor <= (limite + (limite * 0.10)) and valor > limite)
                         leitura[f"fkParametro {tipo_componente}"] = id_parametro
-                    
-
                     else:
                         print(f"❌ Parâmetro não encontrado no banco para [{tipo_componente}] ({unidade})")
 
@@ -168,6 +169,7 @@ if fkAtm:
 
             registro = dicionario["dados"]
             alertas = []
+            # print(registro)
 
             for chave, valor in registro.items():
                 if chave.startswith("alerta") and valor is True:

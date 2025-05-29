@@ -379,6 +379,26 @@ header {
     border-left: 1px solid white;
 }
 
+.headOk{
+    margin: 10px auto; 
+    display: flex;
+    width: 90%;
+    height: 15%;
+    border: 1px solid white;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 15px;
+}
+
+.atmsBons{
+    display: flex;
+    /* border: 1px solid whitesmoke; */
+    height: 60%;
+    width: 15%;
+    align-items: center;
+    justify-content: center;
+}
+
 .tabela button{
     display: flex;
     /* border: 1px solid whitesmoke; */

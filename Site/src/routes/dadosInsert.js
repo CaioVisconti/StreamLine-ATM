@@ -43,7 +43,7 @@ router.get("/alerta/:id", (req, res) => {
 
         if (!existe) {
             let dados_array = [];
-            dados_array.push(req.body.dados);
+            dados_array.push(req.body.alertas);
             dados.push({
                 maquina_id: id_recebido,
                 dataHora: data_recebida,
@@ -60,6 +60,34 @@ router.get("/alerta/:id", (req, res) => {
     }
 
     res.json(response);
+
+});
+
+router.get("/limpar/:id", (req, res) => {
+    
+    dados = [
+        {
+        maquina_id: NaN,
+        dataHora: NaN,
+        alertas: []
+        }
+    ]
+
+    res.json({"mesage": "dados-limpados"});
+
+});
+
+router.get("/limpar", (req, res) => {
+    
+    dados = [
+        {
+        maquina_id: NaN,
+        dataHora: NaN,
+        alertas: []
+        }
+    ]
+
+    res.json({"mesage": "dados-limpados"});
 
 });
 
