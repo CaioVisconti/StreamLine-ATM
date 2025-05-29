@@ -1,7 +1,8 @@
 let dados = [];
+var telas = [];
 function carregarDados() {
+    carregarKPIsAlerta();
     carregarATMS();
-    graficoAlertas();
 }
 
 function carregarKPIsAlerta() {
@@ -25,16 +26,12 @@ function carregarKPIsAlerta() {
         }
     })
     .then(function (componente) {
-        console.log("total:", componente);
         let kpi = document.getElementById("total_filtrado");
         kpi.innerHTML = componente[0].qtd;
     })
     .catch(function (erro) {
         console.log("Erro no fetch do total filtrado:", erro);
     });
-
-
-
 
     fetch(`/dashLongoPrazo/buscarKPI2`, {
         method: "POST",
@@ -53,19 +50,12 @@ function carregarKPIsAlerta() {
         }
     })
     .then(function (componente) {
-        console.log("criticos:", componente);
         let kpi2 = document.getElementById("total_criticos");
         kpi2.innerHTML = componente[0].qtd;
     })
     .catch(function (erro) {
         console.log("Erro no fetch do total criticos:", erro);
     });
-
-
-
-
-
-
 
     fetch(`/dashLongoPrazo/buscarGraficoAlertas`, {
         method: "POST",
@@ -85,7 +75,6 @@ function carregarKPIsAlerta() {
     })
     .then(function (componente) {
         dados = componente;
-        console.log("dados:", componente);
         gerarCards(componente)
     })
     .catch(function (erro) {
@@ -106,7 +95,7 @@ function gerarCards(lista) {
     let acREDEE;
     let acREDER;
     let vetor = [];
-    let componentes = ["acCPUP", "acCPUF", "acRAMD", "acRAMP", "acDISKD", "acPROCD", "acPROCA", "acREDEE", "acREDER"];
+    let componentes = ["CPU Porcentagem", "CPU Frequência", "RAM Disponivel", "Porcentagem RAM", "Disco Disponivel", "Processos Desativados", "Processos Ativos", "Pacotes Enviados", "Pacotes Recebidos"];
     let componente = "";
     
     for(let i = 0; i < lista.length; i++) {
@@ -131,52 +120,148 @@ function gerarCards(lista) {
             }
         }
 
+        if(maior != 0) {
+
         console.log(componente)
         console.log(maior)
 
         listagem.innerHTML += `
-            <div class="card" style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
-                <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5vh;">ATM: <span> ${lista[i].hostname}</span></span>
-                <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2vh;">Componente: <span> ${componente}</span></span>
+            <div class="card" style="width: 90%; height: 12vh; display: flex; flex-direction: column; justify-content: space-between; padding: 2vh">
+                <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.3vh;">ATM: <span> ${lista[i].hostname}</span></span>
+                <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 1.8vh;">Componente: <span> ${componente}</span></span>
                 <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
                     <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
-                        <span class="texto-listagem" style="color: #FFFFFF; font-size: 2vh;"> Número de alertas: <span> ${maior}</span></span>
+                        <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.8vh;"> Número de alertas: <span> ${maior}</span></span>
                     </div>
-                    <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
                 </div>
+                <div class="button-listagem" onclick="pesquisar('${componente}', ${lista[i].idAtm})">Verificar</div>
             </div>
         `;
-
         if(i < lista.length) {
             listagem.innerHTML += `<div class="linha-listagem"></div>`;
         }
+        }
+
 
         vetor = [];
         componente = ""
     }
+    graficoAlertas(lista)
+}
+
+function pesquisar(componente, id) {
+    console.log(componente);
+    console.log(id);
+
+    let comp = componente.split(" ")
+
+    let json = capturas(comp[0], comp[1])
+
+    let filtro = document.getElementById("slt_filtro");
+    let atm = document.getElementById("select_atm");
+    let cpt = document.getElementById("select_componentes");
+    let metrica = document.getElementById("select_metricas");
+    let intervalo = document.getElementById("slt_intervalo");
+
+    let m = json.m;
+    let c = json.c
+
+    if(m == "FREQUÊNCIA") {
+        m = "FREQUENCIA";
+    }
+
+    filtro.value = "gerarGrafico"
+    atm.value = id
+    carregarComponentes()
+    setTimeout(() => {
+        cpt.value = c
+        carregarMetricas()
+    }, 500);
+    setTimeout(() => {
+        metrica.value = m
+    }, 1000);
+    intervalo.value = "ultimaSemana"
+
+    setTimeout(() => {
+        metrica.value = m
+        gerarGraficos()
+    }, 1500);
 }
 
 function graficoAlertas(lista) {
+    let cpup = []
+    let cpuf = []
+    let ramd = []
+    let ramp = []
+    let diskd = []
+    let procd = []
+    let proca = []
+    let redee = []
+    let reder = []
+    let nomes = []
 
-    const ctx = document.getElementById('meuGrafico2').getContext('2d');
+    for(let i = 0; i < lista.length; i++) {
+        nomes.push(lista[i].hostname)
+        cpup.push(lista[i].alertasCriticosCPUPercent)
+        cpuf.push(lista[i].alertasCriticosCPUFreq)
+        ramd.push(lista[i].alertasCriticosRAMDisponivel)
+        ramp.push(lista[i].alertasCriticosRAMPercentual)
+        diskd.push(lista[i].alertasCriticosDISKDisponivel)
+        procd.push(lista[i].alertasCriticosPROCESSODesativado)
+        proca.push(lista[i].alertasCriticosPROCESSOSAtivos)
+        redee.push(lista[i].alertasCriticosREDEEnviada)
+        reder.push(lista[i].alertasCriticosREDERecebida)
+    }
+
+const ctx = document.getElementById('meuGraficoInit').getContext('2d');
 
 const data = {
-  labels: ['Janeiro', 'Fevereiro', 'Março','Abril', 'Junho'],
+  labels: nomes,
   datasets: [
     {
       label: 'Porcentagem CPU',
-      data: [3, 5, 7, 9, 11],
-      backgroundColor: 'rgba(255, 99, 132, 0.7)'
+      data: cpup,
+      backgroundColor: '#ffa299'
     },
     {
       label: 'Frequência CPU',
-      data: [4, 6, 8, 10, 12],
-      backgroundColor: 'rgba(54, 162, 235, 0.7)'
+      data: cpuf,
+      backgroundColor: '#fa7064'
     },
     {
       label: 'RAM Disponivel',
-      data: [2, 3, 5, 6, 8],
-      backgroundColor: 'rgba(75, 192, 192, 0.7)'
+      data: ramd,
+      backgroundColor: '#a6a6ff'
+    },
+    {
+      label: 'Porcentagem RAM',
+      data: ramp,
+      backgroundColor: '#6969fa'
+    },
+    {
+      label: 'Disco Disponivel',
+      data: diskd,
+      backgroundColor: '#8fff8f'
+    },
+    {
+      label: 'Processos Desativados',
+      data: procd,
+      backgroundColor: '#fbff8f'
+    },
+    {
+      label: 'Processos Ativos',
+      data: proca,
+      backgroundColor: '#faff64'
+    },
+    {
+      label: 'Pacotes Enviados',
+      data: redee,
+      backgroundColor: '#f7a0ff'
+    },
+    {
+      label: 'Pacotes Recebidos',
+      data: reder,
+      backgroundColor: '#f15dff'
     }
   ]
 };
@@ -186,6 +271,18 @@ const config = {
   data: data,
   options: {
     responsive: true,
+    indexAxis: 'y',
+    plugins: {
+        datalabels: {
+            anchor: 'end',
+            align: 'end',
+            color: 'black',
+            font: {
+                weight: 'bold'
+            }
+        },
+        legend: { display: false }
+    },
     scales: {
       x: {
         stacked: true
@@ -228,14 +325,12 @@ function exibirAlertas(){
     let valorAlertaInput_kpi_pacotes_disponivel;
     let valorAlertaInput_kpi_pacotes_porcentagem;
 
-    const ctx = document.getElementById('meuGrafico2').getContext('2d');
+    const ctx = document.getElementById('meuGraficoInit').getContext('2d');
 
-    // Destroi o gráfico antigo se ele já existir
     if (window.meuGraficoInstance) {
         window.meuGraficoInstance.destroy();
     }
 
-    // Criação do gráfico com linha de alerta (linha vermelha no 75)
     window.meuGraficoInstance = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -251,7 +346,7 @@ function exibirAlertas(){
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // ⬅️ Isso é essencial para o gráfico respeitar o CSS
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false 
@@ -277,7 +372,56 @@ let listaGeral = [];
 
 let periodo = false;
 
-function gerarGraficos(){
+function gerarGraficos() {
+    telas.push(1)
+
+    let dash = document.getElementById("painels");
+
+    dash.innerHTML += `
+        <div class="dash-inicial" id="dash${telas.length}" style="display: none;">
+            <div class="kpis" style="display: flex;">
+                <div class="kpi-prazo">
+                    <div class="kpi" id="kpi1_${telas.length}" style="background-color: #ff0000; color: #FFFFFF">
+                        <span>MAIOR PICO DE COMPONENTE: <br><span id="pico${telas.length}">90%</span></span>
+                    </div>
+                    <div class="kpi" id="kpi2_${telas.length}" style="background-color: #ff0000; color: #FFFFFF">
+                        <span>DIA COM MAIS ALERTAS: <br><span id="momento${telas.length}">03/04/2025</span></span>
+                    </div>
+                    <div class="kpi" id="kpi3_${telas.length}" style="background-color: #ff0000; color: #FFFFFF;">
+                        <span>NÚMEROS DE ALERTAS: <br><span id="total${telas.length}">21</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="organizar" style="display: flex;">
+                <div class="fundo">
+                    <i class='bx  bxs-play bx-flip-horizontal icone-ida' onclick="retornarInicio(${telas.length - 1})" style="justify-self: center;"></i>
+                    <div class="fundo-grafico">
+                        <div class="titulo-grafico">
+                            <div style="font-weight: bold;" ><span id="componente_grafico${telas.length}"></span></div> 
+                            <div class="legenda">
+                                <div class="bolinhas">
+                                    <div class="red"></div>
+                                    <div class="roxo"></div>
+                                </div>
+                                <div class="legenda-titulo">
+                                    <span>LIMITE</span>
+                                    <span>CAPTURAS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grafico">
+                            <canvas class="graficos-style" id="meuGrafico${telas.length}"></canvas>
+                        </div>
+                    </div>
+                    <i class='bx  bxs-play icone-retorno' onclick="retornarInicio(${telas.length + 1})"></i>
+                </div>
+            </div>
+        </div>
+    `;
+
+    let nxtInit = document.getElementById("nxt_inicial");
+    nxtInit.style.color = "blue"
+
     let filtro = slt_filtro.value;
     let atm = select_atm.value;
     let componente = select_componentes.value;
@@ -290,10 +434,21 @@ function gerarGraficos(){
     
     let metodo;
 
-    let dashFiltrada = document.querySelector(".dash-filtrada");
-    let dashInicial = document.querySelector(".dash-inicial");
+    console.log(telas.length)
 
-    dashFiltrada.style.display = "none"
+    let atual = telas.length
+    let dashFiltrada;
+
+    for(let i = 0; i < telas.length; i++) {
+        dashFiltrada = document.getElementById(`dash${i}`);
+        if(i == 0) {
+            dashFiltrada = document.querySelector(".dash-filtrada");
+        }
+        dashFiltrada.style.display = "none"
+    }
+
+    let dashInicial = document.getElementById(`dash${atual}`);
+
     dashInicial.style.display = "flex"
     
     if(filtro == "gerarGrafico") {
@@ -307,7 +462,6 @@ function gerarGraficos(){
         } else {
             inicio = fim = slt_intervalo.value;
         }
-        console.log("GRAFICONORMAL")
     } else {
         metodo = "tempoReal"
         inicio = ipt_dia.value.split("-");
@@ -321,7 +475,7 @@ function gerarGraficos(){
     listaGeral = [];
     
     let dois = document.querySelector(".organizar");
-    let kpis = document.getElementById("kpis");
+    let kpis = document.querySelector(".kpis");
     dois.style.display = "flex";
     kpis.style.display = "flex";
 
@@ -340,7 +494,7 @@ function gerarGraficos(){
     filtros.classList.remove("kpis")
     filtros.classList.add("kpis2")
     
-    const ctx = document.getElementById('meuGrafico').getContext('2d');
+    const ctx = document.getElementById(`meuGrafico${telas.length}`).getContext('2d');
     
     if (window.meuGraficoInstance) {
         window.meuGraficoInstance.destroy();
@@ -424,17 +578,12 @@ function gerarGraficos(){
   .catch(erro => {
     console.error('Erro:', erro);
   });
-
-  console.log(listaDatas)
-  console.log(listaCapturas)
-  console.log(listaLimite)
-
 }
 
 function carregarKPIS(json) {
-    let kpi1 = document.getElementById("pico");
-    let kpi2 = document.getElementById("momento");
-    let kpi3 = document.getElementById("total");
+    let kpi1 = document.getElementById(`pico${telas.length}`);
+    let kpi2 = document.getElementById(`momento${telas.length}`);
+    let kpi3 = document.getElementById(`total${telas.length}`);
 
     let indice = 0;
     for(let i = 1; i < listaCapturas.length; i++) {
@@ -443,7 +592,7 @@ function carregarKPIS(json) {
         }
     }
 
-    let kpi1_1 = document.querySelector(".kpi-1");
+    let kpi1_1 = document.getElementById(`kpi1_${telas.length}`);
 
     if(listaCapturas[indice] > listaLimite[indice]) {
         kpi1_1.style.background = "red"
@@ -458,7 +607,7 @@ function carregarKPIS(json) {
 
     kpi1.innerHTML = Math.round(listaCapturas[indice], 2) + json.u;
 
-    let kpi2_1 = document.querySelector(".kpi-2");
+    let kpi2_1 = document.getElementById(`kpi2_${telas.length}`);
 
     if(listaGeral[indice].qtdAlertaCPUP == 0) {
         kpi2_1.style.background = "green";
@@ -467,7 +616,7 @@ function carregarKPIS(json) {
         kpi2.innerHTML = listaDatas[indice];
     }
     
-    let kpi3_1 = document.querySelector(".kpi-3");
+    let kpi3_1 = document.getElementById(`kpi3_${telas.length}`);
 
     if(listaGeral[indice].qtdAlertaCPUP == 0) {
         kpi3_1.style.background = "green";
@@ -528,6 +677,8 @@ function carregarATMS() {
 function carregarComponentes(){
 
     let fkAtm = document.getElementById("select_atm").value;
+
+    console.log(fkAtm)
 
     fetch("/dashLongoPrazo/listarComponentes", {
         method: "POST",
@@ -686,7 +837,7 @@ function capturas(componente, metrica) {
     let listaMetricas = []
 
     listaMetricas.push({c: "CPU", m: "PORCENTAGEM", r: "valorCpuPercent", l: "limiteCpuPercent", u: "%"});
-    listaMetricas.push({c: "CPU", m: "FREQUENCIA", r: "valorCPUFreq", l: "limiteCPUFreq", u: "Hz"});
+    listaMetricas.push({c: "CPU", m: "FREQUÊNCIA", r: "valorCPUFreq", l: "limiteCPUFreq", u: "Hz"});
     listaMetricas.push({c: "RAM", m: "DISPONIVEL", r: "valorRAMDisponivel", l: "none", u: "GB"});
     listaMetricas.push({c: "RAM", m: "PORCENTAGEM", r: "valorRAMPercentual", l: "limiteRAMPercentual", u: "%"});
     listaMetricas.push({c: "DISCO", m: "TOTAL", r: "valorDISKTotal", l: "none", u: "GB"});
@@ -699,12 +850,12 @@ function capturas(componente, metrica) {
     listaMetricas.push({c: "PROCESSOS", m: "ATIVOs", r: "valorPROCESSOAtivos",  l: "limitePROCESSOAtivos", u: ""});
 
     for(let i = 0; i < listaMetricas.length; i++) {
-        if(listaMetricas[i].c == componente && listaMetricas[i].m == metrica) {
+        if((listaMetricas[i].c).toLowerCase() == componente.toLowerCase() && (listaMetricas[i].m).toLocaleLowerCase() == metrica.toLocaleLowerCase()) {
             let json = listaMetricas[i];
             return json;
         }
-        return null;
     }
+    return null;
 }
 
 function formatacaoDataKPI(inicio) {
@@ -716,6 +867,8 @@ function mudarFiltros() {
     let datas = document.querySelector(".escolha-datas");
     let data = document.querySelector(".escolha-data");
     let horario = document.querySelector(".escolha-horario");
+    let intervalo = document.getElementById("periodo");
+    let slt = slt_intervalo.value;
     
     let maquina = document.getElementById("select_atm");
 
@@ -723,11 +876,16 @@ function mudarFiltros() {
         data.style.display = "none";
         horario.style.display = "none";
         datas.style.display = "flex";
+        if(slt == "personalizado") {
+            intervalo.style.display = "flex";
+        }
     } else {
         datas.style.display = "none"
         data.style.display = "flex";
         horario.style.display = "flex";
+        intervalo.style.display = "none";
     }
+
 
     maquina.value = "#"
 }
@@ -795,9 +953,13 @@ function pesquisaBinaria(lista, tempo) {
 }
 
 function retornarInicio() {
-    let dashInicial = document.querySelector(".dash-inicial");
     let dashAtual = document.querySelector(".dash-filtrada");
+    let dashFiltrada;
 
-    dashInicial.style.display = "none"
+    for(let i = 1; i <= telas.length; i++) {
+        dashFiltrada = document.getElementById(`dash${i}`);
+        dashFiltrada.style.display = "none"
+    }
+
     dashAtual.style.display = "flex"
 }

@@ -10,6 +10,7 @@
     <script src="../js/dashLongoPrazo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 </head>
 <body>
@@ -31,7 +32,6 @@
             </div>
             <a href="../index.html"><button class="btn-nav">Sair</button></a>
         </div>
-    
         <div class="painel2" id="painels">
             <div id="filtros" class="kpis2">    
                 <div class="escolha-opcoes">
@@ -48,11 +48,11 @@
                         <select id="select_atm"  oninput="carregarComponentes()">
                         </select>
                     </div>
-                    <div class="escolha-componentes">
+                    <div class="escolha-componentes" id="escolha-componentes">
                         <span>Selecione um componente para visualizar seus dados:</span>
                         <select id="select_componentes" oninput="carregarMetricas()" disabled></select>
                     </div>
-                    <div class="escolha-metricas">
+                    <div class="escolha-metricas" id="escolha-metricas">
                         <span>Métricas Disponíveis:</span>
                         <select id="select_metricas" disabled></select>
                     </div>
@@ -90,68 +90,67 @@
                     </div>
                 </div>
             </div>
-            <div class="dash-inicial" style="display: none;">
-                <div id="kpis" style="display: flex;">
-                    <div class="kpi-prazo">
-                        <div class="kpi-1" style="background-color: #ff0000; color: #FFFFFF">
-                            <span>MAIOR PICO DE COMPONENTE: <br><span id="pico">90%</span></span>
-                        </div>
-                        <div class="kpi-2" style="background-color: #ff0000; color: #FFFFFF">
-                            <span>DIA COM MAIS ALERTAS: <br><span id="momento">03/04/2025</span></span>
-                        </div>
-                        <div class="kpi-3" style="background-color: #ff0000; color: #FFFFFF;">
-                            <span>NÚMEROS DE ALERTAS: <br><span id="total">21</span></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="organizar" style="display: flex;">
-                    <div class="fundo">
-                        <i class='bx  bxs-play bx-flip-horizontal icone-ida' onclick="retornarInicio()" style="justify-self: center;"></i>
-                        <div class="fundo-grafico">
-                            <div class="titulo-grafico">
-                                <div style="font-weight: bold;" ><span id="componente_grafico"></span></div> 
-                                <div class="legenda">
-                                    <div class="bolinhas">
-                                        <div class="red"></div>
-                                        <div class="roxo"></div>
-                                    </div>
-                                    <div class="legenda-titulo">
-                                        <span>LIMITE</span>
-                                        <span>CAPTURAS</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="grafico">
-                                <canvas class="graficos-style" id="meuGrafico"></canvas>
-                            </div>
-                        </div>
-                        <i class='bx  bxs-play icone-retorno' onclick="retornarInicio()"></i>
-                    </div>
-                </div>
-            </div>
             <div class="dash-filtrada" style="display: flex;">
                 <div style="display: flex; flex-direction: column; height: 100%; width: 80%; align-items: center;">
                     <div id="kpis-filtrado" style="display: flex;">
                         <div class="kpi-prazo-filtrado">
                             <div class="kpi-1-filtrado" style="background-color: rgba(83, 83, 83, 0.39); color: #FFFFFF">
-                                <span>QUANTIDADE DE ALERTAS NA ÚLTIMA SEMANA: <br><span id="total_filtrado">300</span></span>
+                                <span>QUANTIDADE DE ALERTAS NA ÚLTIMA SEMANA: <br><span id="total_filtrado"></span></span>
                             </div>
                             <div class="kpi-2-filtrado" style="background-color: rgba(83, 83, 83, 0.39); color: #FFFFFF">
-                                <span>QUANTIDADE DE ALERTAS CRÍTICOS NA ÚLTIMA SEMANA: <br><span id="total_criticos">211</span></span>
+                                <span>QUANTIDADE DE ALERTAS CRÍTICOS NA ÚLTIMA SEMANA: <br><span id="total_criticos"></span></span>
                             </div>
                         </div>
                     </div>
                     <div class="organizar" style="display: flex;">
                         <div class="fundo-filtrado"> 
                             <div class="fundo-grafico-filtrado">
-                                <div class="titulo-grafico">
-                                    <div style="font-weight: bold;">ATM's COM MAIOR NÚMERO DE ALERTAS DA SEMANA<span id="componente_grafico_inicial"></span></div> 
+                                <div class="titulo-grafico-filtrado">
+                                    <div style="font-weight: bold; height: fit-content;">ATM's COM MAIOR NÚMERO DE ALERTAS DA SEMANA</div> 
                                 </div>
-                                <div id="grafico">
-                                    <canvas class="graficos-style" id="meuGrafico2"></canvas>
+                                <div id="grafico-filtrado">
+                                    <canvas class="graficos-style-geral" id="meuGraficoInit"></canvas>
+                                    <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.8vh; gap: 5%;">
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #ffa299; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>CPU Porcentagem</span>
+                                        </div>
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #fa7064; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>CPU Frequência</span>
+                                        </div>
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #a6a6ff; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>RAM Disponivel</span>
+                                        </div>
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #6969fa; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>RAM Percentual</span>
+                                        </div>
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #8fff8f; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>Disco Disponivel</span>
+                                        </div>
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #fbff8f; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>Processos Desativados</span>
+                                        </div>
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #faff64; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>Processos Ativos</span>
+                                        </div>
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #f7a0ff; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>Pacotes Enviados</span>
+                                        </div>
+                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="background-color: #f15dff; width: 0.8vw; height: 0.8vw;"></div>
+                                            <span>Pacotes Recebidos</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <i class='bx  bxs-play icone-retorno' onclick="retornarInicio()"></i>
+                            <i class='bx  bxs-play icone-retorno' id="nxt_inicial" onclick="retornarInicio()" style="color: grey;"></i>
                         </div>
                     </div>
                 </div>

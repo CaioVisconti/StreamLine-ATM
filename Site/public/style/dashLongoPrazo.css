@@ -91,16 +91,6 @@ a{
     /* border: 1px solid red; */
 }
 
-.kpis{
-    display: flex;
-    height: 80vh;
-    width: 60vw;
-    /* border: 1px solid red; */
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-
 .kpis-filtrado {
     display: flex;
     height: 80vh;
@@ -425,7 +415,7 @@ a{
     /* border: 1px solid orange; */
 }
 
-.kpi-1{
+.kpi{
     display: flex;
     text-align: center;
     justify-content: center;
@@ -445,15 +435,6 @@ a{
     border-radius: 10px;
 }
 
-.kpi-2{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 30%;
-    height: 100%;
-    border-radius: 10px;
-}
 
 .kpi-2-filtrado{
     display: flex;
@@ -461,16 +442,6 @@ a{
     align-items: center;
     text-align: center;
     width: 45%;
-    height: 100%;
-    border-radius: 10px;
-}
-
-.kpi-3{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 30%;
     height: 100%;
     border-radius: 10px;
 }
@@ -521,7 +492,7 @@ a{
 
 .icone-retorno:hover {
     cursor: pointer;
-    color: #2A5277;
+    color: #FFFFFF;
 }
 
 .icone-ida {
@@ -533,7 +504,7 @@ a{
 
 .icone-ida:hover {
     cursor: pointer;
-    color: #2A5277;
+    color: #FFFFFF;
 }
 
 .fundo-grafico-filtrado {
@@ -604,13 +575,36 @@ a{
     /* border: 1px solid rgb(106, 255, 0); */
 }
 
-#grafico {
+.titulo-grafico-filtrado {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 95%;
+    height: fit-content;
+}
+
+.grafico {
     display: flex;
     width: 95%;
     height: 70%;
-    /* border: 1px solid red; */
     align-items: center;
     justify-content: center;
+}
+
+#grafico-filtrado {
+    display: flex;
+    width: 95%;
+    height: 70%;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#total_filtrado {
+    font-size: 6vh;
+}
+
+#total_criticos {
+    font-size: 6vh;
 }
 
 .graficos-style {
@@ -619,6 +613,28 @@ a{
 }
 
 
+.button-listagem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+    background-color: blue;
+    color: #FFFFFF;
+    font-size: 1.5vh;
+    justify-self: center;
+    padding: 1.2%;
+    border-radius: 5%;
+}
+
+.button-listagem:hover {
+    cursor: pointer;
+    background-color: #6b6bff;
+    color: #000000
+}
+
+.graficos-style-geral {
+    height: 100% !important;
+}
 
 .escolha{
     display: flex;
@@ -709,7 +725,7 @@ a{
     height: 100%;
 }
 
-#kpis {
+.kpis {
     font-size: 16px;
     width: 95%;
     justify-content: center;
