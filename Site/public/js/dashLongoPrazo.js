@@ -1,6 +1,11 @@
+let dados = [];
 function carregarDados() {
     carregarATMS();
+    graficoAlertas();
+}
 
+function carregarKPIsAlerta() {
+    
     let fkAgencia = sessionStorage.ID_AGENCIA;
 
     fetch(`/dashLongoPrazo/buscarKPI1`, {
@@ -25,8 +30,11 @@ function carregarDados() {
         kpi.innerHTML = componente[0].qtd;
     })
     .catch(function (erro) {
-        console.log("Erro no fetch dos componentes:", erro);
+        console.log("Erro no fetch do total filtrado:", erro);
     });
+
+
+
 
     fetch(`/dashLongoPrazo/buscarKPI2`, {
         method: "POST",
@@ -50,8 +58,14 @@ function carregarDados() {
         kpi2.innerHTML = componente[0].qtd;
     })
     .catch(function (erro) {
-        console.log("Erro no fetch dos componentes:", erro);
+        console.log("Erro no fetch do total criticos:", erro);
     });
+
+
+
+
+
+
 
     fetch(`/dashLongoPrazo/buscarGraficoAlertas`, {
         method: "POST",
@@ -66,15 +80,124 @@ function carregarDados() {
         if (resposta.ok) {
             return resposta.json();
         } else {
-            console.log("Erro ao buscar componentes.");
+            console.log("Erro ao buscar alertas.");
         }
     })
     .then(function (componente) {
+        dados = componente;
         console.log("dados:", componente);
+        gerarCards(componente)
     })
     .catch(function (erro) {
         console.log("Erro no fetch dos componentes:", erro);
     });
+}
+
+function gerarCards(lista) {
+    let listagem = document.getElementById("listagem");
+    let maior;
+    let acCPUP;
+    let acCPUF;
+    let acRAMD;
+    let acRAMP;
+    let acDISKD;
+    let acPROCD;
+    let acPROCA;
+    let acREDEE;
+    let acREDER;
+    let vetor = [];
+    let componentes = ["acCPUP", "acCPUF", "acRAMD", "acRAMP", "acDISKD", "acPROCD", "acPROCA", "acREDEE", "acREDER"];
+    let componente = "";
+    
+    for(let i = 0; i < lista.length; i++) {
+        maior = 0
+        acCPUP = parseInt(lista[i].alertasCriticosCPUPercent)
+        acCPUF = parseInt(lista[i].alertasCriticosCPUFreq)
+        acRAMD = parseInt(lista[i].alertasCriticosRAMDisponivel)
+        acRAMP = parseInt(lista[i].alertasCriticosRAMPercentual)
+        acDISKD = parseInt(lista[i].alertasCriticosDISKDisponivel)
+        acPROCD = parseInt(lista[i].alertasCriticosPROCESSODesativado)
+        acPROCA = parseInt(lista[i].alertasCriticosPROCESSOSAtivos)
+        acREDEE = parseInt(lista[i].alertasCriticosREDEEnviada)
+        acREDER = parseInt(lista[i].alertasCriticosREDERecebida)
+        
+        vetor.push(acCPUP, acCPUF, acRAMD, acRAMP, acDISKD, acPROCD, acPROCA, acREDEE, acREDER)
+
+        console.log(lista[i])
+        for(let j = 0; j < vetor.length; j++) {
+            if(maior <= vetor[j]) {
+                maior = vetor[j];
+                componente = componentes[j];
+            }
+        }
+
+        console.log(componente)
+        console.log(maior)
+
+        listagem.innerHTML += `
+            <div class="card" style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
+                <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5vh;">ATM: <span> ${lista[i].hostname}</span></span>
+                <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2vh;">Componente: <span> ${componente}</span></span>
+                <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
+                    <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
+                        <span class="texto-listagem" style="color: #FFFFFF; font-size: 2vh;"> Número de alertas: <span> ${maior}</span></span>
+                    </div>
+                    <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
+                </div>
+            </div>
+        `;
+
+        if(i < lista.length) {
+            listagem.innerHTML += `<div class="linha-listagem"></div>`;
+        }
+
+        vetor = [];
+        componente = ""
+    }
+}
+
+function graficoAlertas(lista) {
+
+    const ctx = document.getElementById('meuGrafico2').getContext('2d');
+
+const data = {
+  labels: ['Janeiro', 'Fevereiro', 'Março','Abril', 'Junho'],
+  datasets: [
+    {
+      label: 'Porcentagem CPU',
+      data: [3, 5, 7, 9, 11],
+      backgroundColor: 'rgba(255, 99, 132, 0.7)'
+    },
+    {
+      label: 'Frequência CPU',
+      data: [4, 6, 8, 10, 12],
+      backgroundColor: 'rgba(54, 162, 235, 0.7)'
+    },
+    {
+      label: 'RAM Disponivel',
+      data: [2, 3, 5, 6, 8],
+      backgroundColor: 'rgba(75, 192, 192, 0.7)'
+    }
+  ]
+};
+
+const config = {
+  type: 'bar',
+  data: data,
+  options: {
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true
+      },
+      y: {
+        stacked: true
+      }
+    }
+  }
+};
+
+new Chart(ctx, config);
 }
 
 function exibirAlertas(){
@@ -170,8 +293,8 @@ function gerarGraficos(){
     let dashFiltrada = document.querySelector(".dash-filtrada");
     let dashInicial = document.querySelector(".dash-inicial");
 
-    dashFiltrada.style.display = "flex"
-    dashInicial.style.display = "none"
+    dashFiltrada.style.display = "none"
+    dashInicial.style.display = "flex"
     
     if(filtro == "gerarGrafico") {
         metodo = "teste"
@@ -197,10 +320,8 @@ function gerarGraficos(){
     listaLimite = [];
     listaGeral = [];
     
-    let ne = document.querySelector(".organizar-compontentes-mes");
     let dois = document.querySelector(".organizar");
     let kpis = document.getElementById("kpis");
-    ne.style.display = "none";
     dois.style.display = "flex";
     kpis.style.display = "flex";
 
@@ -307,6 +428,7 @@ function gerarGraficos(){
   console.log(listaDatas)
   console.log(listaCapturas)
   console.log(listaLimite)
+
 }
 
 function carregarKPIS(json) {
@@ -676,6 +798,6 @@ function retornarInicio() {
     let dashInicial = document.querySelector(".dash-inicial");
     let dashAtual = document.querySelector(".dash-filtrada");
 
-    dashAtual.style.display = "none"
-    dashInicial.style.display = "flex"
+    dashInicial.style.display = "none"
+    dashAtual.style.display = "flex"
 }

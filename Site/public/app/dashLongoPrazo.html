@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="dash-inicial" style="display: flex;">
+            <div class="dash-inicial" style="display: none;">
                 <div id="kpis" style="display: flex;">
                     <div class="kpi-prazo">
                         <div class="kpi-1" style="background-color: #ff0000; color: #FFFFFF">
@@ -106,6 +106,7 @@
                 </div>
                 <div class="organizar" style="display: flex;">
                     <div class="fundo">
+                        <i class='bx  bxs-play bx-flip-horizontal icone-ida' onclick="retornarInicio()" style="justify-self: center;"></i>
                         <div class="fundo-grafico">
                             <div class="titulo-grafico">
                                 <div style="font-weight: bold;" ><span id="componente_grafico"></span></div> 
@@ -124,20 +125,11 @@
                                 <canvas class="graficos-style" id="meuGrafico"></canvas>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="organizar-compontentes-mes" style="display: none;">
-                    <div class="fundo">
-                        <div class="fundo-grafico">
-                            <div class="titulo-grafico">NÚMEROS DE ALERTAS POR COMPONENTE</div>
-                            <div id="grafico2">
-                                <canvas class="graficos-style" id="meuGrafico2"></canvas>
-                            </div>
-                        </div>
+                        <i class='bx  bxs-play icone-retorno' onclick="retornarInicio()"></i>
                     </div>
                 </div>
             </div>
-            <div class="dash-filtrada" style="display: none;">
+            <div class="dash-filtrada" style="display: flex;">
                 <div style="display: flex; flex-direction: column; height: 100%; width: 80%; align-items: center;">
                     <div id="kpis-filtrado" style="display: flex;">
                         <div class="kpi-prazo-filtrado">
@@ -151,80 +143,19 @@
                     </div>
                     <div class="organizar" style="display: flex;">
                         <div class="fundo-filtrado"> 
-                            <i class='bx  bxs-play bx-flip-horizontal icone-ida' onclick="retornarInicio()" style="justify-self: center;"></i>
                             <div class="fundo-grafico-filtrado">
                                 <div class="titulo-grafico">
-                                    <div style="font-weight: bold;" ><span id="componente_grafico_inicial"></span></div> 
+                                    <div style="font-weight: bold;">ATM's COM MAIOR NÚMERO DE ALERTAS DA SEMANA<span id="componente_grafico_inicial"></span></div> 
                                 </div>
                                 <div id="grafico">
-                                    <canvas class="graficos-style" id="meuGrafico"></canvas>
+                                    <canvas class="graficos-style" id="meuGrafico2"></canvas>
                                 </div>
                             </div>
                             <i class='bx  bxs-play icone-retorno' onclick="retornarInicio()"></i>
                         </div>
                     </div>
                 </div>
-                <div id="listagem" style="background-color: rgba(83, 83, 83, 0.39);border-radius: 10px;; width: 20%; height: 98%; display: flex; flex-direction: column; align-items: center; gap: 1%;">
-                    <div class="card" style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
-                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
-                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
-                            </div>
-                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
-                        </div>
-                    </div>
-                    <div class="linha-listagem"></div>
-                    <div style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
-                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
-                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
-                            </div>
-                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
-                        </div>
-                    </div>
-                    <div class="linha-listagem"></div>
-                    <div style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
-                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
-                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
-                            </div>
-                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
-                        </div>
-                    </div>
-                    <div class="linha-listagem"></div>
-                    <div style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
-                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
-                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
-                            </div>
-                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
-                        </div>
-                    </div>
-                    <div class="linha-listagem"></div>
-                    <div style="width: 90%; height: 15vh; display: flex; flex-direction: column; justify-content: center;">
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">ATM: <span> ATM</span></span>
-                        <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.5  vh;">Componente: <span> COMP</span></span>
-                        <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
-                            <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Número de alertas: <span> NUMERO</span></span>
-                                <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.5vh;"> Data: <span> DATA</span></span>
-                            </div>
-                            <div class="button-listagem" style="display: flex; align-items: center; justify-content: center; width: 25%; background-color: blue;color: #FFFFFF; font-size: 1.5vh; justify-self: center;">Verificar</div>
-                        </div>
-                    </div>
-                </div>
+                <div id="listagem" style="background-color: rgba(83, 83, 83, 0.39);border-radius: 10px;; width: 20%; height: 98%; display: flex; flex-direction: column; align-items: center; gap: 1%;"></div>
             </div>
         </div>
     </div>
