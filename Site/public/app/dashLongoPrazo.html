@@ -90,6 +90,42 @@
                     </div>
                 </div>
             </div>
+            <div class="dash-inicial"style="display: none;">
+                <div class="kpis" style="display: flex;">
+                    <div class="kpi-prazo">
+                        <div class="kpi" id="kpi1" style="background-color: #ff0000; color: #FFFFFF">
+                            <span>MAIOR PICO DE COMPONENTE: <br><span id="pico">90%</span></span>
+                        </div>
+                        <div class="kpi" id="kpi2" style="background-color: #ff0000; color: #FFFFFF">
+                            <span>DIA COM MAIS ALERTAS: <br><span id="momento">03/04/2025</span></span>
+                        </div>
+                        <div class="kpi" id="kpi3" style="background-color: #ff0000; color: #FFFFFF;">
+                            <span>NÚMEROS DE ALERTAS: <br><span id="total">21</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="organizar" style="display: flex;">
+                    <div class="fundo">
+                        <i class='bx  bxs-play bx-flip-horizontal icone-ida' onclick="retornarInicio()" style="justify-self: center;"></i>
+                        <div class="fundo-grafico">
+                            <div class="titulo-grafico">
+                                <div style="font-weight: bold;" ><span id="componente_grafico"></span></div> 
+                                <div class="legenda">
+                                    <div class="bolinhas">
+                                        <div class="red"></div>
+                                        <div class="roxo"></div>
+                                    </div>
+                                    <div class="legenda-titulo">
+                                        <span>LIMITE</span>
+                                        <span>CAPTURAS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grafico" id="meuGrafico"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="dash-filtrada" style="display: flex;">
                 <div style="display: flex; flex-direction: column; height: 100%; width: 80%; align-items: center;">
                     <div id="kpis-filtrado" style="display: flex;">
