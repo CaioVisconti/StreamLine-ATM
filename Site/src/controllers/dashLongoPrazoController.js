@@ -80,12 +80,26 @@ const buscarGraficoAlertas = async (req, res) => {
     }
 }
 
+const pesquisarAtm = async (req, res) => {
+    try {
+        let texto = req.body.texto;
+        let fkAgencia = req.body.id;
+
+        const kpi1 = await database.pesquisarAtm(texto, fkAgencia);
+        return res.status(200).json(kpi1)
+    } catch (error) {
+        console.error("Erro completo:", error);
+        return res.status(400).json(error.message);
+    }
+}
+
 module.exports = {
     listarAtm,
     listarComponentes,
     listarMetricas,
     buscarKPI1,
     buscarKPI2,
-    buscarGraficoAlertas
+    buscarGraficoAlertas,
+    pesquisarAtm
 }
 

@@ -1,5 +1,6 @@
 let dados = [];
-let telas = []
+let telas = [];
+var tempoReal;
 function carregarDados() {
     carregarKPIsAlerta();
     carregarATMS();
@@ -558,7 +559,7 @@ function gerarGraficos() {
         listaLimite = [];
 
         if(metodo == "tempoReal") {
-            graficoTempoReal(dados, json);
+            graficoTempoReal(dados, json, graficoDiv);
             return;
         }
 
@@ -578,6 +579,7 @@ function gerarGraficos() {
         }
 
         spanId.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} <br> (${json.m})`;
+        carregarKPIS(json);
 
         const chartDiv = document.createElement('div');
         chartDiv.className = "fundoGrafico";
@@ -621,8 +623,6 @@ function gerarGraficos() {
                 }
             }
         });
-
-        carregarKPIS(json);
     })
     .catch(err => console.error('Erro:', err));
 }
@@ -685,6 +685,50 @@ function carregarKPIS(json) {
     kpi3.innerHTML = listaGeral[indice].qtdAlertaCPUP;
 }
 
+function trocarAtms() {
+    let txt = document.getElementById("ipt_pesquisa").value
+    console.log(txt)
+
+    if(txt == "") {
+        carregarATMS()
+        return
+    } else {
+        let fkAgencia = sessionStorage.ID_AGENCIA;
+        fetch("/dashLongoPrazo/pesquisarAtm", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                texto: txt,
+                id: fkAgencia
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                return resposta.json();
+            } else {
+                console.log("Erro ao buscar componentes.");
+            }
+        })
+        .then(function (atm) {
+            console.log("atm recebidos:", atm);
+
+            var selectatm = document.getElementById("select_atm");
+            var options = "";
+
+            atm.forEach(function (atms) {
+                options += `<option value="${atms.idAtm}">${atms.nome}</option>`;
+            });
+
+            selectatm.innerHTML = options;
+            selectatm.disabled = false; // habilita o select
+        })
+        .catch(function (erro) {
+            console.log("Erro no fetch dos atms:", erro);
+        });
+    }
+}
+
 function carregarATMS() {
 
     let nomeUsuario = sessionStorage.NOME_USUARIO;
@@ -725,6 +769,7 @@ function carregarATMS() {
         console.log("Erro no fetch dos atms:", erro);
     });
 }
+
 
 
 function carregarComponentes(){
@@ -936,7 +981,19 @@ function mudarFiltros() {
     }
 }
 
-function graficoTempoReal(lista, json) {
+function graficoTempoReal(lista, json, graficoDiv) {
+    carregarKPIS(json)
+
+
+    const chartDiv = document.createElement('div');
+    chartDiv.className = "fundoGrafico";
+
+    const canvas = document.createElement('canvas');
+    canvas.className = "graficos-style";
+    canvas.id = `chart-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    chartDiv.appendChild(canvas);
+    graficoDiv.appendChild(chartDiv);
 
     let inicio = ipt_horario_de.value;
     inicio = `${inicio}:00`;
@@ -950,17 +1007,72 @@ function graficoTempoReal(lista, json) {
     inicio = pesquisaBinaria(lista, inicio)
     fim = pesquisaBinaria(lista, fim)
 
-    console.log('(lista[fim].dataHora).split(" ")[1]')
-    console.log((lista[fim].dataHora).split(" ")[1])
+    let arrayDatas = [];
+    let arrayLimites = [];
+    let arrayCapturas = [];
 
+    for(let i = inicio; i < inicio + 6; i++) {
+        arrayDatas.push(lista[i].dataHora)
+        arrayLimites.push(lista[i][json.l])
+        arrayCapturas.push(lista[i][json.r])
+    }
+
+    console.log(arrayDatas)
+    console.log(arrayLimites)
+    console.log(arrayCapturas)
+
+    tempoReal = new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: arrayDatas,
+                datasets: [
+                    {
+                        label: 'Uso da CPU (%)',
+                        data: arrayCapturas,
+                        borderColor: 'rgba(141, 52, 249, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Limite (%)',
+                        data: arrayLimites,
+                        borderColor: 'red',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } }
+                }
+            }
+        });
+
+        inicio = inicio + 6;
     if((lista[fim].dataHora).split(" ")[1] != fim) {
         fim -= 1;
     }
     
     let criacao = setInterval(function () {
-       console.log(lista[inicio].dataHora);
-       console.log(lista[inicio][json.r]);
-       console.log(lista[inicio][json.l]);
+        arrayDatas.push(lista[inicio].dataHora)
+        arrayDatas.shift()
+
+        arrayLimites.push(lista[inicio][json.l])
+        arrayLimites.shift()
+
+        arrayCapturas.push(lista[inicio][json.r])
+        arrayCapturas.shift()
+
+        tempoReal.data.labels = arrayDatas;
+        tempoReal.data.datasets[0].data = arrayCapturas
+        tempoReal.data.datasets[1].data = arrayLimites
+        tempoReal.update()
        
        if(inicio == fim) {
            clearInterval(criacao)

@@ -70,11 +70,23 @@ function buscarGraficoAlertas(fkAgencia) {
     return database.executar(instrucaoSql);
 }
 
+function pesquisarAtm(texto, idAgencia) {
+    const instrucaoSql = `
+        SELECT 
+            idAtm,
+            atm.hostname AS nome
+            FROM atm WHERE fkAgencia = ${idAgencia} AND hostname LIKE "%${texto}%";
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     listarAtm,
     listarComponentes,
     listarMetricas,
     buscarKPI1,
     buscarKPI2,
-    buscarGraficoAlertas
+    buscarGraficoAlertas,
+    pesquisarAtm
 };

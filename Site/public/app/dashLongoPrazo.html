@@ -45,6 +45,7 @@
                     <div class="escolha-atm">
                         <div class="linha"></div>
                         <span>Insira o ATM:</span>
+                        <input type="text" oninput="trocarAtms()" id="ipt_pesquisa">
                         <select id="select_atm"  oninput="carregarComponentes()">
                         </select>
                     </div>
@@ -73,8 +74,10 @@
                     </div>
                     <div class="escolha-horario" style="display: none;">
                         <span>Horário:</span>
-                        <input type="time" id="ipt_horario_de">
-                        <input type="time" id="ipt_horario_ate">
+                        <div style="width: 70%; display: flex; flex-direction: row; justify-content: space-between;">
+                            <input type="time" id="ipt_horario_de">
+                            <input type="time" id="ipt_horario_ate">
+                        </div>
                     </div>
                     <div id="periodo" class="escolha-metricas" style="display: none;">
                         <span>Intervalos:</span>

@@ -27,4 +27,8 @@ router.post("/buscarGraficoAlertas", function (req, res) {
     dashLongoPrazoController.buscarGraficoAlertas(req, res);
 })
 
+router.post("/pesquisarAtm", function (req, res) {
+    dashLongoPrazoController.pesquisarAtm(req, res);
+})
+
 module.exports = router;
