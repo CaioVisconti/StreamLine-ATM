@@ -1,4 +1,5 @@
 let dados = [];
+let telas = []
 function carregarDados() {
     carregarKPIsAlerta();
     carregarATMS();
@@ -371,90 +372,198 @@ let listaGeral = [];
 
 let periodo = false;
 
+let chartCount = 0;
+
 function gerarGraficos() {
-    
+    chartCount++;
+
     let filtro = slt_filtro.value;
     let atm = select_atm.value;
     let componente = select_componentes.value;
     let metrica = select_metricas.value;
     let intervalo = slt_intervalo.value;
 
-    let nxtInit = document.getElementById("nxt_inicial");
-    nxtInit.style.color = "blue"
+    const dash = document.getElementById("painels");
 
-    filtro = slt_filtro.value;
-    atm = select_atm.value;
-    componente = select_componentes.value;
-    metrica = select_metricas.value;
-    
-    let json = capturas(componente, metrica);
-    let inicio;
-    let fim;
-    let metodo;
+    const dashDiv = document.createElement('div');
+    dashDiv.className = "dash-inicial";
+    dashDiv.id = `dash${chartCount}`;
+    dashDiv.style.display = "none";
 
-    let dashFiltrada = document.querySelector("dash-inicial");
-    let dashInicial = document.getElementById(`dash${atual}`);
+    const kpis = document.createElement('div');
+    kpis.className = "kpis";
+    kpis.style.display = "flex";
 
-    dashInicial.style.display = "flex"
-    
+    const kpiPrazo = document.createElement('div');
+    kpiPrazo.className = "kpi-prazo";
+
+    for (let i = 1; i <= 3; i++) {
+        const kpi = document.createElement('div');
+        kpi.className = "kpi";
+        kpi.id = `kpi${i}_${chartCount}`;
+        kpi.style.backgroundColor = "#ff0000";
+        kpi.style.color = "#FFFFFF";
+
+        const spanText = document.createElement('span');
+        spanText.innerHTML = 
+            i === 1 ? `MAIOR PICO DE COMPONENTE: <br><span id="pico${chartCount}">90%</span>` :
+            i === 2 ? `DIA COM MAIS ALERTAS: <br><span id="momento${chartCount}">03/04/2025</span>` :
+                      `NÚMEROS DE ALERTAS: <br><span id="total${chartCount}">21</span>`;
+
+        kpi.appendChild(spanText);
+        kpiPrazo.appendChild(kpi);
+    }
+
+    kpis.appendChild(kpiPrazo);
+    dashDiv.appendChild(kpis);
+
+    const organizar = document.createElement('div');
+    organizar.className = "organizar";
+    organizar.style.display = "flex";
+
+    const fundo = document.createElement('div');
+    fundo.className = "fundo";
+
+    const iconEsq = document.createElement('i');
+    iconEsq.className = "bx bxs-play bx-flip-horizontal icone-ida";
+    iconEsq.setAttribute("onclick", `retornarInicio(${chartCount})`);
+    iconEsq.style.justifySelf = "center";
+
+    const fundoGrafico = document.createElement('div');
+    fundoGrafico.className = "fundo-grafico";
+
+    const tituloGrafico = document.createElement('div');
+    tituloGrafico.className = "titulo-grafico";
+
+    const spanComp = document.createElement('div');
+    spanComp.style.fontWeight = "bold";
+    const spanId = document.createElement('span');
+    spanId.id = `componente_grafico${chartCount}`;
+    spanComp.appendChild(spanId);
+
+    const legenda = document.createElement('div');
+    legenda.className = "legenda";
+
+    const bolinhas = document.createElement('div');
+    bolinhas.className = "bolinhas";
+
+    const red = document.createElement('div');
+    red.className = "red";
+    const roxo = document.createElement('div');
+    roxo.className = "roxo";
+
+    bolinhas.appendChild(red);
+    bolinhas.appendChild(roxo);
+
+    const legendaTitulo = document.createElement('div');
+    legendaTitulo.className = "legenda-titulo";
+
+    const spanLimite = document.createElement('span');
+    spanLimite.textContent = "LIMITE";
+    const spanCapturas = document.createElement('span');
+    spanCapturas.textContent = "CAPTURAS";
+
+    legendaTitulo.appendChild(spanLimite);
+    legendaTitulo.appendChild(spanCapturas);
+
+    legenda.appendChild(bolinhas);
+    legenda.appendChild(legendaTitulo);
+
+    tituloGrafico.appendChild(spanComp);
+    tituloGrafico.appendChild(legenda);
+
+    const graficoDiv = document.createElement('div');
+    graficoDiv.className = "grafico";
+    graficoDiv.id = `meuGrafico${chartCount}`;
+
+    fundoGrafico.appendChild(tituloGrafico);
+    fundoGrafico.appendChild(graficoDiv);
+
+    const iconDir = document.createElement('i');
+    iconDir.className = "bx bxs-play icone-retorno";
+    iconDir.setAttribute("onclick", `direcionarProximo(${chartCount})`);
+
+    fundo.appendChild(iconEsq);
+    fundo.appendChild(fundoGrafico);
+    fundo.appendChild(iconDir);
+
+    organizar.appendChild(fundo);
+    dashDiv.appendChild(organizar);
+
+    dash.appendChild(dashDiv);
+
+    slt_filtro.value = filtro;
+    select_atm.value = atm;
+    select_componentes.value = componente;
+    select_metricas.value = metrica;
+    slt_intervalo.value = intervalo;
+
+    const nxtInit = document.getElementById("nxt_inicial");
+    nxtInit.style.color = "blue";
+
+    const json = capturas(componente, metrica);
+
+    let inicio, fim, metodo;
+    const atual = chartCount;
+
+    for(let i = 1; i <= chartCount; i++) {
+        const dashFiltrada = document.getElementById(`dash${i}`);
+        if(dashFiltrada) dashFiltrada.style.display = "none";
+    }
+
+    let dashInit = document.querySelector(".dash-filtrada");
+    dashInit.style.display = "none";
+
+    const dashInicial = document.getElementById(`dash${atual}`);
+    dashInicial.style.display = "flex";
+
     if(filtro == "gerarGrafico") {
-        metodo = "teste"
+        metodo = "teste";
         if(periodo) {
-            inicio = ipt_de.value.split("-");
-            inicio = `${inicio[2]}-${inicio[1]}-${inicio[0]}`;
-            fim = ipt_ate.value.split("-");
-            fim = `${fim[2]}-${fim[1]}-${fim[0]}`;
+            inicio = ipt_de.value.split("-").reverse().join("-");
+            fim = ipt_ate.value.split("-").reverse().join("-");
             metodo = "periodo";
         } else {
             inicio = fim = slt_intervalo.value;
         }
     } else {
-        metodo = "tempoReal"
-        inicio = ipt_dia.value.split("-");
-        inicio = `${inicio[2]}-${inicio[1]}-${inicio[0]}`;
+        metodo = "tempoReal";
+        inicio = ipt_dia.value.split("-").reverse().join("-");
         fim = inicio;
     }
 
-    listaDatas = [];
-    listaCapturas = [];
-    listaLimite = [];
-    listaGeral = [];
+    let dois = document.querySelector(".organizar");
+    let kpis1 = document.querySelector(".kpis");
+    dois.style.display = "flex";
+    kpis1.style.display = "flex";
 
-    let painel = document.getElementById("painels");
     let filtros = document.getElementById("filtros");
-    let legenda = document.querySelector(".titulo-grafico");
+    let leg = document.querySelector(".titulo-grafico");
     
     if(window.innerWidth < 1030){
         filtros.style.display = "none"
-        legenda.style.display = "none"
+        leg.style.display = "none"
     }
-    
-    const ctx = document.getElementById('meuGraficoInit').getContext('2d');
-    
-    painel.classList.remove("painel")
-    painel.classList.add("painel2")
-    
-    filtros.classList.remove("kpis")
-    filtros.classList.add("kpis2")
 
-    let url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${atm}/${fim}/${inicio}/${metodo}`
+    let url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${atm}/${fim}/${inicio}/${metodo}`;
 
     console.log(url);
 
-  fetch(url)
-  .then(resposta => {
-    return resposta.json();
-  })
-  .then(dados => {
-    listaGeral = dados;
+    fetch(url)
+    .then(res => res.json())
+    .then(dados => {
+        listaGeral = dados
+        listaDatas = [];
+        listaCapturas = [];
+        listaLimite = [];
 
-    if(metodo == "tempoReal") {
-        graficoTempoReal(dados, json);
-        return
-    }
+        if(metodo == "tempoReal") {
+            graficoTempoReal(dados, json);
+            return;
+        }
 
-    let dataAtual = "";
-    for(let i = 0; i < dados.length; i++) {
+        let dataAtual = "";
+        for(let i = 0; i < dados.length; i++) {
 
         if((inicio == fim && metodo == "periodo") || inicio == "ultimoDia") {
             dataAtual = ((dados[i].dataHora).split(" ")[1])
@@ -463,74 +572,66 @@ function gerarGraficos() {
             dataAtual = `${dataAtual[2]}/${dataAtual[1]}/${dataAtual[0]}`;
         }
 
-        listaDatas.push(dataAtual);
-        listaCapturas.push(dados[i][json.r])
-        listaLimite.push(dados[i][json.l])
-    }
+            listaDatas.push(dataAtual);
+            listaCapturas.push(dados[i][json.r])
+            listaLimite.push(dados[i][json.l])
+        }
 
-    let componenteGrafico = document.getElementById(`componente_grafico`);
+        spanId.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} <br> (${json.m})`;
 
-    componenteGrafico.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} <br> (${json.m})`;
-    let grafico = document.getElementById(`meuGrafico`)
+        const chartDiv = document.createElement('div');
+        chartDiv.className = "fundoGrafico";
 
-    const canvas = document.createElement('canvas');
-    canvas.id = `grafico`;
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    grafico.appendChild(canvas);
+        const canvas = document.createElement('canvas');
+        canvas.className = "graficos-style";
+        canvas.id = `chart-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    const ctx = canvas.getContext("2d");
+        chartDiv.appendChild(canvas);
+        graficoDiv.appendChild(chartDiv);
 
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: listaDatas,
-            datasets: [{
-                label: 'Uso da CPU (%)',
-                data: listaCapturas,
-                borderColor: 'rgba(141, 52, 249, 1)',
-                borderWidth: 2,
-                tension: 0.3,
-                fill: true
-            },{
-                label: 'Limite (%)',
-                data: listaLimite,
-                borderColor: 'red',
-                borderWidth: 2,
-                tension: 0.3,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false 
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100,
-                    ticks: {
-                        stepSize: 20
+        const chart = new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: listaDatas,
+                datasets: [
+                    {
+                        label: 'Uso da CPU (%)',
+                        data: listaCapturas,
+                        borderColor: 'rgba(141, 52, 249, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Limite (%)',
+                        data: listaLimite,
+                        borderColor: 'red',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
                     }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } }
                 }
             }
-        }
-    });
-    carregarKPIS(json);
-  })
-  .catch(erro => {
-    console.error('Erro:', erro);
-  });
+        });
+
+        carregarKPIS(json);
+    })
+    .catch(err => console.error('Erro:', err));
 }
 
+
 function carregarKPIS(json) {
-    let kpi1 = document.getElementById(`pico`);
-    let kpi2 = document.getElementById(`momento`);
-    let kpi3 = document.getElementById(`total`);
+    let kpi1 = document.getElementById(`pico${chartCount}`);
+    let kpi2 = document.getElementById(`momento${chartCount}`);
+    let kpi3 = document.getElementById(`total${chartCount}`);
 
     let indice = 0;
     for(let i = 1; i < listaCapturas.length; i++) {
@@ -539,7 +640,12 @@ function carregarKPIS(json) {
         }
     }
 
-    let kpi1_1 = document.getElementById(`kpi1`);
+    console.log("passei")
+    console.log(listaCapturas)
+    console.log(listaLimite)
+    console.log(listaGeral)
+
+    let kpi1_1 = document.getElementById(`kpi1_${chartCount}`);
 
     if(listaCapturas[indice] > listaLimite[indice]) {
         kpi1_1.style.background = "red"
@@ -554,7 +660,7 @@ function carregarKPIS(json) {
 
     kpi1.innerHTML = Math.round(listaCapturas[indice], 2) + json.u;
 
-    let kpi2_1 = document.getElementById(`kpi2`);
+    let kpi2_1 = document.getElementById(`kpi2_${chartCount}`);
 
     if(listaGeral[indice].qtdAlertaCPUP == 0) {
         kpi2_1.style.background = "green";
@@ -563,7 +669,7 @@ function carregarKPIS(json) {
         kpi2.innerHTML = listaDatas[indice];
     }
     
-    let kpi3_1 = document.getElementById(`kpi3`);
+    let kpi3_1 = document.getElementById(`kpi3_${chartCount}`);
 
     if(listaGeral[indice].qtdAlertaCPUP == 0) {
         kpi3_1.style.background = "green";
@@ -892,16 +998,45 @@ function pesquisaBinaria(lista, tempo) {
     return Math.floor(meio)
 }
 
-function retornarInicio() {
-    let dashAtual = document.querySelector(".dash-inicial");
+
+function retornarInicio(termo) {
+    console.log("termo RETORNAR")
+    console.log(termo)
+    let dashAtual = document.querySelector(".dash-filtrada");
+    let dashFiltrada;
+
+    for(let i = 1; i <= chartCount; i++) {
+        dashFiltrada = document.getElementById(`dash${i}`);
+        dashFiltrada.style.display = "none";
+    }
+
     dashAtual.style.display = "none";
-    let dashFiltrado = document.querySelector(".dash-filtrado");
-    dashFiltrado.style.display = "flex";
+
+    if(termo == 1) {
+        dashAtual.style.display = "flex";
+    } else {
+        dashFiltrada = document.getElementById(`dash${termo-1}`);
+        dashFiltrada.style.display = "flex";
+    }
 }
 
-function direcionarProximo() {
-    let dashAtual = document.querySelector(".dash-inicial");
-    dashAtual.style.display = "flex";
-    let dashFiltrado = document.querySelector(".dash-filtrado");
-    dashFiltrado.style.display = "none";
+function direcionarProximo(termo) {
+    console.log("termo DIRECIONAR")
+    console.log(termo)
+    let dashAtual = document.querySelector(".dash-filtrada");
+    let dashFiltrada;
+
+    if(termo >= chartCount) {
+        return alert("Não há mais telas para ver!")
+    }
+
+    for(let i = 1; i <= chartCount; i++) {
+        dashFiltrada = document.getElementById(`dash${i}`);
+        dashFiltrada.style.display = "none";
+    }
+
+    dashAtual.style.display = "none";
+
+    dashFiltrada = document.getElementById(`dash${termo + 1}`);
+    dashFiltrada.style.display = "flex";
 }

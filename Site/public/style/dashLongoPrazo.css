@@ -91,6 +91,11 @@ a{
     /* border: 1px solid red; */
 }
 
+.fundoGrafico {
+    width: 100%;
+    height: 100%;
+}
+
 .kpis-filtrado {
     display: flex;
     height: 80vh;
