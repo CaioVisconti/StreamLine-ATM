@@ -30,6 +30,12 @@ function buscarIndicadoresMensal() {
     return database.executar(instrucaoSql);
 }
 
+function buscarIndicadoresMesAnterior() {
+    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE MONTH(fim) = MONTH(CURDATE()) - 1 GROUP BY servico;`
+
+    return database.executar(instrucaoSql);
+}
+
 function buscarGastoMensal() {
     const instrucaoSql = `SELECT SUM(custo) as gastoMensal, MONTH(fim) AS mes FROM awsCusto WHERE MONTH(fim) = MONTH(CURDATE()) AND YEAR(fim) = YEAR(CURDATE()) GROUP BY mes;`
 
@@ -55,6 +61,7 @@ buscarKpi1,
 buscarSemanaAnterior,
 buscarIndicadores,
 buscarIndicadoresMensal,
+buscarIndicadoresMesAnterior,
 buscarGastoMensal,
 buscarGastoTotal,
 buscarDadosCadaMes

@@ -6,6 +6,7 @@ window.onload = async () => {
     buscarKpi();
     buscarIndicadores();
     buscarGastoMensal();
+    buscarCustoPorServico();
     document.getElementById("default").click();
     nomeFunc.innerHTML = nomeUsuario;
 }
@@ -25,7 +26,9 @@ function mudarAba(event, nomeAba) {
     event.currentTarget.id += "atual"
 
 }
-let gastoMensalEc2 = 0
+
+let servicoAtual = null
+
 function buscarKpi() {
     fetch("/aws/buscarKpi1", {
         method: "GET",
@@ -54,7 +57,6 @@ function buscarKpi() {
             if (json.length > 1) {
                 gastoMesAtual = json[json.length - 1].gastoMensal
                 gastoMesAnterior = json[json.length - 2].gastoMensal
-                gastoMensalEc2 = "R$" + gastoMesAtual.toFixed(2)
                 if (gastoMesAnterior >= 1) {
                     comparacao = ((gastoMesAtual - gastoMesAnterior) / gastoMesAnterior) * 100
                     mensagem = "a menos"
@@ -62,22 +64,9 @@ function buscarKpi() {
                         mensagem = "a mais"
                     }
                     if ((gastoMesAtual - gastoMesAnterior) > 100) {
-                        cor = "#ff5d5d"
+                        cor = "#ff0000"
                     }
                     kpiIndicador.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
-
-                    indicadores_custos.innerHTML += `<div class="valores-servicos">
-                            <div class="modal-coluna">
-                                <span>R$${gastoMesAtual.toFixed(2)}</span>
-                            </div>
-                            <div class="modal-coluna">
-                                <span>R$${gastoMesAnterior.toFixed(2)}</span>
-                            </div>
-                            <div class="modal-coluna">
-                                <span style="color: ${cor}">R$${(gastoMesAtual - gastoMesAnterior).toFixed(2)} ${mensagem} que no mês anterior</span>
-                            </div>
-                            </div>`
-
                 }
             }
         })
@@ -120,7 +109,6 @@ function carregarGraficoServico() {
     }
 
 }
-
 function buscarIndicadores() {
     fetch("/aws/buscarIndicadores", {
         method: "GET",
@@ -132,11 +120,10 @@ function buscarIndicadores() {
             let custoTotal = 0
             let comparacao = 0
             let porcentagem = 0
-            console.log(json)
-            console.log(json.selectSemanaAnterior)
             for (let i = 0; i < json.selectMensal.length; i++) {
                 comparacao = ((json.select[i].custo - json.selectSemanaAnterior[i].custo) / json.selectSemanaAnterior[i].custo) * 100
                 console.log(json.selectMensal[i])
+                gastoMensal = json.selectMensal[i].custo
                 if (json.select[i] == null) {
                     const custoKey = '{"custo": 0.00}';
                     json.select[i] = JSON.parse(custoKey)
@@ -154,21 +141,23 @@ function buscarIndicadores() {
                 if (json.selectMensal[i].servico == "AWS Lambda") {
                     json.selectMensal[i].servico = "Lambda"
                 }
+                if (json.selectMensal[i].servico == "Lambda" || json.selectMensal[i].servico == "EC2" || json.selectMensal[i].servico == "S3") {
 
-                indicadores.innerHTML += `<div class="valores-servicos">
-                            <div class="servico-coluna">
-                                <span>${json.selectMensal[i].servico}</span>
-                            </div>
-                            <div class="gasto-coluna">
-                                <span>R$${json.select[i].custo.toFixed(2)}</span>
-                            </div>
-                            <div class="gasto-coluna">
-                                <span>R$${json.selectSemanaAnterior[i].custo.toFixed(2)}</span>
-                            </div>
-                            <div class="gasto-coluna">
-                            <button onclick="mostrarModalServico(servico='${json.selectMensal[i].servico}')">Ver detalhes</button>
-                            </div>
-                            </div>`
+                    indicadores.innerHTML += `<div class="valores-servicos">
+                    <div class="servico-coluna">
+                    <span>${json.selectMensal[i].servico}</span>
+                    </div>
+                    <div class="gasto-coluna">
+                    <span>R$${json.select[i].custo.toFixed(2)}</span>
+                    </div>
+                    <div class="gasto-coluna">
+                    <span>R$${json.selectSemanaAnterior[i].custo.toFixed(2)}</span>
+                    </div>
+                    <div class="gasto-coluna">
+                    <button onclick="mostrarModalServico(servico='${json.selectMensal[i].servico}')">Ver detalhes</button>
+                    </div>
+                    </div>`
+                }
             }
             gastoTotal.innerHTML += custoTotal.toFixed(2);
             // kpiSemana.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior</span>`
@@ -176,7 +165,10 @@ function buscarIndicadores() {
     })
 }
 
-let servicoAtual = null
+function fecharModal() {
+    let modal = document.querySelector(".modalServico");
+    modal.style.display = 'none'
+}
 
 function mostrarModalServico(servico) {
     let modal = document.querySelector(".modalServico");
@@ -199,25 +191,18 @@ function mostrarModalServico(servico) {
         servico = "Lambda"
         modal_kpi1.innerHTML = "Quantidade de Funções"
         modal_kpi2.innerHTML = "Armazenamento de Código"
-        modal_kpi3.innerHTML = ""
+        modal_kpi3.innerHTML = "Gasto do Último Mês"
         document.getElementById("container_custos").style.display = "none"
     }
-    if (servico == "CloudWatch") {
-        modal_kpi1.innerHTML = "CloudWatch"
-        modal_kpi2.innerHTML = ""
-        modal_kpi3.innerHTML = ""
-        document.getElementById("container_custos").style.display = "none"
 
-    }
-
-    titulo_modal.innerHTML = servico
+    titulo.innerHTML = servico
     if (modal.style.display == "none") {
         modal.style.display = "block"
         buscarDadosServicos()
         carregarGraficoServico()
         setInterval(() => {
             buscarDadosServicos()
-        }, 3000)
+        }, 1000)
     } else {
         modal.style.display = "none"
     }
@@ -249,26 +234,62 @@ function descreverTiposInstancias() {
     return tipos
 }
 
+let gastoEc2 = 0
+let gastoLambda = 0
+function buscarCustoPorServico() {
+    fetch("/aws/buscarDadosPorServico", {
+        method: "GET",
+        headers: {
+            "Content-type": "application/json"
+        }
+    }).then((res => {
+        res.json().then((json => {
+            console.log("G", json)
+            for (let i = 0; i < json.select.length; i++) {
+                console.log("diniz", json.select[i].servico)
+                if (json.select[i].servico == "EC2 - Other") {
+                    gastoEc2 = json.select[i].custo
+                    gastoEc2MesAnterior = json.selectMesAnterior[i].custo
+                }
+                if (json.select[i].servico == "AWS Lambda") {
+                    gastoLambda = json.select[i].custo
+                }
+            }
+            let mensagem = "a mais"
+            if(gastoEc2 < gastoEc2MesAnterior){
+                mensagem = "a menos"
+            }
+            indicadores_custos.innerHTML += `<div class="valores-servicos">
+                            <div class="modal-coluna">
+                                <span>R$${gastoEc2.toFixed(2)}</span>
+                            </div>
+                            <div class="modal-coluna">
+                                <span>R$${gastoEc2MesAnterior.toFixed(2)}</span>
+                            </div>
+                            <div class="modal-coluna">
+                                <span>R$${(gastoEc2 - gastoEc2MesAnterior).toFixed(2)} ${mensagem} que no mês anterior</span>
+                            </div>
+                            </div>`
+        }))
+    }))
+}
+
 function carregarDadosEc2(json) {
     let instanciasAtivas = 0
     let totalInstancias = 0
-    let instancias = descreverTiposInstancias()
     for (let i = 0; i < json[servicoAtual].length; i++) {
+        totalInstancias++
         let tamanho = 50
         let corFonte = "#ff5d5d"
         let corFundo = "#400000"
-        let tipoInstancia = String(json[servicoAtual][i].tipo)
         if (json[servicoAtual][i].status == "shutting-down") {
             tamanho = 70
         }
-
         if (json[servicoAtual][i].status == "running") {
             corFundo = "#104000"
             corFonte = "#5dff73"
             instanciasAtivas++
         }
-
-        totalInstancias++
 
         indicadores_modal.innerHTML += `<div class="valores-servicos">
                             <div class="modal-coluna">
@@ -287,8 +308,7 @@ function carregarDadosEc2(json) {
     if (servicoAtual == "ec2") {
         valor_kpi1.innerHTML = instanciasAtivas
         valor_kpi2.innerHTML = totalInstancias
-        valor_kpi3.innerHTML = gastoMensalEc2
-
+        valor_kpi3.innerHTML = "R$" + gastoEc2.toFixed(2)
     }
 }
 
@@ -351,8 +371,8 @@ function carregarDadosLambda(json) {
 
     if (servicoAtual == "lambda") {
         valor_kpi1.innerHTML = qtdFuncoes
-        valor_kpi2.innerHTML = tamanhoCodigo
-        valor_kpi3.innerHTML = tamanhoTotal + "KB"
+        valor_kpi2.innerHTML = tamanhoCodigo + "KB"
+        valor_kpi3.innerHTML = "R$" + gastoLambda.toFixed(2)
     }
 
 

@@ -18,6 +18,16 @@ const buscarKpi1 = async (req, res) => {
     }
 }
 
+const buscarDadosPorServico = async (req, res) => {
+    try{
+        const select = await database.buscarIndicadoresMensal();
+        const selectMesAnterior = await database.buscarIndicadoresMesAnterior();
+        return res.status(200).json({select, selectMesAnterior});
+    } catch (erro) {
+        return res.status(400).send(erro,message);
+    }
+}
+
 const buscarIndicadores = async (req, res) => {
     try{
         const select = await database.buscarIndicadores();
@@ -61,6 +71,7 @@ module.exports = {
     buscarKpi1,
     buscarIndicadores,
     buscarGastoMensal,
+    buscarDadosPorServico,
     buscarGastoTotal,
     buscarDadosCadaMes
 }

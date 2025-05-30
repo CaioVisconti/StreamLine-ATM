@@ -10,7 +10,7 @@ def enviar_dados(jsonParaEnviar):
     print(resposta)
 
 while(True):
-    time.sleep(5)
+    time.sleep(2)
 
     ec2 = boto3.client('ec2', region_name="us-east-1")
     s3 = boto3.client('s3')
@@ -30,6 +30,7 @@ while(True):
 
     for funcao in respostaLambda['Functions']:
         if funcao['FunctionName'] != "RedshiftEventSubscription" and funcao['FunctionName'] != "RoleCreationFunction" and funcao['FunctionName'] != "RedshiftOverwatch" and funcao['FunctionName'] != "ModLabRole" and funcao['FunctionName'] != "MainMonitoringFunction" and funcao['FunctionName'] != "redAPIStreamline":
+            # print(funcao)
             nomeFuncao = funcao['FunctionName']
             linguagemUsada = funcao['Runtime']
             tamanhoCodigo = funcao['CodeSize']
