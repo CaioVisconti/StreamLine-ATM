@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d938b30-1df1-471f-94fc-b7b141942de9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Python/exibir_grafico.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/exibir_grafico.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AWS/Python/detalhes-servicos-aws.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../AWS/Python/detalhes-servicos-aws.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Site/public/js/dashAws.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Site/public/js/dashAws.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Site/src/routes/aws.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Site/src/routes/aws.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +32,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/gibie/OneDrive/Área de Trabalho/SPTECH/Segundo Semestre/Linguagem de Programação/Sprint 3/heranca-comissao"
+    "last_opened_file_path": "C:/Users/guifm/OneDrive/Área de Trabalho/Pasta/Faculdade/Segundo Semestre/StreamLine-ATM/Java/novasETLs/etl-raw-client"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

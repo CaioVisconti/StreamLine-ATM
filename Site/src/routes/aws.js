@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var awsController = require("../controllers/awsController");
 var dadosAws = null
+var capturasAws = null
 
 
 router.post("/enviarDetalhesAws", function (req, res) {
@@ -9,8 +10,17 @@ router.post("/enviarDetalhesAws", function (req, res) {
     dadosAws = req.body;
 })
 
+router.post("/enviarCapturasAws", function (req, res) {
+    res.status(200).send("Dados Enviados com sucesso");
+    capturasAws = req.body;
+})
+
 router.get("/buscarDetalhesAws", function (req, res) {
     res.status(200).json(dadosAws);
+})
+
+router.get("/buscarCapturasAws", function (req, res) {
+    res.status(200).json(capturasAws);
 })
 
 router.get("/buscarDados", function (req, res) {

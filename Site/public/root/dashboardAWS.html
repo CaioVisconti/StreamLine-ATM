@@ -49,8 +49,8 @@
                     <p id="gastoMensal">R$</p>
                 </div>
 
-                <div class="kpi">
-                    <p class="titulo-kpi">Gasto Total AWS</p>
+                <div class="kpi" id="kpiSemana">
+                    <p class="titulo-kpi">Gasto da Última Semana</p>
                     <p id="gastoTotal">R$</p>
                 </div>
             </div>
@@ -78,14 +78,13 @@
                             <div class="servico-coluna">
                                 <span>Servico</span>
                                 <div class="valor-servico">
-
                                 </div>
                             </div>
                             <div class="gasto-coluna">
-                                <span>Gasto Última Semana</span>
+                                <span>Gasto Semana Atual</span>
                             </div>
                             <div class="gasto-coluna">
-                                <span>Gasto Último Mês</span>
+                                <span>Gasto Semana Anterior</span>
                             </div>
                             <div class="gasto-coluna">
                                 <span>Detalhes</span>
@@ -104,21 +103,38 @@
             </div>
             <div class="modalServico" id="modal_servico" style="display: none;">
                 <div class="titulo-modal" id="titulo_modal"></div>
-                    <div class="kpi-container-modal">
-                        <div class="kpi_modal" id="kpiUm">
-                            <p class="titulo-kpi" id="modal_kpi1"></p>
-                            <p class="valor-kpi" id="valor_kpi1"></p>
-                        </div>
-                        <div class="kpi_modal" id="kpiDois">
-                            <p class="titulo-kpi" id="modal_kpi2"></p>
-                            <p class="valor-kpi" id="valor_kpi2"></p>
-                        </div>
-                        <div class="kpi_modal" id="kpiTres">
-                            <p class="titulo-kpi" id="modal_kpi3"></p>
-                            <p class="valor-kpi" id="valor_kpi3"></p>
+                <div class="kpi-container-modal">
+                    <div class="kpi_modal" id="kpiUm">
+                        <p class="titulo-kpi" id="modal_kpi1"></p>
+                        <p class="valor-kpi" id="valor_kpi1"></p>
+                    </div>
+                    <div class="kpi_modal" id="kpiDois">
+                        <p class="titulo-kpi" id="modal_kpi2"></p>
+                        <p class="valor-kpi" id="valor_kpi2"></p>
+                    </div>
+                    <div class="kpi_modal" id="kpiTres">
+                        <p class="titulo-kpi" id="modal_kpi3"></p>
+                        <p class="valor-kpi" id="valor_kpi3"></p>
+                    </div>
+                </div>
+                <div class="container-grafico-modal">
+                    <div class="grafico" id="container_custos" style="display: none;">
+                        <div class="container-custos" id="indicadores_custos">
+                            <div class="listagem-modal" id="listagem_custos">
+                                <div class="gasto-coluna">
+                                    <span>Gasto Atual</span>
+                                    <div class="valor-servico">
+                                    </div>
+                                </div>
+                                <div class="gasto-coluna">
+                                    <span>Gasto no Mês anterior</span>
+                                </div>
+                                <div class="gasto-coluna">
+                                    <span>Comparação</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                <div class="container-grafico-modal">
                     <div class="grafico" id="graficoModal"></div>
                 </div>
             </div>

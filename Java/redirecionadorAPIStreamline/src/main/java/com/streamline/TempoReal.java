@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TempoReal {
     private final AmazonS3 client = AmazonS3ClientBuilder.defaultClient();
-    public String transformarTempoReal(String sourceBucket, String arq, String[] separacao, LambdaLogger logger) {
+        public String transformarTempoReal(String sourceBucket, String arq, String[] separacao, LambdaLogger logger) {
 
 
         String[] separado = separacao[2].split("_");

@@ -18,6 +18,12 @@ function buscarIndicadores() {
     return database.executar(instrucaoSql);
 }
 
+function buscarSemanaAnterior() {
+    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE fim >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) + 7 DAY) AND fim < DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) DAY) GROUP BY servico;`
+
+    return database.executar(instrucaoSql);
+}
+
 function buscarIndicadoresMensal() {
     const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE MONTH(fim) = MONTH(CURDATE()) GROUP BY servico;`
 
@@ -46,6 +52,7 @@ function buscarDadosCadaMes() {
 module.exports = {
 buscarDados,
 buscarKpi1,
+buscarSemanaAnterior,
 buscarIndicadores,
 buscarIndicadoresMensal,
 buscarGastoMensal,

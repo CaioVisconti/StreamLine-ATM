@@ -22,7 +22,8 @@ const buscarIndicadores = async (req, res) => {
     try{
         const select = await database.buscarIndicadores();
         const selectMensal = await database.buscarIndicadoresMensal();
-        return res.status(200).json({select, selectMensal});
+        const selectSemanaAnterior = await database.buscarIndicadoresMensal();
+        return res.status(200).json({select, selectMensal, selectSemanaAnterior});
     } catch (error){
         return res.status(400).json(error.message);
     }

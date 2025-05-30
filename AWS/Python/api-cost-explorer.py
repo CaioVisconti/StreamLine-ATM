@@ -25,7 +25,7 @@ response = client.get_cost_and_usage(
         "EC2 - Other",
         "Amazon Elastic Block",
         "AmazonCloudWatch",
-        "API GateWay"
+        "Amazon API Gateway"
         ]
         }
         },
