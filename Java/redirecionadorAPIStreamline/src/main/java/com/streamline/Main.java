@@ -33,7 +33,13 @@ public class Main implements RequestHandler<APIGatewayProxyRequestEvent, APIGate
         String arq = "capturas";
         String resultado = "";
 
-        if(metodo.equals("tempoReal")) {
+        if(metodo.equals("aquecer")) {
+            resultado = "aquecido";
+        } else if(metodo.equals("pegarData")) {
+            UltimoDia ultimoDia = new UltimoDia();
+            resultado = ultimoDia.buscarNomeArquivo(arq, separacao, logger, srcBucket, "pegarData");
+            resultado = "{\"message\": \"%s\"}".formatted(resultado);
+        } else if(metodo.equals("tempoReal")) {
             TempoReal teste = new TempoReal();
             resultado = teste.transformarTempoReal(srcBucket, arq, separacao, logger);
         } else if(metodo.equals("periodo")) {

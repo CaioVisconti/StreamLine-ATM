@@ -32,26 +32,7 @@ public class UltimoDia {
         logger.log(arq);
 
         if(tipo.equals("ultimoDia")) {
-
-            arq = arq.split("\\.")[0];
-
-            S3Client s3Client = S3Client.builder().build();
-
-            ListObjectsV2Request request = ListObjectsV2Request.builder()
-                    .bucket(sourceBucket)
-                    .prefix(arq)
-                    .build();
-
-            ListObjectsV2Iterable response = s3Client.listObjectsV2Paginator(request);
-
-            for (ListObjectsV2Response page : response) {
-                for (S3Object object : page.contents()) {
-                    arq = object.key();
-                    logger.log(arq);
-                    break;
-                }
-                break;
-            }
+            arq = buscarNomeArquivo(arq, separacao, logger, sourceBucket, "ultimoDia");
         } else {
             arq = "%s_%s_%s.json".formatted(arq.split("\\.")[0], separacao[2],separacao[3]);
         }
@@ -312,5 +293,32 @@ public class UltimoDia {
         }
 
         return horas;
+    }
+
+    public String buscarNomeArquivo(String arq, String[] separacao, LambdaLogger logger, String sourceBucket, String metodo) {
+        String[] separado = separacao[2].split("_");
+        logger.log(separacao[2]);
+        String dir = "%s%s".formatted(separado[0], separado[1]);
+
+        arq = "%s/dia/%s/Capturas.json".formatted(arq, dir);
+
+        arq = arq.split("\\.")[0];
+
+        S3Client s3Client = S3Client.builder().build();
+
+        ListObjectsV2Request request = ListObjectsV2Request.builder()
+                .bucket(sourceBucket)
+                .prefix(arq)
+                .build();
+
+        ListObjectsV2Iterable response = s3Client.listObjectsV2Paginator(request);
+
+        if(metodo.equals("ultimoDia")) {
+            arq = response.contents().stream().toList().get(response.contents().stream().toList().size() - 1).key();
+        } else {
+            arq = response.contents().stream().toList().get(0).key();
+        }
+
+        return arq;
     }
 }

@@ -1,9 +1,46 @@
 let dados = [];
 let telas = [];
+let url;
 var tempoReal;
 function carregarDados() {
+    aquecerLambda();
     carregarKPIsAlerta();
     carregarATMS();
+}
+
+function aquecerLambda() {
+    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_0/0/0/aquecer`
+
+    fetch(url)
+    .then(res => res.json())
+    .then(dados => {
+        console.log(dados)})
+
+    let dataAtual = Date.now()
+    let date = new Date(dataAtual)
+    console.log(dataAtual)
+
+    let dt = "";
+    let ms = "";
+    if(date.getDate() < 10) {
+        dt = `0${date.getDate()}`;
+    } else {
+        dt = date.getDate();
+    }
+
+    if(date.getMonth() < 10) {
+        ms = `0${date.getMonth() + 1}`;
+    } else {
+        ms = date.getMonth() + 1;
+    }
+
+    let dta = `${date.getFullYear()}-${ms}-${dt}`;
+    console.log(dta)
+    
+    let dia = document.getElementById('ipt_dia');
+    let de = document.getElementById('ipt_de');
+    dia.max = dta
+    de.max = dta
 }
 
 function carregarKPIsAlerta() {
@@ -502,7 +539,7 @@ function gerarGraficos() {
         leg.style.display = "none"
     }
 
-    let url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${atm}/${fim}/${inicio}/${metodo}`;
+    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${atm}/${fim}/${inicio}/${metodo}`;
 
     console.log(url);
 
@@ -730,8 +767,11 @@ function carregarATMS() {
 
 function carregarComponentes(){
 
+    
     let fkAtm = document.getElementById("select_atm").value;
 
+    buscarLimiteData(fkAtm);
+    
     console.log(fkAtm)
 
     fetch("/dashLongoPrazo/listarComponentes", {
@@ -828,7 +868,7 @@ function carregarSegundaInput() {
     let data = ipt_de.value;
     console.log(data);
     let dataInicial = new Date(data);
-    let min = new Date(dataInicial.getFullYear(), dataInicial.getMonth(), dataInicial.getDate() - 5);
+    let min = new Date()
     let max = new Date(dataInicial.getFullYear(), dataInicial.getMonth(), dataInicial.getDate() + 7);
     
     let dt = "";
@@ -1136,4 +1176,22 @@ function trocarPaginacao(id) {
     }
     
     dash.style.display = "flex"
+}
+
+function buscarLimiteData(fkAtm) {
+    console.log("teste")
+    let lista;
+
+    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${fkAtm}/0/0/pegarData`
+    fetch(url)
+    .then(res => res.json())
+    .then(dados => {
+        let mensagem = dados.message
+        mensagem = `${mensagem.split("_")[3].split(".")[0].split("-")[2]}-${mensagem.split("_")[3].split(".")[0].split("-")[1]}-${mensagem.split("_")[3].split(".")[0].split("-")[0]}`;
+        
+        let dia = document.getElementById('ipt_dia');
+        let de = document.getElementById('ipt_de');
+        dia.min = mensagem
+        de.min = mensagem
+    })
 }
