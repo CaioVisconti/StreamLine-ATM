@@ -55,7 +55,7 @@ router.get("/monitoramento/:id", (req,res) => {
         // dados['maquina'].push(req.body)
     }else if (id != 0){
         response = "No data"
-        console.log("entrou web")
+        // console.log("entrou web")
         dados.forEach((dado) => {
             if(dado.maquina_id == id){
                 response = dado

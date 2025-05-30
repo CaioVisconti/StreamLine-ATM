@@ -64,31 +64,51 @@ router.get("/alerta/:id", (req, res) => {
 });
 
 router.get("/limpar/:id", (req, res) => {
-    
-    dados = [
-        {
-        maquina_id: NaN,
-        dataHora: NaN,
-        alertas: []
-        }
-    ]
+    const id = Number(req.params.id);
 
-    res.json({"mesage": "dados-limpados"});
+    //  índice da máquina que eh pra limpar
+    const indice = dados.findIndex((d) => d.maquina_id === id);
 
+    if (indice !== -1) {
+        // tira os antigos e deixa vazio
+        dados[indice] = {
+            maquina_id: NaN,
+            dataHora: NaN,
+            dados: [] 
+        };
+
+        res.json({ message: `Dados da máquina ${id} foram limpos.` });
+    } else {
+        res.json({ message: `Máquina ${id} não encontrada.` });
+    }
 });
 
-router.get("/limpar", (req, res) => {
+// router.get("/limpar/:id", (req, res) => {
     
-    dados = [
-        {
-        maquina_id: NaN,
-        dataHora: NaN,
-        alertas: []
-        }
-    ]
+//     dados = [
+//         {
+//         maquina_id: NaN,
+//         dataHora: NaN,
+//         alertas: []
+//         }
+//     ]
 
-    res.json({"mesage": "dados-limpados"});
+//     res.json({"mesage": "dados-limpados"});
 
-});
+// });
+
+// router.get("/limpar", (req, res) => {
+    
+//     dados = [
+//         {
+//         maquina_id: NaN,
+//         dataHora: NaN,
+//         alertas: []
+//         }
+//     ]
+
+//     res.json({"mesage": "dados-limpados"});
+
+// });
 
 module.exports = router;

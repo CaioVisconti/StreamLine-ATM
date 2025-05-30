@@ -24,7 +24,10 @@ window.onload = function () {
 };
 
 function recarregarPagina() {
-    location.reload();
+    document.getElementById("graficoAtms").style.display = "flex";
+    document.getElementById("metricasdiv").style.display = "none";
+    document.getElementById("graficoComponentes").style.display = "none";
+    document.getElementById("corpo").style.display = "none";
 }
 
 const lista = [];
@@ -55,7 +58,8 @@ let listaFiltrada;
 
 function limparRota() {
     for (let l = 0; l < listaFiltrada.length; l++) {
-        fetch(`http://localhost:3333/dadosInsert/limpar/${l}`)
+        const bosta = listaFiltrada[l]
+        fetch(`http://localhost:3333/dadosInsert/limpar/${bosta}`)
     }
 }
 
@@ -736,8 +740,10 @@ function verGraficos(id) {
 
         if (componentes.style.display === "none" || componentes.style.display === "") {
             componentes.style.display = "flex";
+            document.getElementById("corpo").style.display = "flex";
         } else {
             graficos.style.display = "flex";
+            document.getElementById("corpo").style.display = "none";
         }
     }, 4200);
 
@@ -1282,7 +1288,6 @@ function listaAlertas() {
     oine.innerHTML = "";
 
     if(AtmsBons === qtdAtms){
-        fetch(`http://localhost:3333/dadosInsert/limpar`)
         oine.innerHTML = 
         `
             <div class="headOk"> 
