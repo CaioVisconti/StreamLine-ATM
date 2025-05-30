@@ -58,8 +58,8 @@ let listaFiltrada;
 
 function limparRota() {
     for (let l = 0; l < listaFiltrada.length; l++) {
-        const bosta = listaFiltrada[l]
-        fetch(`http://localhost:3333/dadosInsert/limpar/${bosta}`)
+        const AtmAtualLimpar = listaFiltrada[l]
+        fetch(`http://localhost:3333/dadosInsert/limpar/${AtmAtualLimpar}`)
     }
 }
 
@@ -702,10 +702,10 @@ function CardTempoReal() {
 
             if (divProcessoAtivo.style.display == "none" && divProcessoDesativo.style.display == "none") {
                 colunaProcesso.style.display = "none"
-                colunaRede.style.borderRight = "none"
+                // colunaRede.style.borderRight = "none"
             } else {
                 colunaProcesso.style.display = "flex"
-                colunaRede.style.borderRight = "1px solid gray"
+                // colunaRede.style.borderRight = "1px solid gray"
             }
 
             // Define qual será o intervalo para tentar coletar outro dado

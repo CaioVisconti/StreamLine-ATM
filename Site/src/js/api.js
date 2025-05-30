@@ -45,8 +45,8 @@ function coletaVariavel() {
                     
                         try {
                             pool.execute(  //db.execute retorna uma tupla com dois elementos [resultado dos dados, nome de colunas etc], por isso é um rows
-                                "INSERT INTO alerta (valor, dtHoraAbertura, fkParametro) VALUES (?, NOW(), ?)",
-                                [param.valor, param.fkParametro]
+                                "INSERT INTO alerta (valor, componente, categoria, dtHoraAbertura, fkParametro) VALUES (?, ?, ?, NOW(), ?)",
+                                [param.valor, param.parametro, param.categoria, param.fkParametro]
                             );
                             
                         } catch (error) {

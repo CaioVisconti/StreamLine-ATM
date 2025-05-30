@@ -174,19 +174,36 @@ if fkAtm:
             for chave, valor in registro.items():
                 if chave.startswith("alerta") and valor is True:
                     nome_parametro = chave.split("alerta ")[1]  
+                    valor_parametro = registro.get(nome_parametro)
+                    valor_limite = (registro.get(f"limite {nome_parametro}"))
+                    categoria = ""
                     # print(nome_parametro)
+                    # print(valor_parametro)
+                    # print(valor_limite)
+
+                    if "Disponivel" not in nome_parametro:                    
+                        if valor_parametro >= (valor_limite * 0.9) and valor_parametro <= valor_limite:
+                            categoria = 'Medium'
+                        elif valor_parametro > valor_limite:
+                            categoria = 'High'
+
+                    elif "Disponivel" in nome_parametro:
+                        if valor_parametro <= (valor_limite * 1.1) and valor_parametro >= valor_limite:
+                            categoria = 'Medium'
+                        elif valor_parametro < valor_limite:
+                            categoria = 'High'
+
+                    # print(categoria)
+
                     alertas.append({
                         "dataHora": registro["dataHora"],
                         "parametro": nome_parametro,
-                        "valor": registro.get(nome_parametro),
-                        "limite": registro.get(f"limite {nome_parametro}"),
+                        "valor": valor_parametro,
+                        "limite": valor_limite,
+                        "categoria": categoria,
                         "fkParametro": registro.get(f"fkParametro {nome_parametro}")
                     })
 
-                    # if registro.get(nome_parametro) >= (registro.get(f"limite {nome_parametro}") * 0.9) and registro.get(nome_parametro) <= (registro.get(f"limite {nome_parametro}")):
-                    #     categoria = 'Medium'
-                    # elif registro.get(nome_parametro) > registro.get(f"limite {nome_parametro}"):
-                    #     categoria = 'High'
 
                     # jira = conectar_jira()
 
@@ -222,8 +239,9 @@ if fkAtm:
             hora = datetime.now().strftime('%H:%M:%S %d/%m/%Y')
             print(f"\n📅 {i}° Leitura concluída - {hora}")
 
-            time.sleep(3)
+            time.sleep(10)
             capturas.append(leitura)
+            # print(len(capturas))
 
             # aqui em baixo dá para implementar e enviar para o bucket, bd....
     except KeyboardInterrupt:
