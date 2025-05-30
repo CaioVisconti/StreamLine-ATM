@@ -298,74 +298,6 @@ const config = {
 new Chart(ctx, config);
 }
 
-// function exibirAlertas(){
-//     let dois = document.querySelector(".organizar");
-//     dois.style.display = "none";
-
-//     let painel = document.getElementById("painels");
-//     let filtros = document.getElementById("filtros");
-//     let legenda = document.querySelector(".titulo-grafico");
-    
-//     if(window.innerWidth < 1030){
-//         filtros.style.display = "none"
-//         legenda.style.display = "none"
-//     }
-
-//     painel.classList.remove("painel")
-//     painel.classList.add("painel2")
-
-//     filtros.classList.remove("kpis")
-//     filtros.classList.add("kpis2")
-
-//     let valorAlertaInput_kpi_cpu_disponivel;
-//     let valorAlertaInput_kpi_cpu_porcentagem;
-//     let valorAlertaInput_kpi_ram_disponivel;
-//     let valorAlertaInput_kpi_ram_porcentagem;
-//     let valorAlertaInput_kpi_disco_disponivel;
-//     let valorAlertaInput_kpi_disco_porcentagem;
-//     let valorAlertaInput_kpi_pacotes_disponivel;
-//     let valorAlertaInput_kpi_pacotes_porcentagem;
-
-//     const ctx = document.getElementById('meuGraficoInit').getContext('2d');
-
-//     if (window.meuGraficoInstance) {
-//         window.meuGraficoInstance.destroy();
-//     }
-
-//     window.meuGraficoInstance = new Chart(ctx, {
-//         type: 'bar',
-//         data: {
-//             labels: ['CPUPercent', 'CPUFreq', 'RAMPercent', 'Processos', 'DISKPercent'],
-//             datasets: [{
-//                 label: 'Número de alertas',
-//                 data: [7, 4, 2, 3, 5],
-//                 borderColor: 'rgb(126, 20, 255)',
-//                 borderWidth: 2,
-//                 tension: 0.3,
-//                 fill: true
-//             }]
-//         },
-//         options: {
-//             responsive: true,
-//             maintainAspectRatio: false,
-//             plugins: {
-//                 legend: {
-//                     display: false 
-//                 },
-//             },
-//             scales: {
-//                 y: {
-//                     beginAtZero: true,
-//                     max: 10,
-//                     ticks: {
-//                         stepSize: 20
-//                     }
-//                 }
-//             }
-//         }
-//     });
-// }
-
 let listaDatas = [];
 let listaCapturas = [];
 let listaLimite = [];
@@ -422,6 +354,9 @@ function gerarGraficos() {
     organizar.className = "organizar";
     organizar.style.display = "flex";
 
+    const paginacao = document.createElement('div');
+    paginacao.className ="paginacao";
+
     const fundo = document.createElement('div');
     fundo.className = "fundo";
 
@@ -429,6 +364,7 @@ function gerarGraficos() {
     iconEsq.className = "bx bxs-play bx-flip-horizontal icone-ida";
     iconEsq.setAttribute("onclick", `retornarInicio(${chartCount})`);
     iconEsq.style.justifySelf = "center";
+
 
     const fundoGrafico = document.createElement('div');
     fundoGrafico.className = "fundo-grafico";
@@ -488,7 +424,27 @@ function gerarGraficos() {
     fundo.appendChild(fundoGrafico);
     fundo.appendChild(iconDir);
 
-    organizar.appendChild(fundo);
+    const div_search = document.createElement('div')
+    div_search.className = "div-search"
+
+    const icon = document.createElement('i')
+    icon.className = "bx  bx-menu-search icone_search"
+    icon.setAttribute('onclick', `trocarPaginacao(${chartCount})`)
+
+    const ipt = document.createElement('input')
+    ipt.setAttribute('id', `input_pesquisa${chartCount}`)
+    ipt.setAttribute('style', 'width: 3vw')
+    ipt.setAttribute('type', "number")
+    ipt.setAttribute('min', "0")
+    ipt.setAttribute('max', `${chartCount}`)
+    ipt.setAttribute('value', `${chartCount}`)
+
+    div_search.appendChild(ipt)
+    div_search.appendChild(icon)
+
+    paginacao.appendChild(fundo);
+    paginacao.appendChild(div_search);
+    organizar.appendChild(paginacao);
     dashDiv.appendChild(organizar);
 
     dash.appendChild(dashDiv);
@@ -1112,8 +1068,7 @@ function pesquisaBinaria(lista, tempo) {
 
 
 function retornarInicio(termo) {
-    console.log("termo RETORNAR")
-    console.log(termo)
+    trocarPaginacao()
     let dashAtual = document.querySelector(".dash-filtrada");
     let dashFiltrada;
 
@@ -1133,8 +1088,7 @@ function retornarInicio(termo) {
 }
 
 function direcionarProximo(termo) {
-    console.log("termo DIRECIONAR")
-    console.log(termo)
+    trocarPaginacao()
     let dashAtual = document.querySelector(".dash-filtrada");
     let dashFiltrada;
 
@@ -1151,4 +1105,35 @@ function direcionarProximo(termo) {
 
     dashFiltrada = document.getElementById(`dash${termo + 1}`);
     dashFiltrada.style.display = "flex";
+}
+
+function trocarPaginacao(id) {
+    let dash;
+    let pag;
+    for(let i = 0; i <= chartCount; i++) {
+        if(i == 0) {
+            dash = document.querySelector(".dash-filtrada")
+            pag = document.querySelector(".dash-filtrada")
+        } else {
+            pag = document.getElementById(`input_pesquisa${i}`);
+            dash = document.getElementById(`dash${i}`)
+        }
+        
+        pag.max = chartCount
+        dash.style.display = "none"
+    }
+    
+    if(id == undefined) {
+        return
+    }
+
+    let ipt = document.getElementById(`input_pesquisa${id}`).value;
+    
+    if(ipt != 0) {
+        dash = document.getElementById(`dash${ipt}`)
+    } else {
+        dash = document.querySelector(".dash-filtrada")
+    }
+    
+    dash.style.display = "flex"
 }

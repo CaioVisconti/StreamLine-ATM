@@ -106,54 +106,60 @@
                         </div>
                     </div>
                     <div class="organizar" style="display: flex;">
-                        <div class="fundo-filtrado"> 
-                            <div class="fundo-grafico-filtrado">
-                                <div class="titulo-grafico-filtrado">
-                                    <div style="font-weight: bold; height: fit-content;">ATM's COM MAIOR NÚMERO DE ALERTAS DA SEMANA</div> 
-                                </div>
-                                <div id="grafico-filtrado">
-                                    <canvas class="graficos-style-geral" id="meuGraficoInit"></canvas>
-                                    <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.8vh; gap: 5%;">
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #ffa299; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>CPU Porcentagem</span>
-                                        </div>
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #fa7064; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>CPU Frequência</span>
-                                        </div>
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #a6a6ff; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>RAM Disponivel</span>
-                                        </div>
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #6969fa; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>RAM Percentual</span>
-                                        </div>
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #8fff8f; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>Disco Disponivel</span>
-                                        </div>
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #fbff8f; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>Processos Desativados</span>
-                                        </div>
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #faff64; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>Processos Ativos</span>
-                                        </div>
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #f7a0ff; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>Pacotes Enviados</span>
-                                        </div>
-                                        <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
-                                            <div style="background-color: #f15dff; width: 0.8vw; height: 0.8vw;"></div>
-                                            <span>Pacotes Recebidos</span>
+                        <div class="paginacao-filtrado">
+                            <div class="fundo-filtrado"> 
+                                <div class="fundo-grafico-filtrado">
+                                    <div class="titulo-grafico-filtrado">
+                                        <div style="font-weight: bold; height: fit-content;">ATM's COM MAIOR NÚMERO DE ALERTAS DA SEMANA</div> 
+                                    </div>
+                                    <div id="grafico-filtrado">
+                                        <canvas class="graficos-style-geral" id="meuGraficoInit"></canvas>
+                                        <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.8vh; gap: 5%;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #ffa299; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>CPU Porcentagem</span>
+                                            </div>
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #fa7064; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>CPU Frequência</span>
+                                            </div>
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #a6a6ff; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>RAM Disponivel</span>
+                                            </div>
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #6969fa; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>RAM Percentual</span>
+                                            </div>
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #8fff8f; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>Disco Disponivel</span>
+                                            </div>
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #fbff8f; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>Processos Desativados</span>
+                                            </div>
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #faff64; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>Processos Ativos</span>
+                                            </div>
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #f7a0ff; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>Pacotes Enviados</span>
+                                            </div>
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                                <div style="background-color: #f15dff; width: 0.8vw; height: 0.8vw;"></div>
+                                                <span>Pacotes Recebidos</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <i class='bx  bxs-play icone-retorno' id="nxt_inicial" onclick="direcionarProximo(0)" style="color: grey;"></i>
                             </div>
-                            <i class='bx  bxs-play icone-retorno' id="nxt_inicial" onclick="direcionarProximo(0)" style="color: grey;"></i>
+                            <div class="div-search">
+                                <input id="input_pesquisa" style="width:3vw" type="number" min="0" max="0" value="0"></input>
+                                <i class="bx  bx-menu-search icone_search" onclick="trocarPaginacao()"></i>
+                            </div>
                         </div>
                     </div>
                 </div>

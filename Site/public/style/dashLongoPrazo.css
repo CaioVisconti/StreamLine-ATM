@@ -475,7 +475,29 @@ a{
     justify-content: center;
     border-radius: 10px;
     /* border: 1px solid orange; */
-    background-color: rgba(83, 83, 83, 0.39);
+    background-color: #3C3F40;
+}
+
+.paginacao {
+    width: 95%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #3C3F40;
+    border-radius: 10px;
+}
+
+.paginacao-filtrado {
+    width: 95%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #3C3F40;
+    border-radius: 10px;
 }
 
 .fundo-filtrado {
@@ -487,7 +509,7 @@ a{
     align-items: center;
     border-radius: 10px;
     /* border: 1px solid orange; */
-    background-color: rgba(83, 83, 83, 0.39);
+    background-color: #3C3F40;
     padding-top: 1%;
     padding-bottom: 1%;
 }
@@ -495,11 +517,11 @@ a{
 .fundo-grafico {
     display: flex;
     align-items: center;
+    align-self: flex-end;
     justify-content: space-evenly;
     flex-direction: column;
     width: 95%;
-    height: 85%;
-    /* border: 1px solid orange; */
+    height: 95%;
     background-color: white;
     border-radius: 10px;
     gap: 1%;
@@ -513,7 +535,24 @@ a{
 
 .icone-retorno:hover {
     cursor: pointer;
+    color: #2a5277;
+}
+
+.div-search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center
+}
+.icone_search {
     color: #FFFFFF;
+    font-size: 1.8rem;
+}
+
+.icone_search:hover {
+    cursor: pointer;
+    color: #2a5277;
+
 }
 
 .icone-ida {
@@ -525,7 +564,7 @@ a{
 
 .icone-ida:hover {
     cursor: pointer;
-    color: #FFFFFF;
+    color: #2a5277;
 }
 
 .fundo-grafico-filtrado {
