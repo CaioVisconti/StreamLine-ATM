@@ -1,7 +1,7 @@
 const database = require("../database/config");
 
 function buscarDados() {
-    const instrucaoSql = `SELECT servico, sum(custo) as custo FROM awsCusto GROUP BY servico;`;
+    const instrucaoSql = `SELECT servico, sum(custo) as custo FROM awsCusto GROUP BY servico ORDER BY custo DESC;`;
   
     return database.executar(instrucaoSql);
 }
@@ -13,31 +13,31 @@ function buscarKpi1() {
 }
 
 function buscarIndicadores() {
-    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE fim >= DATE(NOW() - INTERVAL 7 DAY) GROUP BY servico;`
+    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE inicio >= DATE(NOW() - INTERVAL 7 DAY) GROUP BY servico ORDER BY servico;`
 
     return database.executar(instrucaoSql);
 }
 
 function buscarSemanaAnterior() {
-    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE fim >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) + 7 DAY) AND fim < DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) DAY) GROUP BY servico;`
+    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE inicio >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) + 7 DAY) AND inicio < DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) DAY) GROUP BY servico ORDER BY servico;`
 
     return database.executar(instrucaoSql);
 }
 
 function buscarIndicadoresMensal() {
-    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE MONTH(fim) = MONTH(CURDATE()) GROUP BY servico;`
+    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE MONTH(inicio) = MONTH(CURDATE()) GROUP BY servico ORDER BY servico;`
 
     return database.executar(instrucaoSql);
 }
 
 function buscarIndicadoresMesAnterior() {
-    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE MONTH(fim) = MONTH(CURDATE()) - 1 GROUP BY servico;`
+    const instrucaoSql = `SELECT SUM(custo) as custo, servico FROM awsCusto WHERE MONTH(inicio) = MONTH(CURDATE()) - 1 GROUP BY servico ORDER BY servico;`
 
     return database.executar(instrucaoSql);
 }
 
 function buscarGastoMensal() {
-    const instrucaoSql = `SELECT SUM(custo) as gastoMensal, MONTH(fim) AS mes FROM awsCusto WHERE MONTH(fim) = MONTH(CURDATE()) AND YEAR(fim) = YEAR(CURDATE()) GROUP BY mes;`
+    const instrucaoSql = `SELECT SUM(custo) as gastoMensal, MONTH(inicio) AS mes FROM awsCusto WHERE MONTH(inicio) = MONTH(CURDATE()) AND YEAR(inicio) = YEAR(CURDATE()) GROUP BY mes;`
 
     return database.executar(instrucaoSql);
 }
@@ -49,7 +49,7 @@ function buscarGastoTotal() {
 }
 
 function buscarDadosCadaMes() {
-    const instrucaoSql = `SELECT gastoMensal, mes FROM (SELECT SUM(custo) AS gastoMensal, MONTHNAME(fim) AS mes FROM awsCusto GROUP BY mes) AS subquery ORDER BY FIELD(mes, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");`
+    const instrucaoSql = `SELECT gastoMensal, mes FROM (SELECT SUM(custo) AS gastoMensal, MONTHNAME(inicio) AS mes FROM awsCusto GROUP BY mes) AS subquery ORDER BY FIELD(mes, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");`
 
     return database.executar(instrucaoSql)
 }

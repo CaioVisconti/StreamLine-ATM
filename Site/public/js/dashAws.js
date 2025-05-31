@@ -120,32 +120,33 @@ function buscarIndicadores() {
             let custoTotal = 0
             let comparacao = 0
             let porcentagem = 0
-            for (let i = 0; i < json.selectMensal.length; i++) {
+            for (let i = 0; i < json.select.length; i++) {
                 comparacao = ((json.select[i].custo - json.selectSemanaAnterior[i].custo) / json.selectSemanaAnterior[i].custo) * 100
-                console.log(json.selectMensal[i])
-                gastoMensal = json.selectMensal[i].custo
-                if (json.select[i] == null) {
+                console.log("A", json.select[i])
+                console.log("B", json.select[i])
+                gasto = json.select[i].custo
+                if (json.selectSemanaAnterior[i] == null) {
                     const custoKey = '{"custo": 0.00}';
-                    json.select[i] = JSON.parse(custoKey)
+                    json.selectSemanaAnterior[i] = JSON.parse(custoKey)
                 }
                 custoTotal += json.select[i].custo
-                if (json.selectMensal[i].servico == "EC2 - Other") {
-                    json.selectMensal[i].servico = "EC2"
+                if (json.select[i].servico == "EC2 - Other") {
+                    json.select[i].servico = "EC2"
                 }
-                if (json.selectMensal[i].servico == "Amazon Simple Storage Service") {
-                    json.selectMensal[i].servico = "S3"
+                if (json.select[i].servico == "Amazon Simple Storage Service") {
+                    json.select[i].servico = "S3"
                 }
-                if (json.selectMensal[i].servico == "AmazonCloudWatch") {
-                    json.selectMensal[i].servico = "CloudWatch"
+                if (json.select[i].servico == "AmazonCloudWatch") {
+                    json.select[i].servico = "CloudWatch"
                 }
-                if (json.selectMensal[i].servico == "AWS Lambda") {
-                    json.selectMensal[i].servico = "Lambda"
+                if (json.select[i].servico == "AWS Lambda") {
+                    json.select[i].servico = "Lambda"
                 }
-                if (json.selectMensal[i].servico == "Lambda" || json.selectMensal[i].servico == "EC2" || json.selectMensal[i].servico == "S3") {
+                if (json.select[i].servico == "Lambda" || json.select[i].servico == "EC2" || json.select[i].servico == "S3") {
 
                     indicadores.innerHTML += `<div class="valores-servicos">
                     <div class="servico-coluna">
-                    <span>${json.selectMensal[i].servico}</span>
+                    <span>${json.select[i].servico}</span>
                     </div>
                     <div class="gasto-coluna">
                     <span>R$${json.select[i].custo.toFixed(2)}</span>
@@ -154,7 +155,7 @@ function buscarIndicadores() {
                     <span>R$${json.selectSemanaAnterior[i].custo.toFixed(2)}</span>
                     </div>
                     <div class="gasto-coluna">
-                    <button onclick="mostrarModalServico(servico='${json.selectMensal[i].servico}')">Ver detalhes</button>
+                    <button onclick="mostrarModalServico(servico='${json.select[i].servico}')">Ver detalhes</button>
                     </div>
                     </div>`
                 }
@@ -247,6 +248,14 @@ function buscarCustoPorServico() {
             console.log("G", json)
             for (let i = 0; i < json.select.length; i++) {
                 console.log("diniz", json.select[i].servico)
+                if (json.select[i] == null) {
+                    const custoKey = '{"custo": 0.00}';
+                    json.select[i] = JSON.parse(custoKey)
+                }
+                if (json.selectMesAnterior[i] == null) {
+                    const custoKey = '{"custo": 0.00}';
+                    json.selectMesAnterior[i] = JSON.parse(custoKey)
+                }
                 if (json.select[i].servico == "EC2 - Other") {
                     gastoEc2 = json.select[i].custo
                     gastoEc2MesAnterior = json.selectMesAnterior[i].custo
