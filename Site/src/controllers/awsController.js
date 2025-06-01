@@ -74,6 +74,15 @@ const buscarDadosCadaMes = async (req, res) => {
     }
 }
 
+const buscarMMP = async (req, res) => {
+    try{
+        const select = await database.buscarMMP();
+        return res.status(200).json(select)
+    } catch (error) {
+        return res.status(404).json(error.message);
+    }
+}
+
 module.exports = {
     buscarDados,
     buscarKpi1,
@@ -82,5 +91,6 @@ module.exports = {
     buscarGastoTotalPorMes,
     buscarDadosPorServico,
     buscarGastoTotal,
+    buscarMMP,
     buscarDadosCadaMes
 }

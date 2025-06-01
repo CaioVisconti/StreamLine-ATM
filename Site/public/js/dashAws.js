@@ -1,3 +1,4 @@
+
 const nomeUsuario = sessionStorage.NOME_USUARIO;
 
 window.onload = async () => {
@@ -432,25 +433,53 @@ function buscarGastoMensal() {
         }
     }).then((res) => {
         res.json().then((json) => {
+            if (json.length == 0) {
+                gastoMensal.innerHTML = "Sem Dados Para Este Mês!"
+            }
+            console.log("AAA", json[0])
             gastoMensal.innerHTML += json[0].gastoMensal.toFixed(2)
             gastoTotalSemana.innerHTML += (json[0].gastoMensal / 30).toFixed(2)
         })
     })
 }
 
-function calcularMMP(json) {
-    const listaMmp = []
+function calcularMMP() {
     const dados = []
-    
+    const mmp = []
+    fetch("/aws/buscarMMP", {
+        method: "GET"
+    }).then((res) => {
+        res.json().then((json) => {
+            console.log("MMP", json)
+            for (let i = 0; i < json.length; i++) {
+                const servico = json[i].servico;
+                if (!dados[servico]) {
+                    dados[servico] = []
+                }
+                dados[servico].push({
+                    mes: json[i].mes,
+                    custo: json[i].custo
+                })
 
-    console.log("dados", dados)
+            }
+            for (let servico in dados) {
+                const custos = []
 
-    let valorAntepenultimoMes = json[json.length - 3].custo;
-    let valorPenultimoMes = json[json.length - 2].custo;
-    let valorUltimoMes = json[json.length - 1].custo;
+                for (let i = 0; i < dados[servico].length; i++) {
+                    custos.push(dados[servico][i].custo)
+                }
 
-    let mmp = (valorAntepenultimoMes * 1 + valorPenultimoMes * 2 + valorUltimoMes * 3) / 6
-
+                if (custos.length >= 3) {
+                    let calculo = ((custos[custos.length - 1] * 3 + custos[custos.length - 2] * 2 + custos[custos.length - 3] * 1) / 6).toFixed(2)
+                    mmp.push({
+                        servico: servico,
+                        mmp: calculo
+                    })
+                }
+            }
+        })
+    })
+    console.log("FINALMENTE", mmp)
     return mmp
 }
 
@@ -547,8 +576,7 @@ function plotarDadosMensais() {
         }
     }).then((res) => {
         res.json().then((json) => {
-            const mmp = calcularMMP(json)
-            console.log("Mmp", mmp)
+            calcularMMP()
             for (var i = 0; i < json.length; i++) {
                 if (!meses.includes(json[i].mes)) {
                     meses.push(json[i].mes)
