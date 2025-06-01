@@ -126,7 +126,15 @@ function buscarIndicadores() {
             let comparacao = 0
             let porcentagem = 0
             let cor = "white"
+            let corPorcentagem = "#FF4444"
+            let mensagem = "&#8593"
+            let mensagemPorcentagem = "&#8593"
+            let totalSemanaAtual = 0
+            let totalSemanaAnterior = 0
             for (let i = 0; i < json.select.length; i++) {
+                totalSemanaAtual += json.select[i].custo
+                totalSemanaAnterior += json.selectSemanaAnterior[i].custo
+                porcentagem = ((totalSemanaAtual - totalSemanaAnterior) / totalSemanaAnterior) * 100
                 comparacao = ((json.select[i].custo - json.selectSemanaAnterior[i].custo) / json.selectSemanaAnterior[i].custo) * 100
                 gasto = json.select[i].custo
                 if (json.selectSemanaAnterior[i] == null) {
@@ -149,8 +157,9 @@ function buscarIndicadores() {
                 if (json.select[i].servico == "Lambda" || json.select[i].servico == "EC2" || json.select[i].servico == "S3") {
                     if ((json.select[i].custo - json.selectSemanaAnterior[i].custo) > 50) {
                         cor = "#FF4444"
-                    } else if ((json.select[i].custo - json.selectSemanaAnterior[i].custo) < 1) {
+                    } else if ((json.select[i].custo - json.selectSemanaAnterior[i].custo) < 0) {
                         cor = "#00FF88"
+                        mensagem = "&#8595"
                     }
 
                     indicadores.innerHTML += `<div class="valores-servicos">
@@ -158,7 +167,7 @@ function buscarIndicadores() {
                     <span>${json.select[i].servico}</span>
                     </div>
                     <div class="gasto-coluna">
-                    <span style="color: ${cor}">R$${json.select[i].custo.toFixed(2)}</span>
+                    <span><span style="color: ${cor}; font-size: 24px">${mensagem}</span> R$${json.select[i].custo.toFixed(2)}</span>
                     </div>
                     <div class="gasto-coluna">
                     <span>R$${json.selectSemanaAnterior[i].custo.toFixed(2)}</span>
@@ -169,8 +178,12 @@ function buscarIndicadores() {
                     </div>`
                 }
             }
+            if (porcentagem < 0) {
+                mensagemPorcentagem = "&#8593"
+                corPorcentagem = "#00FF88"
+            }
             gastoTotal.innerHTML += custoTotal.toFixed(2);
-            // kpiSemana.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior</span>`
+            gastoTotalSemana.innerHTML += `<span id="gastoTotalSemana"><span style="color: ${corPorcentagem}; font-size: 40px">${mensagemPorcentagem}</span> ${porcentagem.toFixed(2)}% em Relação a Semana Passada</span>`
         })
     })
 }
@@ -247,6 +260,7 @@ function descreverTiposInstancias() {
 let gastoEc2 = 0
 let gastoLambda = 0
 function buscarCustoPorServico() {
+    let gastoEc2MesAnterior = 0
     fetch("/aws/buscarDadosPorServico", {
         method: "GET",
         headers: {
@@ -255,7 +269,8 @@ function buscarCustoPorServico() {
     }).then((res => {
         res.json().then((json => {
             let cor = "white"
-            for (let i = 0; i < json.select.length; i++) {
+            console.log("me mata de uma vez", json)
+            for (let i = 0; i < json.selectMesAnterior.length; i++) {
                 if (json.select[i] == null) {
                     const custoKey = '{"custo": 0.00}';
                     json.select[i] = JSON.parse(custoKey)
@@ -264,17 +279,17 @@ function buscarCustoPorServico() {
                     const custoKey = '{"custo": 0.00}';
                     json.selectMesAnterior[i] = JSON.parse(custoKey)
                 }
-                if (json.select[i].servico == "EC2 - Other") {
+                if (json.selectMesAnterior[i].servico == "EC2 - Other") {
                     gastoEc2 = json.select[i].custo
                     gastoEc2MesAnterior = json.selectMesAnterior[i].custo
                 }
-                if (json.select[i].servico == "AWS Lambda") {
+                if (json.selectMesAnterior[i].servico == "AWS Lambda") {
                     gastoLambda = json.select[i].custo
                 }
             }
-            let mensagem = "a mais"
+                let mensagem = "&#8593"
             if (gastoEc2 < gastoEc2MesAnterior) {
-                mensagem = "a menos"
+                mensagem = "&#8595"
             }
             if ((gastoEc2 - gastoEc2MesAnterior) > 50) {
                 cor = "#FF4444"
@@ -290,7 +305,7 @@ function buscarCustoPorServico() {
                                 <span>R$${gastoEc2MesAnterior.toFixed(2)}</span>
                             </div>
                             <div class="modal-coluna">
-                                <span style="color: ${cor}">R$${(gastoEc2 - gastoEc2MesAnterior).toFixed(2)} ${mensagem} que no mês anterior</span>
+                                <span><span style="color: ${cor}; font-size: 20px">${mensagem}</span> R$${Math.abs((gastoEc2 - gastoEc2MesAnterior)).toFixed(2)}</span>
                             </div>
                             </div>`
         }))
@@ -435,10 +450,11 @@ function buscarGastoMensal() {
         res.json().then((json) => {
             if (json.length == 0) {
                 gastoMensal.innerHTML = "Sem Dados Para Este Mês!"
+            } else {
+                console.log("AAA", json)
+                gastoMensal.innerHTML += json[0].gastoMensal.toFixed(2)
+                gastoTotalSemana.innerHTML += (json[0].gastoMensal / 30).toFixed(2)
             }
-            console.log("AAA", json[0])
-            gastoMensal.innerHTML += json[0].gastoMensal.toFixed(2)
-            gastoTotalSemana.innerHTML += (json[0].gastoMensal / 30).toFixed(2)
         })
     })
 }
@@ -580,8 +596,8 @@ async function plotarDadosMensais() {
         res.json().then((json) => {
             let comparacao = 0
             let porcentagem = 0
-            let mensagem = "\\002191"
-            let mensagemValorTotal = "\\002191"
+            let mensagem = "&#8593"
+            let mensagemValorTotal = "&#8593"
             let cor = "#FF4D4D"
             let corValorTotal = "#FF4D4D"
             for (var i = 0; i < json.select.length; i++) {
@@ -628,14 +644,14 @@ async function plotarDadosMensais() {
                     }
                 }
 
-                for(let j = 0; j < json.selectIndividuais.length; j++){
+                for (let j = 0; j < json.selectIndividuais.length; j++) {
                     custoTotalMesAnterior += json.selectIndividuais[i].custo
-                    if(json.selectIndividuais[j].servico == servicoMmp){
+                    if (json.selectIndividuais[j].servico == servicoMmp) {
                         comparacao = custoMmp - json.selectIndividuais[j].custo
                         porcentagem = ((comparacao / json.selectIndividuais[j].custo) * 100).toFixed(2)
-                    }   
+                    }
                 }
-                
+
                 porcentagemValorTotal = (((custoTotal - custoTotalMesAnterior) / custoTotalMesAnterior) * 100).toFixed(2)
 
                 if (servicoMmp == "EC2 - Other") {
@@ -650,27 +666,27 @@ async function plotarDadosMensais() {
                 if (servicoMmp == "AWS Lambda") {
                     servicoPlotado = "Lambda"
                 }
-                if(porcentagem < 0){
+                if (porcentagem < 0) {
                     mensagem = "&#8595"
                     cor = "#00FF88"
                 }
-                if(porcentagemValorTotal < 0){
+                if (porcentagemValorTotal < 0) {
                     mensagemValorTotal = "&#8595"
                     corValorTotal = "#00FF88"
                 }
-                
+
                 listagem_previsao.innerHTML += `<div class="valores-servicos">
                 <div class="servico-coluna">
                 <span>${servicoPlotado}</span>
                 </div>
                 <div class="gasto-coluna">
-                <span style="color: ${cor}">R$${custoMmp} - ${mensagem} ${Math.abs(porcentagem)}%</span>
+                <span>R$${custoMmp} - <span style="color: ${cor}; font-size: 24px">${mensagem}</span> ${Math.abs(porcentagem)}%</span>
                 </div>s
                 </div>`
 
 
             }
-            gastoTotalProjecao.innerHTML += `<span style="color: ${cor}">R$${custoTotal.toFixed(2)} - ${mensagemValorTotal} ${Math.abs(porcentagemValorTotal)}</span>`
+            gastoTotalProjecao.innerHTML += `<span>R$${custoTotal.toFixed(2)} - <span style="color: ${cor}; font-size:40px">${mensagemValorTotal}</span> ${Math.abs(porcentagemValorTotal)}%</span>`
             meses.push("Projeção")
 
             const graficoPrevisao = document.getElementById('previsao');
