@@ -33,6 +33,9 @@ public class Main implements RequestHandler<APIGatewayProxyRequestEvent, APIGate
         String arq = "capturas";
         String resultado = "";
 
+        logger.log("metodo");
+        logger.log(metodo);
+
         if(metodo.equals("aquecer")) {
             resultado = "aquecido";
         } else if(metodo.equals("pegarData")) {

@@ -2,6 +2,9 @@ package com.streamline;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -11,7 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
@@ -36,6 +42,9 @@ public class UltimoDia {
         } else {
             arq = "%s_%s_%s.json".formatted(arq.split("\\.")[0], separacao[2],separacao[3]);
         }
+
+        logger.log("arq ultimoDia");
+        logger.log(arq);
 
         InputStream s3InputStream = client.getObject(sourceBucket, arq).getObjectContent();
 
@@ -304,19 +313,21 @@ public class UltimoDia {
 
         arq = arq.split("\\.")[0];
 
-        S3Client s3Client = S3Client.builder().build();
+        ListObjectsRequest request = new ListObjectsRequest()
+                .withBucketName(sourceBucket)
+                .withPrefix(arq);
 
-        ListObjectsV2Request request = ListObjectsV2Request.builder()
-                .bucket(sourceBucket)
-                .prefix(arq)
-                .build();
+        ObjectListing listing = client.listObjects(request);
+        List<S3ObjectSummary> objetos = listing.getObjectSummaries();
 
-        ListObjectsV2Iterable response = s3Client.listObjectsV2Paginator(request);
+        List<S3ObjectSummary> objetosOrdenados = objetos.stream()
+                .sorted(Comparator.comparing(S3ObjectSummary::getLastModified).reversed())
+                .collect(Collectors.toList());
 
         if(metodo.equals("ultimoDia")) {
-            arq = response.contents().stream().toList().get(response.contents().stream().toList().size() - 1).key();
+            arq = objetosOrdenados.get(0).getKey();
         } else {
-            arq = response.contents().stream().toList().get(0).key();
+            arq = objetosOrdenados.get(objetosOrdenados.size() - 1).getKey();
         }
 
         return arq;

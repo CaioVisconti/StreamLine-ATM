@@ -10,6 +10,8 @@ function carregarDados() {
 
 function aquecerLambda() {
     url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_0/0/0/aquecer`
+    console.log("url")
+    console.log(url)
 
     fetch(url)
     .then(res => res.json())
@@ -363,6 +365,7 @@ function gerarGraficos() {
     const kpis = document.createElement('div');
     kpis.className = "kpis";
     kpis.style.display = "flex";
+    kpis.id = `kpis${chartCount}`
 
     const kpiPrazo = document.createElement('div');
     kpiPrazo.className = "kpi-prazo";
@@ -376,9 +379,9 @@ function gerarGraficos() {
 
         const spanText = document.createElement('span');
         spanText.innerHTML = 
-            i === 1 ? `MAIOR PICO DE COMPONENTE: <br><span id="pico${chartCount}">90%</span>` :
-            i === 2 ? `DIA COM MAIS ALERTAS: <br><span id="momento${chartCount}">03/04/2025</span>` :
-                      `NÚMEROS DE ALERTAS: <br><span id="total${chartCount}">21</span>`;
+            i === 1 ? `MAIOR PICO DE COMPONENTE: <br><span class="kpi_filtrado" id="pico${chartCount}">90%</span>` :
+            i === 2 ? `DIA COM MAIS ALERTAS: <br><span class="kpi_filtrado" id="momento${chartCount}">03/04/2025</span>` :
+                      `NÚMEROS DE ALERTAS: <br><span class="kpi_filtrado" id="total${chartCount}">21</span>`;
 
         kpi.appendChild(spanText);
         kpiPrazo.appendChild(kpi);
@@ -413,6 +416,7 @@ function gerarGraficos() {
     spanComp.style.fontWeight = "bold";
     const spanId = document.createElement('span');
     spanId.id = `componente_grafico${chartCount}`;
+    spanId.style.fontSize = "2.5vh"
     spanComp.appendChild(spanId);
 
     const legenda = document.createElement('div');
@@ -494,8 +498,13 @@ function gerarGraficos() {
 
     const nxtInit = document.getElementById("nxt_inicial");
     nxtInit.style.color = "blue";
+    
+    if(metrica == "FREQUENCIA") {
+        metrica = "FREQUÊNCIA"
+    }
 
     const json = capturas(componente, metrica);
+    console.log(json)
 
     let inicio, fim, metodo;
     const atual = chartCount;
@@ -539,7 +548,7 @@ function gerarGraficos() {
         leg.style.display = "none"
     }
 
-    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${atm}/${fim}/${inicio}/${metodo}`;
+    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${4}/${fim}/${inicio}/${metodo}`;
 
     console.log(url);
 
@@ -552,25 +561,62 @@ function gerarGraficos() {
         listaLimite = [];
 
         if(metodo == "tempoReal") {
-            graficoTempoReal(dados, json, graficoDiv);
+            graficoTempoReal(dados, json, graficoDiv, spanId);
             return;
         }
-
+        
+        let max = 100
+        let min = 0
         let dataAtual = "";
         for(let i = 0; i < dados.length; i++) {
 
-        if((inicio == fim && metodo == "periodo") || inicio == "ultimoDia") {
-            dataAtual = ((dados[i].dataHora).split(" ")[1])
-        } else {
-            dataAtual = (dados[i].dataHora).split("-")
-            dataAtual = `${dataAtual[2]}/${dataAtual[1]}/${dataAtual[0]}`;
-        }
+            if((inicio == fim && metodo == "periodo") || inicio == "ultimoDia") {
+                dataAtual = ((dados[i].dataHora).split(" ")[1])
+            } else {
+                dataAtual = (dados[i].dataHora).split("-")
+                dataAtual = `${dataAtual[2]}/${dataAtual[1]}/${dataAtual[0]}`;
+            }
+    
+            if(max < dados[i][json.r] || i == 0) {
+                max = dados[i][json.r] * 1.1
+            }
+
+            if(max < dados[i][json.l]) {
+                max = dados[i][json.l] * 1.1
+            }
+
+            if(min > dados[i][json.r] || i == 0) {
+                min = dados[i][json.r] * 0.8
+            }
+
+            if(min > dados[i][json.l]) {
+                min = dados[i][json.l] * 0.8
+            }
 
             listaDatas.push(dataAtual);
-            listaCapturas.push(dados[i][json.r])
-            listaLimite.push(dados[i][json.l])
+            listaCapturas.push(Math.round(dados[i][json.r]))
+            if(dados[i][json.l] != undefined) {
+                listaLimite.push(Math.round(dados[i][json.l]))
+            }
         }
 
+        console.log("dados")
+        console.log(dados)
+
+        if(metrica == "PORCENTAGEM") {
+            min = 0
+            max = 100
+        } else {
+            min = Math.round(min)
+            max = Math.round(max)
+        }
+
+        let tamanho = (min + max) / 5
+
+        if(listaDatas[0] == "undefined/undefined/Semana 2" && inicio == "ultimoMes") {
+            listaDatas = ["4ª Semana", "3ª Semana", "2ª Semana", "Última Semana"]
+        }
+        
         spanId.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} <br> (${json.m})`;
         carregarKPIS(json);
 
@@ -584,13 +630,14 @@ function gerarGraficos() {
         chartDiv.appendChild(canvas);
         graficoDiv.appendChild(chartDiv);
 
+
         const chart = new Chart(canvas.getContext('2d'), {
             type: 'line',
             data: {
                 labels: listaDatas,
                 datasets: [
                     {
-                        label: 'Uso da CPU (%)',
+                        label: 'Uso',
                         data: listaCapturas,
                         borderColor: 'rgba(141, 52, 249, 1)',
                         borderWidth: 2,
@@ -598,7 +645,7 @@ function gerarGraficos() {
                         fill: true
                     },
                     {
-                        label: 'Limite (%)',
+                        label: 'Limite',
                         data: listaLimite,
                         borderColor: 'red',
                         borderWidth: 2,
@@ -612,7 +659,8 @@ function gerarGraficos() {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } }
+                    x: { ticks: {color: "black"}},
+                    y: { beginAtZero: false, min: min, max: max, ticks: { stepSize: tamanho,  color: 'black' }}
                 }
             }
         });
@@ -651,7 +699,7 @@ function carregarKPIS(json) {
         kpi1_1.style.color = "#FFFFFF"
     }
 
-    kpi1.innerHTML = Math.round(listaCapturas[indice], 2) + json.u;
+    kpi1.innerHTML = Math.round(listaCapturas[indice], 2) + " " + json.u;
 
     let kpi2_1 = document.getElementById(`kpi2_${chartCount}`);
 
@@ -770,7 +818,7 @@ function carregarComponentes(){
     
     let fkAtm = document.getElementById("select_atm").value;
 
-    buscarLimiteData(fkAtm);
+    // buscarLimiteData(fkAtm);
     
     console.log(fkAtm)
 
@@ -802,7 +850,7 @@ function carregarComponentes(){
         });
 
         selectcomponente.innerHTML = options;
-        selectcomponente.disabled = false; // habilita o select
+        selectcomponente.disabled = false;
         buttonAlertas.disabled = false;
         buttonAlertas.style = "background-color: #2A5277;"
     })
@@ -867,19 +915,22 @@ function carregarData() {
 function carregarSegundaInput() {
     let data = ipt_de.value;
     console.log(data);
-    let dataInicial = new Date(data);
-    let min = new Date()
+    let dataInicial = new Date(data) ;
     let max = new Date(dataInicial.getFullYear(), dataInicial.getMonth(), dataInicial.getDate() + 7);
+
+    if(max > new Date()) {
+        max = new Date()
+    }
     
     let dt = "";
     let ms = "";
-    if(min.getDate() < 10) {
-        dt = `0${min.getDate()}`;
+    if(dataInicial.getDate() < 10) {
+        dt = `0${dataInicial.getDate() + 1}`;
     } else {
-        dt = min.getDate();
+        dt = dataInicial.getDate() + 1;
     }
 
-    if(min.getMonth() < 10) {
+    if(dataInicial.getMonth() < 10) {
         ms = `0${dataInicial.getMonth() + 1}`;
     } else {
         ms = dataInicial.getMonth() + 1;
@@ -887,7 +938,7 @@ function carregarSegundaInput() {
     
     console.log(ms);
 
-    let minFormatado = `${min.getFullYear()}-${ms}-${dt}`;
+    let dataInicialFormatado = `${dataInicial.getFullYear()}-${ms}-${dt}`;
     
     if(max.getDate() < 10) {
         dt = `0${max.getDate()}`;
@@ -896,34 +947,17 @@ function carregarSegundaInput() {
     }
     
     if(max.getMonth() < 10) {
-        ms = `0${dataInicial.getMonth() + 1}`;
+        ms = `0${max.getMonth() + 1}`;
     } else {
-        ms = dataInicial.getMonth() + 1;
+        ms = max.getMonth() + 1;
     }
     console.log(ms);
 
-    let maxFormatado = `${max.getFullYear()}-${ms}-${dt}`;
-
-    let dataLocal = new Date()
-
-    if(dataLocal < max) {
-        if(dataLocal.getDate() < 10) {
-            dt = `0${dataLocal.getDate()}`;
-        } else {
-            dt = dataLocal.getDate();
-        }
-
-        if(dataLocal.getMonth() < 10) {
-            ms = `0${dataLocal.getMonth()}`;
-        } else {
-            ms = dataLocal.getMonth();
-        }
-
-        maxFormatado = `${dataLocal.getFullYear()}-${ms}-${dt}`;
-    }
+    maxFormatado = `${max.getFullYear()}-${ms}-${dt}`;
+    
 
     segundaInputData.innerHTML = `
-        <input type="date" id="ipt_ate" min="${minFormatado}" max="${maxFormatado}">
+        <input type="date" id="ipt_ate" min="${dataInicialFormatado}" max="${maxFormatado}">
     `;
 }
 
@@ -959,12 +993,12 @@ function mudarFiltros() {
     let horario = document.querySelector(".escolha-horario");
     let intervalo = document.getElementById("periodo");
     let slt = slt_intervalo.value;
-    
-    let maquina = document.getElementById("select_atm");
+    let velocidade = document.getElementById("velocidade");
 
     if(filtro == "gerarGrafico") {
         data.style.display = "none";
         horario.style.display = "none";
+        velocidade.style.display = "none"
         datas.style.display = "flex";
         if(slt == "personalizado") {
             intervalo.style.display = "flex";
@@ -974,13 +1008,18 @@ function mudarFiltros() {
         data.style.display = "flex";
         horario.style.display = "flex";
         intervalo.style.display = "none";
+        velocidade.style.display = "flex"
     }
 }
 
-function graficoTempoReal(lista, json, graficoDiv) {
-    carregarKPIS(json)
+function graficoTempoReal(lista, json, graficoDiv, spanId) {
 
-
+    
+    let kpis = document.getElementById(`kpis${chartCount}`)
+    kpis.style.display = "none"
+    let velocidade = document.getElementById("slt_tempo").value;
+    let data = document.getElementById("ipt_dia").value;
+    
     const chartDiv = document.createElement('div');
     chartDiv.className = "fundoGrafico";
 
@@ -1000,30 +1039,31 @@ function graficoTempoReal(lista, json, graficoDiv) {
         return console.log("numfoi")
     }
 
+    console.log("data")
+    console.log(data)
+    spanId.innerHTML = `Revisão em das capturas de ${inicio} até ${fim} do dia ${data.split("-")[2]}/${data.split("-")[1]}/${data.split("-")[0]}`;
+    
     inicio = pesquisaBinaria(lista, inicio)
     fim = pesquisaBinaria(lista, fim)
-
+    
     let arrayDatas = [];
     let arrayLimites = [];
     let arrayCapturas = [];
 
     for(let i = inicio; i < inicio + 6; i++) {
-        arrayDatas.push(lista[i].dataHora)
+        arrayDatas.push(lista[i].dataHora.split(" ")[1])
         arrayLimites.push(lista[i][json.l])
         arrayCapturas.push(lista[i][json.r])
     }
-
-    console.log(arrayDatas)
-    console.log(arrayLimites)
-    console.log(arrayCapturas)
-
+    
+    
     tempoReal = new Chart(canvas.getContext('2d'), {
             type: 'line',
             data: {
                 labels: arrayDatas,
                 datasets: [
                     {
-                        label: 'Uso da CPU (%)',
+                        label: 'Uso',
                         data: arrayCapturas,
                         borderColor: 'rgba(141, 52, 249, 1)',
                         borderWidth: 2,
@@ -1045,7 +1085,8 @@ function graficoTempoReal(lista, json, graficoDiv) {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } }
+                    x: { ticks: {color: "black"}},
+                    y: { ticks: {color: 'black' }}
                 }
             }
         });
@@ -1054,9 +1095,17 @@ function graficoTempoReal(lista, json, graficoDiv) {
     if((lista[fim].dataHora).split(" ")[1] != fim) {
         fim -= 1;
     }
+
+    if(velocidade == "0.5x") {
+        velocidade = 10000
+    } else if(velocidade == "2x") {
+        velocidade = 2500
+    } else {
+        velocidade = 5000
+    }
     
     let criacao = setInterval(function () {
-        arrayDatas.push(lista[inicio].dataHora)
+        arrayDatas.push(lista[inicio].dataHora.split(" ")[1])
         arrayDatas.shift()
 
         arrayLimites.push(lista[inicio][json.l])
@@ -1074,7 +1123,7 @@ function graficoTempoReal(lista, json, graficoDiv) {
            clearInterval(criacao)
         }
         inicio++;
-    }, 5000)
+    }, velocidade)
 }
 
 function pesquisaBinaria(lista, tempo) {
@@ -1128,13 +1177,14 @@ function retornarInicio(termo) {
 }
 
 function direcionarProximo(termo) {
-    trocarPaginacao()
     let dashAtual = document.querySelector(".dash-filtrada");
     let dashFiltrada;
-
+    
     if(termo >= chartCount) {
-        return alert("Não há mais telas para ver!")
+        alert("Não há mais telas para ver!")
+        return
     }
+    trocarPaginacao()
 
     for(let i = 1; i <= chartCount; i++) {
         dashFiltrada = document.getElementById(`dash${i}`);
@@ -1182,7 +1232,7 @@ function buscarLimiteData(fkAtm) {
     console.log("teste")
     let lista;
 
-    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${fkAtm}/0/0/pegarData`
+    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${4}/0/0/pegarData`
     fetch(url)
     .then(res => res.json())
     .then(dados => {

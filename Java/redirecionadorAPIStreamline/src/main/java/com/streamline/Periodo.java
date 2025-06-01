@@ -3,13 +3,19 @@ package com.streamline;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
@@ -28,41 +34,41 @@ public class Periodo {
             return dia.transformarUltimoDia(".", sourceBucket, arq, separacao, logger);
         }
 
-        List<InputStream> arquivos = new ArrayList<>();
-        List<String> nomes = new ArrayList<>();
-        List<List<Captura>> capturas = new ArrayList<>();
-
-        S3Client s3Client = S3Client.builder().build();
-
-        ListObjectsV2Request request = ListObjectsV2Request.builder()
-                .bucket(sourceBucket)
-                .prefix(prefix)
-                .build();
-
-        ListObjectsV2Iterable response = s3Client.listObjectsV2Paginator(request);
         Boolean achouInicio = false;
         Boolean achouFinal = false;
 
-        for (ListObjectsV2Response page : response) {
-            for (S3Object object : page.contents()) {
-                if(object.key().equals("%s_%s.json".formatted(prefix, separacao[4])) || achouInicio) {
-                    arquivos.add(client.getObject(sourceBucket, object.key()).getObjectContent());
-                    nomes.add(object.key());
-                    achouInicio = true;
-                }
+        ListObjectsRequest req = new ListObjectsRequest()
+                .withBucketName(sourceBucket)
+                .withPrefix(prefix);
 
-                if(object.key().equals("%s_%s.json".formatted(prefix, separacao[3]))) {
-                    achouFinal = true;
-                    break;
-                }
+        ObjectListing listing = client.listObjects(req);
+        List<S3ObjectSummary> objetos = listing.getObjectSummaries();
+
+        List<S3ObjectSummary> objetosOrdenados = objetos.stream()
+                .sorted(Comparator.comparing(S3ObjectSummary::getLastModified).reversed())
+                .collect(Collectors.toList());
+
+        List<String> nomeTeste = new ArrayList<>();
+        List<InputStream> iptTeste = new ArrayList<>();
+
+        logger.log("%s_%s.json".formatted(prefix, separacao[4]));
+
+        for(S3ObjectSummary obj : objetosOrdenados) {
+            logger.log(String.valueOf(obj));
+            if(obj.getKey().equals("%s_%s.json".formatted(prefix, separacao[3])) || achouInicio) {
+                iptTeste.add(client.getObject(sourceBucket, obj.getKey()).getObjectContent());
+                nomeTeste.add(obj.getKey());
+                achouInicio = true;
             }
-            if(achouFinal) {
+
+            if(obj.getKey().equals("%s_%s.json".formatted(prefix, separacao[4]))) {
                 break;
             }
         }
+        List<List<Captura>> capturas = new ArrayList<>();
 
         CapturaMapper mapper = new CapturaMapper();
-        for(InputStream inputStream : arquivos) {
+        for(InputStream inputStream : iptTeste) {
             try {
                 capturas.add(mapper.mapearCapturas(inputStream));
             } catch (IOException e) {
@@ -77,7 +83,10 @@ public class Periodo {
 
         List<Captura> listaPeriodo = new ArrayList<>();
 
+        Collections.reverse(capturas);
+
         for(List<Captura> ls : capturas) {
+            Captura captura = new Captura();
             fkAtm = null;
             dataHora = null;
             valorCpuPercent = 0.0;
@@ -109,13 +118,10 @@ public class Periodo {
             alertaPROCESSODesativado = false;
             alertaPROCESSOAtivos = false;
 
-            Captura captura = new Captura();
-
              for(Captura c : ls) {
                  fkAtm = c.getFkAtm();
                  dataHora = c.getDataHora();
 
-                 // Valores de captura
                  if(c.getValorCpuPercent() != null) {
                      valorCpuPercent += c.getValorCpuPercent();
                  }
@@ -152,8 +158,6 @@ public class Periodo {
                  if(c.getValorPROCESSOTotal() != null) {
                      valorPROCESSOTotal += c.getValorPROCESSOTotal();
                  }
-
-                 // Limites seguidos
                  if(c.getLimiteCpuPercent() != null) {
                      limiteCPUPercent = c.getLimiteCpuPercent();
                  }
@@ -179,7 +183,6 @@ public class Periodo {
                      limitePROCESSOSAtivos = c.getLimitePROCESSOAtivos();
                  }
 
-                 // Alerta de captura
                  if(c.getAlertaCpuPercent() != null && c.getAlertaCpuPercent()) {
                      alertaCpuPercent = true;
                      captura.aumentarQtd("CPUP");
@@ -213,41 +216,42 @@ public class Periodo {
                      captura.aumentarQtd("PROCESSOA");
                  }
              }
+
              if (valorCpuPercent != 0.0) {
-                 valorCpuPercent = valorCpuPercent / capturas.size();
+                 valorCpuPercent = valorCpuPercent / ls.size();
              }
              if (valorCPUFreq != 0.0) {
-                 valorCPUFreq = valorCPUFreq / capturas.size();
+                 valorCPUFreq = valorCPUFreq / ls.size();
              }
              if (valorRAMDisponivel != 0.0) {
-                 valorRAMDisponivel = valorRAMDisponivel / capturas.size();
+                 valorRAMDisponivel = valorRAMDisponivel / ls.size();
              }
              if (valorRAMPercentual != 0.0) {
-                 valorRAMPercentual = valorRAMPercentual / capturas.size();
+                 valorRAMPercentual = valorRAMPercentual / ls.size();
              }
              if (valorDISKTotal != 0.0) {
-                 valorDISKTotal = valorDISKTotal / capturas.size();
+                 valorDISKTotal = valorDISKTotal / ls.size();
              }
              if (valorDISKDisponivel != 0.0) {
-                 valorDISKDisponivel = valorDISKDisponivel / capturas.size();
+                 valorDISKDisponivel = valorDISKDisponivel / ls.size();
              }
              if (valorDISKPercentual != 0.0) {
-                 valorDISKPercentual = valorDISKPercentual / capturas.size();
+                 valorDISKPercentual = valorDISKPercentual / ls.size();
              }
              if (valorREDERecebida != 0.0) {
-                 valorREDERecebida = valorREDERecebida / capturas.size();
+                 valorREDERecebida = valorREDERecebida / ls.size();
              }
              if (valorREDEEnviada != 0.0) {
-                 valorREDEEnviada = valorREDEEnviada / capturas.size();
+                 valorREDEEnviada = valorREDEEnviada / ls.size();
              }
              if (valorPROCESSODesativado != 0.0) {
-                 valorPROCESSODesativado = valorPROCESSODesativado / capturas.size();
+                 valorPROCESSODesativado = valorPROCESSODesativado / ls.size();
              }
              if (valorPROCESSOAtivos != 0.0) {
-                 valorPROCESSOAtivos = valorPROCESSOAtivos / capturas.size();
+                 valorPROCESSOAtivos = valorPROCESSOAtivos / ls.size();
              }
              if (valorPROCESSOTotal != 0.0) {
-                 valorPROCESSOTotal = valorPROCESSOTotal / capturas.size();
+                 valorPROCESSOTotal = valorPROCESSOTotal / ls.size();
              }
 
              dataHora = (dataHora.split(" "))[0];
@@ -282,7 +286,8 @@ public class Periodo {
              captura.setLimitePROCESSOAtivos(limitePROCESSOSAtivos);
              captura.setAlertaPROCESSOAtivos(alertaPROCESSOAtivos);
              captura.setValorPROCESSOTotal(valorPROCESSOTotal);
-             captura.setValorPROCESSOTotal(valorPROCESSOTotal);
+
+             logger.log(captura.toString());
 
              listaPeriodo.add(captura);
         }

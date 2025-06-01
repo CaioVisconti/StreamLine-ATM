@@ -752,6 +752,10 @@ a{
     background-color: rgba(83, 83, 83, 0.39);
 }
 
+.kpi_filtrado {
+    font-size: 4vh;
+}
+
 .organizar-compontentes-mes .fundo{
     display: flex;
     width: 95%;
