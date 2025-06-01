@@ -66,6 +66,12 @@ function buscarMMP(){
     return database.executar(instrucaoSql)
 }
 
+function buscarGastosIndividuais(){
+    const instrucaoSql = ` SELECT  servico, MONTH(inicio) AS mes,  SUM(custo) AS custo FROM awsCusto WHERE inicio >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND inicio <= CURDATE() GROUP BY servico, mes ORDER BY servico, mes;`
+
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
 buscarDados,
 buscarKpi1,
@@ -77,5 +83,6 @@ buscarIndicadoresMesAnterior,
 buscarGastoMensal,
 buscarMMP,
 buscarGastoTotal,
+buscarGastosIndividuais,
 buscarDadosCadaMes
 };

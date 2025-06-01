@@ -473,13 +473,12 @@ function calcularMMP() {
                     let calculo = ((custos[custos.length - 1] * 3 + custos[custos.length - 2] * 2 + custos[custos.length - 3] * 1) / 6).toFixed(2)
                     mmp.push({
                         servico: servico,
-                        mmp: calculo
+                        respostaMmp: calculo
                     })
                 }
             }
         })
     })
-    console.log("FINALMENTE", mmp)
     return mmp
 }
 
@@ -558,17 +557,20 @@ function plotarDadosNoGrafico() {
 }
 
 
-function plotarDadosMensais() {
+async function plotarDadosMensais() {
     const meses = []
     const servico = []
     const dataset = []
+    const mmpRetornado = await calcularMMP()
+    let custoTotal = 0
+    let custoTotalMesAnterior = 0
+    let porcentagemValorTotal = 0
     const coresServico = {
         "AWS Lambda": "#ffc987",
         "AmazonCloudWatch": "#ff87d1",
         "EC2 - Other": "#87C5FF",
         "Amazon Simple Storage Service": "#87ffab"
     }
-
     fetch("/aws/buscarGastoCadaMes", {
         method: "GET",
         headers: {
@@ -576,13 +578,18 @@ function plotarDadosMensais() {
         }
     }).then((res) => {
         res.json().then((json) => {
-            calcularMMP()
-            for (var i = 0; i < json.length; i++) {
-                if (!meses.includes(json[i].mes)) {
-                    meses.push(json[i].mes)
+            let comparacao = 0
+            let porcentagem = 0
+            let mensagem = "\\002191"
+            let mensagemValorTotal = "\\002191"
+            let cor = "#FF4D4D"
+            let corValorTotal = "#FF4D4D"
+            for (var i = 0; i < json.select.length; i++) {
+                if (!meses.includes(json.select[i].mes)) {
+                    meses.push(json.select[i].mes)
                 }
-                if (!servico.includes(json[i].servico)) {
-                    servico.push(json[i].servico)
+                if (!servico.includes(json.select[i].servico)) {
+                    servico.push(json.select[i].servico)
                 }
 
             }
@@ -594,9 +601,9 @@ function plotarDadosMensais() {
                     const mesAtual = meses[j]
                     let custoAtual = 0
 
-                    for (let k = 0; k < json.length; k++) {
-                        if (json[k].servico == servicoAtual && json[k].mes == mesAtual) {
-                            custoAtual = json[k].custo
+                    for (let k = 0; k < json.select.length; k++) {
+                        if (json.select[k].servico == servicoAtual && json.select[k].mes == mesAtual) {
+                            custoAtual = json.select[k].custo
                             break;
                         }
                     }
@@ -609,7 +616,62 @@ function plotarDadosMensais() {
                 }
                 dataset.push(leituraDataset)
             }
+            for (let i = 0; i < mmpRetornado.length; i++) {
+                const servicoMmp = mmpRetornado[i].servico
+                const custoMmp = mmpRetornado[i].respostaMmp
+                let servicoPlotado = ""
+                custoTotal += Number(custoMmp)
+                for (let j = 0; j < dataset.length; j++) {
+                    if (dataset[j].label == servicoMmp) {
+                        dataset[j].data.push(custoMmp)
+                        break;
+                    }
+                }
 
+                for(let j = 0; j < json.selectIndividuais.length; j++){
+                    custoTotalMesAnterior += json.selectIndividuais[i].custo
+                    if(json.selectIndividuais[j].servico == servicoMmp){
+                        comparacao = custoMmp - json.selectIndividuais[j].custo
+                        porcentagem = ((comparacao / json.selectIndividuais[j].custo) * 100).toFixed(2)
+                    }   
+                }
+                
+                porcentagemValorTotal = (((custoTotal - custoTotalMesAnterior) / custoTotalMesAnterior) * 100).toFixed(2)
+
+                if (servicoMmp == "EC2 - Other") {
+                    servicoPlotado = "EC2"
+                }
+                if (servicoMmp == "Amazon Simple Storage Service") {
+                    servicoPlotado = "S3"
+                }
+                if (servicoMmp == "AmazonCloudWatch") {
+                    servicoPlotado = "CloudWatch"
+                }
+                if (servicoMmp == "AWS Lambda") {
+                    servicoPlotado = "Lambda"
+                }
+                if(porcentagem < 0){
+                    mensagem = "&#8595"
+                    cor = "#00FF88"
+                }
+                if(porcentagemValorTotal < 0){
+                    mensagemValorTotal = "&#8595"
+                    corValorTotal = "#00FF88"
+                }
+                
+                listagem_previsao.innerHTML += `<div class="valores-servicos">
+                <div class="servico-coluna">
+                <span>${servicoPlotado}</span>
+                </div>
+                <div class="gasto-coluna">
+                <span style="color: ${cor}">R$${custoMmp} - ${mensagem} ${Math.abs(porcentagem)}%</span>
+                </div>s
+                </div>`
+
+
+            }
+            gastoTotalProjecao.innerHTML += `<span style="color: ${cor}">R$${custoTotal.toFixed(2)} - ${mensagemValorTotal} ${Math.abs(porcentagemValorTotal)}</span>`
+            meses.push("Projeção")
 
             const graficoPrevisao = document.getElementById('previsao');
             new Chart(graficoPrevisao, {
@@ -619,7 +681,6 @@ function plotarDadosMensais() {
                     datasets: dataset
                 },
                 options: {
-                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             stacked: true,

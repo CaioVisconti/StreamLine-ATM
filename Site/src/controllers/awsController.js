@@ -68,7 +68,8 @@ const buscarGastoTotal = async (req, res) => {
 const buscarDadosCadaMes = async (req, res) => {
     try{
         const select = await database.buscarDadosCadaMes();
-        return res.status(200).json(select);
+        const selectIndividuais = await database.buscarGastosIndividuais()
+        return res.status(200).json({select, selectIndividuais});
     } catch (error){
         return res.status(400).json(error.message);
     }
