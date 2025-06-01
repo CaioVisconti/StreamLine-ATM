@@ -43,10 +43,10 @@ function buscarKpi() {
             }
             porcentagem = (json[0].custoServico / json[0].custoTotal) * 100
             servicoMaisCaro.innerHTML = `${json[0].servico}`;
-            kpiServico.innerHTML += `<span style="color: #87C5FF">${porcentagem.toFixed(2)}% do gasto total</span>`
+            kpiServico.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: 15px">${porcentagem.toFixed(2)}% do gasto total</span>`
         })
     })
-    fetch("/aws/buscarGastoCadaMes", {
+    fetch("/aws/buscarGastoTotalPorMes", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -54,11 +54,15 @@ function buscarKpi() {
     }).then((res) => {
         res.json().then((json) => {
             let cor = "white"
+            console.log(json)
             if (json.length > 1) {
-                gastoMesAtual = json[json.length - 1].gastoMensal
-                gastoMesAnterior = json[json.length - 2].gastoMensal
-                if (gastoMesAnterior >= 1) {
+                gastoMesAtual = json[json.length - 1].custo
+                console.log(gastoMesAtual)
+                gastoMesAnterior = json[json.length - 2].custo
+                console.log(gastoMesAnterior)
+                if (gastoMesAnterior > 1) {
                     comparacao = ((gastoMesAtual - gastoMesAnterior) / gastoMesAnterior) * 100
+                    console.log(comparacao)
                     mensagem = "a menos"
                     if (comparacao > 0) {
                         mensagem = "a mais"
@@ -66,7 +70,7 @@ function buscarKpi() {
                     if ((gastoMesAtual - gastoMesAnterior) > 100) {
                         cor = "#ff0000"
                     }
-                    kpiIndicador.innerHTML += `<span>${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
+                    kpiIndicador.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: 15px">${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
                 }
             }
         })
@@ -120,10 +124,9 @@ function buscarIndicadores() {
             let custoTotal = 0
             let comparacao = 0
             let porcentagem = 0
+            let cor = "white"
             for (let i = 0; i < json.select.length; i++) {
                 comparacao = ((json.select[i].custo - json.selectSemanaAnterior[i].custo) / json.selectSemanaAnterior[i].custo) * 100
-                console.log("A", json.select[i])
-                console.log("B", json.select[i])
                 gasto = json.select[i].custo
                 if (json.selectSemanaAnterior[i] == null) {
                     const custoKey = '{"custo": 0.00}';
@@ -143,13 +146,18 @@ function buscarIndicadores() {
                     json.select[i].servico = "Lambda"
                 }
                 if (json.select[i].servico == "Lambda" || json.select[i].servico == "EC2" || json.select[i].servico == "S3") {
+                    if ((json.select[i].custo - json.selectSemanaAnterior[i].custo) > 50) {
+                        cor = "#FF4444"
+                    } else if ((json.select[i].custo - json.selectSemanaAnterior[i].custo) < 1) {
+                        cor = "#00FF88"
+                    }
 
                     indicadores.innerHTML += `<div class="valores-servicos">
                     <div class="servico-coluna">
                     <span>${json.select[i].servico}</span>
                     </div>
                     <div class="gasto-coluna">
-                    <span>R$${json.select[i].custo.toFixed(2)}</span>
+                    <span style="color: ${cor}">R$${json.select[i].custo.toFixed(2)}</span>
                     </div>
                     <div class="gasto-coluna">
                     <span>R$${json.selectSemanaAnterior[i].custo.toFixed(2)}</span>
@@ -245,9 +253,8 @@ function buscarCustoPorServico() {
         }
     }).then((res => {
         res.json().then((json => {
-            console.log("G", json)
+            let cor = "white"
             for (let i = 0; i < json.select.length; i++) {
-                console.log("diniz", json.select[i].servico)
                 if (json.select[i] == null) {
                     const custoKey = '{"custo": 0.00}';
                     json.select[i] = JSON.parse(custoKey)
@@ -265,8 +272,14 @@ function buscarCustoPorServico() {
                 }
             }
             let mensagem = "a mais"
-            if(gastoEc2 < gastoEc2MesAnterior){
+            if (gastoEc2 < gastoEc2MesAnterior) {
                 mensagem = "a menos"
+            }
+            if ((gastoEc2 - gastoEc2MesAnterior) > 50) {
+                cor = "#FF4444"
+            }
+            if ((gastoEc2 - gastoEc2MesAnterior) < 0) {
+                cor = "#00FF88"
             }
             indicadores_custos.innerHTML += `<div class="valores-servicos">
                             <div class="modal-coluna">
@@ -276,7 +289,7 @@ function buscarCustoPorServico() {
                                 <span>R$${gastoEc2MesAnterior.toFixed(2)}</span>
                             </div>
                             <div class="modal-coluna">
-                                <span>R$${(gastoEc2 - gastoEc2MesAnterior).toFixed(2)} ${mensagem} que no mês anterior</span>
+                                <span style="color: ${cor}">R$${(gastoEc2 - gastoEc2MesAnterior).toFixed(2)} ${mensagem} que no mês anterior</span>
                             </div>
                             </div>`
         }))
@@ -289,14 +302,14 @@ function carregarDadosEc2(json) {
     for (let i = 0; i < json[servicoAtual].length; i++) {
         totalInstancias++
         let tamanho = 50
-        let corFonte = "#ff5d5d"
-        let corFundo = "#400000"
+        let corFonte = "#FF4D4D"
+        let corFundo = "#330000"
         if (json[servicoAtual][i].status == "shutting-down") {
             tamanho = 70
         }
         if (json[servicoAtual][i].status == "running") {
-            corFundo = "#104000"
-            corFonte = "#5dff73"
+            corFundo = "#003320"
+            corFonte = "#00FF88"
             instanciasAtivas++
         }
 
@@ -420,8 +433,25 @@ function buscarGastoMensal() {
     }).then((res) => {
         res.json().then((json) => {
             gastoMensal.innerHTML += json[0].gastoMensal.toFixed(2)
+            gastoTotalSemana.innerHTML += (json[0].gastoMensal / 30).toFixed(2)
         })
     })
+}
+
+function calcularMMP(json) {
+    const listaMmp = []
+    const dados = []
+    
+
+    console.log("dados", dados)
+
+    let valorAntepenultimoMes = json[json.length - 3].custo;
+    let valorPenultimoMes = json[json.length - 2].custo;
+    let valorUltimoMes = json[json.length - 1].custo;
+
+    let mmp = (valorAntepenultimoMes * 1 + valorPenultimoMes * 2 + valorUltimoMes * 3) / 6
+
+    return mmp
 }
 
 function plotarDadosNoGrafico() {
@@ -498,9 +528,18 @@ function plotarDadosNoGrafico() {
     })
 }
 
+
 function plotarDadosMensais() {
-    const gastoMensal = []
-    const mes = []
+    const meses = []
+    const servico = []
+    const dataset = []
+    const coresServico = {
+        "AWS Lambda": "#ffc987",
+        "AmazonCloudWatch": "#ff87d1",
+        "EC2 - Other": "#87C5FF",
+        "Amazon Simple Storage Service": "#87ffab"
+    }
+
     fetch("/aws/buscarGastoCadaMes", {
         method: "GET",
         headers: {
@@ -508,28 +547,54 @@ function plotarDadosMensais() {
         }
     }).then((res) => {
         res.json().then((json) => {
+            const mmp = calcularMMP(json)
+            console.log("Mmp", mmp)
             for (var i = 0; i < json.length; i++) {
-                gastoMensal.push(json[i].gastoMensal.toFixed(2))
-                mes.push(json[i].mes)
+                if (!meses.includes(json[i].mes)) {
+                    meses.push(json[i].mes)
+                }
+                if (!servico.includes(json[i].servico)) {
+                    servico.push(json[i].servico)
+                }
+
             }
+            for (let i = 0; i < servico.length; i++) {
+                const gastoMensal = []
+                const servicoAtual = servico[i]
+
+                for (let j = 0; j < meses.length; j++) {
+                    const mesAtual = meses[j]
+                    let custoAtual = 0
+
+                    for (let k = 0; k < json.length; k++) {
+                        if (json[k].servico == servicoAtual && json[k].mes == mesAtual) {
+                            custoAtual = json[k].custo
+                            break;
+                        }
+                    }
+                    gastoMensal.push(custoAtual)
+                }
+                leituraDataset = {
+                    label: servicoAtual,
+                    data: gastoMensal,
+                    backgroundColor: coresServico[servicoAtual] || '#2A5277',
+                }
+                dataset.push(leituraDataset)
+            }
+
 
             const graficoPrevisao = document.getElementById('previsao');
             new Chart(graficoPrevisao, {
                 type: 'bar',
                 data: {
-                    labels: mes,
-                    datasets: [{
-                        data: gastoMensal,
-                        borderWidth: 1,
-                        borderColor: '#FFFFFF',
-                        tension: 0.1,
-                        fill: false
-                    }]
+                    labels: meses,
+                    datasets: dataset
                 },
                 options: {
-                    backgroundColor: '#2A5277',
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
+                            stacked: true,
                             beginAtZero: true,
                             title: {
                                 display: true,
@@ -544,6 +609,7 @@ function plotarDadosMensais() {
                             }
                         },
                         x: {
+                            stacked: true,
                             title: {
                                 display: false,
                             },

@@ -46,6 +46,10 @@ router.get("/buscarGastoMensal", function (req, res) {
     awsController.buscarGastoMensal(req, res);
 })
 
+router.get("/buscarGastoTotalPorMes", function (req, res) {
+    awsController.buscarGastoTotalPorMes(req, res);
+})
+
 router.get("/buscarGastoTotal", function (req, res) {
     awsController.buscarGastoTotal(req, res);
 })

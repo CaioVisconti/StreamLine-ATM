@@ -24,7 +24,7 @@ const buscarDadosPorServico = async (req, res) => {
         const selectMesAnterior = await database.buscarIndicadoresMesAnterior();
         return res.status(200).json({select, selectMesAnterior});
     } catch (erro) {
-        return res.status(400).send(erro,message);
+        return res.status(400).send(erro.message);
     }
 }
 
@@ -41,6 +41,15 @@ const buscarIndicadores = async (req, res) => {
 const buscarGastoMensal = async (req, res) => {
     try{
         const select = await database.buscarGastoMensal();
+        return res.status(200).json(select);
+    } catch (error){
+        return res.status(400).json(error.message);
+    }
+}
+
+const buscarGastoTotalPorMes = async (req, res) => {
+    try{
+        const select = await database.buscarGastoTotalPorMes();
         return res.status(200).json(select);
     } catch (error){
         return res.status(400).json(error.message);
@@ -70,6 +79,7 @@ module.exports = {
     buscarKpi1,
     buscarIndicadores,
     buscarGastoMensal,
+    buscarGastoTotalPorMes,
     buscarDadosPorServico,
     buscarGastoTotal,
     buscarDadosCadaMes

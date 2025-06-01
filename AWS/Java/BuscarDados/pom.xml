@@ -50,6 +50,11 @@
             <artifactId>aws-java-sdk-cloudwatch</artifactId>
             <version>1.12.783</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.36</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/cloudwatchlogs -->
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
