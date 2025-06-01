@@ -2,6 +2,7 @@ package com.streamline;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -9,6 +10,9 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -41,35 +45,35 @@ public class Main implements RequestHandler<S3Event, String> {
         List<String> listaMes = new ArrayList<>();
         List<String> listaSemestre = new ArrayList<>();
 
-        S3Client s3Client = S3Client.builder().build();
+        ListObjectsRequest req = new ListObjectsRequest()
+                .withBucketName(sourceBucket)
+                .withPrefix(nomeDividido[0]);
 
-        ListObjectsV2Request request = ListObjectsV2Request.builder()
-                .bucket(sourceBucket)
-                .prefix(nomeDividido[0])
-                .build();
+        ObjectListing listing = s3Client.listObjects(req);
+        List<S3ObjectSummary> objetos = listing.getObjectSummaries();
 
-        logger.log("nomeDividido[0]");
-        logger.log(nomeDividido[0]);
+        List<S3ObjectSummary> objetosOrdenados = objetos.stream()
+                .sorted(Comparator.comparing(S3ObjectSummary::getLastModified).reversed())
+                .collect(Collectors.toList());
 
-        ListObjectsV2Iterable response = s3Client.listObjectsV2Paginator(request);
+        for(S3ObjectSummary obj : objetosOrdenados) {
+            logger.log(obj.getKey());
 
-        for (ListObjectsV2Response page : response) {
-            for (S3Object object : page.contents()) {
-                logger.log(object.key());
+            if(listaSemana.size() < 7) {
+                listaSemana.add(obj.getKey());
+            }
 
-                if(listaSemana.size() < 7) {
-                    listaSemana.add(object.key());
-                }
+            if(listaMes.size() < 30) {
+                listaMes.add(obj.getKey());
+            }
 
-                if(listaMes.size() < 30) {
-                    listaMes.add(object.key());
-                }
-
-                if(listaSemestre.size() < 180) {
-                    listaSemestre.add(object.key());
-                }
+            if(listaSemestre.size() < 180) {
+                listaSemestre.add(obj.getKey());
+            } else {
+                break;
             }
         }
+
         CalculadorMedia calc = new CalculadorMedia();
         Formatador formatador = new Formatador();
 

@@ -35,7 +35,6 @@ public class Periodo {
         }
 
         Boolean achouInicio = false;
-        Boolean achouFinal = false;
 
         ListObjectsRequest req = new ListObjectsRequest()
                 .withBucketName(sourceBucket)
