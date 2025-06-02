@@ -1,4 +1,4 @@
-BD/Dockerfile
+# BD/Dockerfile
 docker-compose.yml
 Servidor
 Python/teste-nicoly.py

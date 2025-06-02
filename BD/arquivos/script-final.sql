@@ -85,7 +85,16 @@ CREATE TABLE IF NOT EXISTS alerta (
   componente VARCHAR(20),
   valor DOUBLE NOT NULL,
   dtHoraAbertura DATETIME,
-  fkParametro INT
+  fkParametro INT,
+  CONSTRAINT alerta_unica UNIQUE (fkParametro, valor, dtHoraAbertura)
+);
+
+CREATE TABLE IF NOT EXISTS awsCusto (
+    idCusto INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    inicio DATE,
+    fim DATE,
+    servico VARCHAR(45),
+    custo FLOAT
 );
 
 -- Inserindo empresas

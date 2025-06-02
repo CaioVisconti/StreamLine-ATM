@@ -40,21 +40,24 @@ function coletaVariavel() {
                 ) {
                     const ultimoRegistro = json.dados[json.dados.length - 1];
                     console.log(`--- Dados recebidos do ATM ${atmAtual} ---`);
+
                     ultimoRegistro.forEach(param => {
                         console.log(`${param.dataHora} | ${param.parametro}: ${param.valor} (Limite: ${param.limite})`);
-                    
-                        try {
-                            pool.execute(  //db.execute retorna uma tupla com dois elementos [resultado dos dados, nome de colunas etc], por isso é um rows
-                                "INSERT INTO alerta (valor, componente, categoria, dtHoraAbertura, fkParametro) VALUES (?, ?, ?, NOW(), ?)",
-                                [param.valor, param.parametro, param.categoria, param.fkParametro]
-                            );
-                            
-                        } catch (error) {
-                            console.error("Erro ao consultar o banco:", error);
-                            res.status(500).json({ erro: "Erro interno do servidor" });
-                        }
-                        
-                        
+
+                        pool.execute( //db.execute retorna uma tupla com dois elementos [resultado dos dados, nome de colunas etc], por isso é um rows
+                            "INSERT INTO alerta (valor, componente, categoria, dtHoraAbertura, fkParametro) VALUES (?, ?, ?, ?, ?)",
+                            [param.valor, param.parametro, param.categoria, param.dataHora, param.fkParametro]
+                        )
+                        .then(() => {
+                            console.log("✅ Alerta inserido com sucesso.");
+                        })
+                        .catch(error => {
+                            if (error.code === 'ER_DUP_ENTRY') {
+                                console.warn("⚠️ Alerta duplicado. Não foi inserido.");
+                            } else {
+                                console.error("❌ Erro ao inserir no banco:", error);
+                            }
+                        });
                     });
 
                 } else {
@@ -71,5 +74,4 @@ function coletaVariavel() {
     });
 }
 
-
-intervaloColeta = setInterval(coletaVariavel, 2000)
+intervaloColeta = setInterval(coletaVariavel, 5000);
