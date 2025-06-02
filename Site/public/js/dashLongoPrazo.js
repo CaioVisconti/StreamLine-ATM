@@ -203,6 +203,8 @@ function pesquisar(componente, id) {
     let metrica = document.getElementById("select_metricas");
     let intervalo = document.getElementById("slt_intervalo");
 
+
+    console.log(json)
     let m = json.m;
     let c = json.c
 

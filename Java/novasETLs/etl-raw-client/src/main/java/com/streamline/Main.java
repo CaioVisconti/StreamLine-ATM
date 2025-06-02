@@ -24,13 +24,13 @@ public class Main implements RequestHandler<S3Event, String> {
     private static final Log log = LogFactory.getLog(Main.class);
     private final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
 
-    private static final String DESTINATION_BUCKET = "bclient-streamline";
+    private static final String DESTINATION_BUCKET = "client-streamline-atm";
 
     @Override
     public String handleRequest(S3Event s3Event, Context context) {
         LambdaLogger logger = context.getLogger();
 
-        String sourceBucket = "braw-streamline";
+        String sourceBucket = "raw-streamline-atm";
 
         List<S3ObjectSummary> objetos = s3Client.listObjects(sourceBucket).getObjectSummaries();
 

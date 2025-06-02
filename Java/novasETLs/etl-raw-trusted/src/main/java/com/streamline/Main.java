@@ -23,7 +23,7 @@ public class Main implements RequestHandler<S3Event, String> {
 
     private final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
 
-    private static final String DESTINATION_BUCKET = "btrusted-streamline";
+    private static final String DESTINATION_BUCKET = "trusted-streamline-atm";
 
     public String handleRequest(S3Event s3Event, Context context) {
 
@@ -50,7 +50,7 @@ public class Main implements RequestHandler<S3Event, String> {
             // Converte o ByteArrayOutputStream para InputStream para enviar ao bucket de destino
             InputStream csvInputStream = new ByteArrayInputStream(csvOutputStream.toByteArray());
             logger.log(sourceKey.replace(".json", ".csv"));
-
+l
             // Envio do CSV para o bucket de destino
             s3Client.putObject(DESTINATION_BUCKET, sourceKey.replace(".json", ".csv"), csvInputStream, null);
 

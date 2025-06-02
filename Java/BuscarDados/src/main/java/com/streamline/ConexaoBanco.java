@@ -1,4 +1,4 @@
-package sptech.school;
+package com.streamline;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

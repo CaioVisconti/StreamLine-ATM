@@ -11,9 +11,9 @@ s3Client = boto3.client('s3')
 jsonEstruturado = []
 leitura = {}
 
-buckets = s3.Bucket('brawstreamline2')
+buckets = s3.Bucket('braw-streamline')
 
-objeto = s3Client.get_object(Bucket='brawstreamline2', Key='analiseAWS/Capturas_AWS.json')
+objeto = s3Client.get_object(Bucket='braw-streamline', Key='analiseAWS/Capturas_AWS.json')
 string = objeto['Body'].read().decode('utf-8')
 response = json.loads(string)
 
@@ -48,5 +48,5 @@ with open(dadosEstruturados, mode='wt') as f:
 
 s3Client.upload_file(
     Filename=dadosEstruturados,
-    Bucket='btrustedstreamline',
+    Bucket='btrusted-streamline',
     Key=f'analiseAWS/Capturas_AWS.json')

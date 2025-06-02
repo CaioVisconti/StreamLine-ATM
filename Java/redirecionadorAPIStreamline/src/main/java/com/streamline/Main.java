@@ -46,12 +46,24 @@ public class Main implements RequestHandler<APIGatewayProxyRequestEvent, APIGate
             TempoReal teste = new TempoReal();
             resultado = teste.transformarTempoReal(srcBucket, arq, separacao, logger);
         } else if(metodo.equals("periodo")) {
-            Periodo teste = new Periodo();
-            try {
-                resultado = teste.transformarPeriodo(srcBucket, arq, separacao, logger);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+            if(per.equals("ultimasDuasHoras")) {
+                UltimasDuasHoras teste = new UltimasDuasHoras();
+                try {
+                    teste.transformarPeriodo(srcBucket, arq, separacao, logger);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                Periodo teste = new Periodo();
+                try {
+                    resultado = teste.transformarPeriodo(srcBucket, arq, separacao, logger);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
+
         } else {
             if(per.equals("ultimoDia")) {
                 UltimoDia teste = new UltimoDia();

@@ -40,7 +40,7 @@ function buscarKPI1(fkAgencia) {
         SELECT COUNT(*) AS qtd FROM alerta AS a
             JOIN parametro AS p ON a.fkParametro = p.idParametro
             JOIN atm ON atm.idAtm = p.fkAtm
-            WHERE dtHoraAbertura > DATE_SUB(CURDATE(), INTERVAL 1 WEEK)
+            WHERE dtHoraAbertura > DATE_SUB(CURDATE() - 1, INTERVAL 1 WEEK)
             AND dtHoraAbertura < CURDATE()
             AND fkAgencia = ${fkAgencia};
     `;
@@ -53,7 +53,7 @@ function buscarKPI2(fkAgencia) {
         SELECT COUNT(*) AS qtd FROM alerta AS a
             JOIN parametro AS p ON a.fkParametro = p.idParametro
             JOIN atm ON atm.idAtm = p.fkAtm
-            WHERE dtHoraAbertura > DATE_SUB(CURDATE(), INTERVAL 1 WEEK)
+            WHERE dtHoraAbertura > DATE_SUB(CURDATE() - 1, INTERVAL 1 WEEK)
             AND dtHoraAbertura < CURDATE()
             AND categoria = "High"
             AND fkAgencia = ${fkAgencia};
