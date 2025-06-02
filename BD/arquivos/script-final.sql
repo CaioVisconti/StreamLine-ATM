@@ -385,6 +385,34 @@ FROM (
 ) AS resultado
 WHERE severidade = 3;
 
+CREATE VIEW alertasDetalhados AS (
+SELECT atm.fkAgencia, atm.idAtm,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "CPUPercent" THEN 1 ELSE 0 END) AS alertasCriticosCPUPercent,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "CPUPercent" THEN 1 ELSE 0 END) AS alertasMediosCPUPercent,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "CPUFreq" THEN 1 ELSE 0 END) AS alertasCriticosCPUFreq,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "CPUFreq" THEN 1 ELSE 0 END) AS alertasMediosCPUFreq,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "RAMPercentual" THEN 1 ELSE 0 END) AS alertasCriticosRAMPercentual,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "RAMPercentual" THEN 1 ELSE 0 END) AS alertasMediosRAMPercentual,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "RAMDisponivel" THEN 1 ELSE 0 END) AS alertasCriticosRAMDisponivel,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "RAMDisponivel" THEN 1 ELSE 0 END) AS alertasMediosRAMDisponivel,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "DISKDisponivel" THEN 1 ELSE 0 END) AS alertasCriticosDISKDisponivel,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "DISKDisponivel" THEN 1 ELSE 0 END) AS alertasMediosDISKDisponivel,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "REDERecebida" THEN 1 ELSE 0 END) AS alertasCriticosREDERecebida,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "REDERecebida" THEN 1 ELSE 0 END) AS alertasMediosREDERecebida,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "REDEEnviada" THEN 1 ELSE 0 END) AS alertasCriticosREDEEnviada,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "REDEEnviada" THEN 1 ELSE 0 END) AS alertasMediosREDEEnviada,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "PROCESSODesativado" THEN 1 ELSE 0 END) AS alertasCriticosPROCESSODesativado,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "PROCESSODesativado" THEN 1 ELSE 0 END) AS alertasMediosDISKPROCESSODesativado,
+       SUM(CASE WHEN categoria = "High" AND componente LIKE "PROCESSOSAtivos" THEN 1 ELSE 0 END) AS alertasCriticosPROCESSOSAtivos,
+       SUM(CASE WHEN categoria = "Medium" AND componente LIKE "PROCESSOSAtivos" THEN 1 ELSE 0 END) AS alertasMediosPROCESSOSAtivos,
+       atm.hostname FROM alerta AS a
+       JOIN parametro AS p ON a.fkParametro = p.idParametro
+       JOIN atm ON atm.idAtm = p.fkAtm WHERE atm.hostname IN
+        (SELECT atm.hostname AS nome FROM alerta AS a
+        JOIN parametro AS p ON a.fkParametro = p.idParametro
+        JOIN atm ON p.fkAtm = atm.idAtm GROUP BY p.fkAtm)
+        GROUP BY atm.hostname, atm.fkAgencia, atm.idAtm ORDER BY COUNT(*) DESC LIMIT 5);
+
 -- View para ATMs em situação boa
 CREATE OR REPLACE VIEW viewBom AS
 SELECT 
