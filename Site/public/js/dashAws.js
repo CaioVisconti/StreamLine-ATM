@@ -42,6 +42,12 @@ function buscarKpi() {
             if (json[0].servico == "EC2 - Other") {
                 json[0].servico = "EC2"
             }
+            if (json[0].servico == "Amazon Simple Storage") {
+                json[0].servico = "S3"
+            }
+            if (json[0].servico == "AWS Lambda") {
+                json[0].servico = "Lambda"
+            }
             porcentagem = (json[0].custoServico / json[0].custoTotal) * 100
             servicoMaisCaro.innerHTML = `${json[0].servico}`;
             kpiServico.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: 15px">${porcentagem.toFixed(2)}% do gasto total</span>`
@@ -54,18 +60,16 @@ function buscarKpi() {
         }
     }).then((res) => {
         res.json().then((json) => {
-            let cor = "white"
             console.log(json)
+            let cor = "white"
             if (json.length > 1) {
                 gastoMesAtual = json[json.length - 1].custo
-                console.log(gastoMesAtual)
                 gastoMesAnterior = json[json.length - 2].custo
-                console.log(gastoMesAnterior)
-                if (gastoMesAnterior > 1) {
+                console.log(gastoMesAnterior, gastoMesAtual)
+                if (gastoMesAnterior >= 1 && gastoMesAtual >= 1) {
                     comparacao = ((gastoMesAtual - gastoMesAnterior) / gastoMesAnterior) * 100
-                    console.log(comparacao)
                     mensagem = "a menos"
-                    if (comparacao > 0) {
+                    if (comparacao > 0) { 
                         mensagem = "a mais"
                     }
                     if ((gastoMesAtual - gastoMesAnterior) > 100) {
@@ -179,11 +183,14 @@ function buscarIndicadores() {
                 }
             }
             if (porcentagem < 0) {
-                mensagemPorcentagem = "&#8593"
+                mensagemPorcentagem = "&#8595"
                 corPorcentagem = "#00FF88"
             }
+            if(porcentagem == 0){
+                mensagemPorcentagem = ""
+            }
             gastoTotal.innerHTML += custoTotal.toFixed(2);
-            gastoTotalSemana.innerHTML += `<span id="gastoTotalSemana"><span style="color: ${corPorcentagem}; font-size: 40px">${mensagemPorcentagem}</span> ${porcentagem.toFixed(2)}% em Relação a Semana Passada</span>`
+            gastoTotalSemana.innerHTML += `<span id="gastoTotalSemana"><span style="color: ${corPorcentagem}; font-size: 40px">${mensagemPorcentagem}</span> ${Math.abs(porcentagem).toFixed(2)}% em Relação a Semana Passada</span>`
         })
     })
 }
@@ -269,7 +276,6 @@ function buscarCustoPorServico() {
     }).then((res => {
         res.json().then((json => {
             let cor = "white"
-            console.log("me mata de uma vez", json)
             for (let i = 0; i < json.selectMesAnterior.length; i++) {
                 if (json.select[i] == null) {
                     const custoKey = '{"custo": 0.00}';
@@ -451,9 +457,7 @@ function buscarGastoMensal() {
             if (json.length == 0) {
                 gastoMensal.innerHTML = "Sem Dados Para Este Mês!"
             } else {
-                console.log("AAA", json)
                 gastoMensal.innerHTML += json[0].gastoMensal.toFixed(2)
-                gastoTotalSemana.innerHTML += (json[0].gastoMensal / 30).toFixed(2)
             }
         })
     })
@@ -466,7 +470,6 @@ function calcularMMP() {
         method: "GET"
     }).then((res) => {
         res.json().then((json) => {
-            console.log("MMP", json)
             for (let i = 0; i < json.length; i++) {
                 const servico = json[i].servico;
                 if (!dados[servico]) {
@@ -671,7 +674,7 @@ async function plotarDadosMensais() {
                     cor = "#00FF88"
                 }
                 if (porcentagemValorTotal < 0) {
-                    mensagemValorTotal = "&#8595"
+                    mensagemValorTotal = "&#8593"
                     corValorTotal = "#00FF88"
                 }
 
