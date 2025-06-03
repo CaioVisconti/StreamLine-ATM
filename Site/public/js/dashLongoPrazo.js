@@ -344,7 +344,45 @@ function gerarGraficos() {
     let atm = select_atm.value;
     let componente = select_componentes.value;
     let metrica = select_metricas.value;
-    let intervalo = slt_intervalo.value;
+    let intervalo = slt_intervalo.value
+
+    const json = capturas(componente, metrica);
+
+    let inicio, fim, metodo;
+    const atual = chartCount;
+
+    if(filtro == "gerarGrafico") {
+        metodo = "teste";
+        if(periodo) {
+            inicio = ipt_de.value.split("-").reverse().join("-");
+            fim = ipt_ate.value.split("-").reverse().join("-");
+            metodo = "periodo";
+        } else {
+            inicio = fim = slt_intervalo.value;
+        }
+    } else {
+        metodo = "tempoReal";
+        inicio = ipt_dia.value.split("-").reverse().join("-");
+        fim = inicio;
+    }
+
+    let filtros = document.getElementById("filtros");
+    let leg = document.querySelector(".titulo-grafico");
+    
+    if(window.innerWidth < 1030){
+        filtros.style.display = "none"
+        leg.style.display = "none"
+    }
+
+    url = `https://v628rlk7v0.execute-api.us-east-1.amazonaws.com/TESTE1GUI/bclientstreamline/ATM_${atm}/${fim}/${inicio}/${metodo}`;
+
+    fetch(url)
+    .then(res => res.json())
+    .then(dados => {
+        listaGeral = dados
+        listaDatas = [];
+        listaCapturas = [];
+        listaLimite = [];
 
     const dash = document.getElementById("painels");
 
@@ -481,24 +519,8 @@ function gerarGraficos() {
 
     dash.appendChild(dashDiv);
 
-    slt_filtro.value = filtro;
-    select_atm.value = atm;
-    select_componentes.value = componente;
-    select_metricas.value = metrica;
-    slt_intervalo.value = intervalo;
-
     const nxtInit = document.getElementById("nxt_inicial");
     nxtInit.style.color = "blue";
-    
-    if(metrica == "FREQUENCIA") {
-        metrica = "FREQUÊNCIA"
-    }
-
-    const json = capturas(componente, metrica);
-    console.log(json)
-
-    let inicio, fim, metodo;
-    const atual = chartCount;
 
     for(let i = 1; i <= chartCount; i++) {
         const dashFiltrada = document.getElementById(`dash${i}`);
@@ -508,46 +530,16 @@ function gerarGraficos() {
     let dashInit = document.querySelector(".dash-filtrada");
     dashInit.style.display = "none";
 
+    
     const dashInicial = document.getElementById(`dash${atual}`);
     dashInicial.style.display = "flex";
 
-    if(filtro == "gerarGrafico") {
-        metodo = "teste";
-        if(periodo) {
-            inicio = ipt_de.value.split("-").reverse().join("-");
-            fim = ipt_ate.value.split("-").reverse().join("-");
-            metodo = "periodo";
-        } else {
-            inicio = fim = slt_intervalo.value;
-        }
-    } else {
-        metodo = "tempoReal";
-        inicio = ipt_dia.value.split("-").reverse().join("-");
-        fim = inicio;
-    }
-
+    
     let dois = document.querySelector(".organizar");
     let kpis1 = document.querySelector(".kpis");
     dois.style.display = "flex";
     kpis1.style.display = "flex";
-
-    let filtros = document.getElementById("filtros");
-    let leg = document.querySelector(".titulo-grafico");
     
-    if(window.innerWidth < 1030){
-        filtros.style.display = "none"
-        leg.style.display = "none"
-    }
-
-    url = `https://v628rlk7v0.execute-api.us-east-1.amazonaws.com/TESTE1GUI/bclientstreamline/ATM_${atm}/${fim}/${inicio}/${metodo}`;
-
-    fetch(url)
-    .then(res => res.json())
-    .then(dados => {
-        listaGeral = dados
-        listaDatas = [];
-        listaCapturas = [];
-        listaLimite = [];
 
         if(metodo == "tempoReal") {
             graficoTempoReal(dados, json, graficoDiv, spanId);
@@ -650,6 +642,14 @@ function gerarGraficos() {
                 }
             }
         });
+
+        
+
+        slt_filtro.value = filtro;
+        select_atm.value = atm;
+        select_componentes.value = componente;
+        select_metricas.value = metrica;
+        slt_intervalo.value = intervalo;
     })
     .catch(err => console.error('Erro:', err));
 }
