@@ -15,8 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main  implements RequestHandler<S3Event, String> {
-
+public class Main implements RequestHandler<S3Event, String> {
     private static final Log log = LogFactory.getLog(Main.class);
     @Override
     public String handleRequest(S3Event s3Event, Context context) {
@@ -29,23 +28,22 @@ public class Main  implements RequestHandler<S3Event, String> {
             listaDados = DadosAws.mapearDados(arq);
         } catch (IOException e) {
             System.out.println("Erro ao tentar mapear os dados " + e.getMessage());
-            System.exit(2);
         } catch (IllegalArgumentException e) {
             System.out.println("Erro ao tentar mapear os dados " + e.getMessage() + " Verifique se as credenciais foram configuradas corretamente!");
-            System.exit(3);
         }
         try (Connection conn = ConexaoBanco.conectar();
              Statement query = conn.createStatement()) {
             for (DadosAws dadoAtual : listaDados) {
+                System.out.println("Iniciando a inserção dos dados");
                 if (dadoAtual.getInicio() != null && !dadoAtual.getInicio().isBlank() && dadoAtual.getFim() != null && !dadoAtual.getFim().isBlank() && dadoAtual.getServico().getFirst() != null && !dadoAtual.getServico().getFirst().isBlank() && dadoAtual.getCusto() != null && !dadoAtual.getCusto().isNaN()) {
                     String sqlInsert = String.format("INSERT INTO awsCusto (inicio, fim, servico, custo) VALUES ('%s', '%s', '%s', %s)", dadoAtual.getInicio(), dadoAtual.getFim(), dadoAtual.getServico().getFirst(), (Math.abs(dadoAtual.getCusto())));
                     query.executeUpdate(sqlInsert);
                 }
+                    System.out.println(dadoAtual);
             }
             System.out.println("Insert na tabela awsCusto foi realizado com sucesso!");
         } catch (SQLException e) {
             System.out.println("Erro ao tentar se conectar ao MySQL! " + e.getMessage());
-            System.exit(4);
         }
         return "funcinoou aqui";
     }

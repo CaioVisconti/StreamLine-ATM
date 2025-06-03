@@ -11,7 +11,7 @@ fim = datetime.date.today() - datetime.timedelta(days=1)
 
 try:
     s3.get_object(
-        Bucket="bclient-streamline",
+        Bucket="bclientstreamline",
         Key="analiseAWS/Capturas_AWS.json"
     )
     print("Já existe o histórico!")
@@ -59,5 +59,5 @@ with open(dadosAws, mode='wt') as f:
 
 s3.upload_file(
     Filename=dadosAws,
-    Bucket='braw-streamline',
+    Bucket='brawstreamline2',
     Key=f'analiseAWS/Capturas_AWS.json')
