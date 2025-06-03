@@ -30,7 +30,7 @@
     </div>
     <div class="nav-bar">
       <a class="link-superior" href="gerenteFuncionarios.html">Voltar</a>
-      <a class="link-superior">Gerar relatório</a>
+      <!-- <a class="link-superior">Gerar relatório</a> -->
       <a class="link-superior">Reportar Problema</a>
     </div>
     <div class="btn-nav" onclick="sair()">Sair</div>
@@ -44,7 +44,7 @@
           <div class="col kpiDiv1">
             <span class="titulo"> Total de alertas críticos </span>
             <div class="col">
-              <span class="valor" id="kpi1"> </span>
+              <span class="valor" id="kpi1"> Carregando...</span>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
 
           <div class="col kpiDiv2">
             <span class="titulo"> Tempo médio de resolução </span>
-            <div class="col"><span class="valor" id="kpi2"> 60 minutos </span></div>
+            <div class="col"><span class="valor" id="kpi2"> Carregando... </span></div>
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@
           <div class="col kpiDiv3">
             <span class="titulo"> Percentual de ATMs sem alertas </span>
             <div class="col">
-              <span class="valor" id="kpi3"> </span>
+              <span class="valor" id="kpi3"> Carregando... </span>
             </div>
           </div>
         </div>
@@ -81,12 +81,12 @@
 
   <div class="container container-graficos">
     <div class="row g-3 align-items-center justify-content-between">
-      <div class="col-6 coluna">
+      <div class="col-12 col-md-6 coluna">
         <div class="p-3 conteudo">
           <div class="tituloGrafico">
-            <h1>Situação dos atms por categoria</h1>
+            <h1>Situação dos atms por categoria nos últimos 7 dias</h1>
           </div>
-          <div class="conteudoGrafico">
+          <div class="conteudoGrafico overflow-auto">
 
             <canvas id="chartCategoria"></canvas>
 
@@ -94,23 +94,23 @@
         </div>
       </div>
 
-      <div class="col-6 coluna">
+      <div class="col-12 col-md-6 coluna">
         <div class="p-3 conteudo">
           <div class="tituloGrafico">
-            <h1>05 ATMS com mais incidentes</h1>
+            <h1>05 ATMS com mais incidentes nos últimos 7 dias</h1>
           </div>
-          <div class="conteudoGrafico">
+          <div class="conteudoGrafico overflow-auto">
             <canvas id="chartIncidentes"></canvas>
           </div>
         </div>
       </div>
 
-      <div class="col-6 coluna">
+      <div class="col-12 col-md-6 coluna">
         <div class="p-3 conteudo">
           <div class="tituloGrafico">
-            <h1>Alertas em andamento</h1>
+            <h1>Alertas em andamento nos últimos 7 dias</h1>
           </div>
-          <div class="conteudoGrafico">
+          <div class="conteudoGrafico overflow-hidden" id="jiraPendingAlertsContent">
 
             <div class="row py-1 text-center" style="background-color: #374151;">
               <div class="col-2 tituloAlertas">ATM</div>
@@ -120,73 +120,36 @@
               <div class="col-2 tituloAlertas">Link</div>
             </div>
 
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU - 97%</div>
-              <div class="col-2"><span class="">Crítico</span></div>
-              <div class="col-3">1:30</div>
-              <div class="col-2"><button class="btn"><i class="bi bi-box-arrow-up-right"></i></button></div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU - 97%</div>
-              <div class="col-2"><span class="">Crítico</span></div>
-              <div class="col-3">1:30</div>
-              <div class="col-2"><button class="btn"><i class="bi bi-box-arrow-up-right"></i></button></div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU - 97%</div>
-              <div class="col-2"><span class="">Crítico</span></div>
-              <div class="col-3">1:30</div>
-              <div class="col-2"><button class="btn"><i class="bi bi-box-arrow-up-right"></i></button></div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU - 97%</div>
-              <div class="col-2"><span class="">Crítico</span></div>
-              <div class="col-3">1:30</div>
-              <div class="col-2"><button class="btn"><i class="bi bi-box-arrow-up-right"></i></button></div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU - 97%</div>
-              <div class="col-2"><span class="">Crítico</span></div>
-              <div class="col-3">1:30</div>
-              <div class="col-2"><button class="btn"><i class="bi bi-box-arrow-up-right"></i></button></div>
-            </div>
+            <div id="listagemJira"></div>
 
           </div>
         </div>
       </div>
 
-      <div class="col-6 coluna">
+      <div class="col-12 col-md-6 coluna">
         <div class="p-3 conteudo">
           <div class="tituloGrafico">
-            <h1>Tempo médio de resolução de chamados</h1>
+            <h1>Tempo médio de resolução de chamados nos últimos 7 dias</h1>
           </div>
-          <div class="conteudoGrafico">
+          <div class="conteudoGrafico overflow-auto">
             <canvas id="chartChamados"></canvas>
           </div>
         </div>
       </div>
 
-      <div class="col-12 coluna">
+      <div class="col-12 coluna colunaUltimo">
         <div class="p-3 conteudo">
 
-          <div class="grafico-header"> <div class="tituloGrafico">
-              <h1>Histórico dos últimos 10 alertas</h1>
+          <div class="grafico-header">
+            <div class="tituloGraficoUltimo">
+              <h1>Histórico dos últimos 10 alertas na data atual</h1>
             </div>
             <div class="botao">
-              <button type="button" class="btn btn-secondary">Baixar CSV</button>
+              <button type="button" class="btn btn-secondary" id="bnt-download" onclick="download()">Baixar capturas do último dia</button>
             </div>
           </div>
 
-          <div class="conteudoGrafico">
+          <div class="conteudoGrafico overflow-hidden" id="divHistorico">
 
             <div class="row py-1 text-center" style="background-color: #374151;">
               <div class="col-2 tituloAlertas">ATM</div>
@@ -196,87 +159,16 @@
               <div class="col-2 tituloAlertas">Data e Hora</div>
             </div>
 
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
-            <div class="row py-2 border-bottom border-secondary align-items-center text-center">
-              <div class="col-2">ATM004</div>
-              <div class="col-3">CPU</div>
-              <div class="col-2">97%</div>
-              <div class="col-3">Crítico</div>
-              <div class="col-2">01:05 11:45</div>
-            </div>
-
           </div>
+
+          <div id="divTexto">
+            <span class="tituloAlertaTotal">Mostrando</span>
+            <span class="tituloAlertaTotal" id="mostrando10"></span> 
+            <span class="tituloAlertaTotal">/</span>
+            <span id="mostrandoTotal" class="tituloAlertaTotal"></span> 
+            <span class="tituloAlertaTotal">alertas</span>
+          </div>
+
         </div>
       </div>
 
@@ -287,309 +179,3 @@
 <script src="./js/graficos.js"></script>
 
 </html>
-
-<script>
-
-  window.onload = function () {
-    exibirKPICriticos();
-    exibirKPIPercentual();
-    plotTop5();
-    buscarGraficoSituacao();
-    exibirUser();
-  };
-
-  const idAgencia = sessionStorage.ID_AGENCIA
-
-  function exibirUser() {
-    let nomeUsuario = sessionStorage.NOME_USUARIO;
-    document.getElementById("nomeFunc").innerHTML = `Olá, ${nomeUsuario}`
-  }
-
-  function exibirKPICriticos() {
-    fetch(`/gerente/${idAgencia}/buscarKpiCriticos`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        console.error('Erro ao obter KPIs');
-      }
-    })
-      .then(data => {
-        if (data && data.length > 0) {
-          const kpiData = data[0];
-          document.getElementById('kpi1').innerText = kpiData.totalCriticos;
-
-          const total = parseInt(kpiData.totalCriticos);
-          console.log(total)
-
-          if (total >= 1) {
-            document.querySelector('.kpiDiv1').style.backgroundColor = "#D9AA2A";
-          }  else {
-            document.querySelector('.kpiDiv1').style.backgroundColor = "#65AE50"; 
-          }
-
-        }
-      })
-      .catch(error => {
-        console.error('Erro ao obter KPI totalCriticos:', error);
-      });
-  }
-
-  function exibirKPIPercentual() {
-    fetch(`/gerente/${idAgencia}/buscarKpiPercentual`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        console.error('Erro ao obter KPIs');
-      }
-    })
-      .then(data => {
-        if (data && data.length > 0) {
-          const kpiData = data[0];
-          document.getElementById('kpi3').innerText = kpiData.percentualBons;
-
-          const percentual = parseFloat(kpiData.percentualBons);
-          console.log(percentual)
-
-          if (percentual >= 75) {
-            document.querySelector('.kpiDiv3').style.backgroundColor = "#65AE50";
-          } else if (percentual >= 60) {
-            document.querySelector('.kpiDiv3').style.backgroundColor = "#D9AA2A";
-          } else {
-            document.querySelector('.kpiDiv3').style.backgroundColor = "#A12929";
-          }
-
-        }
-      })
-      .catch(error => {
-        console.error('Erro ao obter KPI percentual de atms bons:', error);
-      });
-  }
-
-  function plotTop5() {
-    const atm = []
-    const qtdAlertas = []
-
-    fetch(`/gerente/${idAgencia}/buscarGraficoTop5`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then((res) => {
-      res.json().then((json) => {
-        for (var i = 0; i < json.length; i++) {
-          atm.push(json[i].atm)
-          qtdAlertas.push(json[i].qtdAlertas)
-          // console.log("push ok")
-        }
-
-        // console.log(atm)
-
-        const graficoTop5 = document.getElementById('chartIncidentes');
-
-        new Chart(graficoTop5, {
-          type: 'bar',
-          data: {
-            labels: atm,
-            datasets: [{
-              label: "Quantidade de alertas",
-              data: qtdAlertas,
-              backgroundColor: "#2A5277",
-              borderRadius: 5
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: "top",
-                align: "center",
-                labels: {
-                  color: '#FFFFFF',
-                  boxWidth: 10,
-                  boxHeight: 10
-                }
-              }
-            },
-            scales: {
-              x: {
-                ticks: {
-                  color: "#FFFFFF",
-                },
-              },
-              y: {
-                ticks: {
-                  color: "#FFFFFF",
-                },
-                beginAtZero: true
-              },
-            },
-          }
-        });
-      });
-    });
-  }
-
-  let dia;
-  let total_atms;
-  let datasFormatadas;
-  let criticos;
-  let medios;
-  let lista;
-
-  function buscarGraficoSituacao() {
-
-    dia = []
-    total_atms = []
-    datasFormatadas = []
-    criticos = []
-    medios = []
-
-    fetch(`/gerente/${idAgencia}/buscarGraficoSituacao`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then((res) => {
-      res.json().then((json) => {
-        lista = json;
-
-        for (var i = 0; i < json.length; i++) {
-
-          const data = new Date(json[i].dia);
-          const dataFormatada = data.toLocaleDateString('pt-BR');
-
-          if (!datasFormatadas.includes(dataFormatada)) {
-            console.log("dataFormatada")
-            console.log(dataFormatada)
-            datasFormatadas.push(dataFormatada);
-          }
-
-          // if(json[i].situacao == "Crítico"){
-          //   criticos.push(json[i].total_atms)
-          //   medios.push(0)
-          // }
-          // if(json[i].situacao == "Médio"){
-          //   medios.push(json[i].total_atms)
-          //   criticos.push(0)
-          // }
-
-          total_atms.push(json[i].total_atms)
-        }
-
-        console.log("lista")
-        console.log(lista.length)
-
-        console.log("datasFormatadas");
-        console.log(datasFormatadas.length);
-
-        let indice = 0;
-        let rep = [];
-
-        for (let i = 0; i < datasFormatadas.length; i++) {
-          let qtd_medios = 0;
-          let qtd_criticos = 0;
-          let dataFormatada;
-
-          for (let j = 0; j < lista.length; j++) {
-            let dia = new Date(lista[j].dia);
-            dataFormatada = dia.toLocaleDateString('pt-BR');
-
-
-            if (datasFormatadas[i] == dataFormatada) {
-
-              if (lista[j].situacao == "Crítico") {
-                qtd_criticos += lista[j].total_atms;
-              }
-
-              if (lista[j].situacao == "Médio") {
-                qtd_medios += lista[j].total_atms;
-              }
-
-              console.log(dataFormatada)
-              console.log(datasFormatadas[i - 1])
-
-              console.log("datasFormatadas[i] == datasFormatadas[i - 1]")
-              console.log(dataFormatada == datasFormatadas[i - 1])
-            }
-          }
-          if (rep.includes(dataFormatada)) {
-            rep.push(dataFormatada)
-            criticos[i - 1] += qtd_criticos;
-            medios[i - 1] += qtd_medios;
-          } else {
-            criticos.push(qtd_criticos)
-            medios.push(qtd_medios)
-          }
-        }
-
-        console.log(medios)
-        console.log(criticos)
-        console.log("indice");
-        console.log(indice);
-
-
-        const graficoSituacao = document.getElementById('chartCategoria');
-
-        new Chart(graficoSituacao, {
-          type: "line",
-          data: {
-            labels: datasFormatadas,
-            datasets: [
-              {
-                label: "Crítico",
-                data: criticos,
-                borderColor: "#A12929",
-                backgroundColor: "#A12929",
-                fill: false,
-                tension: 0.2
-              },
-              {
-                label: "Médio",
-                data: medios,
-                borderColor: "#D9AA2A",
-                backgroundColor: "#D9AA2A",
-                fill: false,
-                tension: 0.2
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: "top",
-                labels: {
-                  color: '#FFFFFF'
-                }
-              }
-            },
-            scales: {
-              x: {
-                ticks: {
-                  color: "#FFFFFF"
-                }
-              },
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  color: "#FFFFFF"
-                }
-              }
-            }
-          }
-        });
-      });
-    });
-  }
-
-</script>

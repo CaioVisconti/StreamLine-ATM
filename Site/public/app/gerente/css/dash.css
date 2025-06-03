@@ -6,11 +6,24 @@ body{
     background-color: #171D20  !important;
 }
 
+::-webkit-scrollbar {
+  width: 12px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #171D20;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2A5277;
+  border-radius: 8px;
+}
+
 .nav-geral {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    height: 11vh;
+    height: 10vh;
     /* border: 1px solid red; */
 }
 
@@ -26,8 +39,8 @@ body{
 
 .foto-user{
     background-color: #2A5277;
-    height: 75px;
-    width: 75px;
+    height: 70px;
+    width: 70px;
     border-radius: 50px;
     background-image: url("../../../assets/geraldo.png");
     background-size: cover;
@@ -47,7 +60,7 @@ body{
     flex-direction: row;
     justify-content: space-around;
     width: 70vw;
-    height: 6vh;
+    height: 5vh;
     background-color: rgba(83, 83, 83, 0.39);
     border-radius: 50px;
     align-items: center;
@@ -66,7 +79,7 @@ body{
     justify-content: center;
     border: none;
     width: 6vw;
-    height: 6vh;
+    height: 5vh;
     border-radius: 15px;
     color: #FFFFFF;
     font-size: 15px;
@@ -90,6 +103,17 @@ body{
     font-style: italic;
 }
 
+#divTexto{
+    margin-top: 10px;
+}
+
+.tituloAlertaTotal{
+    color: white;
+    font-size: 15px;
+    font-weight: lighter;
+    font-style: italic;
+}
+
 .valor{
     color: white;
     font-size: 25px;
@@ -107,7 +131,7 @@ body{
 
 .container-graficos{
     color: white;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .conteudo{
@@ -115,24 +139,35 @@ body{
     border-radius: 8px;
 }
 
-
 .grafico-header {
-  display: flex;                 /* Ativa o layout Flexbox */
-  justify-content: space-between; /* Empurra o título para a esquerda e o botão para a direita */
-  align-items: center;           /* Alinha verticalmente o título e o botão ao centro */
-  margin-bottom: 1rem;           /* Adiciona um espaço abaixo do cabeçalho, antes da tabela (ajuste conforme necessário) */
+  display: flex;                 
+  justify-content: space-between; 
+  align-items: center;           
+  margin-bottom: 1rem;         
 }
 
 .tituloGrafico h1 {
   font-size: 18px;
   font-weight: bold;
   color: white;
-  text-align: center; /* Mantém o texto do título centralizado dentro do div .tituloGrafico */
-  margin: 0;          /* Remove margens padrão do h1 que podem afetar o alinhamento */
+  text-align: center; 
+  margin: 0;          
+}
+
+.tituloGraficoUltimo h1{
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  text-align: left; 
+  margin: 0   
+}
+
+.colunaUltimo{
+    margin-bottom: 10px;
 }
 
 .tituloGrafico {
-  flex-grow: 1; /* Permite que o div do título ocupe o espaço disponível, ajudando a centralizar o h1 */
+  flex-grow: 1; 
 }
 
 .tituloAlertas{
@@ -140,6 +175,17 @@ body{
     color: white;
     font-weight: bold;
 }
+
+/* Reduz altura dos 4 primeiros gráficos */
+.container-graficos .coluna:nth-of-type(-n+4) .conteudo {
+    height: 280px; 
+    overflow: hidden;
+}
+
+.container-graficos canvas {
+    max-height: 230px; 
+}
+
 
 /* .botao{
     z-index: -1;
@@ -158,4 +204,28 @@ body{
 
 .kpiDiv2{
     border-radius: 8px;
+}
+
+#listagemJira {
+  max-height: 200px; 
+  overflow-y: auto;  
+  overflow-x: hidden; 
+}
+
+#listagemJira::-webkit-scrollbar {
+  width: 5px; 
+}
+
+#listagemJira::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+#listagemJira::-webkit-scrollbar-thumb {
+  background: #2A5277; 
+  border-radius: 10px;
+}
+
+#listagemJira::-webkit-scrollbar-thumb:hover {
+  background: #497197; 
 }

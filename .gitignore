@@ -1,6 +1,8 @@
 # BD/Dockerfile
 docker-compose.yml
 Servidor
+Site/.env.dev
+node_modules
 Python/teste-nicoly.py
 Python/teste-caio.py
 Python/teste-gui.py
