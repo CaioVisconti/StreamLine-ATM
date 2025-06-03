@@ -9,9 +9,7 @@ function carregarDados() {
 }
 
 function aquecerLambda() {
-    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_0/0/0/aquecer`
-    console.log("url")
-    console.log(url)
+    url = `https://v628rlk7v0.execute-api.us-east-1.amazonaws.com/TESTE1GUI/bclientstreamline/ATM_0/0/0/aquecer`
 
     fetch(url)
     .then(res => res.json())
@@ -20,7 +18,6 @@ function aquecerLambda() {
 
     let dataAtual = Date.now()
     let date = new Date(dataAtual)
-    console.log(dataAtual)
 
     let dt = "";
     let ms = "";
@@ -37,7 +34,6 @@ function aquecerLambda() {
     }
 
     let dta = `${date.getFullYear()}-${ms}-${dt}`;
-    console.log(dta)
     
     let dia = document.getElementById('ipt_dia');
     let de = document.getElementById('ipt_de');
@@ -162,9 +158,6 @@ function gerarCards(lista) {
 
         if(maior != 0) {
 
-        console.log(componente)
-        console.log(maior)
-
         listagem.innerHTML += `
             <div class="card" style="width: 90%; height: 12vh; display: flex; flex-direction: column; justify-content: space-between; padding: 2vh">
                 <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.3vh;">ATM: <span> ${lista[i].hostname}</span></span>
@@ -190,12 +183,10 @@ function gerarCards(lista) {
 }
 
 function pesquisar(componente, id) {
-    console.log(componente);
-    console.log(id);
 
     let comp = componente.split(" ")
 
-    let json = capturas(comp[0], comp[1])
+    let json = capturas(comp[1], comp[0])
 
     let filtro = document.getElementById("slt_filtro");
     let atm = document.getElementById("select_atm");
@@ -203,8 +194,6 @@ function pesquisar(componente, id) {
     let metrica = document.getElementById("select_metricas");
     let intervalo = document.getElementById("slt_intervalo");
 
-
-    console.log(json)
     let m = json.m;
     let c = json.c
 
@@ -381,8 +370,8 @@ function gerarGraficos() {
 
         const spanText = document.createElement('span');
         spanText.innerHTML = 
-            i === 1 ? `MAIOR PICO DE COMPONENTE: <br><span class="kpi_filtrado" id="pico${chartCount}">90%</span>` :
-            i === 2 ? `DIA COM MAIS ALERTAS: <br><span class="kpi_filtrado" id="momento${chartCount}">03/04/2025</span>` :
+            i === 1 ? `MÉDIA MAIS ALTA DE CAPTURA: <br><span class="kpi_filtrado" id="pico${chartCount}">90%</span>` :
+            i === 2 ? `MOMENTO COM MAIS ALERTAS: <br><span class="kpi_filtrado" id="momento${chartCount}">03/04/2025</span>` :
                       `NÚMEROS DE ALERTAS: <br><span class="kpi_filtrado" id="total${chartCount}">21</span>`;
 
         kpi.appendChild(spanText);
@@ -550,9 +539,7 @@ function gerarGraficos() {
         leg.style.display = "none"
     }
 
-    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${4}/${fim}/${inicio}/${metodo}`;
-
-    console.log(url);
+    url = `https://v628rlk7v0.execute-api.us-east-1.amazonaws.com/TESTE1GUI/bclientstreamline/ATM_${atm}/${fim}/${inicio}/${metodo}`;
 
     fetch(url)
     .then(res => res.json())
@@ -579,38 +566,35 @@ function gerarGraficos() {
                 dataAtual = `${dataAtual[2]}/${dataAtual[1]}/${dataAtual[0]}`;
             }
     
-            if(max < dados[i][json.r] || i == 0) {
+            if(max <= dados[i][json.r] || i == 0) {
                 max = dados[i][json.r] * 1.1
             }
 
-            if(max < dados[i][json.l]) {
+            if(max <= dados[i][json.l]) {
                 max = dados[i][json.l] * 1.1
             }
 
-            if(min > dados[i][json.r] || i == 0) {
+            if(min >= dados[i][json.r] || i == 0) {
                 min = dados[i][json.r] * 0.8
             }
 
-            if(min > dados[i][json.l]) {
+            if(min >= dados[i][json.l]) {
                 min = dados[i][json.l] * 0.8
             }
 
             listaDatas.push(dataAtual);
-            listaCapturas.push(Math.round(dados[i][json.r]))
+            listaCapturas.push(Math.ceil(dados[i][json.r]))
             if(dados[i][json.l] != undefined) {
-                listaLimite.push(Math.round(dados[i][json.l]))
+                listaLimite.push(Math.ceil(dados[i][json.l]))
             }
         }
-
-        console.log("dados")
-        console.log(dados)
 
         if(metrica == "PORCENTAGEM") {
             min = 0
             max = 100
         } else {
-            min = Math.round(min)
-            max = Math.round(max)
+            min = Math.ceil(min)
+            max = Math.ceil(max)
         }
 
         let tamanho = (min + max) / 5
@@ -683,11 +667,6 @@ function carregarKPIS(json) {
         }
     }
 
-    console.log("passei")
-    console.log(listaCapturas)
-    console.log(listaLimite)
-    console.log(listaGeral)
-
     let kpi1_1 = document.getElementById(`kpi1_${chartCount}`);
 
     if(listaCapturas[indice] > listaLimite[indice]) {
@@ -730,7 +709,6 @@ function carregarKPIS(json) {
 
 function trocarAtms() {
     let txt = document.getElementById("ipt_pesquisa").value
-    console.log(txt)
 
     if(txt == "") {
         carregarATMS()
@@ -820,9 +798,7 @@ function carregarComponentes(){
     
     let fkAtm = document.getElementById("select_atm").value;
 
-    // buscarLimiteData(fkAtm);
-    
-    console.log(fkAtm)
+    buscarLimiteData(fkAtm);
 
     fetch("/dashLongoPrazo/listarComponentes", {
         method: "POST",
@@ -916,7 +892,6 @@ function carregarData() {
 
 function carregarSegundaInput() {
     let data = ipt_de.value;
-    console.log(data);
     let dataInicial = new Date(data) ;
     let max = new Date(dataInicial.getFullYear(), dataInicial.getMonth(), dataInicial.getDate() + 7);
 
@@ -937,8 +912,6 @@ function carregarSegundaInput() {
     } else {
         ms = dataInicial.getMonth() + 1;
     }
-    
-    console.log(ms);
 
     let dataInicialFormatado = `${dataInicial.getFullYear()}-${ms}-${dt}`;
     
@@ -953,7 +926,6 @@ function carregarSegundaInput() {
     } else {
         ms = max.getMonth() + 1;
     }
-    console.log(ms);
 
     maxFormatado = `${max.getFullYear()}-${ms}-${dt}`;
     
@@ -1038,11 +1010,9 @@ function graficoTempoReal(lista, json, graficoDiv, spanId) {
     fim = `${fim}:00`;
 
     if(lista.length == 0) {
-        return console.log("numfoi")
+        return
     }
 
-    console.log("data")
-    console.log(data)
     spanId.innerHTML = `Revisão em das capturas de ${inicio} até ${fim} do dia ${data.split("-")[2]}/${data.split("-")[1]}/${data.split("-")[0]}`;
     
     inicio = pesquisaBinaria(lista, inicio)
@@ -1231,10 +1201,8 @@ function trocarPaginacao(id) {
 }
 
 function buscarLimiteData(fkAtm) {
-    console.log("teste")
-    let lista;
 
-    url = `https://r7rjph7au4.execute-api.us-east-1.amazonaws.com/redirecionadorAPIStreamline_v5/bclient-streamline/ATM_${4}/0/0/pegarData`
+    url = `https://v628rlk7v0.execute-api.us-east-1.amazonaws.com/TESTE1GUI/bclientstreamline/ATM_${4}/0/0/pegarData`
     fetch(url)
     .then(res => res.json())
     .then(dados => {

@@ -409,3 +409,4 @@ SELECT
     (select * from totalAtms) - ((SELECT * FROM viewCritico) + (SELECT * FROM viewMedia)) AS atmsSemAlertas
 FROM atm
 LIMIT 1;
+
