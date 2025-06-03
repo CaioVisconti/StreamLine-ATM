@@ -9,9 +9,14 @@ window.onload = function () {
         exibirCores();
         listaAlertas();
         graficoAlertasPorATM();
-        limparRota()
     }, 5000);
     
+
+    setInterval(function() {
+        limparRota()
+    }, 30000)
+
+
     setTimeout(function () {
         listaAlertas();
     }, 1000);

@@ -254,7 +254,7 @@ if fkAtm:
                 print("\n Arquivo JSON Gerado! ✅\n")            
                 capturas = []
 
-            time.sleep(10)
+            time.sleep(3)
             capturas.append(leitura)
             # print(len(capturas))
 

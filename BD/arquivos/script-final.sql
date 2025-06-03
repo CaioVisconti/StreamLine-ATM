@@ -1,4 +1,4 @@
-CREATE DATABASE streamline;
+CREATE DATABASE IF NOT EXISTS streamline;
 USE streamline;
 
 CREATE TABLE IF NOT EXISTS empresa (
@@ -76,7 +76,8 @@ CREATE TABLE IF NOT EXISTS captura (
   idCaptura INT PRIMARY KEY AUTO_INCREMENT,
   valor DOUBLE,
   dtHora DATETIME,
-  fkParametro INT
+  fkParametro INT,
+  CONSTRAINT captura_unica UNIQUE (fkParametro, valor, dtHora)
 );
 
 CREATE TABLE IF NOT EXISTS alerta (
@@ -148,44 +149,30 @@ INSERT INTO atm (hostname, modelo, ip, macAdress, sistemaOperacional, statusATM,
 -- Inserindo parametros para os ATMs
 INSERT INTO parametro (limite, dtAlteracao, fkComponente, fkAtm) VALUES 
   (90.0, CURDATE(), 1, 1), -- CPUPercent
-  (3.0, CURDATE(), 2, 1), -- CPUFreq
   (3.0, CURDATE(), 3, 1), -- RAMDisponivel
-  (90.0, CURDATE(), 4, 1), -- RAMPercentual 
   (50.0, CURDATE(), 5, 1), -- DISKDisponivel 
-  (90.0, CURDATE(), 6, 1), -- DISKPercentual
   (3.0, CURDATE(), 7, 1), -- REDERecebida
   (3.0, CURDATE(), 8, 1), -- REDEEnviada
-  (20, CURDATE(), 9, 1), -- PROCESSOSDesativado
-  (300, CURDATE(), 10, 1), -- PROCESSOSAtivos
+
   (90.0, CURDATE(), 1, 2),
   (3.0, CURDATE(), 2, 2),
-  (3.0, CURDATE(), 3, 2),
   (90.0, CURDATE(), 4, 2),
-  (50.0, CURDATE(), 5, 2),
-  (90.0, CURDATE(), 6, 2),
   (3.0, CURDATE(), 7, 2),
-  (3.0, CURDATE(), 8, 2),
   (20, CURDATE(), 9, 2), -- PROCESSOSDesativado
-  (300, CURDATE(), 10, 2), -- PROCESSOSAtivos
+
   (90.0, CURDATE(), 1, 3),
   (3.0, CURDATE(), 2, 3),
-  (3.0, CURDATE(), 3, 3),
   (90.0, CURDATE(), 4, 3),
-  (50.0, CURDATE(), 5, 3),
   (90.0, CURDATE(), 6, 3),
   (3.0, CURDATE(), 7, 3),
   (3.0, CURDATE(), 8, 3),
   (20, CURDATE(), 9, 3), -- PROCESSOSDesativado
   (300, CURDATE(), 10, 3), -- PROCESSOSAtivos  
+  
   (90.0, CURDATE(), 1, 4),
-  (3.0, CURDATE(), 2, 4),
   (3.0, CURDATE(), 3, 4),
-  (90.0, CURDATE(), 4, 4),
   (50.0, CURDATE(), 5, 4),
-  (90.0, CURDATE(), 6, 4),
   (3.0, CURDATE(), 7, 4),
-  (3.0, CURDATE(), 8, 4),
-  (20, CURDATE(), 9, 4), -- PROCESSOSDesativado
   (300, CURDATE(), 10, 4); -- PROCESSOSAtivos  
 
 -- Criação dos usuários e permissões
@@ -198,6 +185,9 @@ GRANT SELECT ON streamline.parametro TO "userPython"@"%";
 GRANT INSERT ON streamline.captura TO "userPython"@"%";
 GRANT INSERT ON streamline.alerta TO "userPython"@"%";
 FLUSH PRIVILEGES;
+
+SET GLOBAL time_zone = '-03:00';
+SET time_zone = '-03:00';
 
 -- Criação da View Parametrização
 CREATE VIEW parametrizacao AS 

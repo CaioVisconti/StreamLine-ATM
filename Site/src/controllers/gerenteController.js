@@ -18,7 +18,7 @@ const s3 = new S3Client({
 
 async function downloadCSV(req, res) {
     const idAgencia = req.params.idAgencia;
-    const bucketName = "trusted-streamlineatm";
+    const bucketName = "trusted-streamline-atm";
     const prefix = "capturas/"; // base do caminho no bucket
 
     if (!idAgencia) {
