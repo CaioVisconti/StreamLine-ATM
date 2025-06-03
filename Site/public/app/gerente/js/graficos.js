@@ -46,14 +46,14 @@ function download() {
                 a.href = url;
 
                 // Altere o nome para algo.zip:
-                a.download = 'arquivos_ultimoDia.zip';
+                a.download = 'arquivos_capturas.zip';
 
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             } else {
-                console.log("blob vazioooo");
+                console.log("blob vazio");
             }
         })
         .catch((error) => {
