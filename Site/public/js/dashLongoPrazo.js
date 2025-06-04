@@ -353,7 +353,6 @@ function gerarGraficos() {
     const json = capturas(componente, metrica);
     
     let inicio, fim, metodo;
-    const atual = chartCount;
     
     if(filtro == "gerarGrafico") {
         metodo = "teste";
@@ -384,6 +383,7 @@ function gerarGraficos() {
     .then(res => res.json())
     .then(dados => {
         chartCount++;
+        const atual = chartCount;
         listaGeral = dados
         console.log("dados")
         console.log(dados)
