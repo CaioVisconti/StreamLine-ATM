@@ -28,7 +28,7 @@ document.getElementById('bnt-download').addEventListener('click', download);
 function download() {
     console.log('download chamado');
 
-    fetch(`/gerente/${idAgencia}/downloadCSV`, { method: "GET" }) 
+    fetch(`/gerente/${idAgencia}/downloadCSV`, { method: "GET" })
         .then((response) => {
             console.log('Status:', response.status);
             if (response.ok) {
@@ -95,7 +95,7 @@ function exibirHistorico() {
                         tipo = "Crítico"
                     }
 
-                    const d = new Date(data[i].DataHora);
+                    const d = new Date(data[i].DataHora.replace(' ', 'T'));
                     const dataFormatada = d.toLocaleDateString("pt-BR") + ' ' + d.toTimeString().slice(0, 5);
 
                     divHistorico.innerHTML += `<div class="row py-2 border-bottom border-secondary align-items-center text-center">
@@ -349,8 +349,10 @@ function buscarGraficoSituacao() {
             lista = json;
 
             for (var i = 0; i < json.length; i++) {
-                const data = new Date(json[i].dia);
-                const dataFormatada = data.toLocaleDateString("pt-BR");
+            const dataIso = json[i].dia.split('T')[0]; // "2025-05-30"
+            const data = new Date(dataIso);
+            const dataFormatada = data.toLocaleDateString('pt-BR');
+
 
                 if (!datasFormatadas.includes(dataFormatada)) {
                     console.log("dataFormatada");
@@ -419,10 +421,10 @@ function buscarGraficoSituacao() {
                             fill: false,
                             tension: 0.2,
                         },
-                        { 
+                        {
                             label: "Bom",
                             data: bons,
-                            borderColor: "#28A745", 
+                            borderColor: "#28A745",
                             backgroundColor: "#28A745",
                             fill: false,
                             tension: 0.2,

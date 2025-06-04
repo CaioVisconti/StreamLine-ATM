@@ -206,6 +206,8 @@ function buscarGraficoSituacao(req, res) {
     gerenteModel.buscarGraficoSituacao(idAgencia)
         .then((resultado) => {
             if (resultado.length > 0) {
+                console.log("situ")
+                console.log(resultado)
                 res.status(200).json(resultado);
             } else {
                 res.status(204).send("Nenhum resultado encontrado!");
