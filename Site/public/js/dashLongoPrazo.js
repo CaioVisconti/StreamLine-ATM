@@ -159,12 +159,12 @@ function gerarCards(lista) {
         if(maior != 0) {
 
         listagem.innerHTML += `
-            <div class="card" style="width: 90%; height: 12vh; display: flex; flex-direction: column; justify-content: space-between; padding: 2vh">
+            <div class="card">
                 <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 2.3vh;">ATM: <span> ${lista[i].hostname}</span></span>
-                <span class="cabecalho-listagem" style="color: #FFFFFF; font-size: 1.8vh;">Componente: <span> ${componente}</span></span>
-                <div class="descricao-listagem" style="display: flex; flex-direction: row; width: 100%; gap: 5%;">
-                    <div class="dados-listagem" style="display: flex; flex-direction: column; width: 70%;">
-                        <span class="texto-listagem" style="color: #FFFFFF; font-size: 1.8vh;"> Número de alertas: <span> ${maior}</span></span>
+                <span class="cabecalho-listagem">Componente: <span> ${componente}</span></span>
+                <div class="descricao-listagem">
+                    <div class="dados-listagem">
+                        <span class="texto-listagem"> Número de alertas: <span> ${maior}</span></span>
                     </div>
                 </div>
                 <div class="button-listagem" onclick="pesquisar('${componente}', ${lista[i].idAtm})">Verificar</div>
@@ -346,6 +346,10 @@ function gerarGraficos() {
     let metrica = select_metricas.value;
     let intervalo = slt_intervalo.value
 
+    if(metrica == "FREQUENCIA") {
+        metrica = "FREQUÊNCIA";
+    }
+
     const json = capturas(componente, metrica);
 
     let inicio, fim, metodo;
@@ -380,6 +384,8 @@ function gerarGraficos() {
     .then(res => res.json())
     .then(dados => {
         listaGeral = dados
+        console.log("dados")
+        console.log(dados)
         listaDatas = [];
         listaCapturas = [];
         listaLimite = [];
@@ -401,9 +407,9 @@ function gerarGraficos() {
 
     for (let i = 1; i <= 3; i++) {
         const kpi = document.createElement('div');
-        kpi.className = "kpi";
+        kpi.className = "kpi-filtrado-titulo";
         kpi.id = `kpi${i}_${chartCount}`;
-        kpi.style.backgroundColor = "#ff0000";
+        kpi.style.backgroundColor = "#3C3F40";
         kpi.style.color = "#FFFFFF";
 
         const spanText = document.createElement('span');
@@ -420,7 +426,7 @@ function gerarGraficos() {
     dashDiv.appendChild(kpis);
 
     const organizar = document.createElement('div');
-    organizar.className = "organizar";
+    organizar.className = "organizar-filtrado";
     organizar.style.display = "flex";
 
     const paginacao = document.createElement('div');
@@ -553,10 +559,15 @@ function gerarGraficos() {
 
             if((inicio == fim && metodo == "periodo") || inicio == "ultimoDia") {
                 dataAtual = ((dados[i].dataHora).split(" ")[1])
-            } else {
+            } else if(inicio == "ultimaSemana") {
                 dataAtual = (dados[i].dataHora).split("-")
                 dataAtual = `${dataAtual[2]}/${dataAtual[1]}/${dataAtual[0]}`;
+            } else {
+                dataAtual = dados[i].dataHora
             }
+
+            console.log("dados[i][json.r]")
+            console.log(dados[i][json.r])
     
             if(max <= dados[i][json.r] || i == 0) {
                 max = dados[i][json.r] * 1.1
@@ -590,10 +601,6 @@ function gerarGraficos() {
         }
 
         let tamanho = (min + max) / 5
-
-        if(listaDatas[0] == "undefined/undefined/Semana 2" && inicio == "ultimoMes") {
-            listaDatas = ["4ª Semana", "3ª Semana", "2ª Semana", "Última Semana"]
-        }
         
         spanId.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} <br> (${json.m})`;
         carregarKPIS(json);
@@ -660,6 +667,8 @@ function carregarKPIS(json) {
     let kpi2 = document.getElementById(`momento${chartCount}`);
     let kpi3 = document.getElementById(`total${chartCount}`);
 
+    console.log(listaGeral)
+
     let indice = 0;
     for(let i = 1; i < listaCapturas.length; i++) {
         if(listaCapturas[indice] < listaCapturas[i]) {
@@ -685,18 +694,17 @@ function carregarKPIS(json) {
     let kpi2_1 = document.getElementById(`kpi2_${chartCount}`);
 
     if(listaGeral[indice].qtdAlertaCPUP == 0) {
-        kpi2_1.style.background = "green";
-        kpi2.innerHTML = "Não houve alertas";
+        kpi2.innerHTML = "Nenhum alerta";
     } else {
         kpi2.innerHTML = listaDatas[indice];
     }
     
     let kpi3_1 = document.getElementById(`kpi3_${chartCount}`);
 
-    if(listaGeral[indice].qtdAlertaCPUP == 0) {
+    if(listaGeral[indice].qtdAlertaCPUP <= 30) {
         kpi3_1.style.background = "green";
         kpi3_1.style.color = "#FFFFFF"
-    } else if(listaGeral[indice].qtdAlertaCPUP <= 5) {
+    } else if(listaGeral[indice].qtdAlertaCPUP <= 70) {
         kpi3_1.style.background = "yellow";
         kpi3_1.style.color = "#000000"
     } else {
@@ -1202,7 +1210,7 @@ function trocarPaginacao(id) {
 
 function buscarLimiteData(fkAtm) {
 
-    url = `https://v628rlk7v0.execute-api.us-east-1.amazonaws.com/TESTE1GUI/bclientstreamline/ATM_${4}/0/0/pegarData`
+    url = `https://v628rlk7v0.execute-api.us-east-1.amazonaws.com/TESTE1GUI/bclientstreamline/ATM_${fkAtm}/0/0/pegarData`
     fetch(url)
     .then(res => res.json())
     .then(dados => {

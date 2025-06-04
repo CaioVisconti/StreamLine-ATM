@@ -27,16 +27,13 @@
             <div class="nav-bar">
                 <a href="https://streamline-atm.atlassian.net/servicedesk/customer/portal/1/group/1/create/1"><span>Reportar Problema</span></a> 
             </div>
-            <div class="mostrar">
-                <a href="./dashLongoPrazo.html"><button class="btn-nav">Filtrar</button></a>
-            </div>
             <a href="../index.html"><button class="btn-nav">Sair</button></a>
         </div>
         <div class="painel2" id="painels">
             <div id="filtros" class="kpis2">    
                 <div class="escolha-opcoes">
                     <div class="escolha-filtro">
-                        <span>Selecionar:</span>
+                        <span class="mensagem">Selecionar:</span>
                         <select id="slt_filtro" onchange="mudarFiltros()">
                             <option value="gerarGrafico">Gerar Gráfico</option>
                             <option value="gerarRevisão">Revisar Captura</option>
@@ -44,21 +41,21 @@
                     </div>
                     <div class="escolha-atm">
                         <div class="linha"></div>
-                        <span>Insira o ATM:</span>
+                        <span class="mensagem">Insira o ATM:</span>
                         <input type="text" oninput="trocarAtms()" id="ipt_pesquisa">
                         <select id="select_atm" onchange="carregarComponentes()">
                         </select>
                     </div>
                     <div class="escolha-componentes" id="escolha-componentes">
-                        <span>Selecione um componente para visualizar seus dados:</span>
+                        <span class="mensagem">Selecione um componente para visualizar seus dados:</span>
                         <select id="select_componentes" oninput="carregarMetricas()" disabled></select>
                     </div>
                     <div class="escolha-metricas" id="escolha-metricas">
-                        <span>Métricas Disponíveis:</span>
+                        <span class="mensagem">Métricas Disponíveis:</span>
                         <select id="select_metricas" disabled></select>
                     </div>
                     <div class="escolha-datas" style="display: flex;">
-                        <span>Intervalo:</span>
+                        <span class="mensagem">Intervalo:</span>
                         <select id="slt_intervalo" oninput="carregarData()">
                             <option value="#" selected disabled>SELECIONAR</option>
                             <option value="ultimoDia">ÚLTIMO DIA</option>
@@ -69,18 +66,18 @@
                         </select>
                     </div>
                     <div class="escolha-data" style="display: none;">
-                        <span>Data:</span>
+                        <span class="mensagem">Data:</span>
                         <input id="ipt_dia" type="date">
                     </div>
                     <div class="escolha-horario" style="display: none;">
                         <span>Horário:</span>
-                        <div style="width: 70%; display: flex; flex-direction: row; justify-content: space-between;">
+                        <div class="horarios">
                             <input type="time" id="ipt_horario_de">
                             <input type="time" id="ipt_horario_ate">
                         </div>
                     </div>
                     <div id="periodo" class="escolha-metricas" style="display: none;">
-                        <span>Intervalos:</span>
+                        <span class="mensagem">Intervalos:</span>
                         <div style="display: flex; flex-direction: column; gap: 0.5vw;">
                             <input id="ipt_de" type="date" placeholder="De:" onchange="carregarSegundaInput()">
                             <div id="segundaInputData">
@@ -89,7 +86,7 @@
                         </div>
                     </div>
                     <div id="velocidade" class="escolha-metricas" style="display: none;">
-                        <span>Velocidade:</span>
+                        <span class="mensagem">Velocidade:</span>
                         <select id="slt_tempo">
                             <option value="0.5x">0.5x</option>
                             <option value="1x">1x</option>
@@ -102,14 +99,14 @@
                 </div>
             </div>
             <div class="dash-filtrada" style="display: flex;">
-                <div style="display: flex; flex-direction: column; height: 100%; width: 80%; align-items: center;">
+                <div class="dash-organizacao">
                     <div id="kpis-filtrado" style="display: flex;">
                         <div class="kpi-prazo-filtrado">
                             <div class="kpi-1-filtrado" style="background-color: rgba(83, 83, 83, 0.39); color: #FFFFFF">
-                                <span>QUANTIDADE DE ALERTAS NA ÚLTIMA SEMANA: <br><span id="total_filtrado"></span></span>
+                                <span style="font-size: 1vw;">QUANTIDADE DE ALERTAS NA ÚLTIMA SEMANA: <br><span id="total_filtrado"></span></span>
                             </div>
                             <div class="kpi-2-filtrado" style="background-color: rgba(83, 83, 83, 0.39); color: #FFFFFF">
-                                <span>QUANTIDADE DE ALERTAS CRÍTICOS NA ÚLTIMA SEMANA: <br><span id="total_criticos"></span></span>
+                                <span style="font-size: 1vw;">QUANTIDADE DE ALERTAS CRÍTICOS NA ÚLTIMA SEMANA: <br><span id="total_criticos"></span></span>
                             </div>
                         </div>
                     </div>
@@ -123,39 +120,39 @@
                                     <div id="grafico-filtrado">
                                         <canvas class="graficos-style-geral" id="meuGraficoInit"></canvas>
                                         <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.8vh; gap: 5%;">
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #ffa299; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>CPU Porcentagem</span>
                                             </div>
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #fa7064; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>CPU Frequência</span>
                                             </div>
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #a6a6ff; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>RAM Disponivel</span>
                                             </div>
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #6969fa; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>RAM Percentual</span>
                                             </div>
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #8fff8f; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>Disco Disponivel</span>
                                             </div>
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #fbff8f; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>Processos Desativados</span>
                                             </div>
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #faff64; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>Processos Ativos</span>
                                             </div>
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #f7a0ff; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>Pacotes Enviados</span>
                                             </div>
-                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw;">
+                                            <div style="width: 12vw; display: flex;flex-direction: row; gap: 0.5vw; font-size: 1.1vw;">
                                                 <div style="background-color: #f15dff; width: 0.8vw; height: 0.8vw;"></div>
                                                 <span>Pacotes Recebidos</span>
                                             </div>
@@ -171,7 +168,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="listagem" style="background-color: rgba(83, 83, 83, 0.39);border-radius: 10px;; width: 20%; height: 98%; display: flex; flex-direction: column; align-items: center; gap: 1%;"></div>
+                <div id="listagem"></div>
             </div>
         </div>
     </div>

@@ -58,7 +58,7 @@ a{
 .nav-bar a{
     color: #FFFFFF;
     font-size: 15px;
-    margin-right: 25%;
+    margin-right: 45%;
     /* border: 1px solid red; */
 }
 
@@ -163,9 +163,9 @@ a{
     flex-direction: column;
     align-items: center;
     color: white;
-    height: 10%;
+    height: fit-content;
     width: 80%;
-    gap: 3%;
+    gap: 1vh;
     /* border: 1px solid red; */
 }
 
@@ -425,6 +425,18 @@ a{
 }
 
 .organizar{
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    padding-bottom: 1.5%;
+    justify-content: flex-end;
+    /* border: 1px solid orange; */
+}
+
+.organizar-filtrado {
     display: flex;
     flex-direction: column;
     font-size: 16px;
@@ -795,6 +807,73 @@ a{
     justify-content: center;
 }
 
+.dash-organizacao {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 80%;
+    align-items: center;
+}
+
+.mensagem {
+    font-size: 0.5vw;
+}
+
+.horarios {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card {
+    width: 90%;
+    height: 12vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2vh;
+}
+
+.cabecalho-listagem, .texto-listagem {
+    color: #FFFFFF;
+    font-size: 1.8vh;
+    width: 100%;
+}
+
+.descricao-listagem {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 5%;
+}
+
+.dados-listagem {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+#listagem {
+    background-color: rgba(83, 83, 83, 0.39);
+    border-radius: 10px;
+    width: 20%;
+    height: 98%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1%;
+}
+
+.kpi-filtrado-titulo {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+    border-radius: 10px;
+}
 
 @media (max-width: 1030px) {
 
@@ -1043,5 +1122,222 @@ a{
 
     .organizar{
         width: 100vw;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .nav-total {
+        justify-content: space-between;
+    }
+    
+    .fundo-filtrado {
+        width: 97%;
+        justify-self: flex-end;
+        align-self: flex-end;
+    }
+
+    .paginacao-filtrado {
+        width: 60%;
+    }
+
+    
+    .graficos-style-geral {
+        height: 70% !important;
+    }
+
+    .fundo-grafico-filtrado {
+        width: 95%;
+    }
+
+    .kpi-prazo-filtrado { 
+        width: 60vw;
+        justify-self: center;
+        align-self: center;
+        justify-content: space-between;
+    }
+
+    .kpis-filtrado {
+        justify-content: space-around;
+    }
+
+    .foto-user {
+        height: 7vw;
+        width: 7vw;
+    }
+
+    .msg-user {
+        font-size: 2vw;
+    }
+
+    .nav-bar a {
+        font-size: 1.5vw;
+    }
+
+    .escolha-filtro select {
+        width: 12vw;
+        font-size: 1vw;
+    }
+
+    .escolha-atm {
+        font-size: 0.5vw;
+        height: fit-content;
+        gap: 10px;
+    }
+
+    #ipt_pesquisa {
+        width: 10vw;
+    }
+
+    #select_atm {
+        width: 12vw;
+        font-size: 1vw;
+    }
+
+    .escolha-componentes {
+        font-size: 0.5vw;
+        height: fit-content;
+    }
+
+    #select_componentes {
+        width: 12vw;
+        font-size: 1vw;
+    }
+
+    .escolha-metricas {
+        font-size: 0.5vw;
+    }
+
+    #select_metricas {
+        width: 12vw;
+        font-size: 1vw;
+    }
+
+    .escolha-datas {
+        font-size: 0.5vw;
+    }
+
+    #slt_intervalo {
+        width: 12vw;
+        font-size: 1vw;
+    }
+
+    .escolha-data {
+        font-size: 0.5vw;
+    }
+
+    #ipt_dia {
+        width: 10vw;
+    }
+
+    .linha {
+        display: none;
+    }
+
+    .escolha-opcoes {
+        justify-content: space-around;
+        width: 20vw;
+    }
+
+    .kpis2 {
+        height: 90vh;
+    }
+
+    .kpis2 span, select {
+        font-size: 1.5vw;
+    }
+
+    .gerar-grafico button {
+        width: 100%;
+        font-size: 1.5vw;
+    }
+
+    #ipt_dia {
+        width: 10vw;
+        font-size: 1vw;
+    }
+
+    .horarios {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .escolha-horario {
+        height: fit-content;
+    }
+
+    .horarios input {
+        width: 10vw;
+        height: fit-content;
+        font-size: 1vw;
+    }
+
+    .escolha-metricas select {
+        width: 12vw;
+        font-size: 1vw;
+    }
+
+    .horarios {
+        gap: 10px;
+    }
+
+    #total_filtrado, #total_criticos {
+        font-size: 5vh;
+    }
+
+    .button-listagem {
+        margin-top: 4%;
+        width: 40%;
+    }
+
+    .cabecalho-listagem {
+        color: #FFFFFF;
+        font-size: 2vh;
+    }
+
+    .btn-nav {
+        font-size: 1.5vw;
+    }
+
+    #listagem {
+        width: 20vw;
+    }
+
+    #ipt_de, #segundaInputData input {
+        width: 10vw;
+        font-size: 1vw;
+    }
+
+    .dash-organizacao {
+        width: 75%;
+    }
+
+    .texto-listagem {
+        width: 18vw;
+    }
+
+    .paginacao {
+        width: 95%;
+    }  
+
+    .organizar-filtrado {
+        align-items: flex-end;
+        width: 100%;
+    }
+
+    .kpi_filtrado {
+        font-size: 4vh;
+    }
+
+    .kpi-filtrado-titulo {
+        font-size: 1.5vw;
+    }
+
+    .legenda {
+        width: 20%;
+    }
+
+    .legenda-titulo {
+        font-size: 1.5vh;
     }
 }
