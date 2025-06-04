@@ -414,9 +414,9 @@ function gerarGraficos() {
 
         const spanText = document.createElement('span');
         spanText.innerHTML = 
-            i === 1 ? `MÉDIA MAIS ALTA DE CAPTURA: <br><span class="kpi_filtrado" id="pico${chartCount}">90%</span>` :
-            i === 2 ? `MOMENTO COM MAIS ALERTAS: <br><span class="kpi_filtrado" id="momento${chartCount}">03/04/2025</span>` :
-                      `NÚMEROS DE ALERTAS: <br><span class="kpi_filtrado" id="total${chartCount}">21</span>`;
+            i === 1 ? `MÉDIA MAIS ALTA DE CAPTURA: <br><span class="kpi_filtrado" id="pico${chartCount}"></span>` :
+            i === 2 ? `MOMENTO COM MAIS ALERTAS: <br><span class="kpi_filtrado" id="momento${chartCount}"></span>` :
+                      `NÚMEROS DE ALERTAS: <br><span class="kpi_filtrado" id="total${chartCount}"></span>`;
 
         kpi.appendChild(spanText);
         kpiPrazo.appendChild(kpi);
@@ -556,6 +556,15 @@ function gerarGraficos() {
         let min = 0
         let dataAtual = "";
         for(let i = 0; i < dados.length; i++) {
+            
+            let valor = dados[i][json.r]
+            let limite = dados[i][json.l]
+
+            
+            if(json.m == "DISPONIVEL" || json.c == ("REDE" || "PROCESSOS")) {
+                valor = valor * 1000;
+                limite = limite * 1000;
+            }
 
             if((inicio == fim && metodo == "periodo") || inicio == "ultimoDia") {
                 dataAtual = ((dados[i].dataHora).split(" ")[1])
@@ -565,30 +574,28 @@ function gerarGraficos() {
             } else {
                 dataAtual = dados[i].dataHora
             }
-
-            console.log("dados[i][json.r]")
-            console.log(dados[i][json.r])
     
-            if(max <= dados[i][json.r] || i == 0) {
-                max = dados[i][json.r] * 1.1
+            if(max <= valor || i == 0) {
+                max = valor * 1.1
             }
 
-            if(max <= dados[i][json.l]) {
-                max = dados[i][json.l] * 1.1
+            if(max <= limite) {
+                max = limite * 1.1
             }
 
-            if(min >= dados[i][json.r] || i == 0) {
-                min = dados[i][json.r] * 0.8
+            if(min >= valor || i == 0) {
+                min = valor * 0.8
             }
 
-            if(min >= dados[i][json.l]) {
-                min = dados[i][json.l] * 0.8
+            if(min >= limite) {
+                min = limite * 0.8
             }
+
 
             listaDatas.push(dataAtual);
-            listaCapturas.push(Math.ceil(dados[i][json.r]))
-            if(dados[i][json.l] != undefined) {
-                listaLimite.push(Math.ceil(dados[i][json.l]))
+            listaCapturas.push(Math.ceil(valor))
+            if(limite != undefined) {
+                listaLimite.push(limite)
             }
         }
 
@@ -596,8 +603,8 @@ function gerarGraficos() {
             min = 0
             max = 100
         } else {
-            min = Math.ceil(min)
-            max = Math.ceil(max)
+            min = Math.floor(min)
+            max = Math.floor(max)
         }
 
         let tamanho = (min + max) / 5
@@ -948,13 +955,13 @@ function capturas(componente, metrica) {
 
     listaMetricas.push({c: "CPU", m: "PORCENTAGEM", r: "valorCpuPercent", l: "limiteCpuPercent", u: "%"});
     listaMetricas.push({c: "CPU", m: "FREQUÊNCIA", r: "valorCPUFreq", l: "limiteCPUFreq", u: "Hz"});
-    listaMetricas.push({c: "RAM", m: "DISPONIVEL", r: "valorRAMDisponivel", l: "none", u: "GB"});
+    listaMetricas.push({c: "RAM", m: "DISPONIVEL", r: "valorRAMDisponivel", l: "none", u: "MB"});
     listaMetricas.push({c: "RAM", m: "PORCENTAGEM", r: "valorRAMPercentual", l: "limiteRAMPercentual", u: "%"});
-    listaMetricas.push({c: "DISCO", m: "TOTAL", r: "valorDISKTotal", l: "none", u: "GB"});
-    listaMetricas.push({c: "DISCO", m: "DISPONIVEL", r: "valorDISKDisponivel", l: "none", u: "GB"});
+    listaMetricas.push({c: "DISCO", m: "TOTAL", r: "valorDISKTotal", l: "none", u: "MB"});
+    listaMetricas.push({c: "DISCO", m: "DISPONIVEL", r: "valorDISKDisponivel", l: "none", u: "MB"});
     listaMetricas.push({c: "DISCO", m: "PORCENTAGEM", r: "valorDISKPercentual",  l: "limiteDISKPercentual", u: "%"});
-    listaMetricas.push({c: "REDE", m: "RECEBIDA", r: "valorREDERecebida",  l: "limiteREDERecebida",u: "pacotes"});
-    listaMetricas.push({c: "REDE", m: "ENVIADA", r: "valorREDEEnviada",  l: "limiteREDEEnviada", u: "pacotes"});
+    listaMetricas.push({c: "REDE", m: "RECEBIDA", r: "valorREDERecebida",  l: "limiteREDERecebida",u: "Mbps"});
+    listaMetricas.push({c: "REDE", m: "ENVIADA", r: "valorREDEEnviada",  l: "limiteREDEEnviada", u: "Mbps"});
     listaMetricas.push({c: "PROCESSOS", m: "TOTAL", r: "alertaREDEEnviada",  l: "valorPROCESSOTotal", u: ""});
     listaMetricas.push({c: "PROCESSOS", m: "DESATIVADOS", r: "valorPROCESSODesativado",  l: "limitePROCESSODesativado", u: ""});
     listaMetricas.push({c: "PROCESSOS", m: "ATIVOs", r: "valorPROCESSOAtivos",  l: "limitePROCESSOAtivos", u: ""});
@@ -1021,7 +1028,7 @@ function graficoTempoReal(lista, json, graficoDiv, spanId) {
         return
     }
 
-    spanId.innerHTML = `Revisão em das capturas de ${inicio} até ${fim} do dia ${data.split("-")[2]}/${data.split("-")[1]}/${data.split("-")[0]}`;
+    spanId.innerHTML = `Revisão das capturas de ${inicio} até ${fim} do dia ${data.split("-")[2]}/${data.split("-")[1]}/${data.split("-")[0]}`;
     
     inicio = pesquisaBinaria(lista, inicio)
     fim = pesquisaBinaria(lista, fim)
@@ -1031,11 +1038,17 @@ function graficoTempoReal(lista, json, graficoDiv, spanId) {
     let arrayCapturas = [];
 
     for(let i = inicio; i < inicio + 6; i++) {
+        let valor = lista[i][json.r]
+        let limite = lista[i][json.l]
         arrayDatas.push(lista[i].dataHora.split(" ")[1])
-        arrayLimites.push(lista[i][json.l])
-        arrayCapturas.push(lista[i][json.r])
+        
+        if(json.m == "DISPONIVEL" || json.c == ("REDE" || "PROCESSOS")) {
+            valor = valor * 1000;
+            limite = limite * 1000;
+        }
+        arrayCapturas.push(valor)
+        arrayLimites.push(limite)
     }
-    
     
     tempoReal = new Chart(canvas.getContext('2d'), {
             type: 'line',
@@ -1051,7 +1064,7 @@ function graficoTempoReal(lista, json, graficoDiv, spanId) {
                         fill: true
                     },
                     {
-                        label: 'Limite (%)',
+                        label: 'Limite',
                         data: arrayLimites,
                         borderColor: 'red',
                         borderWidth: 2,
@@ -1088,10 +1101,20 @@ function graficoTempoReal(lista, json, graficoDiv, spanId) {
         arrayDatas.push(lista[inicio].dataHora.split(" ")[1])
         arrayDatas.shift()
 
-        arrayLimites.push(lista[inicio][json.l])
+        
+        let valor = lista[inicio][json.r]
+        let limite = lista[inicio][json.l]
+        arrayDatas.push(lista[i].dataHora.split(" ")[1])
+        
+        if(json.m == "DISPONIVEL" || json.c == ("REDE" || "PROCESSOS")) {
+            valor = valor * 1000;
+            limite = limite * 1000;
+        }
+
+        arrayLimites.push(limite)
         arrayLimites.shift()
 
-        arrayCapturas.push(lista[inicio][json.r])
+        arrayCapturas.push(valor)
         arrayCapturas.shift()
 
         tempoReal.data.labels = arrayDatas;
