@@ -38,6 +38,7 @@ header {
 }
 
 .foto-user {
+    display: none;
     background-color: #2A5277;
     height: 65px;
     width: 65px;
@@ -48,8 +49,8 @@ header {
     display: flex;
     font-family: "Inter", sans-serif;
     height: 50px;
-    width: 80px;
-    font-size: 22px;
+    width: 100px;
+    font-size: 18px;
     color: #FFFFFF;
 }
 

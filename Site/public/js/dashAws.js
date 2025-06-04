@@ -57,7 +57,7 @@ function buscarKpi() {
             } if (window.innerWidth <= 376) {
                 tamanhoFonte = 8
             }
-            kpiServico.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: ${tamanhoFonte}px">${porcentagem.toFixed(2)}% do gasto total</span>`
+            kpiServico.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: ${tamanhoFonte}px; font-weight: bold">${porcentagem.toFixed(2)}% do gasto total</span>`
         })
     })
     fetch("/aws/buscarGastoTotalPorMes", {
@@ -88,7 +88,7 @@ function buscarKpi() {
                     } else if (window.innerWidth <= 376) {
                         tamanhoFonte = 8
                     }
-                    kpiIndicador.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: ${tamanhoFonte}px">${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
+                    kpiIndicador.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: ${tamanhoFonte}px; font-weight: bold">${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
                 }
             }
         })
