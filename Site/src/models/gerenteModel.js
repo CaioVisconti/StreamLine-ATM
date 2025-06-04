@@ -40,14 +40,16 @@ function mostrarCountTotal(idAgencia) { // Contagem total de alertas
 
 function mostrarCount(idAgencia) { //Contagem atual ate 10
 
-  let instrucaoSql = ` select count(a.idalerta) as total
-                        from alerta as a
-                            join parametro as p
-                            on a.fkParametro = p.idParametro
-                            join atm on atm.idAtm = p.fkAtm
-                            where date(a.dtHoraAbertura) = curdate() 
-                            and fkAgencia =  ${idAgencia}
-                            limit 10;`
+  let instrucaoSql = `SELECT COUNT(*) AS total
+                      FROM (
+                          SELECT a.idalerta
+                          FROM alerta AS a
+                          JOIN parametro AS p ON a.fkParametro = p.idParametro
+                          JOIN atm ON atm.idAtm = p.fkAtm
+                          WHERE DATE(a.dtHoraAbertura) = CURDATE()
+                            AND fkAgencia = ${idAgencia}
+                          LIMIT 10
+                      ) AS sub;`
 
   return database.executar(instrucaoSql);
 }
