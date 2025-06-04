@@ -12,6 +12,6 @@ public class ConexaoBanco {
             System.out.println("Erro ao tentar encontrar o driver Mysql! " + e.getMessage());
         }
 
-        return DriverManager.getConnection("jdbc:mysql://3.86.153.72:3306/streamline?useTimezone=true&serverTimezone=UTC", "root", "urubu100");
+        return DriverManager.getConnection("jdbc:mysql://localhost/streamline?useTimezone=true&serverTimezone=UTC", "root", "admin!");
     }
 }

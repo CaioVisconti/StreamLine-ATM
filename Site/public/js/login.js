@@ -56,7 +56,9 @@ function login() {
                 window.location = "./app/dashLongoPrazo.html";    
             } else if (cargoUsuario === "CEO") {
                 window.location = "./root/cadastrarEmpresa.html";    
-            } 
+            } else if (cargoUsuario === "FinOps"){
+                window.location = "./root/dashboardAWS.html";
+            }
             else {
                 console.log("Erro: Cargo inválido!");
             }

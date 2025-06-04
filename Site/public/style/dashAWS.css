@@ -237,7 +237,8 @@ header {
     font-size: 20px;
 }
 
-.container-servicos, .container-custos {
+.container-servicos,
+.container-custos {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -283,7 +284,7 @@ header {
     width: 100%;
 }
 
-.valores-servicos{
+.valores-servicos {
     font-weight: bold;
     font-size: 14px;
 }
@@ -357,7 +358,7 @@ header {
     border-radius: 10px;
 }
 
-.titulo{
+.titulo {
     width: 95%;
 }
 
@@ -397,7 +398,7 @@ header {
 }
 
 .container-grafico-modal .grafico {
-    border: solid #87C5FF;  
+    border: solid #87C5FF;
     width: 100%;
     background-color: #131c2e;
 }
@@ -406,12 +407,12 @@ header {
     background-color: transparent;
 }
 
-.container-custos{
+.container-custos {
     width: 100%;
     height: 100%;
 }
 
-.valor-coluna{
+.valor-coluna {
     display: flex;
     justify-content: space-around;
     font-size: 20px;
@@ -420,7 +421,8 @@ header {
     height: 50%;
 }
 
-.colunas, .valores {
+.colunas,
+.valores {
     display: flex;
     /* height: 100%; */
     justify-content: space-around;
@@ -444,4 +446,182 @@ header {
 
 .coluna-listagem #titulo {
     font-size: 24px;
+}
+
+
+@media screen and (max-width: 414px) {
+    .btn-nav {
+        font-size: 10px;
+        width: 10vw;
+    }
+
+    .info-user {
+        display: none;
+    }
+
+    .kpis {
+        flex-direction: column;
+    }
+
+    .kpi {
+        width: 95%;
+    }
+
+    .container-grafico {
+        flex-direction: column;
+
+    }
+
+    .abas-container,
+    .abas {
+        width: 100%;
+    }
+
+    .grafico {
+        width: 100%;
+    }
+
+    .info-user {
+        display: none;
+    }
+
+    .kpi p {
+        font-size: 15px;
+        color: white;
+    }
+
+    .kpi span {
+        font-size: 8px;
+        color: #87C5FF;
+    }
+
+    .kpi .titulo-kpi {
+        font-size: 10px;
+    }
+
+    .kpi #servicoMaisCaro span {
+        font-size: 20px;
+    }
+
+    .valor-titulo #gastoTotalSemana {
+        font-size: 15px;
+    }
+
+    .grafico h1 {
+        font-size: 15px;
+    }
+
+    .gasto-coluna span,
+    .servico-coluna span {
+        font-size: 10px;
+    }
+
+    .valor-titulo span {
+        font-size: 15px;
+    }
+
+    .gasto-coluna button {
+        font-size: 10px;
+    }
+
+    .modal-coluna span {
+        font-size: 8px;
+    }
+
+    .container-servicos {
+        height: 100%;
+    }
+
+    .valores-servicos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 10vh;
+    }
+
+    .gasto-coluna button {
+        height: 2vh;
+        font-size: 6px;
+    }
+
+    .gasto-coluna {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .kpi_modal {
+        height: 10vh;
+    }
+
+    .kpi_modal p {
+        font-size: 8px;
+    }
+    .container-grafico-modal{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .grafico{
+        /* border: 1px solid red; */
+        width: 95%;
+    }
+}
+
+@media (width: 800px) and (height: 600px) {
+
+    .foto-user {
+        height: 30px;
+        width: 30px;
+    }
+
+    .msg-user {
+        font-size: 10px;
+    }
+
+    .kpi p {
+        font-size: 20px;
+        color: white;
+    }
+
+    .kpi span {
+        font-size: 12px;
+        color: #87C5FF;
+    }
+
+    .kpi .titulo-kpi {
+        font-size: 15px;
+    }
+
+    .kpi #servicoMaisCaro span {
+        font-size: 20px;
+    }
+
+    .valor-titulo #gastoTotalSemana {
+        font-size: 15px;
+    }
+
+    .grafico h1 {
+        font-size: 15px;
+    }
+
+    .gasto-coluna span,
+    .servico-coluna span {
+        font-size: 10px;
+    }
+
+    .valor-titulo span {
+        font-size: 15px;
+    }
+
+    .gasto-coluna button {
+        font-size: 10px;
+    }
+
+    .modal-coluna span {
+        font-size: 8px;
+    }
+
+
+
 }

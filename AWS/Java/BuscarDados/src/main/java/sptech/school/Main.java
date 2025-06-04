@@ -15,10 +15,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main implements RequestHandler<S3Event, String> {
-    private static final Log log = LogFactory.getLog(Main.class);
-    @Override
-    public String handleRequest(S3Event s3Event, Context context) {
+public class Main {
+    public static void main(String[] args) {
         System.setProperty("aws.java.v1.disableDeprecationAnnouncement", "true");
         S3ObjectInputStream arq = null;
         arq = Aws.buscarArquivo("bclientstreamline", "analiseAWS/Capturas_AWS.json");
@@ -39,12 +37,11 @@ public class Main implements RequestHandler<S3Event, String> {
                     String sqlInsert = String.format("INSERT INTO awsCusto (inicio, fim, servico, custo) VALUES ('%s', '%s', '%s', %s)", dadoAtual.getInicio(), dadoAtual.getFim(), dadoAtual.getServico().getFirst(), (Math.abs(dadoAtual.getCusto())));
                     query.executeUpdate(sqlInsert);
                 }
-                    System.out.println(dadoAtual);
+                System.out.println(dadoAtual);
             }
             System.out.println("Insert na tabela awsCusto foi realizado com sucesso!");
         } catch (SQLException e) {
             System.out.println("Erro ao tentar se conectar ao MySQL! " + e.getMessage());
         }
-        return "funcinoou aqui";
     }
 }

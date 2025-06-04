@@ -7,6 +7,7 @@ window.onload = async () => {
     buscarKpi();
     buscarIndicadores();
     buscarGastoMensal();
+    console.log("aaa", window.innerWidth)
     buscarCustoPorServico();
     document.getElementById("default").click();
     nomeFunc.innerHTML = nomeUsuario;
@@ -50,7 +51,13 @@ function buscarKpi() {
             }
             porcentagem = (json[0].custoServico / json[0].custoTotal) * 100
             servicoMaisCaro.innerHTML = `${json[0].servico}`;
-            kpiServico.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: 15px">${porcentagem.toFixed(2)}% do gasto total</span>`
+            let tamanhoFonte = 15
+            if (window.innerWidth <= 800) {
+                tamanhoFonte = 10
+            } if (window.innerWidth <= 376) {
+                tamanhoFonte = 8
+            }
+            kpiServico.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: ${tamanhoFonte}px">${porcentagem.toFixed(2)}% do gasto total</span>`
         })
     })
     fetch("/aws/buscarGastoTotalPorMes", {
@@ -69,13 +76,19 @@ function buscarKpi() {
                 if (gastoMesAnterior >= 1 && gastoMesAtual >= 1) {
                     comparacao = ((gastoMesAtual - gastoMesAnterior) / gastoMesAnterior) * 100
                     mensagem = "a menos"
-                    if (comparacao > 0) { 
+                    if (comparacao > 0) {
                         mensagem = "a mais"
                     }
                     if ((gastoMesAtual - gastoMesAnterior) > 100) {
                         cor = "#ff0000"
                     }
-                    kpiIndicador.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: 15px">${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
+                    let tamanhoFonte = 15
+                    if (window.innerWidth <= 800) {
+                        tamanhoFonte = 10
+                    } else if (window.innerWidth <= 376) {
+                        tamanhoFonte = 8
+                    }
+                    kpiIndicador.innerHTML += `<span style="color:rgb(169, 213, 255); font-size: ${tamanhoFonte}px">${Math.abs(comparacao).toFixed(2)}% ${mensagem} que no mês anterior`
                 }
             }
         })
@@ -135,16 +148,17 @@ function buscarIndicadores() {
             let mensagemPorcentagem = "&#8593"
             let totalSemanaAtual = 0
             let totalSemanaAnterior = 0
+            console.log("onsole", json)
             for (let i = 0; i < json.select.length; i++) {
+                if (json.selectSemanaAnterior[i] == null) {
+                    const custoKey = '{"custo": 0.00}';
+                    json.selectSemanaAnterior[i] = JSON.parse(custoKey)
+                }
                 totalSemanaAtual += json.select[i].custo
                 totalSemanaAnterior += json.selectSemanaAnterior[i].custo
                 porcentagem = ((totalSemanaAtual - totalSemanaAnterior) / totalSemanaAnterior) * 100
                 comparacao = ((json.select[i].custo - json.selectSemanaAnterior[i].custo) / json.selectSemanaAnterior[i].custo) * 100
                 gasto = json.select[i].custo
-                if (json.selectSemanaAnterior[i] == null) {
-                    const custoKey = '{"custo": 0.00}';
-                    json.selectSemanaAnterior[i] = JSON.parse(custoKey)
-                }
                 custoTotal += json.select[i].custo
                 if (json.select[i].servico == "EC2 - Other") {
                     json.select[i].servico = "EC2"
@@ -159,11 +173,18 @@ function buscarIndicadores() {
                     json.select[i].servico = "Lambda"
                 }
                 if (json.select[i].servico == "Lambda" || json.select[i].servico == "EC2" || json.select[i].servico == "S3") {
-                    if ((json.select[i].custo - json.selectSemanaAnterior[i].custo) > 50) {
+                    if ((json.select[i].custo - json.selectSemanaAnterior[i].custo) > 0) {
                         cor = "#FF4444"
+                        mensagem = "&#8593"
                     } else if ((json.select[i].custo - json.selectSemanaAnterior[i].custo) < 0) {
                         cor = "#00FF88"
                         mensagem = "&#8595"
+                    }
+                    let tamanhoFonte = 24
+                    if (window.innerWidth <= 800) {
+                        tamanhoFonte = 15
+                    } if (window.innerWidth <= 376) {
+                        tamanhoFonte = 8
                     }
 
                     indicadores.innerHTML += `<div class="valores-servicos">
@@ -171,7 +192,7 @@ function buscarIndicadores() {
                     <span>${json.select[i].servico}</span>
                     </div>
                     <div class="gasto-coluna">
-                    <span><span style="color: ${cor}; font-size: 24px">${mensagem}</span> R$${json.select[i].custo.toFixed(2)}</span>
+                    <span><span style="color: ${cor}; font-size: ${tamanhoFonte}px">${mensagem}</span> R$${json.select[i].custo.toFixed(2)}</span>
                     </div>
                     <div class="gasto-coluna">
                     <span>R$${json.selectSemanaAnterior[i].custo.toFixed(2)}</span>
@@ -186,11 +207,17 @@ function buscarIndicadores() {
                 mensagemPorcentagem = "&#8595"
                 corPorcentagem = "#00FF88"
             }
-            if(porcentagem == 0){
+            if (porcentagem == 0) {
                 mensagemPorcentagem = ""
             }
+            let tamanhoFonteDois = 40
+            if (window.innerWidth <= 800) {
+                tamanhoFonteDois = 25
+            } if (window.innerWidth <= 376) {
+                tamanhoFonte = 8
+            }
             gastoTotal.innerHTML += custoTotal.toFixed(2);
-            gastoTotalSemana.innerHTML += `<span id="gastoTotalSemana"><span style="color: ${corPorcentagem}; font-size: 40px">${mensagemPorcentagem}</span> ${Math.abs(porcentagem).toFixed(2)}% em Relação a Semana Passada</span>`
+            gastoTotalSemana.innerHTML += `<span id="gastoTotalSemana"><span style="color: ${corPorcentagem}; font-size: ${tamanhoFonteDois}px">${mensagemPorcentagem}</span> ${Math.abs(porcentagem).toFixed(2)}% em Relação a Semana Passada</span>`
         })
     })
 }
@@ -293,7 +320,7 @@ function buscarCustoPorServico() {
                     gastoLambda = json.select[i].custo
                 }
             }
-                let mensagem = "&#8593"
+            let mensagem = "&#8593"
             if (gastoEc2 < gastoEc2MesAnterior) {
                 mensagem = "&#8595"
             }
@@ -303,6 +330,12 @@ function buscarCustoPorServico() {
             if ((gastoEc2 - gastoEc2MesAnterior) < 0) {
                 cor = "#00FF88"
             }
+            let tamanhoFonte = 20
+            if (window.innerWidth <= 800) {
+                tamanhoFonte = 15
+            } if (window.innerWidth <= 376) {
+                tamanhoFonte = 8
+            }
             indicadores_custos.innerHTML += `<div class="valores-servicos">
                             <div class="modal-coluna">
                                 <span>R$${gastoEc2.toFixed(2)}</span>
@@ -311,7 +344,7 @@ function buscarCustoPorServico() {
                                 <span>R$${gastoEc2MesAnterior.toFixed(2)}</span>
                             </div>
                             <div class="modal-coluna">
-                                <span><span style="color: ${cor}; font-size: 20px">${mensagem}</span> R$${Math.abs((gastoEc2 - gastoEc2MesAnterior)).toFixed(2)}</span>
+                                <span><span style="color: ${cor}; font-size: ${tamanhoFonte}px">${mensagem}</span> R$${Math.abs((gastoEc2 - gastoEc2MesAnterior)).toFixed(2)}</span>
                             </div>
                             </div>`
         }))
@@ -511,21 +544,30 @@ function plotarDadosNoGrafico() {
         }
     }).then((res) => {
         res.json().then((json) => {
+            let fonte = 12
+            if (window.innerWidth <= 376) {
+                fonte = 5
+            } else if (window.innerWidth <= 800) {
+                fonte = 14
+            }
             for (let i = 0; i < json.length; i++) {
-                if (json[i].servico == "Amazon Simple Storage Service") {
-                    json[i].servico = "S3"
+                if (json[i].servico == "Amazon Simple Storage Service" || json[i].servico == "EC2 - Other" || json[i].servico == "AWS Lambda" || json[i].servico == "AmazonCloudWatch") {
+
+                    if (json[i].servico == "Amazon Simple Storage Service") {
+                        json[i].servico = "S3"
+                    }
+                    if (json[i].servico == "EC2 - Other") {
+                        json[i].servico = "EC2"
+                    }
+                    if (json[i].servico == "AWS Lambda") {
+                        json[i].servico = "Lambda"
+                    }
+                    if (json[i].servico == "AmazonCloudWatch") {
+                        json[i].servico = "Amazon Cloud Watch"
+                    }
+                    dadosServicos.push(json[i].servico)
+                    dadosCusto.push(json[i].custo.toFixed(2))
                 }
-                if (json[i].servico == "EC2 - Other") {
-                    json[i].servico = "EC2"
-                }
-                if (json[i].servico == "AWS Lambda") {
-                    json[i].servico = "Lambda"
-                }
-                if (json[i].servico == "AmazonCloudWatch") {
-                    json[i].servico = "Amazon Cloud Watch"
-                }
-                dadosServicos.push(json[i].servico)
-                dadosCusto.push(json[i].custo.toFixed(2))
             }
 
             const graficoTotal = document.getElementById('graficoTotal');
@@ -548,11 +590,14 @@ function plotarDadosNoGrafico() {
                                 text: 'Custo (R$)',
                                 color: 'white',
                                 font: {
-                                    size: 15
+                                    size: fonte
                                 }
                             },
                             ticks: {
-                                color: 'white'
+                                color: 'white',
+                                font: {
+                                    size: fonte
+                                }
                             }
                         },
                         x: {
@@ -560,7 +605,10 @@ function plotarDadosNoGrafico() {
                                 display: false,
                             },
                             ticks: {
-                                color: 'white'
+                                color: 'white',
+                                font: {
+                                    size: fonte
+                                }
                             }
                         }
                     },
@@ -651,11 +699,20 @@ async function plotarDadosMensais() {
                     custoTotalMesAnterior += json.selectIndividuais[i].custo
                     if (json.selectIndividuais[j].servico == servicoMmp) {
                         comparacao = custoMmp - json.selectIndividuais[j].custo
+                        console.log("a", custoMmp)
+                        if ((json.selectIndividuais[j].custo) == 0) {
+                            json.selectIndividuais[j].custo = 1
+                        }
                         porcentagem = ((comparacao / json.selectIndividuais[j].custo) * 100).toFixed(2)
                     }
                 }
 
+                if (custoTotalMesAnterior == 0) {
+                    custoTotalMesAnterior = 1
+                }
                 porcentagemValorTotal = (((custoTotal - custoTotalMesAnterior) / custoTotalMesAnterior) * 100).toFixed(2)
+                console.log("A", custoTotalMesAnterior)
+                console.log("A", custoTotal)
 
                 if (servicoMmp == "EC2 - Other") {
                     servicoPlotado = "EC2"
@@ -677,20 +734,40 @@ async function plotarDadosMensais() {
                     mensagemValorTotal = "&#8593"
                     corValorTotal = "#00FF88"
                 }
+                let tamanhoFonte = 20
+                if (window.innerWidth <= 800) {
+                    tamanhoFonte = 20
+                } if (window.innerWidth <= 376) {
+                    tamanhoFonte = 8
+                }
+
+                console.log(porcentagem)
 
                 listagem_previsao.innerHTML += `<div class="valores-servicos">
                 <div class="servico-coluna">
                 <span>${servicoPlotado}</span>
                 </div>
                 <div class="gasto-coluna">
-                <span>R$${custoMmp} - <span style="color: ${cor}; font-size: 24px">${mensagem}</span> ${Math.abs(porcentagem)}%</span>
+                <span><span style="color: ${cor}; font-size: ${tamanhoFonte}px">${mensagem}</span>R$${custoMmp}</span>
                 </div>s
                 </div>`
 
 
             }
-            gastoTotalProjecao.innerHTML += `<span>R$${custoTotal.toFixed(2)} - <span style="color: ${cor}; font-size:40px">${mensagemValorTotal}</span> ${Math.abs(porcentagemValorTotal)}%</span>`
+            let tamanhoFonteDois = 40
+            if (window.innerWidth <= 800) {
+                tamanhoFonteDois = 25
+            } if (window.innerWidth <= 376) {
+                tamanhoFonteDois = 8
+            }
+            gastoTotalProjecao.innerHTML += `<span>R$${custoTotal.toFixed(2)} - <span style="color: ${cor}; font-size:${tamanhoFonteDois}px">${mensagemValorTotal}</span> ${Math.abs(porcentagemValorTotal)}%</span>`
             meses.push("Projeção")
+            let fonte = 15
+            if (window.innerWidth <= 800) {
+                fonte = 10
+            } if (window.innerWidth <= 376) {
+                fonte = 8
+            }
 
             const graficoPrevisao = document.getElementById('previsao');
             new Chart(graficoPrevisao, {
@@ -709,11 +786,14 @@ async function plotarDadosMensais() {
                                 text: 'Custo (R$)',
                                 color: 'white',
                                 font: {
-                                    size: 15
+                                    size: fonte
                                 }
                             },
                             ticks: {
-                                color: 'white'
+                                color: 'white',
+                                font: {
+                                    size: fonte
+                                }
                             }
                         },
                         x: {
@@ -722,7 +802,10 @@ async function plotarDadosMensais() {
                                 display: false,
                             },
                             ticks: {
-                                color: 'white'
+                                color: 'white',
+                                font: {
+                                    size: fonte
+                                }
                             }
                         }
                     },
