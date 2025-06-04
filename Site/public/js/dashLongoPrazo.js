@@ -131,7 +131,8 @@ function gerarCards(lista) {
     let acREDEE;
     let acREDER;
     let vetor = [];
-    let componentes = ["CPU Porcentagem", "CPU Frequência", "RAM Disponivel", "Porcentagem RAM", "Disco Disponivel", "Processos Desativados", "Processos Ativos", "Pacotes Enviados", "Pacotes Recebidos"];
+    
+    let componentes = ["PORCENTAGEM CPU", "FREQUÊNCIA CPU", "DISPONIVEL RAM", "PORCENTAGEM RAM", "DISPONIVEL DISCO", "TOTAL DISCO", "PORCENTAGEM DISCO","DESATIVADOS PROCESSOS", "ATIVOS PROCESSOS", "TOTAL PROCESSOS", "ENVIADA REDE", "RECEBIDA REDE"];
     let componente = "";
     
     for(let i = 0; i < lista.length; i++) {
