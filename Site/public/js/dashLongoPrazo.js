@@ -339,23 +339,22 @@ let periodo = false;
 let chartCount = 0;
 
 function gerarGraficos() {
-    chartCount++;
-
+    
     let filtro = slt_filtro.value;
     let atm = select_atm.value;
     let componente = select_componentes.value;
     let metrica = select_metricas.value;
     let intervalo = slt_intervalo.value
-
+    
     if(metrica == "FREQUENCIA") {
         metrica = "FREQUÊNCIA";
     }
 
     const json = capturas(componente, metrica);
-
+    
     let inicio, fim, metodo;
     const atual = chartCount;
-
+    
     if(filtro == "gerarGrafico") {
         metodo = "teste";
         if(periodo) {
@@ -370,7 +369,7 @@ function gerarGraficos() {
         inicio = ipt_dia.value.split("-").reverse().join("-");
         fim = inicio;
     }
-
+    
     let filtros = document.getElementById("filtros");
     let leg = document.querySelector(".titulo-grafico");
     
@@ -378,25 +377,26 @@ function gerarGraficos() {
         filtros.style.display = "none"
         leg.style.display = "none"
     }
-
+    
     url = `https://v628rlk7v0.execute-api.us-east-1.amazonaws.com/TESTE1GUI/bclientstreamline/ATM_${atm}/${fim}/${inicio}/${metodo}`;
-
+    
     fetch(url)
     .then(res => res.json())
     .then(dados => {
+        chartCount++;
         listaGeral = dados
         console.log("dados")
         console.log(dados)
         listaDatas = [];
         listaCapturas = [];
         listaLimite = [];
-
-    const dash = document.getElementById("painels");
-
-    const dashDiv = document.createElement('div');
-    dashDiv.className = "dash-inicial";
-    dashDiv.id = `dash${chartCount}`;
-    dashDiv.style.display = "none";
+        
+        const dash = document.getElementById("painels");
+        
+        const dashDiv = document.createElement('div');
+        dashDiv.className = "dash-inicial";
+        dashDiv.id = `dash${chartCount}`;
+        dashDiv.style.display = "none";
 
     const kpis = document.createElement('div');
     kpis.className = "kpis";
