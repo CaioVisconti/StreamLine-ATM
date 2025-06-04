@@ -95,8 +95,16 @@ function exibirHistorico() {
                         tipo = "Crítico"
                     }
 
-                    const d = new Date(data[i].DataHora.replace(' ', 'T'));
-                    const dataFormatada = d.toLocaleDateString("pt-BR") + ' ' + d.toTimeString().slice(0, 5);
+                    const d = new Date(data[i].DataHora);
+
+                    const diaFormatado = d.toLocaleDateString("pt-BR"); // Coloca no formato pt-br
+                    const horaFormatada = d.toLocaleTimeString("pt-BR", { // Pega HH:MM local
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false // Formato 24h
+                    });
+
+                    const dataFormatada = `${diaFormatado} ${horaFormatada}`;
 
                     divHistorico.innerHTML += `<div class="row py-2 border-bottom border-secondary align-items-center text-center">
                                 <div class="col-2">${atm}</div>
@@ -349,10 +357,8 @@ function buscarGraficoSituacao() {
             lista = json;
 
             for (var i = 0; i < json.length; i++) {
-            const dataIso = json[i].dia.split('T')[0]; // "2025-05-30"
-            const data = new Date(dataIso);
+            const data = new Date(json[i].dia); 
             const dataFormatada = data.toLocaleDateString('pt-BR');
-
 
                 if (!datasFormatadas.includes(dataFormatada)) {
                     console.log("dataFormatada");
