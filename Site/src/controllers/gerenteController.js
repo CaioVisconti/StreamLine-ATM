@@ -206,8 +206,6 @@ function buscarGraficoSituacao(req, res) {
     gerenteModel.buscarGraficoSituacao(idAgencia)
         .then((resultado) => {
             if (resultado.length > 0) {
-                console.log("situ")
-                console.log(resultado)
                 res.status(200).json(resultado);
             } else {
                 res.status(204).send("Nenhum resultado encontrado!");
@@ -225,16 +223,36 @@ function buscarGraficoSituacao(req, res) {
 async function buscarDadosJira(req, res) {
     try {
         // Define startDate e endDate para sempre cobrir os últimos 7 dias (incluindo hoje)
-        const endDate = moment().add(1, 'day').format('YYYY-MM-DD'); // Data de hoje
+        const endDate = moment().add(1, 'day').format('YYYY-MM-DD'); // Data de hoje + 1 (filtrar possiveis chamados pos meia noite)
+        const currentDate = moment().format('YYYY-MM-DD')
         const startDate = moment().subtract(6, 'days').format('YYYY-MM-DD'); // 6 dias atrás (totalizando 7 dias com hoje)
+
+        const issuesEndDate = [];
+        
+        console.log("start",startDate)
 
         // 1. Busca as issues resolvidas no Jira
         const jiraApiResponse = await gerenteModel.buscarIssuesJira(startDate, endDate);
         const issues = jiraApiResponse.issues || [];
+
+        // 1.1. Pegando a issue mais recente
+        for (let i = 0; i < issues.length; i++) {
+            const issue = issues[i]
+
+            if (issue.fields && issue.fields.resolutiondate) {
+            
+                if (moment(issue.fields.resolutiondate).format('YYYY-MM-DD') == currentDate) {
+                    issuesEndDate.push(issue);
+                }
+            }
+        }
+
+        
         // 2. Agrupa por dia de resolução
         const chartData = gerenteModel.agruparDadosPorDia(issues);
+
         // 3. Calcula estatísticas gerais
-        const stats = gerenteModel.calcularEstatisticasJira(issues);
+        const stats = gerenteModel.calcularEstatisticasJira(issuesEndDate);
 
         const resultadoFinal = {
             success: true,

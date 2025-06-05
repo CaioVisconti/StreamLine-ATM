@@ -357,8 +357,8 @@ function buscarGraficoSituacao() {
             lista = json;
 
             for (var i = 0; i < json.length; i++) {
-            const data = new Date(json[i].dia); 
-            const dataFormatada = data.toLocaleDateString('pt-BR');
+                const data = new Date(json[i].dia);
+                const dataFormatada = data.toLocaleDateString('pt-BR');
 
                 if (!datasFormatadas.includes(dataFormatada)) {
                     console.log("dataFormatada");
@@ -510,10 +510,19 @@ async function graficoResolucaoJira() {
             kpi2.innerHTML = "N/A";
         }
 
+        const labelsFormatadas = []
+
+        for (let i = 0; i < chartData.labels.length; i++) {
+            const [ano, mes, dia] = chartData.labels[i].split('-')
+            labelsFormatadas.push(`${dia}/${mes}/${ano}`)
+        }
+
+    console.log("labels", labelsFormatadas)
+
         new Chart(tempoChamados, {
             type: "bar",
             data: {
-                labels: chartData.labels,
+                labels: labelsFormatadas,
                 datasets: [
                     {
                         label: "Qtd de alertas resolvidos",
@@ -545,6 +554,51 @@ async function graficoResolucaoJira() {
                             }
                         }
                     },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let nomeDataset = context.dataset.label;
+
+                                // Pega o valor Y numérico do ponto de dado atual
+                                const valorY = context.parsed.y;
+
+                                let valorFormatadoParaExibir;
+
+                                // Verifica qual dataset está sendo processado para aplicar a formatação correta
+                                if (nomeDataset == "Tempo médio de resolução (h/min)") {
+                                    valorFormatadoParaExibir = valorY.toFixed(1) + 'h';
+
+                                    if (valorY == 0) {
+                                        valorFormatadoParaExibir = "0min";
+                                    } else if (valorY > 0 && valorY < 1) {
+                                        // Se o tempo for entre 0 e 1 hora (excluindo 0), mostra também em minutos
+                                        const minutos = Math.round(valorY * 60);
+                                        valorFormatadoParaExibir += ` (${minutos}min)`; // Ex: "0.2h (12min)"
+                                    } else if (valorY >= 1) {
+                                        // Se for 1 hora ou mais, mostra o detalhe em "Xh Ymin"
+                                        const horasInteiras = Math.floor(valorY);
+                                        const minutosResiduais = Math.round((valorY - horasInteiras) * 60);
+
+                                        if (minutosResiduais > 0) {
+                                            // Se houver minutos residuais, forma completa
+                                            valorFormatadoParaExibir = `${valorY.toFixed(1)}h (${horasInteiras}h ${minutosResiduais}min)`;
+                                        } else if (horasInteiras === valorY) {
+                                            // Se for uma hora exata (ex: 2.0h), pode adicionar "(2h)"
+                                            valorFormatadoParaExibir = `${horasInteiras.toFixed(1)}h (${horasInteiras}h)`;
+                                        }
+                                        // Se for valorY.toFixed(1)h e minutosResiduais for 0 (ex: 2.0h), 
+                                        // a string base já é "2.0h", o if acima adiciona "(2h)".
+                                    }
+                                } else {
+                                    // Formatação para QUALQUER OUTRO dataset (como "Qtd de alertas resolvidos")
+                                    // Simplesmente usa o valor numérico Y como está.
+                                    valorFormatadoParaExibir = valorY;
+                                }
+
+                                return nomeDataset + ': ' + valorFormatadoParaExibir;
+                            }
+                        }
+                    }
                 },
                 scales: {
                     x: {
@@ -577,7 +631,7 @@ async function graficoResolucaoJira() {
                         type: 'linear',
                         display: true,
                         position: 'right',
-                        title: { display: true, text: 'Tempo Médio (h/min/s)', color: "#FFFFFF" },
+                        title: { display: true, text: 'Tempo Médio (h/min)', color: "#FFFFFF" },
                         beginAtZero: true,
                         ticks: {
                             color: "#FFFFFF",

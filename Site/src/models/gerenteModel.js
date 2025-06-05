@@ -185,63 +185,99 @@ function obterHeadersJira() {
   }
 }
 
-function buscarIssuesJira(startDate, endDate, maxResults = 1000) {
+function buscarIssuesJira(startDate, endDate, maxResultsTotalDesejado = 1000) {
   return new Promise(async (resolve, reject) => {
+    let todasAsIssuesColetadas = []
+    let startAt = 0
+    const maxResultsPorPaginaJira = 100
+    let totalDeIssuesDisponiveisNaQuery
+    let continuarBuscando = true
+
+    const jql = `
+        project = "${JIRA_CONFIG.projectKey}"
+        AND status = "Completed" 
+        AND resolutiondate >= "${startDate}" 
+        AND resolutiondate < "${endDate}"
+        ORDER BY resolutiondate ASC
+    `
+
+    const baseUrl = JIRA_CONFIG.baseURL
+    const url = `${baseUrl}/rest/api/3/search`;
+    const headers = obterHeadersJira();
+
     try {
-      const jql = `
-              project = "${JIRA_CONFIG.projectKey}"
-                AND status = "Completed"
-                AND resolutiondate >= "${startDate}" 
-                AND resolutiondate <= "${endDate}"
-              ORDER BY resolutiondate DESC
-            `;
+      while (continuarBuscando) {
 
-      const baseUrl = JIRA_CONFIG.baseURL
-      const url = `${baseUrl}/rest/api/3/search`;
+        const params = {
+          jql: jql,
+          startAt: startAt,
+          maxResults: maxResultsPorPaginaJira,
+          fields: 'key,summary,status,created,resolutiondate,changelog',
+          expand: 'changelog' 
+        };
 
-      const headers = obterHeadersJira();
+        const response = await axios.get(url, {
+          headers: headers,
+          params: params,
+          timeout: 30000
+        });
 
-      const params = {
-        jql: jql,
-        maxResults: maxResults,
-        fields: 'key,summary,status,created,resolutiondate,changelog',
-        expand: 'changelog'
-      };
-      const response = await axios.get(url, {
-        headers: headers,
-        params: params,
-        timeout: 30000 // 30 segundos de timeout
+        if (response.data && response.data.issues) {
+          todasAsIssuesColetadas = todasAsIssuesColetadas.concat(response.data.issues);
+
+          if (totalDeIssuesDisponiveisNaQuery == undefined) {
+            totalDeIssuesDisponiveisNaQuery = response.data.total;
+          }
+
+          if (todasAsIssuesColetadas.length >= totalDeIssuesDisponiveisNaQuery ||
+            response.data.issues.length === 0 ||
+            todasAsIssuesColetadas.length >= maxResultsTotalDesejado) {
+            continuarBuscando = false;
+          } else {
+            startAt += response.data.issues.length;
+          }
+        } else {
+          console.warn("Resposta da API do Jira sem 'issues' ou 'data'. Interrompendo paginação.");
+          continuarBuscando = false;
+        }
+      }
+
+      resolve({
+        issues: todasAsIssuesColetadas,
+        total: totalDeIssuesDisponiveisNaQuery || todasAsIssuesColetadas.length, // O total que a JQL realmente encontrou
+        startAt: 0,
+        maxResults: todasAsIssuesColetadas.length // O número total de issues efetivamente retornadas
       });
-      resolve(response.data);
 
     } catch (error) {
-      console.error("ERRO DETALHADO em MODEL buscarIssuesJira");
-      reject(error);
+      console.error("ERRO DETALHADO em MODEL buscarIssuesJira durante paginação:", error.message);
     }
   });
 }
 
-/** Calcula tempo (em horas) desde a criação até a resolução */
 function calcularTempoResolucao(issue) {
+
   try {
     const dtCriacao = moment(issue.fields.created);
     const dtResolucao = moment(issue.fields.resolutiondate);
 
-    if (!dtResolucao.isValid()) {
-      return null;
-    }
-
-    // retorna diferença em horas, arredondado a 1 casa decimal
     const dif = dtResolucao.diff(dtCriacao, 'hours', true);
-    return Math.round(dif * 10) / 10;
+
+    const resultadoFinal = Math.round(dif * 10) / 10;
+
+    return resultadoFinal;
+
   } catch (error) {
-    console.error("Erro ao calcular tempo de resolução:", error);
+    console.error(`[${issue.key}] Erro GERAL ao calcular tempo de resolução:`, error);
     return null;
   }
 }
 
+
 function agruparDadosPorDia(issues) {
+
   try {
+
     const dadosAgrupados = {};
 
     issues.forEach(issue => {
@@ -256,6 +292,9 @@ function agruparDadosPorDia(issues) {
         }
         dadosAgrupados[keyDataResolucao].cont++;
         dadosAgrupados[keyDataResolucao].tempoTotal += tempoDeResolucao;
+      }
+      else {
+        console.log("dei erro antes do for each")
       }
     });
 
@@ -272,9 +311,8 @@ function agruparDadosPorDia(issues) {
         result.labels.push(dateKey);
         result.ticketCounts.push(info.cont);
         result.avgResolutionTimes.push(Math.round(avgTime * 10) / 10);
-        console.log("result.labels")
-        console.log(result.labels)
       });
+
     return result;
   } catch (error) {
     console.error("Erro em agruparDadosPorDia:", error);
@@ -304,7 +342,7 @@ function calcularEstatisticasJira(issues) {
     }
 
     // Se não houver tempos válidos, retorna o padrão
-    if (contagemDeTemposValidos === 0) {
+    if (contagemDeTemposValidos == 0) {
       return {
         avgResolution: "0min",
         avgResolutionInHours: 0
@@ -314,7 +352,7 @@ function calcularEstatisticasJira(issues) {
     // Calcula a média do tempo de resolução em horas
     const mediaTempoEmHoras = somaDosTemposDeResolucaoEmHoras / contagemDeTemposValidos;
 
-    let mediaFormatada; 
+    let mediaFormatada;
 
     // Formata a média para exibição (s, min, ou h)
     if (mediaTempoEmHoras < 0.01 && mediaTempoEmHoras > 0) { // Para tempos em segundos
@@ -330,12 +368,12 @@ function calcularEstatisticasJira(issues) {
 
     const estatisticasParaRetornar = {
       avgResolution: mediaFormatada,
-      avgResolutionInHours: mediaTempoEmHoras 
+      avgResolutionInHours: mediaTempoEmHoras
     };
 
     return estatisticasParaRetornar;
 
-  } catch (error) { 
+  } catch (error) {
     console.error("Erro em MODEL calcularEstatisticasJira:", error);
     return {
       avgResolution: "Erro",
@@ -360,12 +398,12 @@ function buscarIssuesPendentesTabela() {
         : JIRA_CONFIG.baseURL;
       const url = `${baseUrl}/rest/api/3/search`;
 
-      const headers = obterHeadersJira(); 
+      const headers = obterHeadersJira();
 
       const params = {
         jql: jql,
         fields: 'summary,priority,created,key,status',
-        maxResults: 100 
+        maxResults: 100
       };
 
       const response = await axios.get(url, {
