@@ -560,7 +560,6 @@ function gerarGraficos() {
             
             let valor = dados[i][json.r]
             let limite = dados[i][json.l]
-
             
             if(json.m == "DISPONIVEL" || json.c == ("REDE" || "PROCESSOS")) {
                 valor = valor * 1000;
@@ -610,7 +609,16 @@ function gerarGraficos() {
 
         let tamanho = (min + max) / 5
         
-        spanId.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} <br> (${json.m})`;
+        spanId.innerHTML = `${json.c} - ${listaDatas[0]} até ${listaDatas[listaDatas.length - 1]} `;
+
+        if(inicio == "ultimoDia") {
+            spanId.innerHTML += `de ontem`
+        } else if(inicio == fim && inicio != "ultimaSemana" && inicio != "ultimoMes" && inicio != "ultimoSemestre") {
+            spanId.innerHTML += `do dia ${inicio.split("-")[0]}/${inicio.split("-")[1]}/${inicio.split("-")[2]}`
+        }
+
+        spanId.innerHTML += ` <br> (${json.m})`;
+
         carregarKPIS(json);
 
         const chartDiv = document.createElement('div');
@@ -1105,7 +1113,6 @@ function graficoTempoReal(lista, json, graficoDiv, spanId) {
         
         let valor = lista[inicio][json.r]
         let limite = lista[inicio][json.l]
-        arrayDatas.push(lista[i].dataHora.split(" ")[1])
         
         if(json.m == "DISPONIVEL" || json.c == ("REDE" || "PROCESSOS")) {
             valor = valor * 1000;
