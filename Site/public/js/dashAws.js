@@ -749,7 +749,7 @@ async function plotarDadosMensais() {
                 </div>
                 <div class="gasto-coluna">
                 <span><span style="color: ${cor}; font-size: ${tamanhoFonte}px">${mensagem}</span>R$${custoMmp}</span>
-                </div>s
+                </div>
                 </div>`
 
 
